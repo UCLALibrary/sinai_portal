@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,4 +22,8 @@ Route::middleware([
     Route::get('/cms', function () {
         return Inertia::render('Dashboard');
     })->name('cms');
+
+    Route::get('/users', [
+        UsersController::class, 'index'
+    ])->name('users');
 });
