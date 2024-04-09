@@ -26,21 +26,29 @@
                 </tr>
               </thead>
               <tbody class="divide-y divide-gray-200 bg-white">
-                <tr v-for="resource in resources" :key="resource.id">
+                <tr
+                  v-for="resource in resources"
+                  :key="resource.id"
+                  class="hover:bg-gray-100 focus-within:bg-gray-100">
                   <td
                     v-for="(column, index) in columns"
                     :key="index"
-                    :class="{
-                      'whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6': index === 0,
-                      'whitespace-nowrap px-3 py-4 text-sm text-gray-500': index !== 0
-                    }"
-                  >
-                    <span v-html="resource[column]"></span>
+                    class="whitespace-nowrap text-sm text-gray-900 p-0"
+                    :class="{ 'font-medium': index === 0 }">
+                    <Link :href="`/${resourceName}/${resource.id}/edit`" tabindex="-1" class="block py-4"
+                      :class="{
+                        'pl-4 pr-3 sm:pl-6': index === 0,
+                        'px-3': index !== 0
+                      }">
+                      <span v-html="resource[column]"></span>
+                    </Link>
                   </td>
-                  <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                    <a href="#" class="text-indigo-600 hover:text-indigo-900">
-                      Edit<span class="sr-only">, {{ resource.name }}</span>
-                    </a>
+                  <td class="w-px relative whitespace-nowrap text-right text-sm font-medium p-0">
+                    <Link :href="`/${resourceName}/${resource.id}/edit`" tabindex="-1" class="block py-4 pl-3 pr-4 sm:pr-6">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="block w-6 h-6 fill-gray-400">
+                        <polygon points="12.95 10.707 13.657 10 8 4.343 6.586 5.757 10.828 10 6.586 14.243 8 15.657 12.95 10.707" />
+                      </svg>
+                    </Link>
                   </td>
                 </tr>
                 <tr v-if="resources.length === 0">
@@ -65,6 +73,7 @@
 </template>
 
 <script setup>
+  import { Link } from '@inertiajs/vue3'
   import Pagination from '@/Shared/Pagination.vue'
 
   defineProps({
