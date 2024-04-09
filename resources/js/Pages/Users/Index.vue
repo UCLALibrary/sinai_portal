@@ -14,6 +14,12 @@
             </button>
           </div>
         </div>
+
+        <ResourceListTable
+          :resources="users"
+          :columns="['name', 'email']"
+          class="mt-4"
+        />
       </div>
     </div>
   </AppLayout>
@@ -21,6 +27,7 @@
 
 <script setup>
   import AppLayout from '@/Layouts/AppLayout.vue'
+  import ResourceListTable from '@/Shared/ResourceListTable.vue'
 
   defineProps({
     users: { type: Object, required: false, default: () => {} }
