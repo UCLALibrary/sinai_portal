@@ -43,18 +43,33 @@
                     </a>
                   </td>
                 </tr>
+                <tr v-if="resources.length === 0">
+                  <td class="px-6 py-4 border-t" :colspan="columns.length + 1">
+                    No entries found.
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
+
+    <Pagination
+      :from="pagination.from"
+      :to="pagination.to"
+      :total="pagination.total"
+      :links="pagination.links"
+    />
   </div>
 </template>
 
 <script setup>
+  import Pagination from '@/Shared/Pagination.vue'
+
   defineProps({
     resources: { type: Array, required: false, default: () => [] },
     columns: { type: Array, required: false, default: () => [] },
+    pagination: { type: Object, required: false, default: () => {} },
   })
 </script>

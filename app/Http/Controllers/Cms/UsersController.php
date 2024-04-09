@@ -15,10 +15,7 @@ class UsersController extends Controller
     public function index()
     {
         return Inertia::render('Users/Index', [
-            'users' => User::all()->map(fn($user) => [
-                'name' => $user->name,
-                'email' => $user->email
-            ])
+            'users' => User::paginate(20)
         ]);
     }
 

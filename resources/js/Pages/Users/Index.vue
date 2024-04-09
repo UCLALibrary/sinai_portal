@@ -16,9 +16,14 @@
         </div>
 
         <ResourceListTable
-          :resources="users"
+          :resources="users.data"
           :columns="['name', 'email']"
-          class="mt-4"
+          :pagination="{
+            from: users.from,
+            to: users.to,
+            total: users.total,
+            links: users.links
+          }"
         />
       </div>
     </div>
