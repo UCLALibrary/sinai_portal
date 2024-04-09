@@ -68,6 +68,7 @@
   import Pagination from '@/Shared/Pagination.vue'
 
   defineProps({
+    resourceName: { type: String, required: true },
     resources: { type: Array, required: false, default: () => [] },
     columns: { type: Array, required: false, default: () => [] },
     pagination: { type: Object, required: false, default: () => {} },

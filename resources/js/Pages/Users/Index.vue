@@ -16,6 +16,7 @@
         </div>
 
         <ResourceListTable
+          resource-name="users"
           :resources="users.data"
           :columns="['name', 'email']"
           :pagination="{
