@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,6 @@ Route::middleware([
     Route::get('/users', [
         UsersController::class, 'index'
     ])->name('users');
+
+    Route::resource('manuscripts', ManuscriptsController::class);
 });
