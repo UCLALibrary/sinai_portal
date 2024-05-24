@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\DatesController as DatesApiController;
 use App\Http\Controllers\Api\ManuscriptsController as ManuscriptsApiController;
 use App\Http\Controllers\Api\PartsController as PartsApiController;
+use App\Http\Controllers\Api\PlacesController as PlacesApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,10 @@ Route::apiResource('manuscripts', ManuscriptsApiController::class, [
 ]);
 
 Route::apiResource('parts', PartsApiController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('places', PlacesApiController::class, [
     'as' => 'api'
 ]);
 
