@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\DatesController as DatesApiController;
 use App\Http\Controllers\Api\ManuscriptsController as ManuscriptsApiController;
 use App\Http\Controllers\Api\PartsController as PartsApiController;
 use Illuminate\Http\Request;
@@ -17,3 +18,6 @@ Route::apiResource('parts', PartsApiController::class, [
     'as' => 'api'
 ]);
 
+Route::apiResource('dates', DatesApiController::class, [
+    'as' => 'api'
+]);
