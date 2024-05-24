@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PartRequest;
-use App\Http\Resources\PartResource;
 use App\Models\Part;
+use Inertia\Inertia;
 
 class PartsController extends Controller
 {
@@ -14,7 +14,21 @@ class PartsController extends Controller
      */
     public function index()
     {
-        return PartResource::collection(Part::all());
+        return Inertia::render('Resources/Index', [
+            'title' => 'Codicological Units',
+            'resourceName' => 'codicological-units',
+            'resources' => Part::paginate(20),
+            'columns' => ['identifier', 'ark'],
+            'createEndpoint' => route('codicological-units.create'),
+        ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Parts/CreateEdit');
     }
 
     /**
@@ -29,6 +43,14 @@ class PartsController extends Controller
      * Display the specified resource.
      */
     public function show(Part $part)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Part $part)
     {
         //
     }

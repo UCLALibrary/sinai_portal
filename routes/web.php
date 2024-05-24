@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Cms\ManuscriptsController;
+use App\Http\Controllers\Cms\PartsController;
 use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // manuscripts
     Route::resource('manuscripts', ManuscriptsController::class);
+
+    // parts
+    Route::resource('codicological-units', PartsController::class);
 });
