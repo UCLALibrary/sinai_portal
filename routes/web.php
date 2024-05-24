@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Cms\DatesController;
 use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\PartsController;
 use App\Http\Controllers\Cms\UsersController;
@@ -30,4 +31,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // parts
     Route::resource('codicological-units', PartsController::class);
+
+    // dates
+    Route::resource('dates', DatesController::class);
 });

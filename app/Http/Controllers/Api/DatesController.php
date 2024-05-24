@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DateRequest;
+use App\Http\Resources\DateResource;
 use App\Models\Date;
 
 class DatesController extends Controller
@@ -13,7 +14,7 @@ class DatesController extends Controller
      */
     public function index()
     {
-        //
+        return DateResource::collection(Date::all());
     }
 
     /**
