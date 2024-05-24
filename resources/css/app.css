@@ -1,3 +1,5 @@
+@import '@mdi';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

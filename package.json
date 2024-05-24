@@ -7,6 +7,10 @@
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.14",
+        "@jsonforms/core": "^3.1.0",
+        "@jsonforms/vue": "^3.1.0",
+        "@jsonforms/vue-vuetify": "^3.1.0-preview.0",
+        "@mdi/font": "^7.4.47",
         "@tailwindcss/forms": "^0.5.7",
         "@tailwindcss/typography": "^0.5.10",
         "@vitejs/plugin-vue": "^5.0.0",
