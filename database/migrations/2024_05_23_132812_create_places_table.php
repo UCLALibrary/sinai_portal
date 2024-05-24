@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('manuscripts', function (Blueprint $table) {
+        Schema::create('places', function (Blueprint $table) {
             $table->id();
-            $table->string('ark')->nullable();
-            $table->string('shelfmark')->nullable();
+            $table->string('type')->nullable();
+            $table->string('as_written')->nullable();
+            $table->string('note')->nullable();
             $table->jsonb('json');
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('manuscripts');
+        Schema::dropIfExists('places');
     }
 };

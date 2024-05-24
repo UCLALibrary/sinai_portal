@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('manuscripts', function (Blueprint $table) {
+        Schema::create('parts', function (Blueprint $table) {
             $table->id();
             $table->string('ark')->nullable();
-            $table->string('shelfmark')->nullable();
+            $table->string('identifier')->nullable();
             $table->jsonb('json');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('manuscripts');
+        Schema::dropIfExists('parts');
     }
 };
