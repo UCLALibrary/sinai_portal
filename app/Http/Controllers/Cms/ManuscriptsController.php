@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Models\Manuscript;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,13 @@ class ManuscriptsController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Manuscripts/Index');
+        return Inertia::render('Resources/Index', [
+            'title' => 'Manuscripts',
+            'resourceName' => 'manuscripts',
+            'resources' => Manuscript::paginate(20),
+            'columns' => ['ark', 'shelfmark'],
+            'createEndpoint' => route('manuscripts.create'),
+        ]);
     }
 
     /**
@@ -21,7 +28,7 @@ class ManuscriptsController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Manuscripts/Create');
+        return Inertia::render('Manuscripts/CreateEdit');
     }
 
     /**
@@ -35,7 +42,7 @@ class ManuscriptsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Manuscript $manuscript)
     {
         //
     }
@@ -43,15 +50,17 @@ class ManuscriptsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Manuscript $manuscript)
     {
-        //
+        return Inertia::render('Manuscripts/CreateEdit', [
+            'metadata' => json_decode($manuscript->json),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Manuscript $manuscript)
     {
         //
     }
@@ -59,7 +68,7 @@ class ManuscriptsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Manuscript $manuscript)
     {
         //
     }

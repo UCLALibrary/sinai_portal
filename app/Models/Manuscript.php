@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Manuscript extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['json'];
 }

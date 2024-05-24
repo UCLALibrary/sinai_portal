@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ManuscriptRequest;
 use App\Http\Resources\ManuscriptResource;
 use App\Models\Manuscript;
+use Illuminate\Support\Facades\DB;
 
 class ManuscriptsController extends Controller
 {
@@ -22,9 +23,28 @@ class ManuscriptsController extends Controller
      */
     public function store(ManuscriptRequest $request)
     {
-        $manuscript = Manuscript::create($request->validated());
- 
-        return new ManuscriptResource($manuscript);
+        return DB::transaction(function () use ($request) {
+            // save the json metadata
+            $manuscript = Manuscript::create([
+                // TODO: do we need to validate the json metadata?
+                // $request->validated()
+                'json' => json_encode($request->json)
+            ]);
+
+            // TODO: force the transaction to fail if a duplicate ark is used
+            // if (empty($request->json['ark']) || empty($request->json['shelfmark'])) {
+            //     throw new \Exception('Ark or shelfmark is missing, transaction rolled back.');
+            // }
+
+            // extract specific fields from the json metadata
+            Manuscript::query()
+                ->update([
+                    'ark' => Manuscript::raw("json->>'ark'"),
+                    'shelfmark' => Manuscript::raw("json->>'shelfmark'")
+                ]);
+    
+            return new ManuscriptResource($manuscript);
+        });
     }
 
     /**
@@ -40,6 +60,8 @@ class ManuscriptsController extends Controller
      */
     public function update(ManuscriptRequest $request, Manuscript $manuscript)
     {
+        // TODO: are update and store the same?
+
         $manuscript->update($request->validated());
  
         return new ManuscriptResource($manuscript);
@@ -50,6 +72,8 @@ class ManuscriptsController extends Controller
      */
     public function destroy(Manuscript $manuscript)
     {
+        // TODO: do we want to allow deletion or just soft delete?
+
         $manuscript->delete();
  
         return response()->noContent();

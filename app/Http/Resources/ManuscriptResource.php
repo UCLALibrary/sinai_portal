@@ -14,6 +14,11 @@ class ManuscriptResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'ark' => $this->ark,
+            'shelfmark' => $this->shelfmark,
+            'json' => json_decode($this->json)
+        ];
     }
 }

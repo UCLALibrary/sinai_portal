@@ -15,18 +15,15 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/cms', function () {
+Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstream.auth_session'), 'verified']], function () {
+    // cms
+    Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('cms');
 
-    Route::get('/users', [
-        UsersController::class, 'index'
-    ])->name('users');
+    // users
+    Route::resource('users', UsersController::class);
 
+    // manuscripts
     Route::resource('manuscripts', ManuscriptsController::class);
 });
