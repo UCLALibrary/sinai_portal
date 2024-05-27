@@ -38,7 +38,7 @@
   import {
     defaultStyles,
     mergeStyles,
-    vuetifyRenderers
+    extendedVuetifyRenderers
   } from '@jsonforms/vue-vuetify'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import useEmitter from '@/composables/useEmitter'
@@ -60,7 +60,7 @@
 
     setup(props) {
       const renderers = Object.freeze([
-        ...vuetifyRenderers,
+        ...extendedVuetifyRenderers,
         // custom renderers
       ])
 

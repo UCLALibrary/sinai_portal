@@ -24,7 +24,7 @@ class DatesController extends Controller
             'title' => 'Dates',
             'resourceName' => 'dates',
             'resources' => Date::paginate(20),
-            'columns' => ['as_written', 'not_before', 'not_after'],
+            'columns' => ['type', 'as_written', 'not_before', 'not_after', 'note'],
             'createEndpoint' => route('dates.create'),
         ]);
     }
@@ -34,7 +34,12 @@ class DatesController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Dates/CreateEdit');
+        return Inertia::render('Resources/Create', [
+            'schema' => json_decode(Date::$schema),
+            'uischema' => json_decode(Date::$uischema),
+            'saveEndpoint' => route('api.dates.store'),
+            'redirectUrl' => route('dates.index'),
+        ]);
     }
 
     /**
@@ -58,8 +63,12 @@ class DatesController extends Controller
      */
     public function edit(Date $date)
     {
-        return Inertia::render('Dates/CreateEdit', [
-            'metadata' => $date->toArray(),
+        return Inertia::render('Resources/Edit', [
+            'schema' => json_decode(Date::$schema),
+            'uischema' => json_decode(Date::$uischema),
+            'data' => json_decode($date->json),
+            'saveEndpoint' => route('api.dates.update', $date->id),
+            'redirectUrl' => route('dates.index'),
         ]);
     }
 

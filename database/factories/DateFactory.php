@@ -17,7 +17,7 @@ class DateFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => 'origin',
+            'type' => 'creation',
             'as_written' => fake()->dateTimeThisCentury(),
             'not_before' => fake()->year(),
             'not_after' => fake()->year(),

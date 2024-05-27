@@ -14,6 +14,14 @@ class DateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'type' => $this->type,
+            'as_written' => $this->as_written,
+            'not_before' => $this->not_before,
+            'not_after' => $this->not_after,
+            'note' => $this->note,
+            'json' => json_decode($this->json)
+        ];
     }
 }
