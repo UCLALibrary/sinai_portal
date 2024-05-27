@@ -7,17 +7,11 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/id",
-          "minLength": 15,
-          "maxLength": 20
+          "scope": "#/properties/identifier"
         },
         {
           "type": "Control",
           "scope": "#/properties/ark"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/ms_objs"
         }
       ]
     }

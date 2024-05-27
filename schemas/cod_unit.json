@@ -4,7 +4,7 @@
   "description": "A codicological unit represents a distinctly produced book (REVISE)",
   "type": "object",
   "properties": {
-    "id": {
+    "identifier": {
       "title": "Identifier",
       "description": "A unique identifer, supplied by the database",
       "type": "string"
@@ -14,28 +14,10 @@
       "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
       "type": "string",
       "pattern": "^ark:/21198/z1.{6}"
-    },
-    "ms_objs": {
-      "title": "Manuscript Objects",
-      "description": "The database identifiers for the ms objects that reference this codicological unit record",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "ms_obj_id": {
-            "title": "",
-            "description": "A unique identifer, supplied by the database",
-            "type": "integer"
-          }
-        }
-      },
-      "minItems": 1,
-      "unevaluatedItems": false
     }
   },
   "required": [
     "id",
-    "ark",
-    "ms_objs"
+    "ark"
   ]
 }

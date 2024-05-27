@@ -15,7 +15,7 @@ Route::apiResource('manuscripts', ManuscriptsApiController::class, [
     'as' => 'api'
 ]);
 
-Route::apiResource('parts', PartsApiController::class, [
+Route::apiResource('codicological-units', PartsApiController::class, [
     'as' => 'api'
 ]);
 

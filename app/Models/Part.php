@@ -10,6 +10,8 @@ class Part extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['json'];
+
     public static $schema;
 
     public static $uischema;
