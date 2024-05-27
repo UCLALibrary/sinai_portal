@@ -1,0 +1,30 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/type"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/as_written"
+    },
+    {
+      "type": "HorizontalLayout",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/not_before"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/not_after"
+        }
+      ]
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/note"
+    }
+  ]
+}
