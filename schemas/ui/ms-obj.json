@@ -1,0 +1,25 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "label": "Basic Metadata",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/id",
+          "minLength": 15,
+          "maxLength": 20
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/ark"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/shelfmark"
+        }
+      ]
+    }
+  ]
+}

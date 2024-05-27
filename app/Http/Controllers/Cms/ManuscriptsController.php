@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ManuscriptRequest;
 use App\Models\Manuscript;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ManuscriptsController extends Controller
 {
+    public function __construct()
+    {
+        // execute the static initialize to load the schema and ui schema
+        Manuscript::initialize();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,13 +34,18 @@ class ManuscriptsController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Manuscripts/CreateEdit');
+        return Inertia::render('Resources/Create', [
+            'schema' => json_decode(Manuscript::$schema),
+            'uischema' => json_decode(Manuscript::$uischema),
+            'saveEndpoint' => route('api.manuscripts.store'),
+            'redirectUrl' => route('manuscripts.index'),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ManuscriptRequest $request)
     {
         //
     }
@@ -52,15 +63,19 @@ class ManuscriptsController extends Controller
      */
     public function edit(Manuscript $manuscript)
     {
-        return Inertia::render('Manuscripts/CreateEdit', [
-            'metadata' => json_decode($manuscript->json),
+        return Inertia::render('Resources/Edit', [
+            'schema' => json_decode(Manuscript::$schema),
+            'uischema' => json_decode(Manuscript::$uischema),
+            'data' => json_decode($manuscript->json),
+            'saveEndpoint' => route('api.manuscripts.update', $manuscript->id),
+            'redirectUrl' => route('manuscripts.index'),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Manuscript $manuscript)
+    public function update(ManuscriptRequest $request, Manuscript $manuscript)
     {
         //
     }

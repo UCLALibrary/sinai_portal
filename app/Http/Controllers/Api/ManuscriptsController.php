@@ -26,7 +26,7 @@ class ManuscriptsController extends Controller
         return DB::transaction(function () use ($request) {
             // save the json metadata
             $manuscript = Manuscript::create([
-                // TODO: do we need to validate the json metadata?
+                // TODO: validate the json metadata
                 // $request->validated()
                 'json' => json_encode($request->json)
             ]);
@@ -36,12 +36,8 @@ class ManuscriptsController extends Controller
             //     throw new \Exception('Ark or shelfmark is missing, transaction rolled back.');
             // }
 
-            // extract specific fields from the json metadata
-            Manuscript::query()
-                ->update([
-                    'ark' => Manuscript::raw("json->>'ark'"),
-                    'shelfmark' => Manuscript::raw("json->>'shelfmark'")
-                ]);
+            // extract fields from the json metadata into their corresponding database columns to display on list view 
+            $this->_extractJsonFields();
     
             return new ManuscriptResource($manuscript);
         });
@@ -60,10 +56,14 @@ class ManuscriptsController extends Controller
      */
     public function update(ManuscriptRequest $request, Manuscript $manuscript)
     {
-        // TODO: are update and store the same?
+        $data = $request->validated();
+        $data['json'] = json_encode($request->json);
 
-        $manuscript->update($request->validated());
+        $manuscript->update($data);
  
+        // extract fields from the json metadata into their corresponding database columns to display on list view
+        $this->_extractJsonFields();
+
         return new ManuscriptResource($manuscript);
     }
 
@@ -77,5 +77,14 @@ class ManuscriptsController extends Controller
         $manuscript->delete();
  
         return response()->noContent();
+    }
+
+    private function _extractJsonFields()
+    {
+        Manuscript::query()
+            ->update([
+                'ark' => Manuscript::raw("json->>'ark'"),
+                'shelfmark' => Manuscript::raw("json->>'shelfmark'")
+            ]);
     }
 }

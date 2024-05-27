@@ -1,0 +1,28 @@
+{
+  "$id": "https://example.com/ms-obj.schema.json",
+  "title": "Manuscript Object",
+  "description": "A manuscript or codex, either real or a hypothetical reconstruction",
+  "type": "object",
+  "properties": {
+    "id": {
+      "title": "Identifier",
+      "description": "A unique identifer, supplied by the database",
+      "type": "string" 
+    },
+    "ark": {
+      "title": "ARK Identifier",
+      "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
+      "type": "string",
+      "pattern": "^ark:/21198/z1.{6}"
+    },
+    "shelfmark": {
+      "title": "Shelfmark",
+      "description": "An identifier for the manuscript, including shelfmarks or other identifier schemas",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "ark"
+  ]
+}
