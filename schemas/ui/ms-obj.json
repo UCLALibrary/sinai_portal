@@ -18,6 +18,16 @@
         {
           "type": "Control",
           "scope": "#/properties/shelfmark"
+        },
+        {
+          "type": "Group",
+          "label": "Contents",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/parts"
+            }
+          ]
         }
       ]
     }

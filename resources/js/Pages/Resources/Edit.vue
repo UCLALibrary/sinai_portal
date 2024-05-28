@@ -48,6 +48,7 @@
   } from '@jsonforms/vue-vuetify'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import useEmitter from '@/composables/useEmitter'
+  import { entry as partSelectionRenderer } from '@/jsonforms/renderers/PartSelectionRenderer.vue'
 
   export default defineComponent({
     name: 'Edit',
@@ -69,6 +70,7 @@
       const renderers = Object.freeze([
         ...extendedVuetifyRenderers,
         // custom renderers
+        partSelectionRenderer,
       ])
 
       const emitter = useEmitter()

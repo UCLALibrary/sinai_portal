@@ -19,10 +19,35 @@
       "title": "Shelfmark",
       "description": "An identifier for the manuscript, including shelfmarks or other identifier schemas",
       "type": "string"
+    },
+    "parts": {
+      "title": "Parts",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "title": "Identifier",
+            "type": "integer"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "id",
+          "sequence"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
     }
   },
   "required": [
     "id",
-    "ark"
+    "ark",
+    "parts"
   ]
 }
