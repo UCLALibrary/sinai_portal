@@ -20,20 +20,18 @@
       </div>
     </div>
 
-    <div class="py-12">
-      <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <ResourceListTable
-          :resource-name="resourceName"
-          :resources="resources.data"
-          :columns="columns"
-          :pagination="{
-            from: resources.from ?? 0,
-            to: resources.to ?? 0,
-            total: resources.total,
-            links: resources.links
-          }"
-        />
-      </div>
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+      <ResourceListTable
+        :resource-name="resourceName"
+        :resources="resources.data"
+        :columns="columns"
+        :pagination="{
+          from: resources.from ?? 0,
+          to: resources.to ?? 0,
+          total: resources.total,
+          links: resources.links
+        }"
+      />
     </div>
   </AppLayout>
 </template>
