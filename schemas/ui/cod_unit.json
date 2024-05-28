@@ -12,6 +12,10 @@
         {
           "type": "Control",
           "scope": "#/properties/ark"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/ms_objs"
         }
       ]
     }

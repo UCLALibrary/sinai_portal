@@ -14,10 +14,28 @@
       "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
       "type": "string",
       "pattern": "^ark:/21198/z1.{6}"
+    },
+    "ms_objs": {
+      "title": "Manuscript Objects",
+      "description": "The database identifiers for the ms objects that reference this codicological unit record",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ms_obj_id": {
+            "title": "",
+            "description": "A unique identifer, supplied by the database",
+            "type": "integer"
+          }
+        }
+      },
+      "minItems": 1,
+      "unevaluatedItems": false
     }
   },
   "required": [
     "id",
-    "ark"
+    "ark",
+    "ms_objs"
   ]
 }
