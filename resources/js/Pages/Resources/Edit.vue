@@ -50,6 +50,7 @@
   import useEmitter from '@/composables/useEmitter'
   import { entry as manuscriptSelectionRenderer } from '@/jsonforms/renderers/ManuscriptSelectionRenderer.vue'
   import { entry as partSelectionRenderer } from '@/jsonforms/renderers/PartSelectionRenderer.vue'
+  import { entry as dateSelectionRenderer } from '@/jsonforms/renderers/DateSelectionRenderer.vue'
 
   export default defineComponent({
     name: 'Edit',
@@ -73,6 +74,7 @@
         // custom renderers
         manuscriptSelectionRenderer,
         partSelectionRenderer,
+        dateSelectionRenderer,
       ])
 
       const emitter = useEmitter()

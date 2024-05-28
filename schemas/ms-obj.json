@@ -43,6 +43,51 @@
         "unevaluatedProperties": false
       },
       "unevaluatedItems": false
+    },
+    "assoc_date": {
+      "title": "Associated Date",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "title": "Type",
+            "type": "string",
+            "enum": [
+              "creation",
+              "binding",
+              "purchase"
+            ],
+            "$comment": "TBD full list of types"
+          },
+          "as_written": {
+            "title": "As Written",
+            "type": "string"
+          },
+          "not_before": {
+            "title": "Not Before",
+            "type": "string"
+          },
+          "not_after": {
+            "title": "Not After",
+            "type": "string"
+          },
+          "note": {
+            "title": "Note",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "iso",
+          "value"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
     }
   },
   "required": [

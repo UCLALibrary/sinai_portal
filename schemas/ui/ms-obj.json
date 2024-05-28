@@ -28,6 +28,10 @@
               "scope": "#/properties/parts"
             }
           ]
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_date"
         }
       ]
     }
