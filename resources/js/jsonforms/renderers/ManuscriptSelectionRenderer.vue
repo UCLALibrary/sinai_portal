@@ -82,9 +82,4 @@
   })
 
   export default controlRenderer
-
-  export const entry: JsonFormsRendererRegistryEntry = {
-    renderer: controlRenderer,
-    tester: rankWith(4, scopeEndIs('ms_objs')),
-  }
 </script>
