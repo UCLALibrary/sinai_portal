@@ -28,7 +28,7 @@ As the centralized data store for the Sinai Manuscripts Digital Library website,
   - ***Note:** If you encounter database connection errors or password authentication errors (e.g. FATAL:  password authentication failed for user "sail"), run* `sail down --rmi all -v` *to remove all images and volumes followed by* `sail up` *before running the database migrations.*
 - Install dependencies with Composer using Laravel Sail: `sail composer install`
 - Install frontend dependencies using Laravel Sail: `sail npm install`
-- Go to http://localhost:8004 and verify that the application is running.
+- Go to http://localhost:8005 and verify that the application is running.
 
 ---
 
