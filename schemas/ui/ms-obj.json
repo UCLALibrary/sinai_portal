@@ -7,9 +7,7 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/id",
-          "minLength": 15,
-          "maxLength": 20
+          "scope": "#/properties/id"
         },
         {
           "type": "Control",
@@ -17,21 +15,99 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/shelfmark"
+          "scope": "#/properties/type"
         },
         {
-          "type": "Group",
-          "label": "Contents",
-          "elements": [
-            {
-              "type": "Control",
-              "scope": "#/properties/parts"
-            }
-          ]
+          "type": "Control",
+          "scope": "#/properties/idno"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/summary"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/extent"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/weight"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/state"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/form"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/fol"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/features"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/cod_units"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/has_bind"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/iiif"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/location"
         },
         {
           "type": "Control",
           "scope": "#/properties/assoc_date"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/note"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/related_mss"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/viscodex"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/bib"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/cataloguer"
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "label": "Dimensions",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/dim"
+        }
+      ]
+    },
+    {
+      "type": "Group",
+      "label": "Paracontent",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/para"
         }
       ]
     }
