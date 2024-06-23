@@ -1,5 +1,4 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/ms-obj.json",
     "title": "Manuscript Object",
     "description": "A manuscript or codex, either real or a hypothetical reconstruction",
@@ -184,7 +183,6 @@
                 "null"
             ],
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/paracontent.json",
                 "title": "Paracontent",
                 "description": "An item of paracontent related to a manuscript object, codicological unit, or textual artifact",
@@ -212,7 +210,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/writing.json",
                             "title": "Writing",
                             "description": "Collected information about an instance of hand writing",
@@ -249,7 +246,6 @@
                                         "null"
                                     ],
                                     "items": {
-                                        "$schema": "https://json-schema.org/draft/2020-12/schema",
                                         "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                                         "title": "Note",
                                         "description": "A prose note of a specified type",
@@ -325,7 +321,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/assoc_name.json",
                             "title": "Associated Name",
                             "description": "A person, group, or organization entity connected with an object via a given role",
@@ -359,7 +354,6 @@
                                         "null"
                                     ],
                                     "items": {
-                                        "$schema": "https://json-schema.org/draft/2020-12/schema",
                                         "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                                         "title": "Note",
                                         "description": "A prose note of a specified type",
@@ -414,7 +408,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/assoc_place.json",
                             "title": "Associated Place",
                             "description": "A place entity connected with an object via a given role",
@@ -447,7 +440,6 @@
                                         "null"
                                     ],
                                     "items": {
-                                        "$schema": "https://json-schema.org/draft/2020-12/schema",
                                         "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                                         "title": "Note",
                                         "description": "A prose note of a specified type",
@@ -502,7 +494,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/assoc_date.json",
                             "title": "Associated Date",
                             "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
@@ -557,7 +548,6 @@
                                         "null"
                                     ],
                                     "items": {
-                                        "$schema": "https://json-schema.org/draft/2020-12/schema",
                                         "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                                         "title": "Note",
                                         "description": "A prose note of a specified type",
@@ -614,7 +604,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                             "title": "Note",
                             "description": "A prose note of a specified type",
@@ -673,7 +662,6 @@
         "iiif": {
             "type": "array",
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/iiif.json",
                 "title": "IIIF",
                 "description": "Information related to a IIIF manifest for a given object",
@@ -753,7 +741,6 @@
                 "null"
             ],
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/assoc_date.json",
                 "title": "Associated Date",
                 "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
@@ -808,7 +795,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                             "title": "Note",
                             "description": "A prose note of a specified type",
@@ -865,7 +851,6 @@
                 "null"
             ],
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                 "title": "Note",
                 "description": "A prose note of a specified type",
@@ -912,7 +897,6 @@
                 "null"
             ],
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/related_mss.json",
                 "title": "Related Manuscripts",
                 "description": "A set of manuscripts that share a relation to the object context in which they are declared",
@@ -935,7 +919,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                             "title": "Note",
                             "description": "A prose note of a specified type",
@@ -1025,7 +1008,6 @@
                 "null"
             ],
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/viscodex.json",
                 "title": "Viscodex",
                 "description": "A link to a Viscodex visualization of the object",
@@ -1064,7 +1046,6 @@
                 "null"
             ],
             "items": {
-                "$schema": "https://json-schema.org/draft/2020-12/schema",
                 "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/bib.json",
                 "title": "Bibliography",
                 "description": "A bibliographic citation connected with an object or entity",
@@ -1112,7 +1093,6 @@
                             "null"
                         ],
                         "items": {
-                            "$schema": "https://json-schema.org/draft/2020-12/schema",
                             "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/note.json",
                             "title": "Note",
                             "description": "A prose note of a specified type",
