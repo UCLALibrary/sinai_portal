@@ -7,10 +7,6 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/id"
-        },
-        {
-          "type": "Control",
           "scope": "#/properties/ark"
         },
         {
