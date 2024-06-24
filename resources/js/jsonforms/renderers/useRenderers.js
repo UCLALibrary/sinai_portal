@@ -8,4 +8,4 @@ import partSelectionRenderer from '@/jsonforms/renderers/PartSelectionRenderer.v
 export const partSelectionRendererEntry = buildRendererRegistryEntry(partSelectionRenderer, scopeEndIs('parts'))
 
 import dateSelectionRenderer from '@/jsonforms/renderers/DateSelectionRenderer.vue'
-export const dateSelectionRendererEntry = buildRendererRegistryEntry(dateSelectionRenderer, scopeEndIs('assoc_date'))
+export const dateSelectionRendererEntry = buildRendererRegistryEntry(dateSelectionRenderer, scopeEndIs('assoc_date'), 5)

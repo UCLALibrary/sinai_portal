@@ -37,7 +37,6 @@
 <script>
   import { defineComponent, ref, provide } from 'vue'
   import { JsonForms } from '@jsonforms/vue'
-  import { scopeEndIs } from '@jsonforms/core'
   import {
     defaultStyles,
     mergeStyles,

@@ -18,20 +18,11 @@
 
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue'
-  import {
-    ControlElement,
-    JsonFormsRendererRegistryEntry,
-    rankWith,
-    scopeEndIs,
-  } from '@jsonforms/core'
-  import { VSelect } from 'vuetify/components'
-  import {
-    rendererProps,
-    useJsonFormsControl,
-    RendererProps,
-  } from '@jsonforms/vue'
+  import { ControlElement } from '@jsonforms/core'
+  import { rendererProps, useJsonFormsControl, RendererProps } from '@jsonforms/vue'
   import { useVuetifyControl } from '@jsonforms/vue-vuetify/src/util'
   import { default as ControlWrapper } from '@jsonforms/vue-vuetify/src/controls/ControlWrapper.vue'
+  import { VSelect } from 'vuetify/components'
 
   const controlRenderer = defineComponent({
     name: 'manuscript-selection-renderer',
