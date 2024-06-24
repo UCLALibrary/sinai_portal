@@ -79,9 +79,11 @@
 
       const data = ref({})
 
-      const onChange = ({ data, errors }) => {
-        data.value = data
-        isValid.value = errors.length === 0
+      const isValid = ref(false)
+
+      const onChange = (payload) => {
+        data.value = payload.data
+        isValid.value = payload.errors.length === 0
       }
 
       const onSave = () => {
