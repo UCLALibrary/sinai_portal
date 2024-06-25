@@ -39,7 +39,7 @@ function handleImageError() {
                         <Link
                             v-if="$page.props.auth.user"
                             :href="route('cms')"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            class="font-dosis rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                         >
                             SMDP Dashboard
                         </Link>
@@ -47,7 +47,7 @@ function handleImageError() {
                         <template v-else>
                             <Link
                                 :href="route('login')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="font-dosis rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Log in
                             </Link>
@@ -55,7 +55,7 @@ function handleImageError() {
                             <Link
                                 v-if="canRegister"
                                 :href="route('register')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="font-dosis rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Register
                             </Link>
@@ -64,7 +64,7 @@ function handleImageError() {
                 </header>
 
                 <main class="mt-6">
-                    <div class="flex text-center justify-center mx-auto text-4xl">
+                    <div class="font-dosis flex text-center justify-center mx-auto text-4xl">
                        Sinai Manuscripts Data Portal
                     </div>
                     <div class="flex justify-center mt-16 mb-16">

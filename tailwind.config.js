@@ -16,6 +16,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                dosis: ['Dosis', 'sans-serif'],
             },
             colors: {
                 'sinai-beige': 'rgb(247, 242, 234)',
