@@ -37,7 +37,7 @@ class ManuscriptsController extends Controller
             // }
 
             // extract fields from the json metadata into their corresponding database columns to display on list view 
-            $this->_extractJsonFields();
+            $this->_extractJsonFields($manuscript);
     
             return new ManuscriptResource($manuscript);
         });
@@ -62,7 +62,7 @@ class ManuscriptsController extends Controller
         $manuscript->update($data);
  
         // extract fields from the json metadata into their corresponding database columns to display on list view
-        $this->_extractJsonFields();
+        $this->_extractJsonFields($manuscript);
 
         return new ManuscriptResource($manuscript);
     }
@@ -79,12 +79,19 @@ class ManuscriptsController extends Controller
         return response()->noContent();
     }
 
-    private function _extractJsonFields()
+    private function _extractJsonFields(Manuscript $manuscript)
     {
-        Manuscript::query()
+        Manuscript::where('id', $manuscript->id)
             ->update([
-                'ark' => Manuscript::raw("json->>'ark'"),
-                'shelfmark' => Manuscript::raw("json->>'shelfmark'")
+                'ark' => Manuscript::select('json->ark as ark')
+                    ->where('id', $manuscript->id)
+                    ->first()
+                    ->ark,
+                'shelfmark' => Manuscript::select('json->idno->0->value as shelfmark')
+                    ->where('id', $manuscript->id)
+                    ->whereJsonContains('json->idno->0->type', 'shelfmark')
+                    ->first()
+                    ->shelfmark,
             ]);
     }
 }

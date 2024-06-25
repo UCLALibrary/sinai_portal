@@ -1,98 +1,1190 @@
 {
-  "$id": "https://example.com/ms-obj.schema.json",
-  "title": "Manuscript Object",
-  "description": "A manuscript or codex, either real or a hypothetical reconstruction",
-  "type": "object",
-  "properties": {
-    "id": {
-      "title": "Identifier",
-      "description": "A unique identifer, supplied by the database",
-      "type": "string" 
-    },
-    "ark": {
-      "title": "ARK Identifier",
-      "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
-      "type": "string",
-      "pattern": "^ark:/21198/z1.{6}"
-    },
-    "shelfmark": {
-      "title": "Shelfmark",
-      "description": "An identifier for the manuscript, including shelfmarks or other identifier schemas",
-      "type": "string"
-    },
-    "parts": {
-      "title": "Parts",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "title": "Identifier",
+    "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/ms-obj.json",
+    "title": "Manuscript Object",
+    "description": "A manuscript or codex, either real or a hypothetical reconstruction",
+    "type": "object",
+    "properties": {
+        "id": {
+            "description": "A unique identifer, supplied by the database",
             "type": "integer"
-          },
-          "sequence": {
-            "title": "Sequence",
-            "type": "integer",
-            "minimum": 1
-          }
         },
-        "required": [
-          "id",
-          "sequence"
-        ],
-        "unevaluatedProperties": false
-      },
-      "unevaluatedItems": false
-    },
-    "assoc_date": {
-      "title": "Associated Date",
-      "type": [
-        "array",
-        "null"
-      ],
-      "items": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "title": "Type",
+        "ark": {
+            "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
             "type": "string",
-            "enum": [
-              "creation",
-              "binding",
-              "purchase"
-            ],
-            "$comment": "TBD full list of types"
-          },
-          "as_written": {
-            "title": "As Written",
-            "type": "string"
-          },
-          "not_before": {
-            "title": "Not Before",
-            "type": "string"
-          },
-          "not_after": {
-            "title": "Not After",
-            "type": "string"
-          },
-          "note": {
-            "title": "Note",
-            "type": "string"
-          }
+            "pattern": "^ark:/21198/z1.{6}"
         },
-        "required": [
-          "type",
-          "iso",
-          "value"
-        ],
-        "unevaluatedProperties": false
-      },
-      "unevaluatedItems": false
-    }
-  },
-  "required": [
-    "id",
-    "ark",
-    "parts"
-  ]
+        "type": {
+            "description": "The type of manuscript object, whether real or hypothetical reconstructions",
+            "enum": [
+                "shelf",
+                "rebind"
+            ]
+        },
+        "idno": {
+            "description": "An identifier for the manuscript, including shelfmarks or other identifier schemas",
+            "$comment": "Would add to util, but enum may vary by object type",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "enum": [
+                            "shelfmark"
+                        ],
+                        "$comment": "Use term 'shelfmark' for both real and digitally rebound manuscript objects"
+                    },
+                    "value": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type",
+                    "value"
+                ],
+                "unevaluatedProperties": false
+            },
+            "minItems": 1,
+            "unevaluatedItems": false
+        },
+        "summary": {
+            "type": [
+                "string",
+                "null"
+            ],
+            "minLength": 1
+        },
+        "extent": {
+            "description": "The extent, expressed in number of folios, which comprise the manuscript object",
+            "type": [
+                "string",
+                "null"
+            ],
+            "minLength": 1
+        },
+        "weight": {
+            "description": "A string expression of the manuscript object's weight",
+            "type": "string",
+            "minLength": 1
+        },
+        "dim": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "enum": [
+                            "ms_block",
+                            "folio",
+                            "av_folio",
+                            "writing_area",
+                            "margins"
+                        ]
+                    },
+                    "value": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "type",
+                    "value"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "state": {
+            "description": "The original form of the manuscript object",
+            "oneOf": [
+                {
+                    "description": "The original form of the manuscript object",
+                    "enum": [
+                        "Codex",
+                        "Scroll",
+                        "Bifolim",
+                        "Folium",
+                        "Quire(s)",
+                        null
+                    ]
+                },
+                {
+                    "enum": [
+                        "Undertext object"
+                    ],
+                    "$comment": "State allows the same enumerated value list as form with the addition of Undertext object"
+                }
+            ]
+        },
+        "form": {
+            "description": "The original form of the manuscript object",
+            "enum": [
+                "Codex",
+                "Scroll",
+                "Bifolim",
+                "Folium",
+                "Quire(s)",
+                null
+            ]
+        },
+        "fol": {
+            "description": "A string expressing the foliation of the object in a semi-controlled format",
+            "type": [
+                "string",
+                "null"
+            ],
+            "minLength": 1,
+            "$comment": "could require a pattern to capture the style of input we require. e.g. 'ff. 1-24 + flyleaves I-III'"
+        },
+        "features": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "enum": [
+                    "Dated",
+                    "Colophon",
+                    "Inscription(s)"
+                ]
+            },
+            "unevaluatedItems": false,
+            "$comment": "TBD list of features"
+        },
+        "cod_units": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "type": {
+                        "enum": [
+                            "part",
+                            "uto",
+                            "reconstr"
+                        ]
+                    },
+                    "sequence": {
+                        "type": "integer",
+                        "minimum": 1
+                    }
+                },
+                "required": [
+                    "id",
+                    "type",
+                    "sequence"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "para": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "title": "Paracontent",
+                "description": "An item of paracontent related to a manuscript object, codicological unit, or textual artifact",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "endowment"
+                        ],
+                        "$comment": "Initial enum for paracontent needed"
+                    },
+                    "locus": {
+                        "type": "string",
+                        "minLength": 1,
+                        "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+                    },
+                    "lang": {
+                        "type": "string",
+                        "$comment": "Should point to a record in the languages table. Perhaps use format validation for a uuid?"
+                    },
+                    "writing": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Writing",
+                            "description": "Collected information about an instance of hand writing",
+                            "type": "object",
+                            "properties": {
+                                "script": {
+                                    "type": "array",
+                                    "items": {
+                                        "description": "A term from a controlled list categorizing the writing system and script used in a given instance of writing",
+                                        "enum": [
+                                            "Perlschrift",
+                                            "Christian Palestinian Aramaic",
+                                            "Naskh",
+                                            "Kufic",
+                                            "Thuluth",
+                                            "Greek minuscule",
+                                            "Serto",
+                                            "Estrangela",
+                                            "East Syriac"
+                                        ],
+                                        "$comment": "enum not complete. Will eventually be references to script records"
+                                    },
+                                    "minItems": 1,
+                                    "unevaluatedItems": false
+                                },
+                                "locus": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+                                },
+                                "note": {
+                                    "type": [
+                                        "array",
+                                        "null"
+                                    ],
+                                    "items": {
+                                        "title": "Note",
+                                        "description": "A prose note of a specified type",
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "assoc_date",
+                                                    "assoc_name",
+                                                    "assoc_place",
+                                                    "bib",
+                                                    "binding",
+                                                    "cataloguer",
+                                                    "collation",
+                                                    "condition",
+                                                    "foliation",
+                                                    "general",
+                                                    "ornamentation",
+                                                    "paratext",
+                                                    "provenance",
+                                                    "related_mss"
+                                                ]
+                                            },
+                                            "value": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "minLength": 1
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "value"
+                                        ],
+                                        "unevaluatedProperties": false
+                                    },
+                                    "unevaluatedItems": false
+                                }
+                            },
+                            "required": [
+                                "script"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    },
+                    "label": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "transcription": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "translation": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "assoc_name": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Associated Name",
+                            "description": "A person, group, or organization entity connected with an object via a given role",
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": [
+                                        "integer",
+                                        "null"
+                                    ]
+                                },
+                                "as_written": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                },
+                                "role": {
+                                    "type": "string",
+                                    "enum": [
+                                        "creator",
+                                        "binder",
+                                        "owner",
+                                        "not known"
+                                    ]
+                                },
+                                "note": {
+                                    "type": [
+                                        "array",
+                                        "null"
+                                    ],
+                                    "items": {
+                                        "title": "Note",
+                                        "description": "A prose note of a specified type",
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "assoc_date",
+                                                    "assoc_name",
+                                                    "assoc_place",
+                                                    "bib",
+                                                    "binding",
+                                                    "cataloguer",
+                                                    "collation",
+                                                    "condition",
+                                                    "foliation",
+                                                    "general",
+                                                    "ornamentation",
+                                                    "paratext",
+                                                    "provenance",
+                                                    "related_mss"
+                                                ]
+                                            },
+                                            "value": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "minLength": 1
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "value"
+                                        ],
+                                        "unevaluatedProperties": false
+                                    },
+                                    "unevaluatedItems": false
+                                }
+                            },
+                            "required": [
+                                "role"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    },
+                    "assoc_place": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Associated Place",
+                            "description": "A place entity connected with an object via a given role",
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": [
+                                        "integer",
+                                        "null"
+                                    ]
+                                },
+                                "as_written": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                },
+                                "event": {
+                                    "type": "string",
+                                    "enum": [
+                                        "origin",
+                                        "previous_repository",
+                                        "not known"
+                                    ]
+                                },
+                                "note": {
+                                    "type": [
+                                        "array",
+                                        "null"
+                                    ],
+                                    "items": {
+                                        "title": "Note",
+                                        "description": "A prose note of a specified type",
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "assoc_date",
+                                                    "assoc_name",
+                                                    "assoc_place",
+                                                    "bib",
+                                                    "binding",
+                                                    "cataloguer",
+                                                    "collation",
+                                                    "condition",
+                                                    "foliation",
+                                                    "general",
+                                                    "ornamentation",
+                                                    "paratext",
+                                                    "provenance",
+                                                    "related_mss"
+                                                ]
+                                            },
+                                            "value": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "minLength": 1
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "value"
+                                        ],
+                                        "unevaluatedProperties": false
+                                    },
+                                    "unevaluatedItems": false
+                                }
+                            },
+                            "required": [
+                                "event"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    },
+                    "assoc_date": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Associated Date",
+                            "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "creation",
+                                        "binding",
+                                        "purchase",
+                                        "other"
+                                    ],
+                                    "$comment": "TBD full list of types"
+                                },
+                                "iso": {
+                                    "type": "object",
+                                    "properties": {
+                                        "not_before": {
+                                            "type": "string",
+                                            "format": "date",
+                                            "minLength": 3
+                                        },
+                                        "not_after": {
+                                            "type": [
+                                                "string",
+                                                "null"
+                                            ],
+                                            "format": "date",
+                                            "minLength": 3
+                                        }
+                                    },
+                                    "required": [
+                                        "not_before"
+                                    ],
+                                    "unevaluatedProperties": false
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "as_written": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                },
+                                "note": {
+                                    "type": [
+                                        "array",
+                                        "null"
+                                    ],
+                                    "items": {
+                                        "title": "Note",
+                                        "description": "A prose note of a specified type",
+                                        "type": "object",
+                                        "properties": {
+                                            "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "assoc_date",
+                                                    "assoc_name",
+                                                    "assoc_place",
+                                                    "bib",
+                                                    "binding",
+                                                    "cataloguer",
+                                                    "collation",
+                                                    "condition",
+                                                    "foliation",
+                                                    "general",
+                                                    "ornamentation",
+                                                    "paratext",
+                                                    "provenance",
+                                                    "related_mss"
+                                                ]
+                                            },
+                                            "value": {
+                                                "type": [
+                                                    "string",
+                                                    "null"
+                                                ],
+                                                "minLength": 1
+                                            }
+                                        },
+                                        "required": [
+                                            "type",
+                                            "value"
+                                        ],
+                                        "unevaluatedProperties": false
+                                    },
+                                    "unevaluatedItems": false
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "iso",
+                                "value"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    },
+                    "note": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Note",
+                            "description": "A prose note of a specified type",
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "assoc_date",
+                                        "assoc_name",
+                                        "assoc_place",
+                                        "bib",
+                                        "binding",
+                                        "cataloguer",
+                                        "collation",
+                                        "condition",
+                                        "foliation",
+                                        "general",
+                                        "ornamentation",
+                                        "paratext",
+                                        "provenance",
+                                        "related_mss"
+                                    ]
+                                },
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    }
+                },
+                "required": [
+                    "type",
+                    "locus"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "has_bind": {
+            "type": [
+                "boolean",
+                "null"
+            ]
+        },
+        "iiif": {
+            "type": "array",
+            "items": {
+                "title": "IIIF",
+                "description": "Information related to a IIIF manifest for a given object",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "main",
+                            "reordered"
+                        ]
+                    },
+                    "manifest": {
+                        "type": "string",
+                        "format": "uri",
+                        "minLength": 1
+                    },
+                    "text_direction": {
+                        "type": "string",
+                        "enum": [
+                            "right-to-left",
+                            null
+                        ]
+                    },
+                    "behavior": {
+                        "type": "string",
+                        "enum": [
+                            "paged",
+                            "individuals"
+                        ]
+                    },
+                    "thumbnail": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1,
+                        "format": "uri"
+                    }
+                },
+                "required": [
+                    "type",
+                    "manifest"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "location": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "repository": {
+                        "type": "integer"
+                    },
+                    "collection": {
+                        "type": "string",
+                        "enum": [
+                            "Old Collection",
+                            "New Finds",
+                            "Reconstructions"
+                        ]
+                    }
+                },
+                "required": [
+                    "repository",
+                    "collection"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "assoc_date": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "title": "Associated Date",
+                "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "creation",
+                            "binding",
+                            "purchase",
+                            "other"
+                        ],
+                        "$comment": "TBD full list of types"
+                    },
+                    "iso": {
+                        "type": "object",
+                        "properties": {
+                            "not_before": {
+                                "type": "string",
+                                "format": "date",
+                                "minLength": 3
+                            },
+                            "not_after": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ],
+                                "format": "date",
+                                "minLength": 3
+                            }
+                        },
+                        "required": [
+                            "not_before"
+                        ],
+                        "unevaluatedProperties": false
+                    },
+                    "value": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "as_written": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "note": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Note",
+                            "description": "A prose note of a specified type",
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "assoc_date",
+                                        "assoc_name",
+                                        "assoc_place",
+                                        "bib",
+                                        "binding",
+                                        "cataloguer",
+                                        "collation",
+                                        "condition",
+                                        "foliation",
+                                        "general",
+                                        "ornamentation",
+                                        "paratext",
+                                        "provenance",
+                                        "related_mss"
+                                    ]
+                                },
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    }
+                },
+                "required": [
+                    "type",
+                    "iso",
+                    "value"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "note": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "title": "Note",
+                "description": "A prose note of a specified type",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "assoc_date",
+                            "assoc_name",
+                            "assoc_place",
+                            "bib",
+                            "binding",
+                            "cataloguer",
+                            "collation",
+                            "condition",
+                            "foliation",
+                            "general",
+                            "ornamentation",
+                            "paratext",
+                            "provenance",
+                            "related_mss"
+                        ]
+                    },
+                    "value": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "type",
+                    "value"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "related_mss": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "title": "Related Manuscripts",
+                "description": "A set of manuscripts that share a relation to the object context in which they are declared",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "filiation",
+                            "disjecta"
+                        ]
+                    },
+                    "label": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "note": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Note",
+                            "description": "A prose note of a specified type",
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "assoc_date",
+                                        "assoc_name",
+                                        "assoc_place",
+                                        "bib",
+                                        "binding",
+                                        "cataloguer",
+                                        "collation",
+                                        "condition",
+                                        "foliation",
+                                        "general",
+                                        "ornamentation",
+                                        "paratext",
+                                        "provenance",
+                                        "related_mss"
+                                    ]
+                                },
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    },
+                    "mss": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "label": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "id": {
+                                    "type": [
+                                        "integer",
+                                        "null"
+                                    ]
+                                },
+                                "url": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "format": "uri",
+                                    "minLength": 1
+                                }
+                            },
+                            "$comment": "Possible x-or logic for id and url",
+                            "required": [
+                                "label"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "minItems": 1,
+                        "unevaluatedItems": false
+                    }
+                },
+                "required": [
+                    "label",
+                    "type",
+                    "mss"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "viscodex": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "title": "Viscodex",
+                "description": "A link to a Viscodex visualization of the object",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "ms_obj",
+                            "reconstruction"
+                        ],
+                        "$comment": "Likely expand this enum?"
+                    },
+                    "label": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "url": {
+                        "type": "string",
+                        "format": "uri",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "type",
+                    "label",
+                    "url"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "bib": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "title": "Bibliography",
+                "description": "A bibliographic citation connected with an object or entity",
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "$comment": "Foreign key referring to the bibliographic item in the database"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "ref",
+                            "bib",
+                            "version",
+                            "edition",
+                            "translation",
+                            "otherdigversion"
+                        ]
+                    },
+                    "range": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "alt_shelf": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "url": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    },
+                    "note": {
+                        "type": [
+                            "array",
+                            "null"
+                        ],
+                        "items": {
+                            "title": "Note",
+                            "description": "A prose note of a specified type",
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "string",
+                                    "enum": [
+                                        "assoc_date",
+                                        "assoc_name",
+                                        "assoc_place",
+                                        "bib",
+                                        "binding",
+                                        "cataloguer",
+                                        "collation",
+                                        "condition",
+                                        "foliation",
+                                        "general",
+                                        "ornamentation",
+                                        "paratext",
+                                        "provenance",
+                                        "related_mss"
+                                    ]
+                                },
+                                "value": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ],
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "type",
+                                "value"
+                            ],
+                            "unevaluatedProperties": false
+                        },
+                        "unevaluatedItems": false
+                    }
+                },
+                "required": [
+                    "id",
+                    "type"
+                ],
+                "if": {
+                    "properties": {
+                        "type": {
+                            "const": "otherdigversion"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ]
+                },
+                "then": {
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "type",
+                        "url"
+                    ]
+                },
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        },
+        "cataloguer": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "format": "date-time",
+                        "minLength": 1,
+                        "$comment": "possibly can set min-length based on ISO timestamp length?"
+                    },
+                    "comment": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "id",
+                    "timestamp"
+                ],
+                "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+        }
+    },
+    "required": [
+        "ark",
+        "type",
+        "idno",
+        "cod_units"
+    ],
+    "unevaluatedProperties": false
 }

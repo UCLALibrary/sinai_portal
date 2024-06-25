@@ -15,10 +15,10 @@ import {
   Tester,
 } from '@jsonforms/core'
 
-export default function buildRendererRegistryEntry(renderer: any, tester: Tester) {
+export default function buildRendererRegistryEntry(renderer: any, tester: Tester, rank: number = 4) {
   const entry: JsonFormsRendererRegistryEntry = {
     renderer: renderer,
-    tester: rankWith(4, tester)
+    tester: rankWith(rank, tester)
   }
   return entry
 }

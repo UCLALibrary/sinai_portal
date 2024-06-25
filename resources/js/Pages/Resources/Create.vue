@@ -24,7 +24,9 @@
       <div class="flex justify-end py-8">
         <VBtn
           color="primary"
-          @click="onSave">
+          @click="onSave"
+          :style="!isValid ? { cursor: 'not-allowed', 'pointer-events': 'auto' } : {}"
+          :disabled="!isValid">
           Save
         </VBtn>
       </div>
@@ -35,7 +37,6 @@
 <script>
   import { defineComponent, ref, provide } from 'vue'
   import { JsonForms } from '@jsonforms/vue'
-  import { scopeEndIs } from '@jsonforms/core'
   import {
     defaultStyles,
     mergeStyles,
@@ -77,23 +78,28 @@
 
       const data = ref({})
 
-      const onChange = (event) => {
-        data.value = event.data
+      const isValid = ref(false)
+
+      const onChange = (payload) => {
+        data.value = payload.data
+        isValid.value = payload.errors.length === 0
       }
 
       const onSave = () => {
-        axios.post(props.saveEndpoint, {
-          json: data.value,
-        }).then(() => {
-          window.location.href = props.redirectUrl
-        }).catch(error => {
-          // display alert that there was an error saving the resource
-          emitter.emit('show-dismissable-alert', {
-            type: 'error',
-            message: 'Error saving. Please check your form for errors.',
-            timeout: 2000,
+        if (isValid.value) {
+          axios.post(props.saveEndpoint, {
+            json: data.value,
+          }).then(() => {
+            window.location.href = props.redirectUrl
+          }).catch(error => {
+            // display alert that there was an error saving the resource
+            emitter.emit('show-dismissable-alert', {
+              type: 'error',
+              message: 'Error saving. Please check your form for errors.',
+              timeout: 2000,
+            })
           })
-        })
+        }
       }
 
       const myStyles = mergeStyles(defaultStyles, {
@@ -109,6 +115,7 @@
         data,
         onChange,
         onSave,
+        isValid,
         myStyles,
       }
     }
