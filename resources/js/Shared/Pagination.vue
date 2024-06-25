@@ -27,7 +27,7 @@
         <Link
           v-else
           :key="`link-${key}`"
-          class="mb-1 mr-1 px-4 py-3 focus:text-indigo-500 text-sm leading-4 hover:bg-white border focus:border-indigo-500 rounded"
+          class="mb-1 mr-1 px-4 py-3 focus:text-sinai-red text-sm leading-4 hover:bg-white border focus:border-sinai-red rounded"
           :class="{ 'bg-white': link.active }"
           :href="link.url"
           v-html="link.label"

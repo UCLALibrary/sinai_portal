@@ -17,6 +17,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'sinai-beige': 'rgb(247, 242, 234)',
+                'sinai-red': 'rgb(171, 47, 10)'
+            },
         },
     },
 
