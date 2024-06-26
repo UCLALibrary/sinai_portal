@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-32">
       <ResourceListTable
         :resource-name="resourceName"
         :resources="resources.data"
