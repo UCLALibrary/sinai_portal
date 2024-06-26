@@ -24,7 +24,7 @@ class DatesController extends Controller
             'title' => 'Dates',
             'resourceName' => 'dates',
             'resources' => Date::paginate(20),
-            'columns' => ['type', 'as_written', 'not_before', 'not_after', 'note'],
+            'columns' => ['type' => 'Type', 'as_written' => 'As written', 'not_before' => 'Not before', 'not_after' => 'Not after', 'note' => 'Note'],
             'createEndpoint' => route('dates.create'),
         ]);
     }

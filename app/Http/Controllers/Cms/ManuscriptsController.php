@@ -24,7 +24,7 @@ class ManuscriptsController extends Controller
             'title' => 'Manuscripts',
             'resourceName' => 'manuscripts',
             'resources' => Manuscript::paginate(20),
-            'columns' => ['ark', 'shelfmark'],
+            'columns' => ['ark' => 'ARK', 'shelfmark' => 'Shelfmark'],
             'createEndpoint' => route('manuscripts.create'),
         ]);
     }

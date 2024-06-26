@@ -30,7 +30,7 @@
                   :key="resource.id"
                   class="hover:bg-gray-100 focus-within:bg-gray-100">
                   <td
-                    v-for="(column, index) in columns"
+                    v-for="([key, label], index) in Object.entries(columns)"
                     :key="index"
                     class="whitespace-nowrap text-sm text-gray-900 p-0"
                     :class="{ 'font-medium': index === 0 }">
@@ -39,7 +39,7 @@
                         'pl-4 pr-3 sm:pl-6': index === 0,
                         'px-3': index !== 0
                       }">
-                      <span v-html="resource[column]"></span>
+                      <span v-html="resource[key]"></span>
                     </Link>
                   </td>
                   <td class="w-px relative whitespace-nowrap text-right text-sm font-medium p-0">
@@ -78,7 +78,7 @@
   defineProps({
     resourceName: { type: String, required: true },
     resources: { type: Array, required: false, default: () => [] },
-    columns: { type: Array, required: false, default: () => [] },
+    columns: { type: Object, required: false, default: () => [] },
     pagination: { type: Object, required: false, default: () => {} },
   })
 </script>

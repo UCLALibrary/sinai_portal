@@ -24,7 +24,7 @@ class PartsController extends Controller
             'title' => 'Codicological Units',
             'resourceName' => 'codicological-units',
             'resources' => Part::paginate(20),
-            'columns' => ['identifier', 'ark'],
+            'columns' => ['identifier' => 'Identifier', 'ark' => 'ARK'],
             'createEndpoint' => route('codicological-units.create'),
         ]);
     }

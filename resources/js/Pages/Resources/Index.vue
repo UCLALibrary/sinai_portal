@@ -13,7 +13,7 @@
               type="button"
               @click="redirectToUrl(createEndpoint)"
               class="block rounded-md bg-sinai-red px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sinai-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sinai-red">
-              Add {{ resourceName }}
+              Create
             </button>
           </div>
         </div>
@@ -44,7 +44,7 @@
     title: { type: String, required: true },
     resourceName: { type: String, required: true },
     resources: { type: Object, required: false, default: () => {} },
-    columns: { type: Array, required: true },
+    columns: { type: Object, required: true },
     createEndpoint: { type: String, required: true },
   })
 
