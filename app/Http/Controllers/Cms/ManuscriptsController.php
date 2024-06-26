@@ -11,7 +11,7 @@ class ManuscriptsController extends Controller
 {
     public function __construct()
     {
-        // execute the static initialize to load the schema and ui schema
+        // execute the static initializer to load the schema and ui schema
         Manuscript::initialize();
     }
 
