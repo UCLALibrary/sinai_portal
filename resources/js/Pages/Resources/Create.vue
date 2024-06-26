@@ -47,17 +47,7 @@
     setup(props) {
       const emitter = useEmitter()
 
-      const data = ref({
-        ark: 'ark:/21198/z1.123456',
-        type: 'shelf',
-        idno: [
-          {
-            type: 'shelfmark',
-            value: 'MS. 123456',
-          }
-        ],
-        assoc_date: [30, 45]
-      })
+      const data = ref({})
 
       const onSave = () => {
         axios.post(props.saveEndpoint, {
