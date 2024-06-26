@@ -14,8 +14,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Users/Index', [
-            'users' => User::paginate(20)
+        return Inertia::render('Resources/Index', [
+            'title' => 'Users',
+            'resourceName' => 'users',
+            'resources' => User::paginate(20),
+            'columns' => ['name', 'email'],
+            'createEndpoint' => route('users.create'),
         ]);
     }
 
