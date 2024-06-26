@@ -28,8 +28,8 @@ function handleImageError() {
 
 <template>
     <Head title="Welcome" />
-    <div class="bg-gray-50 text-black/50">
-        <div class="bg-slate-300 relative min-h-screen flex flex-col items-center justify-center">
+    <div class="bg-sinai-beige text-gray-800">
+        <div class="relative min-h-screen flex flex-col items-center justify-start">
             <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header class="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
                     <div class="flex lg:justify-center lg:col-start-2">
@@ -39,15 +39,15 @@ function handleImageError() {
                         <Link
                             v-if="$page.props.auth.user"
                             :href="route('cms')"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                            class="font-dosis rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                         >
-                            Dashboard
+                            SMDP Dashboard
                         </Link>
 
                         <template v-else>
                             <Link
                                 :href="route('login')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="font-dosis rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Log in
                             </Link>
@@ -55,7 +55,7 @@ function handleImageError() {
                             <Link
                                 v-if="canRegister"
                                 :href="route('register')"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                                class="font-dosis rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
                             >
                                 Register
                             </Link>
@@ -64,8 +64,11 @@ function handleImageError() {
                 </header>
 
                 <main class="mt-6">
-                    <div class="flex justify-center mx-auto text-4xl">
+                    <div class="font-dosis flex text-center justify-center mx-auto text-4xl">
                        Sinai Manuscripts Data Portal
+                    </div>
+                    <div class="flex justify-center mt-16 mb-16">
+                        <img src="/sinai-logo.svg" alt="Logo" class="w-32 h-32" />
                     </div>
                 </main>
 
