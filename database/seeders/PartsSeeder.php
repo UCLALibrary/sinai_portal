@@ -28,6 +28,7 @@ class PartsSeeder extends Seeder
                 'identifier' => $part->identifier,
                 'summary' => fake()->sentence(),
                 'locus' => 'f. ' . fake()->randomNumber(),
+                'assoc_date' => DB::table('dates')->inRandomOrder()->limit(3)->pluck('id'),
             ];
 
             // update the record with the json field

@@ -26,6 +26,7 @@ class ManuscriptsSeeder extends Seeder
                 'id' => $id,
                 'ark' => $manuscript->ark,
                 'shelfmark' => $manuscript->shelfmark,
+                'assoc_date' => DB::table('dates')->inRandomOrder()->limit(3)->pluck('id')
             ];
 
             // update the record with the json field
