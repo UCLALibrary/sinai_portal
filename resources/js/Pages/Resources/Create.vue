@@ -12,50 +12,29 @@
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <JsonForms
-        :data="data"
-        :renderers="renderers"
-        :schema="schema"
-        :uischema="uischema"
-        @change="onChange"
-      />
-
-      <div class="flex justify-end py-8">
-        <VBtn
-          color="primary"
-          @click="onSave"
-          :style="!isValid ? { cursor: 'not-allowed', 'pointer-events': 'auto' } : {}"
-          :disabled="!isValid">
-          Save
-        </VBtn>
-      </div>
-    </div>
+    <CreateEditForm
+      :schema="schema"
+      :uischema="uischema"
+      :data="data"
+      @on-cancel="onCancel"
+      @on-save="onSave"
+      class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-16"
+    />
   </AppLayout>
 </template>
 
 <script>
-  import { defineComponent, ref, provide } from 'vue'
-  import { JsonForms } from '@jsonforms/vue'
-  import {
-    defaultStyles,
-    mergeStyles,
-    extendedVuetifyRenderers
-  } from '@jsonforms/vue-vuetify'
+  import { defineComponent, defineAsyncComponent, ref } from 'vue'
   import AppLayout from '@/Layouts/AppLayout.vue'
+  const CreateEditForm = defineAsyncComponent(() => import('@/jsonforms/components/CreateEditForm.vue'))
   import useEmitter from '@/composables/useEmitter'
-  import {
-    manuscriptSelectionRendererEntry,
-    partSelectionRendererEntry,
-    dateSelectionRendererEntry,
-  } from '@/jsonforms/renderers/useRenderers.js'
 
   export default defineComponent({
     name: 'Create',
 
     components: {
       AppLayout,
-      JsonForms
+      CreateEditForm,
     },
 
     props: {
@@ -66,57 +45,43 @@
     },
 
     setup(props) {
-      const renderers = Object.freeze([
-        ...extendedVuetifyRenderers,
-        // custom renderers
-        manuscriptSelectionRendererEntry,
-        partSelectionRendererEntry,
-        dateSelectionRendererEntry,
-      ])
-
       const emitter = useEmitter()
 
-      const data = ref({})
-
-      const isValid = ref(false)
-
-      const onChange = (payload) => {
-        data.value = payload.data
-        isValid.value = payload.errors.length === 0
-      }
-
-      const onSave = () => {
-        if (isValid.value) {
-          axios.post(props.saveEndpoint, {
-            json: data.value,
-          }).then(() => {
-            window.location.href = props.redirectUrl
-          }).catch(error => {
-            // display alert that there was an error saving the resource
-            emitter.emit('show-dismissable-alert', {
-              type: 'error',
-              message: 'Error saving. Please check your form for errors.',
-              timeout: 2000,
-            })
-          })
-        }
-      }
-
-      const myStyles = mergeStyles(defaultStyles, {
-        control: {
-          root: 'my-control'
-        }
+      const data = ref({
+        ark: 'ark:/21198/z1.123456',
+        type: 'shelf',
+        idno: [
+          {
+            type: 'shelfmark',
+            value: 'MS. 123456',
+          }
+        ],
+        assoc_date: [30, 45]
       })
 
-      provide('styles', myStyles)
+      const onSave = () => {
+        axios.post(props.saveEndpoint, {
+          json: data.value,
+        }).then(() => {
+          window.location.href = props.redirectUrl
+        }).catch(error => {
+          // display alert that there was an error saving the resource
+          emitter.emit('show-dismissable-alert', {
+            type: 'error',
+            message: 'Error saving. Please check your form for errors.',
+            timeout: 2000,
+          })
+        })
+      }
+
+      const onCancel = () => {
+        window.location.href = props.redirectUrl
+      }
 
       return {
-        renderers,
         data,
-        onChange,
         onSave,
-        isValid,
-        myStyles,
+        onCancel,
       }
     }
   })

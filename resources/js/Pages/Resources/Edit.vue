@@ -12,54 +12,29 @@
       </div>
     </div>
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-      <JsonForms
-        :data="data"
-        :renderers="renderers"
-        :schema="schema"
-        :uischema="uischema"
-        @change="onChange"
-      />
-
-      <div class="flex justify-end space-x-4 py-8">
-        <VBtn
-          color="primary"
-          @click="onSave(false)">
-          Save and Continue
-        </VBtn>
-      
-        <VBtn
-          color="primary"
-          @click="onSave(true)">
-          Save and Finish
-        </VBtn>
-      </div>
-    </div>
+    <CreateEditForm
+      :schema="schema"
+      :uischema="uischema"
+      :data="data"
+      @on-save="onSave"
+      @on-save-and-continue="onSaveAndContinue"
+      class="max-w-7xl mx-auto sm:px-6 lg:px-8"
+    />
   </AppLayout>
 </template>
 
 <script>
-  import { defineComponent, ref, provide, onMounted } from 'vue'
-  import { JsonForms } from '@jsonforms/vue'
-  import {
-    defaultStyles,
-    mergeStyles,
-    extendedVuetifyRenderers
-  } from '@jsonforms/vue-vuetify'
+  import { defineComponent, defineAsyncComponent, ref, onMounted } from 'vue'
   import AppLayout from '@/Layouts/AppLayout.vue'
+  const CreateEditForm = defineAsyncComponent(() => import('@/jsonforms/components/CreateEditForm.vue'))
   import useEmitter from '@/composables/useEmitter'
-  import {
-    manuscriptSelectionRendererEntry,
-    partSelectionRendererEntry,
-    dateSelectionRendererEntry,
-  } from '@/jsonforms/renderers/useRenderers.js'
 
   export default defineComponent({
     name: 'Edit',
 
     components: {
       AppLayout,
-      JsonForms,
+      CreateEditForm,
     },
 
     props: {
@@ -71,14 +46,6 @@
     },
 
     setup(props) {
-      const renderers = Object.freeze([
-        ...extendedVuetifyRenderers,
-        // custom renderers
-        manuscriptSelectionRendererEntry,
-        partSelectionRendererEntry,
-        dateSelectionRendererEntry,
-      ])
-
       const emitter = useEmitter()
 
       const data = ref({})
@@ -92,11 +59,7 @@
         data.value = event.data
       }
 
-      const onSave = (redirect = false) => {
-        redirect ? saveAndFinish() : saveAndContinue()
-      }
-
-      const saveAndFinish = () => {
+      const onSave = () => {
         axios.patch(props.saveEndpoint, {
           json: data.value,
         }).then(() => {
@@ -111,7 +74,7 @@
         })
       }
 
-      const saveAndContinue = () => {
+      const onSaveAndContinue = () => {
         axios.patch(props.saveEndpoint, {
           json: data.value,
         }).then(() => {
@@ -131,21 +94,11 @@
         })
       }
 
-      // mergeStyles combines all classes from both styles definitions
-      const myStyles = mergeStyles(defaultStyles, {
-        control: {
-          root: 'my-control'
-        }
-      })
-
-      provide('styles', myStyles)
-
       return {
-        renderers,
         data,
         onChange,
         onSave,
-        myStyles,
+        onSaveAndContinue,
       }
     }
   })
