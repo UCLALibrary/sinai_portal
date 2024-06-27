@@ -10,13 +10,5 @@
 }
 
 [x-cloak] {
-    display: none;
-}
-
-.v-container {
-    @apply p-0 mr-0
-}
-
-.v-card-title.group-label {
-    @apply bg-gray-200 py-4 mb-8
+  display: none;
 }

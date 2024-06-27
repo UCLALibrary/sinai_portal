@@ -6,6 +6,7 @@
       :schema="schema"
       :uischema="uischema"
       @change="onChange"
+      class="create-edit-form"
     />
 
     <v-container>
@@ -39,6 +40,7 @@
     extendedVuetifyRenderers
   } from '@jsonforms/vue-vuetify'
   import {
+    customStringControlRendererEntry,
     manuscriptSelectionRendererEntry,
     partSelectionRendererEntry,
     dateSelectionRendererEntry,
@@ -61,18 +63,13 @@
       const renderers = Object.freeze([
         ...extendedVuetifyRenderers,
         // custom renderers
+        customStringControlRendererEntry,
         manuscriptSelectionRendererEntry,
         partSelectionRendererEntry,
         dateSelectionRendererEntry,
       ])
 
-      const myStyles = mergeStyles(defaultStyles, {
-        control: {
-          root: 'my-control'
-        }
-      })
-
-      provide('styles', myStyles)
+      provide('styles', mergeStyles(defaultStyles, {}))
 
       const jsonData = ref(props.data)
 
@@ -93,7 +90,6 @@
 
       return {
         renderers,
-        myStyles,
         jsonData,
         isValid,
         onChange,

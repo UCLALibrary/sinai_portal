@@ -7,7 +7,11 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/ark"
+          "scope": "#/properties/ark",
+          "options": {
+            "requiredForPublishing": true,
+            "showUnfocusedDescription": true
+          }
         },
         {
           "type": "Control",

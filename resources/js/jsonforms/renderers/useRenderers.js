@@ -1,5 +1,8 @@
-import { scopeEndIs } from '@jsonforms/core'
+import { schemaTypeIs, scopeEndIs, } from '@jsonforms/core'
 import buildRendererRegistryEntry from '@/jsonforms/testers/registry.ts'
+
+import customStringControlRenderer from '@/jsonforms/renderers/CustomStringControlRenderer.vue'
+export const customStringControlRendererEntry = buildRendererRegistryEntry(customStringControlRenderer, schemaTypeIs('string'))
 
 import manuscriptSelectionRenderer from '@/jsonforms/renderers/ManuscriptSelectionRenderer.vue'
 export const manuscriptSelectionRendererEntry = buildRendererRegistryEntry(manuscriptSelectionRenderer, scopeEndIs('ms_objs'))
