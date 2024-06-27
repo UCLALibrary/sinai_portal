@@ -18,7 +18,7 @@
       :data="data"
       @on-save="onSave"
       @on-save-and-continue="onSaveAndContinue"
-      class="max-w-7xl mx-auto sm:px-6 lg:px-8"
+      class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-16"
     />
   </AppLayout>
 </template>
