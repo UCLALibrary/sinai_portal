@@ -4,23 +4,21 @@
     :styles="styles"
     :isFocused="isFocused"
     :appliedOptions="appliedOptions"
-    class="flex items-center space-x-4 pr-4">
-    <v-container>
-      <v-autocomplete
-        label="Associated Dates"
-        :items="dates"
-        chips
-        multiple
-        clearable
-        variant="outlined"
-        :model-value="control.data"
-        @update:modelValue="onChange"
-        @update:focused="onFocus">
-      </v-autocomplete>
-    </v-container>
+    class="flex items-center space-x-4">
+    <v-autocomplete
+      label="Associated Dates"
+      :items="dates"
+      chips
+      multiple
+      clearable
+      variant="outlined"
+      :model-value="control.data"
+      @update:modelValue="onChange"
+      @update:focused="onFocus">
+    </v-autocomplete>
 
     <CreateEditFormModalDialog
-      title="Add Date"
+      title="Create Date"
       :content-endpoint="route('api.forms.assoc_date')"
       @on-save="onSave"
     />
@@ -109,7 +107,7 @@
 </script>
 
 <style lang="postcss" scoped>
-  :deep(.v-input__details) {
+  :deep(.v-autocomplete .v-input__details) {
     @apply hidden
   }
 </style>
