@@ -31,8 +31,8 @@
   </div>
 </template>
 
-<script>
-  import { defineComponent, ref, provide } from 'vue'
+<script setup>
+  import { ref, provide } from 'vue'
   import { JsonForms } from '@jsonforms/vue'
   import {
     defaultStyles,
@@ -41,61 +41,46 @@
   } from '@jsonforms/vue-vuetify'
   import {
     customStringControlRendererEntry,
+    // customEnumControlRendererEntry,
     manuscriptSelectionRendererEntry,
     partSelectionRendererEntry,
     dateSelectionRendererEntry,
   } from '@/jsonforms/renderers/useRenderers.js'
 
-  export default defineComponent({
-    name: 'CreateEditForm',
+  const emit = defineEmits(['on-save']);
 
-    components: {
-      JsonForms
-    },
-
-    props: {
-      schema: { type: Object, required: true },
-      uischema: { type: Object, required: true },
-      data: { type: Object, required: false, default: () => {} },
-    },
-
-    setup(props, { emit }) {
-      const renderers = Object.freeze([
-        ...extendedVuetifyRenderers,
-        // custom renderers
-        customStringControlRendererEntry,
-        manuscriptSelectionRendererEntry,
-        partSelectionRendererEntry,
-        dateSelectionRendererEntry,
-      ])
-
-      provide('styles', mergeStyles(defaultStyles, {}))
-
-      const jsonData = ref(props.data)
-
-      const isValid = ref(false)
-
-      const onChange = (payload) => {
-        jsonData.value = payload.data
-        isValid.value = payload.errors.length === 0
-      }
-
-      const onSave = () => {
-        emit('on-save', jsonData.value)
-      }
-      
-      const onCancel = () => {
-        emit('on-cancel')
-      }
-
-      return {
-        renderers,
-        jsonData,
-        isValid,
-        onChange,
-        onSave,
-        onCancel,
-      }
-    }
+  const props = defineProps({
+    schema: { type: Object, required: true },
+    uischema: { type: Object, required: true },
+    data: { type: Object, required: false, default: () => {} },
   })
+
+  const renderers = Object.freeze([
+    ...extendedVuetifyRenderers,
+    // custom renderers
+    customStringControlRendererEntry,
+    // customEnumControlRendererEntry,
+    manuscriptSelectionRendererEntry,
+    partSelectionRendererEntry,
+    dateSelectionRendererEntry,
+  ])
+
+  provide('styles', mergeStyles(defaultStyles, {}))
+
+  const jsonData = ref(props.data)
+
+  const isValid = ref(false)
+
+  const onChange = (payload) => {
+    jsonData.value = payload.data
+    isValid.value = payload.errors.length === 0
+  }
+
+  const onSave = () => {
+    emit('on-save', jsonData.value)
+  }
+  
+  const onCancel = () => {
+    emit('on-cancel')
+  }
 </script>
