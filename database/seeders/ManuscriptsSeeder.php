@@ -25,7 +25,10 @@ class ManuscriptsSeeder extends Seeder
             $data = [
                 'id' => $id,
                 'ark' => $manuscript->ark,
-                'shelfmark' => $manuscript->shelfmark,
+                'idno' => [
+                    'type' => 'shelfmark',
+                    'value' => $manuscript->shelfmark,
+                ],
                 'assoc_date' => DB::table('dates')->inRandomOrder()->limit(3)->pluck('id')
             ];
 
