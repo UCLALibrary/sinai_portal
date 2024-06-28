@@ -49,9 +49,9 @@
 
       const data = ref({})
 
-      const onSave = () => {
+      const onSave = (jsonData) => {
         axios.post(props.saveEndpoint, {
-          json: data.value,
+          json: jsonData,
         }).then(() => {
           window.location.href = props.redirectUrl
         }).catch(error => {
