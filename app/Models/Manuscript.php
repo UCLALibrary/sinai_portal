@@ -10,7 +10,11 @@ class Manuscript extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['json'];
+    protected $fillable = [
+        'ark',
+        'shelfmark',
+        'json',
+    ];
 
     public static $schema;
 

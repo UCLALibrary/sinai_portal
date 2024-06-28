@@ -24,21 +24,14 @@ class ManuscriptsController extends Controller
     public function store(ManuscriptRequest $request)
     {
         return DB::transaction(function () use ($request) {
-            // save the json metadata
-            $manuscript = Manuscript::create([
-                // TODO: validate the json metadata
-                // $request->validated()
-                'json' => json_encode($request->json)
-            ]);
-
             // TODO: force the transaction to fail if a duplicate ark is used
             // if (empty($request->json['ark']) || empty($request->json['shelfmark'])) {
             //     throw new \Exception('Ark or shelfmark is missing, transaction rolled back.');
             // }
 
-            // extract fields from the json metadata into their corresponding database columns to display on list view 
-            $this->_extractJsonFields($manuscript);
-    
+            // extract metadata from the json field to populate their corresponding database columns
+            $manuscript = Manuscript::create($this->_extractMetadataFromJsonField($request->json));
+
             return new ManuscriptResource($manuscript);
         });
     }
@@ -56,15 +49,17 @@ class ManuscriptsController extends Controller
      */
     public function update(ManuscriptRequest $request, Manuscript $manuscript)
     {
-        $data = $request->validated();
-        $data['json'] = json_encode($request->json);
+        return DB::transaction(function () use ($request, $manuscript) {
+            // TODO: force the transaction to fail if a duplicate ark is used
+            // if (empty($request->json['ark']) || empty($request->json['shelfmark'])) {
+            //     throw new \Exception('Ark or shelfmark is missing, transaction rolled back.');
+            // }
 
-        $manuscript->update($data);
+            // extract metadata from the json field to populate their corresponding database columns
+            $manuscript->update($this->_extractMetadataFromJsonField($request->json));
  
-        // extract fields from the json metadata into their corresponding database columns to display on list view
-        $this->_extractJsonFields($manuscript);
-
-        return new ManuscriptResource($manuscript);
+            return new ManuscriptResource($manuscript);
+        });
     }
 
     /**
@@ -79,19 +74,26 @@ class ManuscriptsController extends Controller
         return response()->noContent();
     }
 
-    private function _extractJsonFields(Manuscript $manuscript)
+    private function _extractMetadataFromJsonField($jsonData)
     {
-        Manuscript::where('id', $manuscript->id)
-            ->update([
-                'ark' => Manuscript::select('json->ark as ark')
-                    ->where('id', $manuscript->id)
-                    ->first()
-                    ->ark,
-                'shelfmark' => Manuscript::select('json->idno->0->value as shelfmark')
-                    ->where('id', $manuscript->id)
-                    ->whereJsonContains('json->idno->0->type', 'shelfmark')
-                    ->first()
-                    ->shelfmark,
-            ]);
+        // json data
+        $metadata['json'] = json_encode($jsonData);
+        $decodedJson = json_decode($metadata['json']);
+
+        // ark
+        $metadata['ark'] = $decodedJson && isset($decodedJson->ark) ? $decodedJson->ark : null;
+
+        // shelfmark
+        $metadata['shelfmark'] = null;
+        if ($decodedJson && isset($decodedJson->idno) && is_array($decodedJson->idno)) {
+            foreach ($decodedJson->idno as $item) {
+                if (isset($item->type) && $item->type === 'shelfmark') {
+                    $metadata['shelfmark'] = $item->value;
+                    break;
+                }
+            }
+        }
+
+        return $metadata;
     }
 }
