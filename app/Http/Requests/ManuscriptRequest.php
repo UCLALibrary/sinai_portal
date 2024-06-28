@@ -23,7 +23,10 @@ class ManuscriptRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            // TODO: implement validation against json schema
+            'json' => [
+                'required',
+            ],
         ];
     }
 }
