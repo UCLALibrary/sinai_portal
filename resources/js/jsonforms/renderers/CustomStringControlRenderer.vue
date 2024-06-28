@@ -12,22 +12,26 @@
         {{ control.label }}
       </label>
 
-      <div>
-        <input
-          type="text"
-          :id="control.id + '-input'"
-          :name="control.id + '-input'"
-          :placeholder="appliedOptions.placeholder"
-          :disabled="!control.enabled"
-          v-model="control.data"
-          @update:model-value="onChange"
-          class="w-full border rounded">
-      </div>
+      <input
+        type="text"
+        :id="control.id + '-input'"
+        :name="control.id + '-input'"
+        :placeholder="appliedOptions.placeholder"
+        :disabled="!control.enabled"
+        v-model="control.data"
+        @update:model-value="onChange"
+        class="w-full border rounded">
 
       <div
         v-if="control.description && persistentHint()"
-        class="text-xs ml-2">
+        class="text-xs ml-1">
         {{ control.description }}
+      </div>
+
+      <div
+        v-if="control.required || control.errors"
+        class="text-xs text-red-500 ml-2">
+        {{ control.errors }}
       </div>
     </div>
   </control-wrapper>
