@@ -8,7 +8,7 @@
       <label
         :for="control.id + '-input'"
         class="block font-medium text-sm text-gray-700 ml-1"
-        :class="requiredClass">
+        :class="[appliedOptions.requiredForPublishing ? 'required-for-publishing' : control.required ? 'required' : '']">
         {{ control.label }}
       </label>
 
@@ -49,16 +49,6 @@
 
     props: {
       ...rendererProps<ControlElement>(),
-    },
-
-    computed: {
-      requiredClass() {
-        return this.appliedOptions.requiredForPublishing
-          ? 'required-for-publishing'
-          : this.control.required
-            ? 'required'
-            : ''
-      }
     },
 
     setup(props: RendererProps<ControlElement>) {
