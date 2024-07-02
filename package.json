@@ -16,6 +16,7 @@
         "@vitejs/plugin-vue": "^5.0.0",
         "autoprefixer": "^10.4.16",
         "axios": "^1.6.4",
+        "floating-vue": "^5.2.2",
         "laravel-vite-plugin": "^1.0",
         "mitt": "^3.0.1",
         "postcss": "^8.4.32",
