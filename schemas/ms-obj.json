@@ -4,10 +4,6 @@
     "description": "A manuscript or codex, either real or a hypothetical reconstruction",
     "type": "object",
     "properties": {
-        "id": {
-            "description": "A unique identifer, supplied by the database",
-            "type": "integer"
-        },
         "ark": {
             "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
             "type": "string",
