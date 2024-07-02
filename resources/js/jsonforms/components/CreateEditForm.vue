@@ -60,7 +60,7 @@
   } from '@jsonforms/vue-vuetify'
   import {
     customStringControlRendererEntry,
-    // customEnumControlRendererEntry,
+    customEnumControlRendererEntry,
     manuscriptSelectionRendererEntry,
     partSelectionRendererEntry,
     dateSelectionRendererEntry,
@@ -79,7 +79,7 @@
     ...extendedVuetifyRenderers,
     // custom renderers
     customStringControlRendererEntry,
-    // customEnumControlRendererEntry,
+    customEnumControlRendererEntry,
     manuscriptSelectionRendererEntry,
     partSelectionRendererEntry,
     dateSelectionRendererEntry,
