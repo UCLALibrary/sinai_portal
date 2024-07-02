@@ -5,12 +5,11 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions">
     <div class="flex flex-col space-y-2">
-      <label
-        :for="control.id + '-input'"
-        class="block font-medium text-sm text-gray-700 ml-1"
-        :class="[appliedOptions.requiredForPublishing ? 'required-for-publishing' : control.required ? 'required' : '']">
-        {{ control.label }}
-      </label>
+      <FieldLabel
+        :control="control"
+        :appliedOptions="appliedOptions"
+        :persistentHint="persistentHint"
+      />
 
       <select
         :id="control.id + '-input'"
@@ -27,11 +26,7 @@
         </option>
       </select>
 
-      <div
-        v-if="control.description && persistentHint()"
-        class="text-xs ml-2">
-        {{ control.description }}
-      </div>
+      <FieldErrors :control="control" />
     </div>
   </control-wrapper>
 </template>
@@ -42,12 +37,16 @@
   import { rendererProps, RendererProps, useJsonFormsOneOfEnumControl } from '@jsonforms/vue'
   import { useVuetifyControl, useTranslator } from '@jsonforms/vue-vuetify/src/util'
   import { default as ControlWrapper } from '@jsonforms/vue-vuetify/src/controls/ControlWrapper.vue'
+  import FieldLabel from '@/jsonforms/components/FieldLabel.vue'
+  import FieldErrors from '@/jsonforms/components/FieldErrors.vue'
 
   const controlRenderer = defineComponent({
     name: 'custom-enum-control-renderer',
 
     components: {
       ControlWrapper,
+      FieldLabel,
+      FieldErrors,
     },
 
     props: {

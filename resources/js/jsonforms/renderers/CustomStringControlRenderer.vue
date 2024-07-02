@@ -5,12 +5,11 @@
     :isFocused="isFocused"
     :appliedOptions="appliedOptions">
     <div class="flex flex-col space-y-2">
-      <label
-        :for="control.id + '-input'"
-        class="block font-medium text-sm text-gray-700 ml-1"
-        :class="[appliedOptions.requiredForPublishing ? 'required-for-publishing' : control.required ? 'required' : '']">
-        {{ control.label }}
-      </label>
+      <FieldLabel
+        :control="control"
+        :appliedOptions="appliedOptions"
+        :persistentHint="persistentHint"
+      />
 
       <input
         type="text"
@@ -22,17 +21,7 @@
         @update:model-value="onChange"
         class="w-full border rounded">
 
-      <div
-        v-if="control.description && persistentHint()"
-        class="text-xs ml-1">
-        {{ control.description }}
-      </div>
-
-      <div
-        v-if="control.required || control.errors"
-        class="text-xs text-red-500 ml-2">
-        {{ control.errors }}
-      </div>
+      <FieldErrors :control="control" />
     </div>
   </control-wrapper>
 </template>
@@ -43,12 +32,16 @@
   import { rendererProps, useJsonFormsControl, RendererProps } from '@jsonforms/vue'
   import { useVuetifyControl } from '@jsonforms/vue-vuetify/src/util'
   import { default as ControlWrapper } from '@jsonforms/vue-vuetify/src/controls/ControlWrapper.vue'
+  import FieldLabel from '@/jsonforms/components/FieldLabel.vue'
+  import FieldErrors from '@/jsonforms/components/FieldErrors.vue'
 
   const controlRenderer = defineComponent({
     name: 'custom-string-control-renderer',
 
     components: {
       ControlWrapper,
+      FieldLabel,
+      FieldErrors,
     },
 
     props: {
