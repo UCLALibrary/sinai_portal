@@ -26,15 +26,24 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/summary"
+          "scope": "#/properties/summary",
+          "options": {
+            "showUnfocusedDescription": true
+          }
         },
         {
           "type": "Control",
-          "scope": "#/properties/extent"
+          "scope": "#/properties/extent",
+          "options": {
+            "showUnfocusedDescription": true
+          }
         },
         {
           "type": "Control",
-          "scope": "#/properties/weight"
+          "scope": "#/properties/weight",
+          "options": {
+            "showUnfocusedDescription": true
+          }
         },
         {
           "type": "Control",
@@ -46,7 +55,10 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/fol"
+          "scope": "#/properties/fol",
+          "options": {
+            "showUnfocusedDescription": true
+          }
         },
         {
           "type": "Control",
