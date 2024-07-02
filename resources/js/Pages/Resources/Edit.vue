@@ -16,8 +16,9 @@
       :schema="schema"
       :uischema="uischema"
       :data="data"
+      mode="edit"
       @on-save="onSave"
-      @on-save-and-continue="onSaveAndContinue"
+      @on-cancel="onCancel"
       class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-16"
     />
   </AppLayout>
@@ -39,11 +40,20 @@
 
   const emitter = useEmitter()
 
-  const onSave = (jsonData) => {
+  const onSave = (payload) => {
     axios.put(props.saveEndpoint, {
-      json: jsonData,
+      json: payload.data,
     }).then(() => {
-      window.location.href = props.redirectUrl
+      if (payload.continueEditing) {
+        // display alert that the resource has been saved
+        emitter.emit('show-dismissable-alert', {
+          type: 'success',
+          message: 'Saved successfully. Please continue editing.',
+          timeout: 2000,
+        })
+      } else {
+        window.location.href = props.redirectUrl
+      }
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
@@ -54,23 +64,7 @@
     })
   }
 
-  const onSaveAndContinue = (jsonData) => {
-    axios.put(props.saveEndpoint, {
-      json: jsonData.value,
-    }).then(() => {
-      // display alert that the resource has been saved
-      emitter.emit('show-dismissable-alert', {
-        type: 'success',
-        message: 'Saved successfully. Please continue editing.',
-        timeout: 2000,
-      })
-    }).catch(error => {
-      // display alert that there was an error saving the resource
-      emitter.emit('show-dismissable-alert', {
-        type: 'error',
-        message: 'Error saving. Please check your form for errors.',
-        timeout: 2000,
-      })
-    })
+  const onCancel = () => {
+    window.location.href = props.redirectUrl
   }
 </script>

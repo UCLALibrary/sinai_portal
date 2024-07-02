@@ -16,10 +16,10 @@
       :schema="schema"
       :uischema="uischema"
       :data="data"
-      @on-cancel="onCancel"
       @on-save="onSave"
-      class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-16"
-    />
+      @on-cancel="onCancel"
+      class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-16">
+    </CreateEditForm>
   </AppLayout>
 </template>
 
@@ -49,9 +49,9 @@
     ],
   })
 
-  const onSave = (jsonData) => {
+  const onSave = (payload) => {
     axios.post(props.saveEndpoint, {
-      json: jsonData,
+      json: payload.data,
     }).then(() => {
       window.location.href = props.redirectUrl
     }).catch(error => {
