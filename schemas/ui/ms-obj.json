@@ -15,7 +15,10 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/type"
+          "scope": "#/properties/type",
+          "options": {
+            "showUnfocusedDescription": true
+          }
         },
         {
           "type": "Control",

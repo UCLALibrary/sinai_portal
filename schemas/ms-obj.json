@@ -11,9 +11,16 @@
         },
         "type": {
             "description": "The type of manuscript object, whether real or hypothetical reconstructions",
-            "enum": [
-                "shelf",
-                "rebind"
+            "type": "string",
+            "oneOf": [
+                {
+                    "const": "shelf",
+                    "title": "Real Manuscript"
+                },
+                {
+                    "const": "rebind",
+                    "title": "Reconstructed Manuscript"
+                }
             ]
         },
         "idno": {
