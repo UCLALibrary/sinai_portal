@@ -6,7 +6,7 @@
 
 <script setup>
   defineProps({
-    errors: Array,
+    errors: String,
     styles: String,
   })
 </script>
