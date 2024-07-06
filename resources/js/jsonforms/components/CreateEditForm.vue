@@ -64,6 +64,7 @@
   } from '@jsonforms/vue-vanilla'
   import {
     myStringControlRendererEntry,
+    myEnumOneOfControlRendererEntry,
   } from '@/jsonforms/renderers/useCustomRenderers.js'
 
   const emit = defineEmits(['on-save', 'on-cancel']);
@@ -79,6 +80,7 @@
     ...vanillaRenderers,
     // custom renderers
     myStringControlRendererEntry,
+    myEnumOneOfControlRendererEntry,
   ])
 
   provide('styles', mergeStyles(defaultStyles, {
@@ -86,6 +88,7 @@
       root: 'flex flex-col gap-y-1',
       label: 'block text-sm font-medium text-gray-700',
       input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
+      select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
       error: 'text-xs text-red-500 ml-1',
       asterisk: 'text-red-500',
     },
