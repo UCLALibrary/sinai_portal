@@ -8,7 +8,7 @@
       <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
     </label>
 
-    <Tooltip v-if="showDescription">
+    <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
       <span :class="styles.tooltip.icon"></span>
       <template #popper>
         <span class="text-xs">

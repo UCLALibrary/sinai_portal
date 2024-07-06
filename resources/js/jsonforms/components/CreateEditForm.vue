@@ -93,7 +93,7 @@
       label: 'flex items-center gap-x-2 ml-1',
     },
     tooltip: {
-      icon: 'mdi mdi-information-slab-circle-outline',
+      icon: 'mdi mdi-information-slab-circle-outline cursor-pointer',
     },
     group: {
       root: 'flex flex-col gap-y-4',
