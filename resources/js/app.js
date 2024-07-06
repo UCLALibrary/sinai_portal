@@ -1,6 +1,7 @@
 import './bootstrap'
 import '../css/app.css'
-import '../css/jsonforms.css'
+import '@jsonforms/vue-vanilla/vanilla.css'
+import '@mdi/font/css/materialdesignicons.css'
 import 'floating-vue/dist/style.css'
 
 import { createApp, h } from 'vue'

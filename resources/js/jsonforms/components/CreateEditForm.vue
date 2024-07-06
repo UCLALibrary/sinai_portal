@@ -60,15 +60,11 @@
   import {
     defaultStyles,
     mergeStyles,
-    extendedVuetifyRenderers
-  } from '@jsonforms/vue-vuetify'
+    vanillaRenderers
+  } from '@jsonforms/vue-vanilla'
   import {
-    customStringControlRendererEntry,
-    customEnumControlRendererEntry,
-    manuscriptSelectionRendererEntry,
-    partSelectionRendererEntry,
-    dateSelectionRendererEntry,
-  } from '@/jsonforms/renderers/useRenderers.js'
+    myStringControlRendererEntry,
+  } from '@/jsonforms/renderers/useCustomRenderers.js'
 
   const emit = defineEmits(['on-save', 'on-cancel']);
 
@@ -80,16 +76,30 @@
   })
 
   const renderers = Object.freeze([
-    ...extendedVuetifyRenderers,
+    ...vanillaRenderers,
     // custom renderers
-    customStringControlRendererEntry,
-    customEnumControlRendererEntry,
-    manuscriptSelectionRendererEntry,
-    partSelectionRendererEntry,
-    dateSelectionRendererEntry,
+    myStringControlRendererEntry,
   ])
 
-  provide('styles', mergeStyles(defaultStyles, {}))
+  provide('styles', mergeStyles(defaultStyles, {
+    control: {
+      root: 'flex flex-col gap-y-1',
+      label: 'block text-sm font-medium text-gray-700',
+      input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
+      error: 'text-xs text-red-500 ml-1',
+      asterisk: 'text-red-500',
+    },
+    container: {
+      label: 'flex items-center gap-x-2 ml-1',
+    },
+    tooltip: {
+      icon: 'mdi mdi-information-slab-circle-outline',
+    },
+    group: {
+      root: 'flex flex-col gap-y-4',
+      label: 'mb-2',
+    },
+  }))
 
   const jsonData = ref(props.data)
 

@@ -2,24 +2,24 @@
   <AppLayout title="Add Resource">
     <div class="lg:py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mt-4 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
           <div class="sm:flex-auto">
             <h1 class="text-2xl font-semibold leading-6 text-gray-900">
               Resources > Add Resource
             </h1>
           </div>
         </div>
+
+        <CreateEditForm
+          :schema="schema"
+          :uischema="uischema"
+          :data="data"
+          @on-save="onSave"
+          @on-cancel="onCancel"
+          class="px-4 sm:px-6 lg:px-8 mb-16">
+        </CreateEditForm>
       </div>
     </div>
-
-    <CreateEditForm
-      :schema="schema"
-      :uischema="uischema"
-      :data="data"
-      @on-save="onSave"
-      @on-cancel="onCancel"
-      class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-16">
-    </CreateEditForm>
   </AppLayout>
 </template>
 
@@ -38,16 +38,7 @@
 
   const emitter = useEmitter()
 
-  const data = ref({
-    ark: 'ark:/21198/z1.111111',
-    type: 'shelf',
-    idno: [
-      {
-        type: 'shelfmark',
-        value: 'MS. 123',
-      },
-    ],
-  })
+  const data = ref({})
 
   const onSave = (payload) => {
     axios.post(props.saveEndpoint, {

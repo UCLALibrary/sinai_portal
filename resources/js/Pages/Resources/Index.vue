@@ -2,7 +2,7 @@
   <AppLayout :title="title">
     <div class="lg:py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mt-4 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
           <div class="sm:flex-auto">
             <h1 class="text-2xl font-semibold leading-6 text-gray-900">
               {{ title }}
@@ -17,21 +17,20 @@
             </button>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 pb-32">
-      <ResourceListTable
-        :resource-name="resourceName"
-        :resources="resources.data"
-        :columns="columns"
-        :pagination="{
-          from: resources.from ?? 0,
-          to: resources.to ?? 0,
-          total: resources.total,
-          links: resources.links
-        }"
-      />
+        <ResourceListTable
+          :resource-name="resourceName"
+          :resources="resources.data"
+          :columns="columns"
+          :pagination="{
+            from: resources.from ?? 0,
+            to: resources.to ?? 0,
+            total: resources.total,
+            links: resources.links
+          }"
+          class="px-4 sm:px-6 lg:px-8 pb-32"
+        />
+      </div>
     </div>
   </AppLayout>
 </template>

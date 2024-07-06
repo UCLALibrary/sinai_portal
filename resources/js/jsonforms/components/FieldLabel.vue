@@ -1,17 +1,18 @@
 <template>
-  <div class="flex gap-x-2">
+  <div :class="styles.container.label">
     <label
-      :for="control.id + '-input'"
-      class="block font-medium text-sm text-gray-700 ml-1"
-      :class="[appliedOptions.requiredForPublishing ? 'required-for-publishing' : control.required ? 'required' : '']">
-      {{ control.label }}
+      :for="id + '-input'"
+      :class="[styles.control.label, required ? styles.control.required : '']">
+      {{ label }}
+      <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
+      <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
     </label>
 
-    <Tooltip v-if="control.description && persistentHint()">
-      <span class="mdi mdi-information-slab-circle-outline"></span>
+    <Tooltip v-if="showDescription">
+      <span :class="styles.tooltip.icon"></span>
       <template #popper>
         <span class="text-xs">
-          {{ control.description }}
+          {{ description }}
         </span>
       </template>
     </Tooltip>
@@ -19,11 +20,35 @@
 </template>
 
 <script setup>
+  import { computed } from 'vue'
+  import { isDescriptionHidden } from '@jsonforms/core'
   import { Tooltip } from 'floating-vue'
 
-  defineProps({
-    control: Object,
-    appliedOptions: Object,
-    persistentHint: Function,
+  const props = defineProps({
+    id: { type: String },
+    label: { type: String },
+    description: { type: String },
+    visible: { type: Boolean },
+    required: { type: Boolean },
+    isFocused: { type: Boolean },
+    appliedOptions: { type: Object },
+    styles: { type: Object },
+  })
+
+  const showDescription = computed(() => {
+    return !isDescriptionHidden(
+      props.visible,
+      props.description,
+      props.isFocused,
+      !!props.appliedOptions?.showUnfocusedDescription
+    )
+  })
+
+  const showAsterisk = computed(() => {
+    return props.required && !props.appliedOptions?.hideRequiredAsterisk
+  })
+
+  const showAsteriskForPublishing = computed(() => {
+    return props.appliedOptions?.showRequiredAsteriskForPublishing ?? false
   })
 </script>

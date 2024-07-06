@@ -9,7 +9,7 @@
           "type": "Control",
           "scope": "#/properties/ark",
           "options": {
-            "requiredForPublishing": true,
+            "showRequiredAsteriskForPublishing": true,
             "showUnfocusedDescription": true
           }
         },
