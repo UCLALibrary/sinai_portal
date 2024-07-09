@@ -1,22 +1,20 @@
 <template>
-  <div :class="styles.container.label">
-    <label
-      :for="id + '-input'"
-      :class="[styles.control.label, required ? styles.control.required : '']">
-      {{ label }}
-      <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
-      <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
-    </label>
+  <label
+    :for="id + '-input'"
+    :class="[inputType === 'checkbox' ? styles.checkbox.label : styles.control.label, required ? styles.control.required : '']">
+    {{ label }}
+    <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
+    <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
+  </label>
 
-    <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
-      <span :class="styles.tooltip.icon"></span>
-      <template #popper>
-        <span class="text-xs">
-          {{ description }}
-        </span>
-      </template>
-    </Tooltip>
-  </div>
+  <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
+    <span :class="styles.tooltip.icon"></span>
+    <template #popper>
+      <span class="text-xs">
+        {{ description }}
+      </span>
+    </template>
+  </Tooltip>
 </template>
 
 <script setup>
@@ -26,6 +24,7 @@
 
   const props = defineProps({
     id: { type: String },
+    inputType: { type: String, required: false, default: '' },
     label: { type: String },
     description: { type: String },
     visible: { type: Boolean },

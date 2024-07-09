@@ -1,14 +1,16 @@
 <template>
   <div v-if="visible" :id="id" :class="styles.control.root">
-    <FieldLabel
-      :id="id"
-      :label="label"
-      :description="description"
-      :visible="visible"
-      :required="required"
-      :applied-options="appliedOptions"
-      :styles="styles"
-    />
+    <div :class="styles.container.label">
+      <FieldLabel
+        :id="id"
+        :label="label"
+        :description="description"
+        :visible="visible"
+        :required="required"
+        :applied-options="appliedOptions"
+        :styles="styles"
+      />
+    </div>
 
     <div :class="styles.control.wrapper">
       <slot></slot>

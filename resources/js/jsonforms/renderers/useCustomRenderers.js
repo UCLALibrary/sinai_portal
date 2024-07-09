@@ -2,6 +2,7 @@ import buildRendererRegistryEntry from '@/jsonforms/testers/registry.ts'
 import {
   uiTypeIs,
   isStringControl,
+  isBooleanControl,
   isEnumControl,
   isOneOfEnumControl,
   isArrayObjectControl,
@@ -14,6 +15,10 @@ export const myHorizontalRuleRendererEntry = buildRendererRegistryEntry(myHorizo
 // text fields
 import myStringControlRenderer from '@/jsonforms/renderers/controls/MyStringControlRenderer.vue'
 export const myStringControlRendererEntry = buildRendererRegistryEntry(myStringControlRenderer, isStringControl)
+
+// checkboxes
+import myBooleanControlRenderer from '@/jsonforms/renderers/controls/MyBooleanControlRenderer.vue'
+export const myBooleanControlRendererEntry = buildRendererRegistryEntry(myBooleanControlRenderer, isBooleanControl)
 
 // select menus (used to choose enum options from a list)
 import myEnumControlRenderer from '@/jsonforms/renderers/controls/MyEnumControlRenderer.vue'

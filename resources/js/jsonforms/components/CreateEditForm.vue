@@ -65,6 +65,7 @@
   import {
     myHorizontalRuleRendererEntry,
     myStringControlRendererEntry,
+    myBooleanControlRendererEntry,
     myEnumControlRendererEntry,
     myEnumOneOfControlRendererEntry,
     myArrayListRendererEntry,
@@ -84,6 +85,7 @@
     // custom renderers
     myHorizontalRuleRendererEntry,
     myStringControlRendererEntry,
+    myBooleanControlRendererEntry,
     myEnumControlRendererEntry,
     myEnumOneOfControlRendererEntry,
     myArrayListRendererEntry,
@@ -95,6 +97,7 @@
       root: 'flex flex-col gap-y-1',
       label: 'block text-sm font-medium text-gray-700',
       input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
+      checkbox: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm cursor-pointer',
       select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
       error: 'text-xs text-red-500 ml-1',
       asterisk: 'text-red-500',
@@ -121,10 +124,14 @@
       itemMoveDown: 'mdi mdi-arrow-down-thin',
       itemDelete: 'mdi mdi-delete',
     },
+    checkbox: {
+      label: 'block text-sm font-medium text-gray-700 pl-2 cursor-pointer'
+    },
     // custom classes
     container: {
-      label: 'flex items-center gap-x-2 ml-1',
-      arrayList: 'flex items-center gap-x-2 ml-1',
+      label: 'flex items-center gap-x-2',
+      checkbox: 'relative flex items-center',
+      arrayList: 'flex items-center gap-x-2',
     },
     tooltip: {
       icon: 'mdi mdi-information-slab-circle-outline cursor-pointer',
