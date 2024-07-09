@@ -4,6 +4,7 @@ import {
   isStringControl,
   isEnumControl,
   isOneOfEnumControl,
+  isArrayObjectControl,
 } from '@jsonforms/core'
 
 // horizontal rule
@@ -20,3 +21,7 @@ export const myEnumControlRendererEntry = buildRendererRegistryEntry(myEnumContr
 
 import myEnumOneOfControlRenderer from '@/jsonforms/renderers/controls/MyEnumOneOfControlRenderer.vue'
 export const myEnumOneOfControlRendererEntry = buildRendererRegistryEntry(myEnumOneOfControlRenderer, isOneOfEnumControl, 6)
+
+// array lists (used to display a list of objects)
+import myArrayListRenderer from '@/jsonforms/renderers/array/MyArrayListRenderer.vue'
+export const myArrayListRendererEntry = buildRendererRegistryEntry(myArrayListRenderer, isArrayObjectControl)

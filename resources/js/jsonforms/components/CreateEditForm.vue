@@ -67,6 +67,7 @@
     myStringControlRendererEntry,
     myEnumControlRendererEntry,
     myEnumOneOfControlRendererEntry,
+    myArrayListRendererEntry,
   } from '@/jsonforms/renderers/useCustomRenderers.js'
 
   const emit = defineEmits(['on-save', 'on-cancel']);
@@ -85,9 +86,11 @@
     myStringControlRendererEntry,
     myEnumControlRendererEntry,
     myEnumOneOfControlRendererEntry,
+    myArrayListRendererEntry,
   ])
 
   provide('styles', mergeStyles(defaultStyles, {
+    // extend defaults
     control: {
       root: 'flex flex-col gap-y-1',
       label: 'block text-sm font-medium text-gray-700',
@@ -96,15 +99,35 @@
       error: 'text-xs text-red-500 ml-1',
       asterisk: 'text-red-500',
     },
+    verticalLayout: {
+      root: 'flex flex-col gap-y-2',
+    },
+    group: {
+      root: 'flex flex-col gap-y-4 mb-8',
+      label: 'w-full text-xl font-semibold bg-transparent border-b pb-2 mb-4',
+    },
+    arrayList: {
+      root: 'border border-gray-300 divide-y divide-gray-300',
+      legend: 'flex flex-row-reverse w-full justify-between mb-2',
+      addButton: 'mdi mdi-plus-circle-outline cursor-pointer mr-1',
+      label: 'block text-sm font-medium text-gray-700',
+      itemWrapper: '',
+      noData: 'px-3 py-2 text-sm bg-gray-200',
+      itemToolbar: '!m-0 p-2 border-b bg-gray-200',
+      itemLabel: '!px-1 bg-transparent text-sm',
+      itemContent: '!px-2 py-4',
+      itemExpanded: '',
+      itemMoveUp: 'mdi mdi-arrow-up-thin',
+      itemMoveDown: 'mdi mdi-arrow-down-thin',
+      itemDelete: 'mdi mdi-delete',
+    },
+    // custom classes
     container: {
       label: 'flex items-center gap-x-2 ml-1',
+      arrayList: 'flex items-center gap-x-2 ml-1',
     },
     tooltip: {
       icon: 'mdi mdi-information-slab-circle-outline cursor-pointer',
-    },
-    group: {
-      root: 'flex flex-col gap-y-4',
-      label: 'mb-2',
     },
   }))
 
