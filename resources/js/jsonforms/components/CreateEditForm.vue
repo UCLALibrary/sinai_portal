@@ -63,6 +63,7 @@
     vanillaRenderers
   } from '@jsonforms/vue-vanilla'
   import {
+    myHorizontalRuleRendererEntry,
     myStringControlRendererEntry,
     myEnumOneOfControlRendererEntry,
   } from '@/jsonforms/renderers/useCustomRenderers.js'
@@ -79,6 +80,7 @@
   const renderers = Object.freeze([
     ...vanillaRenderers,
     // custom renderers
+    myHorizontalRuleRendererEntry,
     myStringControlRendererEntry,
     myEnumOneOfControlRendererEntry,
   ])

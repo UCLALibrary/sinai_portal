@@ -1,8 +1,13 @@
 import buildRendererRegistryEntry from '@/jsonforms/testers/registry.ts'
 import {
+  uiTypeIs,
   isStringControl,
   isOneOfEnumControl,
 } from '@jsonforms/core'
+
+// horizontal rule
+import myHorizontalRuleRenderer from '@/jsonforms/renderers/layout/MyHorizontalRuleRenderer.vue'
+export const myHorizontalRuleRendererEntry = buildRendererRegistryEntry(myHorizontalRuleRenderer, uiTypeIs('HorizontalRule'))
 
 // text fields
 import myStringControlRenderer from '@/jsonforms/renderers/controls/MyStringControlRenderer.vue'
