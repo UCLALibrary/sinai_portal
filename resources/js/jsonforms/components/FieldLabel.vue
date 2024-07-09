@@ -30,7 +30,6 @@
     description: { type: String },
     visible: { type: Boolean },
     required: { type: Boolean },
-    isFocused: { type: Boolean },
     appliedOptions: { type: Object },
     styles: { type: Object },
   })
@@ -39,7 +38,7 @@
     return !isDescriptionHidden(
       props.visible,
       props.description,
-      props.isFocused,
+      false,
       !!props.appliedOptions?.showUnfocusedDescription
     )
   })

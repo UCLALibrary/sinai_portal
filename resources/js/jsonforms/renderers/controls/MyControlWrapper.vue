@@ -6,7 +6,6 @@
       :description="description"
       :visible="visible"
       :required="required"
-      :is-focused="isFocused"
       :applied-options="appliedOptions"
       :styles="styles"
     />
