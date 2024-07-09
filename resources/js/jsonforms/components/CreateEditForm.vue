@@ -65,6 +65,7 @@
   import {
     myHorizontalRuleRendererEntry,
     myStringControlRendererEntry,
+    myEnumControlRendererEntry,
     myEnumOneOfControlRendererEntry,
   } from '@/jsonforms/renderers/useCustomRenderers.js'
 
@@ -82,6 +83,7 @@
     // custom renderers
     myHorizontalRuleRendererEntry,
     myStringControlRendererEntry,
+    myEnumControlRendererEntry,
     myEnumOneOfControlRendererEntry,
   ])
 
@@ -89,8 +91,8 @@
     control: {
       root: 'flex flex-col gap-y-1',
       label: 'block text-sm font-medium text-gray-700',
-      input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
-      select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
+      input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
+      select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
       error: 'text-xs text-red-500 ml-1',
       asterisk: 'text-red-500',
     },
