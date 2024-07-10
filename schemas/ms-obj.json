@@ -23,31 +23,10 @@
                 }
             ]
         },
-        "idno": {
+        "shelfmark": {
             "description": "An identifier for the manuscript, including shelfmarks or other identifier schemas",
             "$comment": "Would add to util, but enum may vary by object type",
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "enum": [
-                            "shelfmark"
-                        ],
-                        "$comment": "Use term 'shelfmark' for both real and digitally rebound manuscript objects"
-                    },
-                    "value": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "type",
-                    "value"
-                ],
-                "unevaluatedProperties": false
-            },
-            "minItems": 1,
-            "unevaluatedItems": false
+            "type": "string"
         },
         "summary": {
             "type": [
@@ -120,13 +99,27 @@
         },
         "form": {
             "description": "The original form of the manuscript object",
-            "enum": [
-                "Codex",
-                "Scroll",
-                "Bifolim",
-                "Folium",
-                "Quire(s)",
-                null
+            "oneOf": [
+                {
+                    "const": "codex",
+                    "title": "Codex"
+                },
+                {
+                    "const": "scroll",
+                    "title": "Scroll"
+                },
+                {
+                    "const": "bifolim",
+                    "title": "Bifolim"
+                },
+                {
+                    "const": "folium",
+                    "title": "Folium"
+                },
+                {
+                    "const": "quires",
+                    "title": "Quire(s)"
+                }
             ]
         },
         "fol": {
@@ -157,9 +150,6 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
                     "type": {
                         "enum": [
                             "part",
@@ -1186,9 +1176,8 @@
     },
     "required": [
         "ark",
-        "type",
-        "idno",
-        "cod_units"
+        "shelfmark",
+        "type"
     ],
     "unevaluatedProperties": false
 }
