@@ -59,6 +59,7 @@
   import { JsonForms } from '@jsonforms/vue'
   import { defaultStyles, mergeStyles, vanillaRenderers } from '@jsonforms/vue-vanilla'
   import { customRenderers } from '@/jsonforms/renderers/useCustomRenderers.js'
+  import customStyles from '@/jsonforms/styles/customStyles.js'
 
   const emit = defineEmits(['on-save', 'on-cancel']);
 
@@ -74,53 +75,7 @@
     ...customRenderers,
   ])
 
-  provide('styles', mergeStyles(defaultStyles, {
-    // extend defaults
-    control: {
-      root: 'flex flex-col gap-y-1',
-      label: 'block text-sm font-medium text-gray-700',
-      input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
-      checkbox: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm cursor-pointer',
-      select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
-      error: 'text-xs text-red-500 ml-1',
-      asterisk: 'text-red-500',
-    },
-    verticalLayout: {
-      root: 'flex flex-col gap-y-2',
-    },
-    group: {
-      root: 'flex flex-col gap-y-4 mb-8',
-      label: 'w-full text-xl font-semibold bg-transparent border-b pb-2 mb-4',
-    },
-    arrayList: {
-      root: 'border border-gray-300 divide-y divide-gray-300',
-      legend: 'flex flex-row-reverse w-full justify-between mb-2',
-      addButton: 'mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mr-1',
-      label: 'block text-sm font-medium text-gray-700',
-      itemWrapper: '',
-      noData: 'px-3 py-2 text-sm bg-gray-200',
-      itemToolbar: '!m-0 p-2 border-b bg-gray-200',
-      itemLabel: '!px-1 bg-transparent text-sm',
-      itemContent: '!px-2 py-4',
-      itemExpanded: '',
-      itemMoveUp: 'mdi mdi-arrow-up-thin',
-      itemMoveDown: 'mdi mdi-arrow-down-thin',
-      itemDelete: 'mdi mdi-delete',
-    },
-    checkbox: {
-      label: 'block text-sm font-medium text-gray-700 cursor-pointer'
-    },
-    // custom classes
-    container: {
-      label: 'flex items-center gap-x-2',
-      checkbox: 'relative flex items-center gap-x-1 my-1',
-      checkboxList: 'gap-y-2 my-2',
-      arrayList: 'flex items-center gap-x-2',
-    },
-    tooltip: {
-      icon: 'mdi mdi-information-slab-circle-outline cursor-pointer',
-    },
-  }))
+  provide('styles', mergeStyles(defaultStyles, customStyles))
 
   const jsonData = ref(props.data)
 
