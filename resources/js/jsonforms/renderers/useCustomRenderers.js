@@ -11,7 +11,7 @@ import {
   isMultiEnumControl
 } from '@/jsonforms/testers/testers.ts'
 
-import myHorizontalRuleRenderer from '@/jsonforms/renderers/layout/MyHorizontalRuleRenderer.vue'
+import myHorizontalRuleRenderer from '@/jsonforms/renderers/layouts/MyHorizontalRuleRenderer.vue'
 import myStringControlRenderer from '@/jsonforms/renderers/controls/MyStringControlRenderer.vue'
 import myBooleanControlRenderer from '@/jsonforms/renderers/controls/MyBooleanControlRenderer.vue'
 import myEnumControlRenderer from '@/jsonforms/renderers/controls/MyEnumControlRenderer.vue'
