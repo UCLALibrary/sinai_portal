@@ -2,7 +2,7 @@
   <div v-if="visible" :id="id" :class="styles.control.root">
     <div :class="styles.container.label">
       <FieldLabel
-        :id="id"
+        :id="id + '-input'"
         :label="label"
         :description="description"
         :visible="visible"

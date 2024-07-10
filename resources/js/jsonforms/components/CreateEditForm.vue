@@ -57,19 +57,8 @@
 <script setup>
   import { ref, provide } from 'vue'
   import { JsonForms } from '@jsonforms/vue'
-  import {
-    defaultStyles,
-    mergeStyles,
-    vanillaRenderers
-  } from '@jsonforms/vue-vanilla'
-  import {
-    myHorizontalRuleRendererEntry,
-    myStringControlRendererEntry,
-    myBooleanControlRendererEntry,
-    myEnumControlRendererEntry,
-    myEnumOneOfControlRendererEntry,
-    myArrayListRendererEntry,
-  } from '@/jsonforms/renderers/useCustomRenderers.js'
+  import { defaultStyles, mergeStyles, vanillaRenderers } from '@jsonforms/vue-vanilla'
+  import { customRenderers } from '@/jsonforms/renderers/useCustomRenderers.js'
 
   const emit = defineEmits(['on-save', 'on-cancel']);
 
@@ -82,13 +71,7 @@
 
   const renderers = Object.freeze([
     ...vanillaRenderers,
-    // custom renderers
-    myHorizontalRuleRendererEntry,
-    myStringControlRendererEntry,
-    myBooleanControlRendererEntry,
-    myEnumControlRendererEntry,
-    myEnumOneOfControlRendererEntry,
-    myArrayListRendererEntry,
+    ...customRenderers,
   ])
 
   provide('styles', mergeStyles(defaultStyles, {
@@ -96,9 +79,9 @@
     control: {
       root: 'flex flex-col gap-y-1',
       label: 'block text-sm font-medium text-gray-700',
-      input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
+      input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
       checkbox: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm cursor-pointer',
-      select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
+      select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
       error: 'text-xs text-red-500 ml-1',
       asterisk: 'text-red-500',
     },
@@ -112,7 +95,7 @@
     arrayList: {
       root: 'border border-gray-300 divide-y divide-gray-300',
       legend: 'flex flex-row-reverse w-full justify-between mb-2',
-      addButton: 'mdi mdi-plus-circle-outline cursor-pointer mr-1',
+      addButton: 'mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mr-1',
       label: 'block text-sm font-medium text-gray-700',
       itemWrapper: '',
       noData: 'px-3 py-2 text-sm bg-gray-200',
@@ -125,12 +108,13 @@
       itemDelete: 'mdi mdi-delete',
     },
     checkbox: {
-      label: 'block text-sm font-medium text-gray-700 pl-2 cursor-pointer'
+      label: 'block text-sm font-medium text-gray-700 cursor-pointer'
     },
     // custom classes
     container: {
       label: 'flex items-center gap-x-2',
-      checkbox: 'relative flex items-center',
+      checkbox: 'relative flex items-center gap-x-1 my-1',
+      checkboxList: 'gap-y-2 my-2',
       arrayList: 'flex items-center gap-x-2',
     },
     tooltip: {

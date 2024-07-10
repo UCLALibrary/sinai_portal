@@ -1,6 +1,6 @@
 <template>
   <label
-    :for="id + '-input'"
+    :for="id"
     :class="[inputType === 'checkbox' ? styles.checkbox.label : styles.control.label, required ? styles.control.required : '']">
     {{ label }}
     <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>

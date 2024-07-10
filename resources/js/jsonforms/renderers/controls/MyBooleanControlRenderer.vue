@@ -18,16 +18,9 @@
         @blur="isFocused = false"
       />
 
-      <FieldLabel
-        :id="control.id"
-        input-type="checkbox"
-        :label="appliedOptions.label"
-        :description="control.description"
-        :visible="control.visible"
-        :required="control.required"
-        :applied-options="appliedOptions"
-        :styles="styles"
-      />
+      <label :for="control.id + '-input'" :class="styles.checkbox.label">
+        {{ appliedOptions.label }}
+      </label>
     </div>
   </control-wrapper>
 </template>
