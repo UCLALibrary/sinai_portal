@@ -99,49 +99,55 @@
       "type": "HorizontalRule"
     },
     {
-      "type": "Control",
-      "scope": "#/properties/has_bind",
-      "label": "Binding",
-      "options": {
-        "label": "Has binding?",
-        "showUnfocusedDescription": true
-      }
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/location"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/assoc_date"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/features"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/note"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/related_mss"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/viscodex"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/bib"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/cataloguer"
-    },
-    {
-      "type": "Control",
-      "scope": "#/properties/iiif"
+      "type": "Group",
+      "label": "Basic Metadata",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/has_bind",
+          "label": "Binding",
+          "options": {
+            "label": "Has binding?",
+            "showUnfocusedDescription": true
+          }
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/location"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_date"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/features"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/note"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/related_mss"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/viscodex"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/bib"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/cataloguer"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/iiif"
+        }
+      ]
     }
   ]
 }
