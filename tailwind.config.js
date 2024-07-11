@@ -26,4 +26,13 @@ export default {
     },
 
     plugins: [forms, typography],
+
+    safelist: [
+        'gap-x-1',
+        'gap-x-2',
+        'gap-x-4',
+        'gap-y-1',
+        'gap-y-2',
+        'gap-y-4',
+    ],
 };
