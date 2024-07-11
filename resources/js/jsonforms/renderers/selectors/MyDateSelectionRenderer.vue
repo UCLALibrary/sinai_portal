@@ -18,7 +18,12 @@
     />
 
     <template v-slot:actions>
-      <button type="button" :class="styles.arrayList.addButton"></button>
+      <CreateResourceButton
+        title="Create Date"
+        :styles="styles.arrayList.addButton"
+        :form-endpoint="route('api.forms.assoc_date')"
+        @on-save="onSave"
+      />
     </template>
   </control-wrapper>
 </template>
@@ -31,16 +36,14 @@
   import { default as ControlWrapper } from '../controls/MyControlWrapper.vue'
   import axios from 'axios'
   import useEmitter from '@/composables/useEmitter'
-  import { ElSelectV2 } from 'element-plus'
-  import CreateEditFormModalDialog from '@/jsonforms/components/CreateEditFormModalDialog.vue'
+  import CreateResourceButton from '@/jsonforms/components/CreateResourceButton.vue'
 
   const controlRenderer = defineComponent({
     name: 'MyDateSelectionRenderer',
 
     components: {
       ControlWrapper,
-      ElSelectV2,
-      CreateEditFormModalDialog,
+      CreateResourceButton,
     },
 
     props: {
@@ -78,8 +81,12 @@
       const onSave = (jsonData) => {
         axios.post('/api/dates', {
           json: jsonData,
-        }).then(() => {
+        }).then(response => {
+          // fetch the latest set of dates so the new date can be attached via its id
           fetchDates()
+
+          // attach the new date by appending its id to the control data
+          control.control.value.data.push(response.data.data['id'])
         }).catch(error => {
           // display alert that there was an error saving the resource
           emitter.emit('show-dismissable-alert', {
