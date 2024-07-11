@@ -10,6 +10,8 @@
         :applied-options="appliedOptions"
         :styles="styles"
       />
+
+      <slot name="actions"></slot>
     </div>
 
     <div :class="styles.control.wrapper">

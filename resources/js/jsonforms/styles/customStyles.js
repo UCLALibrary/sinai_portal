@@ -1,7 +1,7 @@
 const customStyles = {
   // extend defaults
   control: {
-    root: 'flex flex-col gap-y-1',
+    root: 'flex flex-col gap-y-2',
     label: 'block text-sm font-medium text-gray-700',
     input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm',
     checkbox: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm cursor-pointer',
@@ -19,7 +19,7 @@ const customStyles = {
   arrayList: {
     root: 'border border-gray-300 divide-y divide-gray-300',
     legend: 'flex flex-row-reverse w-full justify-between mb-2',
-    addButton: 'mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mr-1',
+    addButton: 'mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mx-1',
     label: 'block text-sm font-medium text-gray-700',
     itemWrapper: '',
     noData: 'px-3 py-2 text-sm bg-gray-200',
@@ -36,10 +36,13 @@ const customStyles = {
   },
   // custom classes
   container: {
-    label: 'flex items-center gap-x-2',
+    label: 'flex items-center justify-between',
     checkbox: 'relative flex items-center gap-x-1 my-1',
     checkboxList: 'gap-y-2 my-2',
     arrayList: 'flex items-center gap-x-2',
+  },
+  label: {
+    wrapper: 'flex items-center gap-x-2',
   },
   tooltip: {
     icon: 'mdi mdi-information-slab-circle-outline cursor-pointer',

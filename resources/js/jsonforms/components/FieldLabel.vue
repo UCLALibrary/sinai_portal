@@ -1,20 +1,22 @@
 <template>
-  <label
-    :for="id"
-    :class="[inputType === 'checkbox' ? styles.checkbox.label : styles.control.label, required ? styles.control.required : '']">
-    {{ label }}
-    <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
-    <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
-  </label>
+  <div :class="styles.label.wrapper">
+    <label
+      :for="id"
+      :class="[inputType === 'checkbox' ? styles.checkbox.label : styles.control.label, required ? styles.control.required : '']">
+      {{ label }}
+      <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
+      <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
+    </label>
 
-  <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
-    <span :class="styles.tooltip.icon"></span>
-    <template #popper>
-      <span class="text-xs">
-        {{ description }}
-      </span>
-    </template>
-  </Tooltip>
+    <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
+      <span :class="styles.tooltip.icon"></span>
+      <template #popper>
+        <span class="text-xs">
+          {{ description }}
+        </span>
+      </template>
+    </Tooltip>
+  </div>
 </template>
 
 <script setup>
