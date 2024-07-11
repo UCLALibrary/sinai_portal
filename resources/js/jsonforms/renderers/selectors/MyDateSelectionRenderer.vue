@@ -14,6 +14,7 @@
       collapse-tags-tooltip
       :max-collapse-tags="4"
       @update:modelValue="onChange"
+      @focus="onFocus"
     />
 
     <template v-slot:actions>
@@ -69,6 +70,11 @@
         }
       }
 
+      const onFocus = () => {
+        // fetch the latest set of dates when the control is focused to ensure the list of options is up to date
+        fetchDates()
+      }
+
       const onSave = (jsonData) => {
         axios.post('/api/dates', {
           json: jsonData,
@@ -87,6 +93,7 @@
       return {
         ...control,
         dates,
+        onFocus,
         onSave,
       }
     }
