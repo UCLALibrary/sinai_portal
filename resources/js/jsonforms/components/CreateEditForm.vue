@@ -6,7 +6,6 @@
       :schema="schema"
       :uischema="uischema"
       @change="onChange"
-      class="create-edit-form"
     />
 
     <v-container>
