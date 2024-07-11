@@ -2,6 +2,7 @@ import './bootstrap'
 import '../css/app.css'
 import '@jsonforms/vue-vanilla/vanilla.css'
 import '@mdi/font/css/materialdesignicons.css'
+import 'element-plus/dist/index.css'
 import 'floating-vue/dist/style.css'
 
 import { createApp, h } from 'vue'
@@ -16,6 +17,9 @@ const emitter = mitt()
 // vuetify
 import vuetify from './vuetify'
 
+// element-plus
+import ElementPlus from 'element-plus'
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
 createInertiaApp({
@@ -28,6 +32,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue)
             .use(vuetify)
+            .use(ElementPlus)
             .mount(el)
     },
     progress: {
