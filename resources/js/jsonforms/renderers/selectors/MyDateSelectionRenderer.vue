@@ -3,45 +3,42 @@
     v-bind="controlWrapper"
     :styles="styles"
     :isFocused="isFocused"
-    :appliedOptions="appliedOptions"
-    class="flex items-center space-x-4">
-    <v-autocomplete
-      label="Associated Dates"
-      :items="dates"
-      chips
+    :appliedOptions="appliedOptions">
+    <el-select-v2
+      :model-value="control.data"
+      :options="dates"
+      placeholder="Please select"
       multiple
       clearable
-      variant="outlined"
-      :model-value="control.data"
+      collapse-tags
+      collapse-tags-tooltip
+      :max-collapse-tags="4"
       @update:modelValue="onChange"
-      @update:focused="onFocus">
-    </v-autocomplete>
-
-    <CreateEditFormModalDialog
-      title="Create Date"
-      :content-endpoint="route('api.forms.assoc_date')"
-      @on-save="onSave"
     />
+
+    <template v-slot:actions>
+      <button type="button" :class="styles.arrayList.addButton"></button>
+    </template>
   </control-wrapper>
 </template>
 
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue'
   import { ControlElement } from '@jsonforms/core'
-  import { rendererProps, useJsonFormsControl, RendererProps } from '@jsonforms/vue'
-  import { useVuetifyControl } from '@jsonforms/vue-vuetify/src/util'
-  import { default as ControlWrapper } from '@jsonforms/vue-vuetify/src/controls/ControlWrapper.vue'
+  import { rendererProps, RendererProps, useJsonFormsControl } from '@jsonforms/vue'
+  import { useCustomVanillaControl } from '@/jsonforms/util'
+  import { default as ControlWrapper } from '../controls/MyControlWrapper.vue'
   import axios from 'axios'
   import useEmitter from '@/composables/useEmitter'
-  import { VAutocomplete } from 'vuetify/components'
+  import { ElSelectV2 } from 'element-plus'
   import CreateEditFormModalDialog from '@/jsonforms/components/CreateEditFormModalDialog.vue'
 
   const controlRenderer = defineComponent({
-    name: 'date-selection-renderer',
+    name: 'MyDateSelectionRenderer',
 
     components: {
       ControlWrapper,
-      VAutocomplete,
+      ElSelectV2,
       CreateEditFormModalDialog,
     },
 
@@ -52,8 +49,7 @@
     setup(props: RendererProps<ControlElement>) {
       const emitter = useEmitter()
 
-      const control = useJsonFormsControl(props)
-      const { handleChange, ...rest } = useVuetifyControl(control)
+      const control = useCustomVanillaControl(useJsonFormsControl(props))
 
       const dates = ref([])
 
@@ -61,17 +57,11 @@
         fetchDates()
       })
 
-      const onFocus = () => {
-        // fetch the latest set of options when the control is focused to ensure the list is up to date
-        fetchDates()
-      }
-
       const fetchDates = async () => {
         try {
           const response = await axios.get('/api/dates')
           dates.value = response.data.data.map((date) => ({
-            ...date,
-            title: [date['as_written'], date['not_before'], date['not_after'], date['type']].join(' • '),
+            label: [date['as_written'], date['not_before'], date['not_after'], date['type']].join(' • '),
             value: date['id'],
           }))
         } catch (error) {
@@ -95,9 +85,8 @@
       }
 
       return {
-        ...rest,
+        ...control,
         dates,
-        onFocus,
         onSave,
       }
     }
@@ -107,7 +96,7 @@
 </script>
 
 <style lang="postcss" scoped>
-  :deep(.v-autocomplete .v-input__details) {
-    @apply hidden
+  .el-select {
+    @apply flex-1
   }
 </style>
