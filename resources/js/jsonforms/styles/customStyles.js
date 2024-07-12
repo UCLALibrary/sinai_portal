@@ -25,7 +25,7 @@ const customStyles = {
     noData: 'px-3 py-2 text-sm bg-gray-200',
     itemToolbar: '!m-0 p-2 border-b bg-gray-200',
     itemLabel: '!px-1 bg-transparent text-sm',
-    itemContent: '!px-2 py-4',
+    itemContent: '!p-4',
     itemExpanded: '',
     itemMoveUp: 'mdi mdi-arrow-up-thin',
     itemMoveDown: 'mdi mdi-arrow-down-thin',
