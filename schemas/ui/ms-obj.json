@@ -100,7 +100,6 @@
     },
     {
       "type": "Group",
-      "label": "Basic Metadata",
       "elements": [
         {
           "type": "Control",
