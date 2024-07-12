@@ -23,7 +23,7 @@ class DatesController extends Controller
         return Inertia::render('Resources/Index', [
             'title' => 'Dates',
             'resourceName' => 'dates',
-            'resources' => Date::paginate(20),
+            'resources' => Date::orderBy('created_at', 'desc')->orderBy('not_before', 'asc')->paginate(20),
             'columns' => ['type' => 'Type', 'as_written' => 'As written', 'not_before' => 'Not before', 'not_after' => 'Not after', 'note' => 'Note'],
             'createEndpoint' => route('dates.create'),
         ]);
