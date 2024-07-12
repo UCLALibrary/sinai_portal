@@ -7,7 +7,7 @@
     <el-select-v2
       :model-value="control.data"
       :options="dates"
-      placeholder="Please select"
+      placeholder="Select one or more dates to attach"
       multiple
       clearable
       collapse-tags
@@ -108,9 +108,3 @@
 
   export default controlRenderer
 </script>
-
-<style lang="postcss" scoped>
-  .el-select {
-    @apply flex-1
-  }
-</style>

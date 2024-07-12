@@ -2,7 +2,6 @@ import './bootstrap'
 import '../css/app.css'
 import '@jsonforms/vue-vanilla/vanilla.css'
 import '@mdi/font/css/materialdesignicons.css'
-import 'element-plus/dist/index.css'
 import 'floating-vue/dist/style.css'
 
 import { createApp, h } from 'vue'
@@ -19,6 +18,8 @@ import vuetify from './vuetify'
 
 // element-plus
 import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import '../css/overrides/element-plus.css'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 

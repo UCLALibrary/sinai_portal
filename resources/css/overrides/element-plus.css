@@ -1,0 +1,24 @@
+
+.el-select {
+  --el-color-primary: rgb(171, 47, 10);
+  @apply flex-1
+}
+
+.el-select__wrapper {
+  @apply py-2 min-h-10 rounded-none
+}
+
+.el-select__wrapper.is-focused {
+}
+
+.el-select__tags-text {
+  @apply font-bold
+}
+
+.el-select__selection.is-near {
+  @apply -m-1
+}
+
+.el-select-dropdown__item.is-selected {
+  --el-color-primary: rgb(171, 47, 10);
+}
