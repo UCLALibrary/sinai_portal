@@ -34,5 +34,9 @@ export default {
         'gap-y-1',
         'gap-y-2',
         'gap-y-4',
+        '!m-0',
+        '!p-4',
+        '!px-1',
+        '!px-2',
     ],
 };
