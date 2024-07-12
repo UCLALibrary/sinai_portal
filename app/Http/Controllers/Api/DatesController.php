@@ -15,7 +15,9 @@ class DatesController extends Controller
      */
     public function index()
     {
-        return DateResource::collection(Date::all());
+        $dates = Date::orderBy('not_before')->get();
+    
+        return DateResource::collection($dates);
     }
 
     /**
