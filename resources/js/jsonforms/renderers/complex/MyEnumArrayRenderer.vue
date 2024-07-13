@@ -4,9 +4,9 @@
     :label="control.label"
     :styles="styles"
     :applied-options="appliedOptions"
-    :class="styles.container.checkboxList">
-    <div class="flex gap-x-4">
-      <div v-for="(checkElement, index) in control.options" :key="index" class="flex items-center gap-x-1">
+    class="gap-y-2 my-2">
+    <div :class="styles.container.checkboxList">
+      <div v-for="(checkElement, index) in control.options" :key="index" :class="styles.container.checkbox">
         <input
           :id="control.id + `-input-${index}`"
           type="checkbox"

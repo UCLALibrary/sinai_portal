@@ -38,7 +38,7 @@ const customStyles = {
   container: {
     label: 'flex items-center justify-between',
     checkbox: 'relative flex items-center gap-x-1 my-1',
-    checkboxList: 'gap-y-2 my-2',
+    checkboxList: 'flex flex-wrap gap-x-4',
     arrayList: 'flex items-center gap-x-2',
   },
   label: {
