@@ -160,7 +160,9 @@
                 "array",
                 "null"
             ],
+            "uniqueItems": true,
             "items": {
+                "type": "string",
                 "enum": [
                     "Border(s)",
                     "Border(s), Decorative",
