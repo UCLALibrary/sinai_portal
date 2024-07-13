@@ -1,9 +1,12 @@
 {
-    "$id": "https://raw.githubusercontent.com/UCLALibrary/sinai_metadata/master/data-model/jsonschemas/ms-obj.json",
     "title": "Manuscript Object",
     "description": "A manuscript or codex, either real or a hypothetical reconstruction",
     "type": "object",
     "properties": {
+        "id": {
+            "description": "A unique identifer, supplied by the database",
+            "type": "integer"
+        },
         "ark": {
             "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
             "type": "string",
@@ -11,22 +14,39 @@
         },
         "type": {
             "description": "The type of manuscript object, whether real or hypothetical reconstructions",
-            "type": "string",
-            "oneOf": [
-                {
-                    "const": "shelf",
-                    "title": "Real Manuscript"
-                },
-                {
-                    "const": "rebind",
-                    "title": "Reconstructed Manuscript"
-                }
-            ]
+            "enum": [
+                "shelf",
+                "rebind"
+            ],
+            "$comment": "Is this the same set as #/$defs/cod_unit_types and #/$defs/content_unit_types?"
         },
-        "shelfmark": {
-            "description": "An identifier for the manuscript, including shelfmarks or other identifier schemas",
-            "$comment": "Would add to util, but enum may vary by object type",
-            "type": "string"
+        "idno": {
+            "type": "array",
+            "items": {
+                "description": "An identifier, according to a given scheme",
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "enum": [
+                            "shelfmark",
+                            "part_no",
+                            "uto_mark"
+                        ],
+                        "$comment": "Use term 'shelfmark' for both real and digitally rebound manuscript objects"
+                    },
+                    "value": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                },
+                "required": [
+                    "type",
+                    "value"
+                ],
+                "unevaluatedProperties": false
+            },
+            "minItems": 1,
+            "unevaluatedItems": false
         },
         "summary": {
             "type": [
@@ -76,51 +96,39 @@
             "unevaluatedItems": false
         },
         "state": {
-            "description": "The original form of the manuscript object",
-            "oneOf": [
+            "description": "The current state of the manuscript object",
+            "anyOf": [
                 {
                     "description": "The original form of the manuscript object",
                     "enum": [
-                        "Codex",
-                        "Scroll",
                         "Bifolim",
+                        "Codex",
                         "Folium",
                         "Quire(s)",
+                        "Scroll",
                         null
-                    ]
+                    ],
+                    "$comment": "This enum is reused and expanded in #/$defs/states"
                 },
                 {
                     "enum": [
                         "Undertext object"
-                    ],
-                    "$comment": "State allows the same enumerated value list as form with the addition of Undertext object"
+                    ]
                 }
-            ]
+            ],
+            "$comment": "State allows the same enumerated value list as #/$defs/forms with the addition of Undertext object"
         },
         "form": {
             "description": "The original form of the manuscript object",
-            "oneOf": [
-                {
-                    "const": "codex",
-                    "title": "Codex"
-                },
-                {
-                    "const": "scroll",
-                    "title": "Scroll"
-                },
-                {
-                    "const": "bifolim",
-                    "title": "Bifolim"
-                },
-                {
-                    "const": "folium",
-                    "title": "Folium"
-                },
-                {
-                    "const": "quires",
-                    "title": "Quire(s)"
-                }
-            ]
+            "enum": [
+                "Bifolim",
+                "Codex",
+                "Folium",
+                "Quire(s)",
+                "Scroll",
+                null
+            ],
+            "$comment": "This enum is reused and expanded in #/$defs/states"
         },
         "fol": {
             "description": "A string expressing the foliation of the object in a semi-controlled format",
@@ -131,25 +139,76 @@
             "minLength": 1,
             "$comment": "could require a pattern to capture the style of input we require. e.g. 'ff. 1-24 + flyleaves I-III'"
         },
-        "features": {
-            "type": "array",
-            "uniqueItems": true,
+        "coll": {
+            "type": [
+                "array",
+                "null"
+            ],
             "items": {
-                "type": "string",
-                "enum": [
-                    "Dated",
-                    "Colophon",
-                    "Inscription(s)"
-                ]
+                "description": "A string expressing the collation of the object following a semi-controlled format, such as a collational formula",
+                "type": [
+                    "string",
+                    "null"
+                ],
+                "minLength": 1,
+                "$comment": "could require a pattern to conform these to a specific collational formula scheme"
             },
-            "unevaluatedItems": false,
-            "$comment": "TBD list of features"
+            "unevaluatedItems": false
+        },
+        "features": {
+            "type": [
+                "array",
+                "null"
+            ],
+            "items": {
+                "enum": [
+                    "Border(s)",
+                    "Border(s), Decorative",
+                    "Calligraphic Practice",
+                    "Catchwords",
+                    "Colophon",
+                    "Dated",
+                    "Decoration, Anthropomorphic",
+                    "Decoration, Architectural",
+                    "Decoration, Calligraphic",
+                    "Decoration, Full-page",
+                    "Decoration, Geometric",
+                    "Decoration, Vegetative",
+                    "Decoration, Zoomorphic",
+                    "Fragment",
+                    "Headpiece(s)",
+                    "Illumination(s)",
+                    "Illustration(s)",
+                    "Initial(s), Anthropomorphic",
+                    "Initial(s), Decorated",
+                    "Initial(s), Gymnastic",
+                    "Initial(s), Historiated",
+                    "Initial(s), Inhabited",
+                    "Initial(s), Zoomorphic",
+                    "Inscription(s)",
+                    "Miniature(s)",
+                    "Multispectral Imaging",
+                    "Music notation",
+                    "Palimpsest",
+                    "Parallel text",
+                    "Signatures",
+                    "Table(s)",
+                    "Table(s) of Contents",
+                    "Unidentified text",
+                    null
+                ],
+                "$comment": "TBD list of features | Could do a series of features based on context with a composition for groups?"
+            },
+            "unevaluatedItems": false
         },
         "cod_units": {
             "type": "array",
             "items": {
                 "type": "object",
                 "properties": {
+                    "id": {
+                        "type": "integer"
+                    },
                     "type": {
                         "enum": [
                             "part",
@@ -184,9 +243,10 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "endowment"
+                            "endowment",
+                            "rubric"
                         ],
-                        "$comment": "Initial enum for paracontent needed"
+                        "$comment": "Initial enum for paracontent needed | Also considerations of 'para' vs 'guest' in same field?"
                     },
                     "locus": {
                         "type": "string",
@@ -194,8 +254,26 @@
                         "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
                     },
                     "lang": {
-                        "type": "string",
-                        "$comment": "Should point to a record in the languages table. Perhaps use format validation for a uuid?"
+                        "type": "array",
+                        "items": {
+                            "description": "Names of the ancient languages used in Sinai Manuscripts Data Portal",
+                            "enum": [
+                                "Arabic",
+                                "Armenian",
+                                "Caucasian Albanian",
+                                "Church Slavonic",
+                                "Coptic",
+                                "CPA",
+                                "Ethiopic",
+                                "Georgian",
+                                "Greek",
+                                "Latin",
+                                "Syriac",
+                                "Turkish"
+                            ]
+                        },
+                        "minItems": 1,
+                        "unevaluatedItems": false
                     },
                     "writing": {
                         "type": [
@@ -210,17 +288,31 @@
                                 "script": {
                                     "type": "array",
                                     "items": {
-                                        "description": "A term from a controlled list categorizing the writing system and script used in a given instance of writing",
+                                        "description": "Term list categorizing the writing system and script used in a given instance of writing",
                                         "enum": [
-                                            "Perlschrift",
+                                            "Asomtavruli",
+                                            "Carolingian majuscule",
+                                            "Carolingian minuscule",
                                             "Christian Palestinian Aramaic",
-                                            "Naskh",
-                                            "Kufic",
-                                            "Thuluth",
-                                            "Greek minuscule",
-                                            "Serto",
+                                            "East Syriac",
+                                            "Erkatagir",
                                             "Estrangela",
-                                            "East Syriac"
+                                            "Geʽez abjad",
+                                            "Geʽez abugida",
+                                            "Glagolitic",
+                                            "Greek majuscule",
+                                            "Greek minuscule",
+                                            "Khutsuri",
+                                            "Kufic",
+                                            "Melkite",
+                                            "Minuscule bouclée",
+                                            "Mkhedruli",
+                                            "Naskh",
+                                            "Nastaliq",
+                                            "Nuskhurimt",
+                                            "Perlschrift",
+                                            "Serto",
+                                            "Thuluth"
                                         ],
                                         "$comment": "enum not complete. Will eventually be references to script records"
                                     },
@@ -245,20 +337,27 @@
                                             "type": {
                                                 "type": "string",
                                                 "enum": [
+                                                    "admin",
                                                     "assoc_date",
                                                     "assoc_name",
                                                     "assoc_place",
                                                     "bib",
                                                     "binding",
                                                     "cataloguer",
-                                                    "collation",
+                                                    "coll",
                                                     "condition",
+                                                    "contents",
+                                                    "excerpt",
                                                     "foliation",
                                                     "general",
+                                                    "layout",
                                                     "ornamentation",
-                                                    "paratext",
+                                                    "para",
                                                     "provenance",
-                                                    "related_mss"
+                                                    "rel_work",
+                                                    "related_mss",
+                                                    "support",
+                                                    "writing"
                                                 ]
                                             },
                                             "value": {
@@ -292,7 +391,7 @@
                         ],
                         "minLength": 1
                     },
-                    "transcription": {
+                    "as_written": {
                         "type": [
                             "string",
                             "null"
@@ -301,10 +400,33 @@
                     },
                     "translation": {
                         "type": [
-                            "string",
+                            "array",
                             "null"
                         ],
-                        "minLength": 1
+                        "items": {
+                            "description": "The translation of a piece of content, such as an excerpt from a text or paratext, or from a conceptual work entity.",
+                            "properties": {
+                                "lang": {
+                                    "description": "Names of the modern languages used in Sinai Manuscripts Data Portal",
+                                    "enum": [
+                                        "Arabic",
+                                        "English",
+                                        "French",
+                                        "German",
+                                        "Greek"
+                                    ]
+                                },
+                                "value": {
+                                    "type": "string",
+                                    "minLeng": 1
+                                }
+                            },
+                            "required": [
+                                "lang",
+                                "value"
+                            ]
+                        },
+                        "unevaluatedItems": false
                     },
                     "assoc_name": {
                         "type": [
@@ -332,10 +454,12 @@
                                 "role": {
                                     "type": "string",
                                     "enum": [
+                                        "author",
+                                        "attributed-author",
                                         "creator",
                                         "binder",
                                         "owner",
-                                        "not known"
+                                        "unknown"
                                     ]
                                 },
                                 "note": {
@@ -351,20 +475,27 @@
                                             "type": {
                                                 "type": "string",
                                                 "enum": [
+                                                    "admin",
                                                     "assoc_date",
                                                     "assoc_name",
                                                     "assoc_place",
                                                     "bib",
                                                     "binding",
                                                     "cataloguer",
-                                                    "collation",
+                                                    "coll",
                                                     "condition",
+                                                    "contents",
+                                                    "excerpt",
                                                     "foliation",
                                                     "general",
+                                                    "layout",
                                                     "ornamentation",
-                                                    "paratext",
+                                                    "para",
                                                     "provenance",
-                                                    "related_mss"
+                                                    "rel_work",
+                                                    "related_mss",
+                                                    "support",
+                                                    "writing"
                                                 ]
                                             },
                                             "value": {
@@ -419,7 +550,7 @@
                                     "enum": [
                                         "origin",
                                         "previous_repository",
-                                        "not known"
+                                        "unknown"
                                     ]
                                 },
                                 "note": {
@@ -435,20 +566,27 @@
                                             "type": {
                                                 "type": "string",
                                                 "enum": [
+                                                    "admin",
                                                     "assoc_date",
                                                     "assoc_name",
                                                     "assoc_place",
                                                     "bib",
                                                     "binding",
                                                     "cataloguer",
-                                                    "collation",
+                                                    "coll",
                                                     "condition",
+                                                    "contents",
+                                                    "excerpt",
                                                     "foliation",
                                                     "general",
+                                                    "layout",
                                                     "ornamentation",
-                                                    "paratext",
+                                                    "para",
                                                     "provenance",
-                                                    "related_mss"
+                                                    "rel_work",
+                                                    "related_mss",
+                                                    "support",
+                                                    "writing"
                                                 ]
                                             },
                                             "value": {
@@ -486,12 +624,15 @@
                             "type": "object",
                             "properties": {
                                 "type": {
-                                    "type": "string",
                                     "enum": [
                                         "creation",
                                         "binding",
+                                        "origin",
                                         "purchase",
-                                        "other"
+                                        "birth",
+                                        "death",
+                                        "floruit",
+                                        "unknown"
                                     ],
                                     "$comment": "TBD full list of types"
                                 },
@@ -541,20 +682,27 @@
                                             "type": {
                                                 "type": "string",
                                                 "enum": [
+                                                    "admin",
                                                     "assoc_date",
                                                     "assoc_name",
                                                     "assoc_place",
                                                     "bib",
                                                     "binding",
                                                     "cataloguer",
-                                                    "collation",
+                                                    "coll",
                                                     "condition",
+                                                    "contents",
+                                                    "excerpt",
                                                     "foliation",
                                                     "general",
+                                                    "layout",
                                                     "ornamentation",
-                                                    "paratext",
+                                                    "para",
                                                     "provenance",
-                                                    "related_mss"
+                                                    "rel_work",
+                                                    "related_mss",
+                                                    "support",
+                                                    "writing"
                                                 ]
                                             },
                                             "value": {
@@ -596,20 +744,27 @@
                                 "type": {
                                     "type": "string",
                                     "enum": [
+                                        "admin",
                                         "assoc_date",
                                         "assoc_name",
                                         "assoc_place",
                                         "bib",
                                         "binding",
                                         "cataloguer",
-                                        "collation",
+                                        "coll",
                                         "condition",
+                                        "contents",
+                                        "excerpt",
                                         "foliation",
                                         "general",
+                                        "layout",
                                         "ornamentation",
-                                        "paratext",
+                                        "para",
                                         "provenance",
-                                        "related_mss"
+                                        "rel_work",
+                                        "related_mss",
+                                        "support",
+                                        "writing"
                                     ]
                                 },
                                 "value": {
@@ -666,6 +821,8 @@
                         "type": "string",
                         "enum": [
                             "right-to-left",
+                            "top-to-bottom",
+                            "bottom-to-top",
                             null
                         ]
                     },
@@ -729,12 +886,15 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "type": "string",
                         "enum": [
                             "creation",
                             "binding",
+                            "origin",
                             "purchase",
-                            "other"
+                            "birth",
+                            "death",
+                            "floruit",
+                            "unknown"
                         ],
                         "$comment": "TBD full list of types"
                     },
@@ -784,20 +944,27 @@
                                 "type": {
                                     "type": "string",
                                     "enum": [
+                                        "admin",
                                         "assoc_date",
                                         "assoc_name",
                                         "assoc_place",
                                         "bib",
                                         "binding",
                                         "cataloguer",
-                                        "collation",
+                                        "coll",
                                         "condition",
+                                        "contents",
+                                        "excerpt",
                                         "foliation",
                                         "general",
+                                        "layout",
                                         "ornamentation",
-                                        "paratext",
+                                        "para",
                                         "provenance",
-                                        "related_mss"
+                                        "rel_work",
+                                        "related_mss",
+                                        "support",
+                                        "writing"
                                     ]
                                 },
                                 "value": {
@@ -839,20 +1006,27 @@
                     "type": {
                         "type": "string",
                         "enum": [
+                            "admin",
                             "assoc_date",
                             "assoc_name",
                             "assoc_place",
                             "bib",
                             "binding",
                             "cataloguer",
-                            "collation",
+                            "coll",
                             "condition",
+                            "contents",
+                            "excerpt",
                             "foliation",
                             "general",
+                            "layout",
                             "ornamentation",
-                            "paratext",
+                            "para",
                             "provenance",
-                            "related_mss"
+                            "rel_work",
+                            "related_mss",
+                            "support",
+                            "writing"
                         ]
                     },
                     "value": {
@@ -905,20 +1079,27 @@
                                 "type": {
                                     "type": "string",
                                     "enum": [
+                                        "admin",
                                         "assoc_date",
                                         "assoc_name",
                                         "assoc_place",
                                         "bib",
                                         "binding",
                                         "cataloguer",
-                                        "collation",
+                                        "coll",
                                         "condition",
+                                        "contents",
+                                        "excerpt",
                                         "foliation",
                                         "general",
+                                        "layout",
                                         "ornamentation",
-                                        "paratext",
+                                        "para",
                                         "provenance",
-                                        "related_mss"
+                                        "rel_work",
+                                        "related_mss",
+                                        "support",
+                                        "writing"
                                     ]
                                 },
                                 "value": {
@@ -1034,12 +1215,12 @@
                     "type": {
                         "type": "string",
                         "enum": [
-                            "ref",
-                            "bib",
-                            "version",
+                            "cite",
                             "edition",
-                            "translation",
-                            "otherdigversion"
+                            "otherdigversion",
+                            "ref",
+                            "refno",
+                            "translation"
                         ]
                     },
                     "range": {
@@ -1076,20 +1257,27 @@
                                 "type": {
                                     "type": "string",
                                     "enum": [
+                                        "admin",
                                         "assoc_date",
                                         "assoc_name",
                                         "assoc_place",
                                         "bib",
                                         "binding",
                                         "cataloguer",
-                                        "collation",
+                                        "coll",
                                         "condition",
+                                        "contents",
+                                        "excerpt",
                                         "foliation",
                                         "general",
+                                        "layout",
                                         "ornamentation",
-                                        "paratext",
+                                        "para",
                                         "provenance",
-                                        "related_mss"
+                                        "rel_work",
+                                        "related_mss",
+                                        "support",
+                                        "writing"
                                     ]
                                 },
                                 "value": {
@@ -1175,9 +1363,11 @@
         }
     },
     "required": [
+        "id",
         "ark",
-        "shelfmark",
-        "type"
+        "type",
+        "idno",
+        "cod_units"
     ],
     "unevaluatedProperties": false
 }
