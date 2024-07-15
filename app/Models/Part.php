@@ -19,7 +19,7 @@ class Part extends Model
     public static $uiSchemaMinimal;
 
     public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/json/copmlete/cod_unit.json'));
+        self::$schema = File::get(base_path('/schemas/json/complete/cod_unit.json'));
         self::$uiSchema = File::get(base_path('/schemas/ui/complete/cod_unit.json'));
         self::$uiSchemaMinimal = File::get(base_path('/schemas/ui/minimal/cod_unit.json'));
     }
