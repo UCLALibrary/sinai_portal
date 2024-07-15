@@ -86,6 +86,9 @@
           fetchDates()
 
           // attach the new date by appending its id to the control data
+          if (!control.control.value.data) {
+            control.control.value.data = []
+          }
           control.control.value.data.push(response.data.data['id'])
         }).catch(error => {
           // display alert that there was an error saving the resource
