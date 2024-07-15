@@ -24,7 +24,7 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/shelfmark",
+          "scope": "#/properties/idno",
           "options": {
             "showRequiredAsteriskForPublishing": true,
             "showUnfocusedDescription": true
@@ -87,11 +87,13 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/cod_units"
+          "scope": "#/properties/cod_units",
+          "label": "Parts"
         },
         {
           "type": "Control",
-          "scope": "#/properties/para"
+          "scope": "#/properties/para",
+          "label": "Paracontent"
         }
       ]
     },

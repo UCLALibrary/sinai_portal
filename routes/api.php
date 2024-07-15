@@ -30,3 +30,4 @@ Route::apiResource('dates', DatesController::class, [
 
 // forms
 Route::get('forms/assoc_date', [FormsController::class, 'createAssocDate'])->name('api.forms.assoc_date');
+Route::get('forms/cod_unit', [FormsController::class, 'createCodUnit'])->name('api.forms.cod_unit');

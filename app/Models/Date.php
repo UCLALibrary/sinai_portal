@@ -14,11 +14,11 @@ class Date extends Model
 
     public static $schema;
 
-    public static $uischema;
+    public static $uiSchema;
 
     public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/assoc_date.json'));
-        self::$uischema = File::get(base_path('/schemas/ui/assoc_date.json'));
+        self::$schema = File::get(base_path('/schemas/json/complete/assoc_date.json'));
+        self::$uiSchema = File::get(base_path('/schemas/ui/complete/assoc_date.json'));
     }
 }
 

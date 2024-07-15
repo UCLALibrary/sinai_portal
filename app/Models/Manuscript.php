@@ -18,11 +18,11 @@ class Manuscript extends Model
 
     public static $schema;
 
-    public static $uischema;
+    public static $uiSchema;
 
     public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/ms-obj.json'));
-        self::$uischema = File::get(base_path('/schemas/ui/ms-obj.json'));
+        self::$schema = File::get(base_path('/schemas/json/complete/ms-obj.json'));
+        self::$uiSchema = File::get(base_path('/schemas/ui/complete/ms-obj.json'));
     }
 }
 

@@ -30,7 +30,7 @@ class ManuscriptsController extends Controller
     {
         return Inertia::render('Resources/Create', [
             'schema' => json_decode(Manuscript::$schema),
-            'uischema' => json_decode(Manuscript::$uischema),
+            'uischema' => json_decode(Manuscript::$uiSchema),
             'saveEndpoint' => route('api.manuscripts.store'),
             'redirectUrl' => route('manuscripts.index'),
         ]);
@@ -59,7 +59,7 @@ class ManuscriptsController extends Controller
     {
         return Inertia::render('Resources/Edit', [
             'schema' => json_decode(Manuscript::$schema),
-            'uischema' => json_decode(Manuscript::$uischema),
+            'uischema' => json_decode(Manuscript::$uiSchema),
             'data' => json_decode($manuscript->json),
             'saveEndpoint' => route('api.manuscripts.update', $manuscript->id),
             'redirectUrl' => route('manuscripts.index'),

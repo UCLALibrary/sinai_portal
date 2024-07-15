@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Date;
+use App\Models\Part;
 
 class FormsController extends Controller
 {
@@ -14,7 +15,18 @@ class FormsController extends Controller
     {
         return response()->json([
             'schema' => json_decode(Date::$schema),
-            'uischema' => json_decode(Date::$uischema),
+            'uischema' => json_decode(Date::$uiSchema),
+        ]);
+    }
+
+    /**
+     * Get the schemas for a codicological unit resource.
+     */
+    public function createCodUnit()
+    {
+        return response()->json([
+            'schema' => json_decode(Part::$schema),
+            'uischema' => json_decode(Part::$uiSchemaMinimal),
         ]);
     }
 }

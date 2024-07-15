@@ -14,11 +14,14 @@ class Part extends Model
 
     public static $schema;
 
-    public static $uischema;
+    public static $uiSchema;
+
+    public static $uiSchemaMinimal;
 
     public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/cod_unit.json'));
-        self::$uischema = File::get(base_path('/schemas/ui/cod_unit.json'));
+        self::$schema = File::get(base_path('/schemas/json/copmlete/cod_unit.json'));
+        self::$uiSchema = File::get(base_path('/schemas/ui/complete/cod_unit.json'));
+        self::$uiSchemaMinimal = File::get(base_path('/schemas/ui/minimal/cod_unit.json'));
     }
 }
 

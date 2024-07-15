@@ -1,0 +1,109 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Control",
+      "scope": "#/properties/ark"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/ms_objs"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/type"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/idno"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/summary"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/locus"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/support"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/extent"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/dim"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/fol"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/coll"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/writing"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/content_units"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/para"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/cod_units"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/layout"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/assoc_name"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/assoc_date"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/assoc_place"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/features"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/note"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/related_mss"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/viscodex"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/bib"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/cataloguer"
+    },
+    {
+      "type": "Control",
+      "scope": "#/properties/iiif"
+    }
+  ]
+}

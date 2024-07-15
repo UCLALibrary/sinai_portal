@@ -30,7 +30,7 @@ class PartsController extends Controller
     {
         return Inertia::render('Resources/Create', [
             'schema' => json_decode(Part::$schema),
-            'uischema' => json_decode(Part::$uischema),
+            'uischema' => json_decode(Part::$uiSchema),
             'saveEndpoint' => route('api.codicological-units.store'),
             'redirectUrl' => route('codicological-units.index'),
         ]);
@@ -59,7 +59,7 @@ class PartsController extends Controller
     {
         return Inertia::render('Resources/Edit', [
             'schema' => json_decode(Part::$schema),
-            'uischema' => json_decode(Part::$uischema),
+            'uischema' => json_decode(Part::$uiSchema),
             'data' => json_decode($codicologicalUnit->json),
             'saveEndpoint' => route('api.codicological-units.update', $codicologicalUnit->id),
             'redirectUrl' => route('codicological-units.index'),
