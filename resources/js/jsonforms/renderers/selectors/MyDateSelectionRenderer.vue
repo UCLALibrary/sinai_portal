@@ -6,7 +6,7 @@
     :appliedOptions="appliedOptions">
     <el-select-v2
       :model-value="control.data"
-      :options="dates"
+      :options="records"
       placeholder="Select one or more dates to attach"
       multiple
       clearable
@@ -55,46 +55,46 @@
 
       const control = useCustomVanillaControl(useJsonFormsControl(props))
 
-      const dates = ref([])
+      const records = ref([])
 
       onMounted(() => {
-        fetchDates()
+        fetchRecords()
       })
 
-      const fetchDates = async () => {
+      const fetchRecords = async () => {
         try {
-          const response = await axios.get('/api/dates')
-          dates.value = response.data.data.map((date) => ({
-            label: [date['as_written'], date['not_before'], date['not_after'], date['type']].join(' • '),
-            value: date['id'],
+          const response = await axios.get(route('api.dates.index'))
+          records.value = response.data.data.map((record) => ({
+            label: [record['as_written'], record['not_before'], record['not_after'], record['type']].join(' • '),
+            value: record['id'],
           }))
         } catch (error) {
-          dates.value = []
+          records.value = []
         }
       }
 
       const onFocus = () => {
-        // fetch the latest set of dates when the control is focused to ensure the list of options is up to date
-        fetchDates()
+        // fetch the latest set of records when the control is focused to ensure the list of options is up to date
+        fetchRecords()
       }
 
       const onSave = (jsonData) => {
-        axios.post('/api/dates', {
+        axios.post(route('api.dates.store'), {
           json: jsonData,
         }).then(response => {
-          // fetch the latest set of dates so the new date can be attached via its id
-          fetchDates()
+          // fetch the latest set of records so the new record can be attached via its id
+          fetchRecords()
 
-          // attach the new date by appending its id to the control data
+          // attach the new record by appending its id to the control data
           if (!control.control.value.data) {
             control.control.value.data = []
           }
           control.control.value.data.push(response.data.data['id'])
         }).catch(error => {
-          // display alert that there was an error saving the resource
+          // display alert that there was an error saving the record
           emitter.emit('show-dismissable-alert', {
             type: 'error',
-            message: 'Error saving date. Please try again.',
+            message: 'Error saving. Please try again.',
             timeout: 2000,
           })
         })
@@ -102,7 +102,7 @@
 
       return {
         ...control,
-        dates,
+        records,
         onFocus,
         onSave,
       }
