@@ -21,3 +21,8 @@ class Date extends Model
         self::$uischema = File::get(base_path('/schemas/ui/assoc_date.json'));
     }
 }
+
+/*
+ * Execute the static initializer to load the schema and ui schema.
+ */
+Date::initialize();

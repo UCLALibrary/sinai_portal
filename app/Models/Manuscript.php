@@ -25,3 +25,8 @@ class Manuscript extends Model
         self::$uischema = File::get(base_path('/schemas/ui/ms-obj.json'));
     }
 }
+
+/*
+ * Execute the static initializer to load the schema and ui schema.
+ */
+Manuscript::initialize();

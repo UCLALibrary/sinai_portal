@@ -21,3 +21,8 @@ class Part extends Model
         self::$uischema = File::get(base_path('/schemas/ui/cod_unit.json'));
     }
 }
+
+/*
+ * Execute the static initializer to load the schema and ui schema.
+ */
+Part::initialize();

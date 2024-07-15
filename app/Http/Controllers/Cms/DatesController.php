@@ -9,12 +9,6 @@ use Inertia\Inertia;
 
 class DatesController extends Controller
 {
-    public function __construct()
-    {
-        // execute the static initializer to load the schema and ui schema
-        Date::initialize();
-    }
-
     /**
      * Display a listing of the resource.
      */

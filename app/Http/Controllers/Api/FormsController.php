@@ -7,12 +7,6 @@ use App\Models\Date;
 
 class FormsController extends Controller
 {
-    public function __construct()
-    {
-        // execute the static initializer to load the schema and ui schema
-        Date::initialize();
-    }
-
     /**
      * Get the schemas for a date resource.
      */
