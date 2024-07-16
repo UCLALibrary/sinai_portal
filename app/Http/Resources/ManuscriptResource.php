@@ -17,7 +17,7 @@ class ManuscriptResource extends JsonResource
         return [
             'id' => $this->id,
             'ark' => $this->ark,
-            'shelfmark' => $this->shelfmark,
+            'identifier' => $this->identifier,
             'json' => json_decode($this->json)
         ];
     }

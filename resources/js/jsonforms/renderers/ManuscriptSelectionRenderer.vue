@@ -56,7 +56,7 @@
           const response = await axios.get('/api/manuscripts')
           manuscripts.value = response.data.data.map((manuscript) => ({
             ...manuscript,
-            title: manuscript['shelfmark'],
+            title: manuscript['identifier'],
             value: manuscript['id'],
           }))
         } catch (error) {

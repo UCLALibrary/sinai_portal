@@ -12,7 +12,7 @@ class Manuscript extends Model
 
     protected $fillable = [
         'ark',
-        'shelfmark',
+        'identifier',
         'json',
     ];
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('manuscripts', function (Blueprint $table) {
             $table->id();
             $table->string('ark')->nullable();
-            $table->string('shelfmark')->nullable();
+            $table->string('identifier')->nullable();
             $table->jsonb('json');
             $table->timestamps();
         });

@@ -18,7 +18,6 @@ class ManuscriptFactory extends Factory
     {
         return [
             'ark' => 'ark:/21198/z1.' . fake()->numberBetween(10000, 99999),
-            'shelfmark' => 'MS ' . fake()->randomNumber(),
             'json' => '{}',
         ];
     }
