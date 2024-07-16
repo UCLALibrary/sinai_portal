@@ -1756,7 +1756,6 @@
         }
     },
     "required": [
-        "id",
         "ark",
         "ms_objs",
         "type",
