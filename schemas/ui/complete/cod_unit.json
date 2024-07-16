@@ -39,7 +39,11 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/summary"
+          "scope": "#/properties/summary",
+          "options": {
+            "multi": true,
+            "rows": 4
+          }
         }
       ]
     },

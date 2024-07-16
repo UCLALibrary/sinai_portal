@@ -35,7 +35,9 @@
           "type": "Control",
           "scope": "#/properties/summary",
           "options": {
-            "showUnfocusedDescription": true
+            "showUnfocusedDescription": true,
+            "multi": true,
+            "rows": 4
           }
         }
       ]
