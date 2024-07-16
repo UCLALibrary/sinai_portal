@@ -157,8 +157,10 @@
                 "properties": {
                     "script": {
                         "type": "array",
+                        "uniqueItems": true,
                         "items": {
                             "description": "Term list categorizing the writing system and script used in a given instance of writing",
+                            "type": "string",
                             "enum": [
                                 "Asomtavruli",
                                 "Carolingian majuscule",
