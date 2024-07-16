@@ -32,13 +32,12 @@
   const props = defineProps({
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
+    data: { type: Object, required: false, default: () => {} },
     saveEndpoint: { type: String, required: true },
     redirectUrl: { type: String, required: true },
   })
 
   const emitter = useEmitter()
-
-  const data = ref({})
 
   const onSave = (payload) => {
     axios.post(props.saveEndpoint, {
