@@ -21,6 +21,7 @@ import myArrayListRenderer from '@/jsonforms/renderers/array/MyArrayListRenderer
 import myEnumArrayRenderer from '@/jsonforms/renderers/complex/MyEnumArrayRenderer.vue'
 import myDateSelectionRenderer from '@/jsonforms/renderers/selectors/MyDateSelectionRenderer.vue'
 import myPartSelectionRenderer from '@/jsonforms/renderers/selectors/MyPartSelectionRenderer.vue'
+import myManuscriptSelectionRenderer from '@/jsonforms/renderers/selectors/MyManuscriptSelectionRenderer.vue'
 
 // layout: horizontal rule
 export const myHorizontalRuleRendererEntry = buildRendererRegistryEntry(myHorizontalRuleRenderer, uiTypeIs('HorizontalRule'))
@@ -49,6 +50,9 @@ export const myDateSelectionRendererEntry = buildRendererRegistryEntry(myDateSel
 // selector: parts
 export const myPartSelectionRendererEntry = buildRendererRegistryEntry(myPartSelectionRenderer, scopeEndIs('cod_units'), 5)
 
+// selector: manuscripts
+export const myManuscriptSelectionRendererEntry = buildRendererRegistryEntry(myManuscriptSelectionRenderer, scopeEndIs('ms_objs'))
+
 export const customRenderers = [
   myHorizontalRuleRendererEntry,
   myStringControlRendererEntry,
@@ -59,4 +63,5 @@ export const customRenderers = [
   myEnumArrayRendererEntry,
   myDateSelectionRendererEntry,
   myPartSelectionRendererEntry,
+  myManuscriptSelectionRendererEntry,
 ]
