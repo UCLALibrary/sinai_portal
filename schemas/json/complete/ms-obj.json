@@ -1365,7 +1365,6 @@
         }
     },
     "required": [
-        "id",
         "ark",
         "type",
         "idno",
