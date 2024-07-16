@@ -25,6 +25,7 @@
         {
           "type": "Control",
           "scope": "#/properties/idno",
+          "label": "Identifier",
           "options": {
             "showRequiredAsteriskForPublishing": true,
             "showUnfocusedDescription": true
@@ -46,6 +47,7 @@
         {
           "type": "Control",
           "scope": "#/properties/extent",
+          "label": "Folio Extent",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -59,7 +61,8 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/dim"
+          "scope": "#/properties/dim",
+          "label": "Manuscript Dimensions"
         },
         {
           "type": "Control",
@@ -75,6 +78,7 @@
         {
           "type": "Control",
           "scope": "#/properties/fol",
+          "label": "Foliation",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -118,11 +122,13 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/assoc_date"
+          "scope": "#/properties/assoc_date",
+          "label": "Associated Dates"
         },
         {
           "type": "Control",
-          "scope": "#/properties/features"
+          "scope": "#/properties/features",
+          "label": "Other Manuscript Features"
         },
         {
           "type": "Control",
@@ -130,7 +136,8 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/related_mss"
+          "scope": "#/properties/related_mss",
+          "label": "Related Manuscripts"
         },
         {
           "type": "Control",
@@ -138,15 +145,18 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/bib"
+          "scope": "#/properties/bib",
+          "label": "Bibliography"
         },
         {
           "type": "Control",
-          "scope": "#/properties/cataloguer"
+          "scope": "#/properties/cataloguer",
+          "label": "Cataloguer Comments"
         },
         {
           "type": "Control",
-          "scope": "#/properties/iiif"
+          "scope": "#/properties/iiif",
+          "label": "IIIF"
         }
       ]
     }

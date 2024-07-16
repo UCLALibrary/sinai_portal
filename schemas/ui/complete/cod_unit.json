@@ -24,6 +24,7 @@
         {
           "type": "Control",
           "scope": "#/properties/type",
+          "label": "Codicological Unit Type",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -31,6 +32,7 @@
         {
           "type": "Control",
           "scope": "#/properties/idno",
+          "label": "Identifier",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -58,13 +60,15 @@
         {
           "type": "Control",
           "scope": "#/properties/extent",
+          "label": "Folio Extent",
           "options": {
             "showUnfocusedDescription": true
           }
         },
         {
           "type": "Control",
-          "scope": "#/properties/dim"
+          "scope": "#/properties/dim",
+          "label": "Dimensions"
         }
       ]
     },
@@ -77,6 +81,7 @@
         {
           "type": "Control",
           "scope": "#/properties/fol",
+          "label": "Foliation",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -84,6 +89,7 @@
         {
           "type": "Control",
           "scope": "#/properties/coll",
+          "label": "Collation",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -91,6 +97,15 @@
         {
           "type": "Control",
           "scope": "#/properties/writing",
+          "label": "Writing and Hands",
+          "options": {
+            "showUnfocusedDescription": true
+          }
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/layout",
+          "label": "Page Layout",
           "options": {
             "showUnfocusedDescription": true
           }
@@ -103,15 +118,18 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/content_units"
+          "scope": "#/properties/content_units",
+          "label": "Core Textual Units"
         },
         {
           "type": "Control",
-          "scope": "#/properties/para"
+          "scope": "#/properties/para",
+          "label": "Paracontent"
         },
         {
           "type": "Control",
-          "scope": "#/properties/cod_units"
+          "scope": "#/properties/cod_units",
+          "label": "Undertext Objects"
         }
       ]
     },
@@ -123,22 +141,18 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/layout",
-          "options": {
-            "showUnfocusedDescription": true
-          }
+          "scope": "#/properties/assoc_name",
+          "label": "Associated Names"
         },
         {
           "type": "Control",
-          "scope": "#/properties/assoc_name"
+          "scope": "#/properties/assoc_place",
+          "label": "Associated Places"
         },
         {
           "type": "Control",
-          "scope": "#/properties/assoc_date"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/assoc_place"
+          "scope": "#/properties/assoc_date",
+          "label": "Associated Dates"
         },
         {
           "type": "Control",
@@ -150,7 +164,8 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/related_mss"
+          "scope": "#/properties/related_mss",
+          "label": "Related Manuscripts"
         },
         {
           "type": "Control",
@@ -158,15 +173,18 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/bib"
+          "scope": "#/properties/bib",
+          "label": "Bibliography"
         },
         {
           "type": "Control",
-          "scope": "#/properties/cataloguer"
+          "scope": "#/properties/cataloguer",
+          "label": "Cataloguer Comments"
         },
         {
           "type": "Control",
-          "scope": "#/properties/iiif"
+          "scope": "#/properties/iiif",
+          "label": "IIIF"
         }
       ]
     }
