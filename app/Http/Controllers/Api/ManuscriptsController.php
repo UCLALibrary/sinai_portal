@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\JsonDataHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ManuscriptRequest;
 use App\Http\Resources\ManuscriptResource;
 use App\Models\Manuscript;
+use App\Models\Part;
 use Illuminate\Support\Facades\DB;
 
 class ManuscriptsController extends Controller
@@ -24,13 +26,22 @@ class ManuscriptsController extends Controller
     public function store(ManuscriptRequest $request)
     {
         return DB::transaction(function () use ($request) {
-            // TODO: force the transaction to fail if a duplicate ark is used
-            // if (empty($request->json['ark']) || empty($request->json['shelfmark'])) {
-            //     throw new \Exception('Ark or shelfmark is missing, transaction rolled back.');
-            // }
+            // extract metadata from the json field to populate database columns for list view
+            $metadata = $this->_extractMetadataFromJsonField($request->json);
 
-            // extract metadata from the json field to populate their corresponding database columns
-            $manuscript = Manuscript::create($this->_extractMetadataFromJsonField($request->json));
+            // create the manuscript record
+            $manuscript = Manuscript::create([
+                'ark' => $metadata['ark'],
+                'identifier' => $metadata['identifier'],
+                'json' => $metadata['json'],
+            ]);
+
+            // insert the manuscript id into the json field
+            $manuscript->json = json_encode(array_merge(json_decode($manuscript->json, true), ['id' => $manuscript->id]));
+            $manuscript->save();
+
+            // attach the manuscript to its corresponding parts
+            $this->_attachManuscriptToParts($manuscript->id, $metadata['cod_units']);
 
             return new ManuscriptResource($manuscript);
         });
@@ -50,14 +61,19 @@ class ManuscriptsController extends Controller
     public function update(ManuscriptRequest $request, Manuscript $manuscript)
     {
         return DB::transaction(function () use ($request, $manuscript) {
-            // TODO: force the transaction to fail if a duplicate ark is used
-            // if (empty($request->json['ark']) || empty($request->json['shelfmark'])) {
-            //     throw new \Exception('Ark or shelfmark is missing, transaction rolled back.');
-            // }
+            // extract metadata from the json field to populate database columns for list view
+            $metadata = $this->_extractMetadataFromJsonField($request->json);
 
-            // extract metadata from the json field to populate their corresponding database columns
-            $manuscript->update($this->_extractMetadataFromJsonField($request->json));
+            // update the manuscript record
+            $manuscript->update([
+                'ark' => $metadata['ark'],
+                'identifier' => $metadata['identifier'],
+                'json' => $metadata['json'],
+            ]);
  
+            // attach the manuscript to its corresponding parts
+            $this->_attachManuscriptToParts($manuscript->id, $metadata['cod_units']);
+
             return new ManuscriptResource($manuscript);
         });
     }
@@ -80,20 +96,37 @@ class ManuscriptsController extends Controller
         $metadata['json'] = json_encode($jsonData);
         $decodedJson = json_decode($metadata['json']);
 
-        // ark
-        $metadata['ark'] = $decodedJson && isset($decodedJson->ark) ? $decodedJson->ark : null;
+        if ($decodedJson) {
+            // ark
+            $metadata['ark'] = isset($decodedJson->ark) ? $decodedJson->ark : null;
 
-        // shelfmark
-        $metadata['shelfmark'] = null;
-        if ($decodedJson && isset($decodedJson->idno) && is_array($decodedJson->idno)) {
-            foreach ($decodedJson->idno as $item) {
-                if (isset($item->type) && $item->type === 'shelfmark') {
-                    $metadata['shelfmark'] = $item->value;
+            // identifier
+            $metadata['identifier'] = null;
+            if (isset($decodedJson->idno) && is_array($decodedJson->idno)) {
+                foreach ($decodedJson->idno as $idno) {
+                    $label = $idno->type === 'shelfmark'
+                        ? 'Shelfmark'
+                        : ($idno->type === 'part_no'
+                            ? 'Part'
+                            : 'UTO');
+                    $metadata['identifier'] = $label . ': ' . $idno->value;
                     break;
                 }
             }
+
+            // parts
+            $metadata['cod_units'] = isset($decodedJson->cod_units) ? $decodedJson->cod_units : null;
         }
 
         return $metadata;
+    }
+
+    private function _attachManuscriptToParts($manuscriptId, $partIds, $propertyName = 'ms_objs')
+    {
+        // attach the manuscript id to its corresponding parts
+        $parts = Part::whereIn('id', $partIds)->get();
+        foreach ($parts as $part) {
+            JsonDataHelper::attachIdsToModelProperty($part, $propertyName, [$manuscriptId]);
+        }
     }
 }
