@@ -160,8 +160,14 @@ class DatesSeeder extends Seeder
             // create the record
             $date = Date::create(['json' => '{}', ...$dates[$index]]);
 
+            // create the data array including the primary key
+            $data = [
+                'id' => $date->id,
+                ...$dates[$index]
+            ];
+
             // update the record with the json field
-            $date->json = json_encode($dates[$index]);
+            $date->json = json_encode($data);
             $date->save();
         }
     }

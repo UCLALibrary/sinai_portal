@@ -18,12 +18,9 @@ class PartsSeeder extends Seeder
         for ($index = 0; $index < $numRecords; $index++) {
             $part = Part::factory()->create();
 
-            // retrieve the primary key
-            $id = $part->id;
-
             // create the data array including the primary key
             $data = [
-                'id' => $id,
+                'id' => $part->id,
                 'ark' => $part->ark,
                 'identifier' => $part->identifier,
                 'summary' => fake()->sentence(),
