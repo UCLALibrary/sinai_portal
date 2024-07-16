@@ -35,6 +35,7 @@
   import { useCustomVanillaControl } from '@/jsonforms/util'
   import { default as ControlWrapper } from '../controls/MyControlWrapper.vue'
   import axios from 'axios'
+  import _ from 'lodash'
   import useEmitter from '@/composables/useEmitter'
   import CreateResourceButton from '@/jsonforms/components/CreateResourceButton.vue'
 
@@ -65,7 +66,7 @@
         try {
           const response = await axios.get(route('api.dates.index'))
           records.value = response.data.data.map((record) => ({
-            label: [record['as_written'], record['not_before'], record['not_after'], record['type']].join(' • '),
+            label: [_.capitalize(record['type']) + ':', record['as_written'], '(' + record['not_before'] + ' – ' + record['not_after'] + ')'].join(' '),
             value: record['id'],
           }))
         } catch (error) {
