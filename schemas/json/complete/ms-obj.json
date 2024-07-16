@@ -206,29 +206,7 @@
         "cod_units": {
             "type": "array",
             "items": {
-                "type": "object",
-                "properties": {
-                    "id": {
-                        "type": "integer"
-                    },
-                    "type": {
-                        "enum": [
-                            "part",
-                            "uto",
-                            "reconstr"
-                        ]
-                    },
-                    "sequence": {
-                        "type": "integer",
-                        "minimum": 1
-                    }
-                },
-                "required": [
-                    "id",
-                    "type",
-                    "sequence"
-                ],
-                "unevaluatedProperties": false
+                "type": "integer"
             },
             "unevaluatedItems": false
         },
