@@ -51,7 +51,7 @@
                   </td>
                 </tr>
                 <tr v-if="resources.length === 0">
-                  <td class="px-6 py-4 border-t" :colspan="columns.length + 1">
+                  <td class="px-6 py-4 border-t" :colspan="Object.keys(columns).length + 1">
                     No entries found.
                   </td>
                 </tr>
