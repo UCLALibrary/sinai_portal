@@ -15,7 +15,7 @@ class FormsController extends Controller
     {
         return response()->json([
             'schema' => json_decode(Date::$schema),
-            'uischema' => json_decode(Date::$uiSchema),
+            'uischema' => json_decode(Date::$uiSchemaMinimal),
         ]);
     }
 

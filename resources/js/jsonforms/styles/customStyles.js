@@ -13,6 +13,9 @@ const customStyles = {
   verticalLayout: {
     root: 'flex flex-col gap-y-2',
   },
+  horizontalLayout: {
+    root: 'flex gap-x-2',
+  },
   group: {
     root: 'flex flex-col gap-y-4 mb-8',
     label: 'w-full text-xl font-semibold bg-transparent border-b pb-2 mb-4',

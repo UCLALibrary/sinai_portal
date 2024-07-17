@@ -9,12 +9,17 @@
           "scope": "#/properties/type"
         },
         {
-          "type": "Control",
-          "scope": "#/properties/iso/properties/not_before"
-        },
-        {
-          "type": "Control",
-          "scope": "#/properties/iso/properties/not_after"
+          "type": "HorizontalLayout",
+          "elements": [
+            {
+              "type": "Control",
+              "scope": "#/properties/iso/properties/not_before"
+            },
+            {
+              "type": "Control",
+              "scope": "#/properties/iso/properties/not_after"
+            }
+          ]
         },
         {
           "type": "Control",
