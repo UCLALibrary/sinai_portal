@@ -11,7 +11,8 @@ class PersonRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // TODO: check if the user is authorized to make this request
+        return true;
     }
 
     /**

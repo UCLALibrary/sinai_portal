@@ -3,75 +3,73 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DateRequest;
-use App\Http\Resources\DateResource;
-use App\Models\Date;
+use App\Http\Requests\PersonRequest;
+use App\Http\Resources\PersonResource;
+use App\Models\Person;
 use Illuminate\Support\Facades\DB;
 
-class DatesController extends Controller
+class PersonsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $dates = Date::orderBy('not_before')->get();
-    
-        return DateResource::collection($dates);
+        return PersonResource::collection(Person::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DateRequest $request)
+    public function store(PersonRequest $request)
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // save the json metadata
-            $date = Date::create($metadata);
+            $person = Person::create($metadata);
 
             // insert the manuscript id into the json field
-            $date->json = json_encode(array_merge(json_decode($date->json, true), ['id' => $date->id]));
-            $date->save();
+            $person->json = json_encode(array_merge(json_decode($person->json, true), ['id' => $person->id]));
+            $person->save();
 
-            return new DateResource($date);
+            return new PersonResource($person);
         });
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Date $date)
+    public function show(Person $person)
     {
-        return new DateResource($date);
+        return new PersonResource($person);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DateRequest $request, Date $date)
+    public function update(PersonRequest $request, Person $person)
     {
-        return DB::transaction(function () use ($request, $date) {
+        return DB::transaction(function () use ($request, $person) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // save the json metadata
-            $date->update($metadata);
+            $person->update($metadata);
 
-            return new DateResource($date);
+            return new PersonResource($person);
         });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Date $date)
+    public function destroy(Person $person)
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $date->delete();
+        $person->delete();
  
         return response()->noContent();
     }
@@ -81,10 +79,7 @@ class DatesController extends Controller
         $metadata = [];
         if ($jsonData) {
             $metadata['json'] = json_encode($jsonData);
-            $metadata['type'] = isset($jsonData['type']) ? $jsonData['type'] : null;
-            $metadata['not_before'] = isset($jsonData['iso']) && isset($jsonData['iso']['not_before']) ? $jsonData['iso']['not_before'] : null;
-            $metadata['not_after'] = isset($jsonData['iso']) && isset($jsonData['iso']['not_after']) ? $jsonData['iso']['not_after'] : null;
-            $metadata['value'] = isset($jsonData['value']) ? $jsonData['value'] : null;
+            $metadata['role'] = isset($jsonData['role']) ? $jsonData['role'] : null;
             $metadata['as_written'] = isset($jsonData['as_written']) ? $jsonData['as_written'] : null;
         }
         return $metadata;

@@ -7,7 +7,7 @@
     <el-select-v2
       :model-value="control.data"
       :options="records"
-      placeholder="Select one or more dates to attach"
+      placeholder="Select one or more persons to attach"
       multiple
       clearable
       collapse-tags
@@ -19,9 +19,9 @@
 
     <template v-slot:actions>
       <CreateResourceButton
-        title="Create Date"
+        title="Create Person"
         :styles="styles.arrayList.addButton"
-        :form-endpoint="route('api.forms.assoc_date')"
+        :form-endpoint="route('api.forms.assoc_name')"
         @on-save="onSave"
       />
     </template>
@@ -40,7 +40,7 @@
   import CreateResourceButton from '@/jsonforms/components/CreateResourceButton.vue'
 
   const controlRenderer = defineComponent({
-    name: 'MyDateSelectionRenderer',
+    name: 'MyPersonSelectionRenderer',
 
     components: {
       ControlWrapper,
@@ -64,16 +64,11 @@
 
       const fetchRecords = async () => {
         try {
-          const response = await axios.get(route('api.dates.index'))
-          records.value = response.data.data.map(record => {
-            let dateRangeLabel = _.filter([record['not_before'], record['not_after']]).join(' – ')
-            dateRangeLabel = dateRangeLabel ? '(' + dateRangeLabel + ')' : ''
-
-            return {
-              label: [_.capitalize(record['type']) + ':', record['as_written'], dateRangeLabel].join(' '),
-              value: record['id'],
-            }
-          })
+          const response = await axios.get(route('api.persons.index'))
+          records.value = response.data.data.map((record) => ({
+            label: [_.capitalize(record['role']) + ':', record['as_written']].join(' '),
+            value: record['id'],
+          }))
         } catch (error) {
           records.value = []
         }
@@ -85,7 +80,7 @@
       }
 
       const onSave = (jsonData) => {
-        axios.post(route('api.dates.store'), {
+        axios.post(route('api.persons.store'), {
           json: jsonData,
         }).then(response => {
           // fetch the latest set of records so the new record can be attached via its id

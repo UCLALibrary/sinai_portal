@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Date;
 use App\Models\Part;
+use App\Models\Person;
+use App\Models\Place;
 
 class FormsController extends Controller
 {
@@ -25,8 +27,30 @@ class FormsController extends Controller
     public function createCodUnit()
     {
         return response()->json([
-            'schema' => json_decode(Part::$schema),
+            'schema' => json_decode(Part::$schemaMinimal),
             'uischema' => json_decode(Part::$uiSchemaMinimal),
+        ]);
+    }
+
+    /**
+     * Get the schemas for a person resource.
+     */
+    public function createAssocName()
+    {
+        return response()->json([
+            'schema' => json_decode(Person::$schema),
+            'uischema' => json_decode(Person::$uiSchema),
+        ]);
+    }
+
+    /**
+     * Get the schemas for a person resource.
+     */
+    public function createAssocPlace()
+    {
+        return response()->json([
+            'schema' => json_decode(Place::$schema),
+            'uischema' => json_decode(Place::$uiSchema),
         ]);
     }
 }

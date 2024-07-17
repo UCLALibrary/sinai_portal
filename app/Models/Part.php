@@ -15,17 +15,24 @@ class Part extends Model
      *
      * @var array
      */
-    protected $fillable = ['json'];
+    protected $fillable = [
+        'ark',
+        'identifier',
+        'json',
+    ];
 
     public static $schema;
 
     public static $uiSchema;
+
+    public static $schemaMinimal;
 
     public static $uiSchemaMinimal;
 
     public static function initialize() {
         self::$schema = File::get(base_path('/schemas/json/complete/cod_unit.json'));
         self::$uiSchema = File::get(base_path('/schemas/ui/complete/cod_unit.json'));
+        self::$schemaMinimal = File::get(base_path('/schemas/json/minimal/cod_unit.json'));
         self::$uiSchemaMinimal = File::get(base_path('/schemas/ui/minimal/cod_unit.json'));
     }
 }

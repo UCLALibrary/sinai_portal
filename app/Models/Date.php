@@ -15,7 +15,14 @@ class Date extends Model
      *
      * @var array
      */
-    protected $fillable = ['json'];
+    protected $fillable = [
+        'type',
+        'not_before',
+        'not_after',
+        'value',
+        'as_written',
+        'json',
+    ];
 
     public static $schema;
 

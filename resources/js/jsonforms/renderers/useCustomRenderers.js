@@ -21,6 +21,8 @@ import myEnumControlRenderer from '@/jsonforms/renderers/controls/MyEnumControlR
 import myEnumOneOfControlRenderer from '@/jsonforms/renderers/controls/MyEnumOneOfControlRenderer.vue'
 import myArrayListRenderer from '@/jsonforms/renderers/array/MyArrayListRenderer.vue'
 import myEnumArrayRenderer from '@/jsonforms/renderers/complex/MyEnumArrayRenderer.vue'
+import myPersonSelectionRenderer from '@/jsonforms/renderers/selectors/MyPersonSelectionRenderer.vue'
+import myPlaceSelectionRenderer from '@/jsonforms/renderers/selectors/MyPlaceSelectionRenderer.vue'
 import myDateSelectionRenderer from '@/jsonforms/renderers/selectors/MyDateSelectionRenderer.vue'
 import myPartSelectionRenderer from '@/jsonforms/renderers/selectors/MyPartSelectionRenderer.vue'
 import myManuscriptSelectionRenderer from '@/jsonforms/renderers/selectors/MyManuscriptSelectionRenderer.vue'
@@ -49,6 +51,12 @@ export const myArrayListRendererEntry = buildRendererRegistryEntry(myArrayListRe
 // complex: checkbox list (used to choose multiple enum options from a list)
 export const myEnumArrayRendererEntry = buildRendererRegistryEntry(myEnumArrayRenderer, isMultiEnumControl, 6)
 
+// selector: persons
+export const myPersonSelectionRendererEntry = buildRendererRegistryEntry(myPersonSelectionRenderer, scopeEndIs('assoc_name'), 5)
+
+// selector: persons
+export const myPlaceSelectionRendererEntry = buildRendererRegistryEntry(myPlaceSelectionRenderer, scopeEndIs('assoc_place'), 5)
+
 // selector: dates
 export const myDateSelectionRendererEntry = buildRendererRegistryEntry(myDateSelectionRenderer, scopeEndIs('assoc_date'), 5)
 
@@ -67,6 +75,8 @@ export const customRenderers = [
   myEnumOneOfControlRendererEntry,
   myArrayListRendererEntry,
   myEnumArrayRendererEntry,
+  myPersonSelectionRendererEntry,
+  myPlaceSelectionRendererEntry,
   myDateSelectionRendererEntry,
   myPartSelectionRendererEntry,
   myManuscriptSelectionRendererEntry,

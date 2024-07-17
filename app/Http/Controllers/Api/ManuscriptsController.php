@@ -27,7 +27,7 @@ class ManuscriptsController extends Controller
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonField($request->json);
+            $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // create the manuscript record
             $manuscript = Manuscript::create([
@@ -62,7 +62,7 @@ class ManuscriptsController extends Controller
     {
         return DB::transaction(function () use ($request, $manuscript) {
             // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonField($request->json);
+            $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // update the manuscript record
             $manuscript->update([
@@ -90,32 +90,33 @@ class ManuscriptsController extends Controller
         return response()->noContent();
     }
 
-    private function _extractMetadataFromJsonField($jsonData)
+    private function _extractMetadataFromJsonData($jsonData)
     {
-        // json data
-        $metadata['json'] = json_encode($jsonData);
-        $decodedJson = json_decode($metadata['json']);
+        $metadata = [];
+        if ($jsonData) {
+            // json
+            $metadata['json'] = json_encode($jsonData);
 
-        if ($decodedJson) {
             // ark
-            $metadata['ark'] = isset($decodedJson->ark) ? $decodedJson->ark : null;
+            $metadata['ark'] = isset($jsonData['ark']) ? $jsonData['ark'] : null;
 
             // identifier
-            $metadata['identifier'] = null;
-            if (isset($decodedJson->idno) && is_array($decodedJson->idno)) {
-                foreach ($decodedJson->idno as $idno) {
-                    $label = $idno->type === 'shelfmark'
+            if (isset($jsonData['idno']) && is_array($jsonData['idno'])) {
+                foreach ($jsonData['idno'] as $idno) {
+                    $label = $idno['type'] === 'shelfmark'
                         ? 'Shelfmark'
-                        : ($idno->type === 'part_no'
+                        : ($idno['type'] === 'part_no'
                             ? 'Part'
-                            : 'UTO');
-                    $metadata['identifier'] = $label . ': ' . $idno->value;
+                            : ($idno['type'] === 'uto'
+                                ? 'UTO'
+                                : ''));
+                    $metadata['identifier'] = $label . ': ' . $idno['value'];
                     break;
                 }
             }
 
             // parts
-            $metadata['cod_units'] = isset($decodedJson->cod_units) ? $decodedJson->cod_units : null;
+            $metadata['cod_units'] = isset($jsonData['cod_units']) ? $jsonData['cod_units'] : null;
         }
 
         return $metadata;

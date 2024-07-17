@@ -24,18 +24,16 @@ class PartsController extends Controller
     public function store(PartRequest $request)
     {
         return DB::transaction(function () use ($request) {
-            // TODO: on validation errors throw an exception to force the transaction to fail
+            // extract metadata from the json field to populate database columns for list view
+            $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // save the json metadata
-            $part = Part::create([
-                // TODO: validate the json metadata
-                // $request->validated()
-                'json' => json_encode($request->json)
-            ]);
+            $part = Part::create($metadata);
 
-            // extract fields from the json metadata into their corresponding database columns to display on list view 
-            $this->_extractJsonFields();
-    
+            // insert the manuscript id into the json field
+            $part->json = json_encode(array_merge(json_decode($part->json, true), ['id' => $part->id]));
+            $part->save();
+
             return new PartResource($part);
         });
     }
@@ -53,15 +51,15 @@ class PartsController extends Controller
      */
     public function update(PartRequest $request, Part $codicologicalUnit)
     {
-        $data = $request->validated();
-        $data['json'] = json_encode($request->json);
+        return DB::transaction(function () use ($request, $codicologicalUnit) {
+            // extract metadata from the json field to populate database columns for list view
+            $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-        $codicologicalUnit->update($data);
- 
-        // extract fields from the json metadata into their corresponding database columns to display on list view
-        $this->_extractJsonFields();
+            // save the json metadata
+            $codicologicalUnit->update($metadata);
 
-        return new PartResource($codicologicalUnit);
+            return new PartResource($codicologicalUnit);
+        });
     }
 
     /**
@@ -76,12 +74,31 @@ class PartsController extends Controller
         return response()->noContent();
     }
 
-    private function _extractJsonFields()
+    private function _extractMetadataFromJsonData($jsonData)
     {
-        Part::query()
-            ->update([
-                'ark' => Part::raw("json->>'ark'"),
-                'identifier' => Part::raw("json->>'identifier'")
-            ]);
+        $metadata = [];
+        if ($jsonData) {
+            // json
+            $metadata['json'] = json_encode($jsonData);
+
+            // ark
+            $metadata['ark'] = isset($jsonData['ark']) ? $jsonData['ark'] : null;
+
+            // identifier
+            if (isset($jsonData['idno']) && is_array($jsonData['idno'])) {
+                foreach ($jsonData['idno'] as $idno) {
+                    $label = $idno['type'] === 'shelfmark'
+                        ? 'Shelfmark'
+                        : ($idno['type'] === 'part_no'
+                            ? 'Part'
+                            : ($idno['type'] === 'uto_mark'
+                                ? 'UTO Mark'
+                                : ''));
+                    $metadata['identifier'] = $label . ': ' . $idno['value'];
+                    break;
+                }
+            }
+        }
+        return $metadata;
     }
 }
