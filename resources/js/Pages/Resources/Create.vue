@@ -13,7 +13,7 @@
         <CreateEditForm
           :schema="schema"
           :uischema="uischema"
-          :data="data"
+          :data="data || {}"
           @on-save="onSave"
           @on-cancel="onCancel"
           class="px-4 sm:px-6 lg:px-8 mb-16">
