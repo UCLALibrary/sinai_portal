@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('dates', function (Blueprint $table) {
             $table->id();
             $table->string('type')->nullable();
-            $table->string('as_written')->nullable();
             $table->string('not_before')->nullable();
             $table->string('not_after')->nullable();
-            $table->string('note')->nullable();
+            $table->string('value')->nullable();
+            $table->string('as_written')->nullable();
             $table->jsonb('json');
             $table->timestamps();
         });
