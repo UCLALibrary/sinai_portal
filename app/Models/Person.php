@@ -6,9 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 
-class Place extends Model
+class Person extends Model
 {
     use HasFactory;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'persons';
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +23,7 @@ class Place extends Model
      * @var array
      */
     protected $fillable = [
-        'event',
+        'role',
         'as_written',
         'json',
     ];
@@ -26,13 +33,12 @@ class Place extends Model
     public static $uiSchema;
 
     public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/json/complete/assoc_place.json'));
-        self::$uiSchema = File::get(base_path('/schemas/ui/complete/assoc_place.json'));
+        self::$schema = File::get(base_path('/schemas/json/complete/assoc_name.json'));
+        self::$uiSchema = File::get(base_path('/schemas/ui/complete/assoc_name.json'));
     }
 }
 
 /*
  * Execute the static initializer to load the schema and ui schema.
  */
-Place::initialize();
-
+Person::initialize();

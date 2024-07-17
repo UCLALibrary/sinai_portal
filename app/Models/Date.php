@@ -10,6 +10,11 @@ class Date extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['json'];
 
     public static $schema;

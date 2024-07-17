@@ -3,6 +3,7 @@
 use App\Http\Controllers\Cms\DatesController;
 use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\PartsController;
+use App\Http\Controllers\Cms\PersonsController;
 use App\Http\Controllers\Cms\PlacesController;
 use App\Http\Controllers\Cms\UsersController;
 use Illuminate\Foundation\Application;
@@ -32,6 +33,9 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // parts
     Route::resource('codicological-units', PartsController::class);
+
+    // persons
+    Route::resource('persons', PersonsController::class);
 
     // places
     Route::resource('places', PlacesController::class);

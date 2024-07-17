@@ -1,0 +1,22 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/role"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/as_written"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/note"
+        }
+      ]
+    }
+  ]
+}

@@ -14,7 +14,16 @@ class PlacesController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Resources/Index', [
+            'title' => 'Places',
+            'resourceName' => 'places',
+            'resources' => Place::paginate(20),
+            'columns' => [
+                'event' => 'Event',
+                'as_written' => 'As Written'
+            ],
+            'createEndpoint' => route('places.create'),
+        ]);
     }
 
     /**
@@ -22,7 +31,12 @@ class PlacesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Resources/Create', [
+            'schema' => json_decode(Place::$schema),
+            'uischema' => json_decode(Place::$uiSchema),
+            'saveEndpoint' => route('api.places.store'),
+            'redirectUrl' => route('places.index'),
+        ]);
     }
 
     /**
@@ -46,7 +60,13 @@ class PlacesController extends Controller
      */
     public function edit(Place $place)
     {
-        //
+        return Inertia::render('Resources/Edit', [
+            'schema' => json_decode(Place::$schema),
+            'uischema' => json_decode(Place::$uiSchema),
+            'data' => json_decode($place->json),
+            'saveEndpoint' => route('api.places.update', $place->id),
+            'redirectUrl' => route('places.index'),
+        ]);
     }
 
     /**
