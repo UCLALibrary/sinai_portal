@@ -32,6 +32,7 @@ class PersonsController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
+            'title' => 'Persons > Add Person',
             'schema' => json_decode(Person::$schema),
             'uischema' => json_decode(Person::$uiSchema),
             'saveEndpoint' => route('api.persons.store'),
@@ -61,6 +62,7 @@ class PersonsController extends Controller
     public function edit(Person $person)
     {
         return Inertia::render('Resources/Edit', [
+            'title' => 'Persons > Edit Person',
             'schema' => json_decode(Person::$schema),
             'uischema' => json_decode(Person::$uiSchema),
             'data' => json_decode($person->json),

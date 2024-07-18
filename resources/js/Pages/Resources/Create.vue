@@ -5,7 +5,7 @@
         <div class="flex items-center justify-between mb-8 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
           <div class="sm:flex-auto">
             <h1 class="text-2xl font-semibold leading-6 text-gray-900">
-              Resources > Add Resource
+              {{ title }}
             </h1>
           </div>
         </div>
@@ -24,12 +24,13 @@
 </template>
 
 <script setup>
-  import { defineAsyncComponent, ref } from 'vue'
+  import { defineAsyncComponent } from 'vue'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   const CreateEditForm = defineAsyncComponent(() => import('@/jsonforms/components/CreateEditForm.vue'))
 
   const props = defineProps({
+    title: { type: String, required: true },
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },

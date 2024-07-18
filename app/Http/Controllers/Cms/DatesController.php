@@ -35,6 +35,7 @@ class DatesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
+            'title' => 'Dates > Add Date',
             'schema' => json_decode(Date::$schema),
             'uischema' => json_decode(Date::$uiSchema),
             'saveEndpoint' => route('api.dates.store'),
@@ -64,6 +65,7 @@ class DatesController extends Controller
     public function edit(Date $date)
     {
         return Inertia::render('Resources/Edit', [
+            'title' => 'Dates > Edit Date',
             'schema' => json_decode(Date::$schema),
             'uischema' => json_decode(Date::$uiSchema),
             'data' => json_decode($date->json),

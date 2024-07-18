@@ -29,6 +29,7 @@ class PartsController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
+            'title' => 'Codicological Units > Add Codicological Unit',
             'schema' => json_decode(Part::$schema),
             'uischema' => json_decode(Part::$uiSchema),
             'saveEndpoint' => route('api.codicological-units.store'),
@@ -58,6 +59,7 @@ class PartsController extends Controller
     public function edit(Part $codicologicalUnit)
     {
         return Inertia::render('Resources/Edit', [
+            'title' => 'Codicological Units > Edit Codicological Unit',
             'schema' => json_decode(Part::$schema),
             'uischema' => json_decode(Part::$uiSchema),
             'data' => json_decode($codicologicalUnit->json),

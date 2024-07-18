@@ -32,6 +32,7 @@ class PlacesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
+            'title' => 'Places > Add Place',
             'schema' => json_decode(Place::$schema),
             'uischema' => json_decode(Place::$uiSchema),
             'saveEndpoint' => route('api.places.store'),
@@ -61,6 +62,7 @@ class PlacesController extends Controller
     public function edit(Place $place)
     {
         return Inertia::render('Resources/Edit', [
+            'title' => 'Places > Edit Place',
             'schema' => json_decode(Place::$schema),
             'uischema' => json_decode(Place::$uiSchema),
             'data' => json_decode($place->json),
