@@ -16,6 +16,8 @@ class ManuscriptsSeeder extends Seeder
     {
         $manuscripts = $this->getSyriac12Manuscripts();
         $this->seedManuscripts($manuscripts);
+
+        $this->seedRandomManuscripts(100);
     }
 
     private function seedManuscripts($manuscripts)
@@ -73,7 +75,9 @@ class ManuscriptsSeeder extends Seeder
                 'features' => [
                     'Inscription(s)'
                 ],
-                'cod_units' => [],
+                'cod_units' => [
+                    1
+                ],
                 'para' => [
                     [
                         'type' => 'endowment',
@@ -215,9 +219,8 @@ class ManuscriptsSeeder extends Seeder
         ];
     }
 
-    private function _getRandomManuscripts()
+    private function seedRandomManuscripts($numRecords)
     {
-        $numRecords = 3;
         for ($index = 0; $index < $numRecords; $index++) {
             // create a random identifier
             $identifierType = fake()->randomElement(['shelfmark', 'part_no', 'uto_mark']);
@@ -225,7 +228,9 @@ class ManuscriptsSeeder extends Seeder
                 ? 'Shelfmark'
                 : ($identifierType === 'part_no'
                     ? 'Part'
-                    : 'UTO');
+                    : ($identifierType === 'uto_mark'
+                        ? 'UTO Mark'
+                        : ''));
             $identifierValue = 'MS. ' . fake()->numberBetween(10, 99);
 
             $manuscript = Manuscript::factory()->create([

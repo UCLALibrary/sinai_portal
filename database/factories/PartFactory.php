@@ -18,7 +18,6 @@ class PartFactory extends Factory
     {
         return [
             'ark' => 'ark:/21198/z1.' . fake()->numberBetween(10000, 99999),
-            'identifier' => 'Part. ' . fake()->numberBetween(10000, 99999),
             'json' => '{}',
         ];
     }
