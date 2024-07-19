@@ -15,7 +15,7 @@
             type="button"
             @click="onCancel"
             class="cancel-button">
-            Cancel
+            <i class="mdi mdi-cancel"></i> Cancel
           </button>
 
           <template v-if="mode == 'create'">
@@ -25,7 +25,7 @@
               class="save-button"
               :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
               :disabled="!isValid">
-              Save
+              <i class="mdi mdi-content-save"></i> Save
             </button>
           </template>
           <template v-else-if="mode == 'edit'">
@@ -35,7 +35,7 @@
               class="save-button"
               :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
               :disabled="!isValid">
-              Save &amp; Continue
+              <i class="mdi mdi-content-save-edit"></i> Save &amp; Continue
             </button>
 
             <button
@@ -44,7 +44,7 @@
               class="save-button"
               :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
               :disabled="!isValid">
-              Save &amp; Finish
+              <i class="mdi mdi-content-save"></i> Save &amp; Finish
             </button>
           </template>
         </v-col>
