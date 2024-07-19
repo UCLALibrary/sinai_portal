@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ContentsController;
 use App\Http\Controllers\Api\DatesController;
 use App\Http\Controllers\Api\FormsController;
 use App\Http\Controllers\Api\ManuscriptsController;
@@ -18,6 +19,10 @@ Route::apiResource('manuscripts', ManuscriptsController::class, [
 ]);
 
 Route::apiResource('codicological-units', PartsController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('content-units', ContentsController::class, [
     'as' => 'api'
 ]);
 
