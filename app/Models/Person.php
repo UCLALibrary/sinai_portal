@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
 
 class Person extends Model
 {
-    use HasFactory;
+    use HasFactory, JsonSchemas;
 
     /**
      * The table associated with the model.
@@ -27,18 +27,9 @@ class Person extends Model
         'as_written',
         'json',
     ];
-
-    public static $schema;
-
-    public static $uiSchema;
-
-    public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/json/complete/assoc_name.json'));
-        self::$uiSchema = File::get(base_path('/schemas/ui/complete/assoc_name.json'));
-    }
 }
 
 /*
- * Execute the static initializer to load the schema and ui schema.
+ * Execute the static initializer to load the schemas for JSON Forms.
  */
-Person::initialize();
+Person::initialize('assoc_name');

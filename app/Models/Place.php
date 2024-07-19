@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
 
 class Place extends Model
 {
-    use HasFactory;
+    use HasFactory, JsonSchemas;
 
     /**
      * The attributes that are mass assignable.
@@ -20,19 +20,9 @@ class Place extends Model
         'as_written',
         'json',
     ];
-
-    public static $schema;
-
-    public static $uiSchema;
-
-    public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/json/complete/assoc_place.json'));
-        self::$uiSchema = File::get(base_path('/schemas/ui/complete/assoc_place.json'));
-    }
 }
 
 /*
- * Execute the static initializer to load the schema and ui schema.
+ * Execute the static initializer to load the schemas for JSON Forms.
  */
-Place::initialize();
-
+Place::initialize('assoc_place');

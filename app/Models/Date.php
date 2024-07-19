@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\File;
 
 class Date extends Model
 {
-    use HasFactory;
+    use HasFactory, JsonSchemas;
 
     /**
      * The attributes that are mass assignable.
@@ -23,21 +23,9 @@ class Date extends Model
         'as_written',
         'json',
     ];
-
-    public static $schema;
-
-    public static $uiSchema;
-
-    public static $uiSchemaMinimal;
-
-    public static function initialize() {
-        self::$schema = File::get(base_path('/schemas/json/complete/assoc_date.json'));
-        self::$uiSchema = File::get(base_path('/schemas/ui/complete/assoc_date.json'));
-        self::$uiSchemaMinimal = File::get(base_path('/schemas/ui/minimal/assoc_date.json'));
-    }
 }
 
 /*
- * Execute the static initializer to load the schema and ui schema.
+ * Execute the static initializer to load the schemas for JSON Forms.
  */
-Date::initialize();
+Date::initialize('assoc_date');
