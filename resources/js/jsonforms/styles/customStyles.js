@@ -26,7 +26,7 @@ const customStyles = {
     addButton: 'mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mx-1',
     label: 'block text-sm font-medium text-gray-700',
     itemWrapper: '',
-    noData: 'px-3 py-2 text-sm bg-white',
+    noData: 'px-3 py-2 text-sm bg-gray-200',
     itemToolbar: '!m-0 p-2 border-b bg-gray-200',
     itemLabel: '!px-1 bg-transparent text-sm',
     itemContent: '!p-4',
