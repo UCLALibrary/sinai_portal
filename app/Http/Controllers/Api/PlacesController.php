@@ -30,20 +30,12 @@ class PlacesController extends Controller
             // save the json metadata
             $place = Place::create($metadata);
 
-            // insert the manuscript id into the json field
+            // insert the id into the json field
             $place->json = json_encode(array_merge(json_decode($place->json, true), ['id' => $place->id]));
             $place->save();
 
             return new PlaceResource($place);
         });
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Place $place)
-    {
-        return new PlaceResource($place);
     }
 
     /**

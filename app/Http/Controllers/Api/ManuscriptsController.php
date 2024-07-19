@@ -36,7 +36,7 @@ class ManuscriptsController extends Controller
                 'json' => $metadata['json'],
             ]);
 
-            // insert the manuscript id into the json field
+            // insert the id into the json field
             $manuscript->json = json_encode(array_merge(json_decode($manuscript->json, true), ['id' => $manuscript->id]));
             $manuscript->save();
 
@@ -45,14 +45,6 @@ class ManuscriptsController extends Controller
 
             return new ManuscriptResource($manuscript);
         });
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Manuscript $manuscript)
-    {
-        return new ManuscriptResource($manuscript);
     }
 
     /**

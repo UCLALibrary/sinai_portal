@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ContentRequest;
 use App\Models\Content;
 use Inertia\Inertia;
 
@@ -40,22 +39,6 @@ class ContentsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ContentRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Content $contentUnit)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Content $contentUnit)
@@ -68,21 +51,5 @@ class ContentsController extends Controller
             'saveEndpoint' => route('api.content-units.update', $contentUnit->id),
             'redirectUrl' => route('content-units.index'),
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(ContentRequest $request, Content $contentUnit)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Content $contentUnit)
-    {
-        //
     }
 }

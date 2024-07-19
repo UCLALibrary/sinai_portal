@@ -30,20 +30,12 @@ class PartsController extends Controller
             // save the json metadata
             $part = Part::create($metadata);
 
-            // insert the manuscript id into the json field
+            // insert the id into the json field
             $part->json = json_encode(array_merge(json_decode($part->json, true), ['id' => $part->id]));
             $part->save();
 
             return new PartResource($part);
         });
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Part $codicologicalUnit)
-    {
-        return new PartResource($codicologicalUnit);
     }
 
     /**

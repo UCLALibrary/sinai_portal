@@ -39,14 +39,6 @@ class ContentsController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Content $contentUnit)
-    {
-        return new ContentResource($contentUnit);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(ContentRequest $request, Content $contentUnit)

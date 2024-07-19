@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ManuscriptRequest;
 use App\Models\Manuscript;
 use Inertia\Inertia;
 
@@ -18,7 +17,10 @@ class ManuscriptsController extends Controller
             'title' => 'Manuscripts',
             'resourceName' => 'manuscripts',
             'resources' => Manuscript::paginate(20),
-            'columns' => ['ark' => 'ARK', 'identifier' => 'Identifier'],
+            'columns' => [
+                'ark' => 'ARK',
+                'identifier' => 'Identifier'
+            ],
             'createEndpoint' => route('manuscripts.create'),
         ]);
     }
@@ -38,22 +40,6 @@ class ManuscriptsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(ManuscriptRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Manuscript $manuscript)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Manuscript $manuscript)
@@ -66,21 +52,5 @@ class ManuscriptsController extends Controller
             'saveEndpoint' => route('api.manuscripts.update', $manuscript->id),
             'redirectUrl' => route('manuscripts.index'),
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(ManuscriptRequest $request, Manuscript $manuscript)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Manuscript $manuscript)
-    {
-        //
     }
 }

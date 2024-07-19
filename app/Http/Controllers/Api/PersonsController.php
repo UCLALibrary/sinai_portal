@@ -30,20 +30,12 @@ class PersonsController extends Controller
             // save the json metadata
             $person = Person::create($metadata);
 
-            // insert the manuscript id into the json field
+            // insert the id into the json field
             $person->json = json_encode(array_merge(json_decode($person->json, true), ['id' => $person->id]));
             $person->save();
 
             return new PersonResource($person);
         });
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Person $person)
-    {
-        return new PersonResource($person);
     }
 
     /**

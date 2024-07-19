@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PartRequest;
 use App\Models\Part;
 use Inertia\Inertia;
 
@@ -18,7 +17,10 @@ class PartsController extends Controller
             'title' => 'Codicological Units',
             'resourceName' => 'codicological-units',
             'resources' => Part::paginate(20),
-            'columns' => ['identifier' => 'Identifier', 'ark' => 'ARK'],
+            'columns' => [
+                'identifier' => 'Identifier',
+                'ark' => 'ARK'
+            ],
             'createEndpoint' => route('codicological-units.create'),
         ]);
     }
@@ -38,22 +40,6 @@ class PartsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(PartRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Part $codicologicalUnit)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Part $codicologicalUnit)
@@ -66,21 +52,5 @@ class PartsController extends Controller
             'saveEndpoint' => route('api.codicological-units.update', $codicologicalUnit->id),
             'redirectUrl' => route('codicological-units.index'),
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(PartRequest $request, Part $codicologicalUnit)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Part $codicologicalUnit)
-    {
-        //
     }
 }

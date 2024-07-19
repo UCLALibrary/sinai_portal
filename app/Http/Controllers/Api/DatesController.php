@@ -32,20 +32,12 @@ class DatesController extends Controller
             // save the json metadata
             $date = Date::create($metadata);
 
-            // insert the manuscript id into the json field
+            // insert the id into the json field
             $date->json = json_encode(array_merge(json_decode($date->json, true), ['id' => $date->id]));
             $date->save();
 
             return new DateResource($date);
         });
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Date $date)
-    {
-        return new DateResource($date);
     }
 
     /**

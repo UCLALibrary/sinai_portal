@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Models\Date;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class DatesController extends Controller
@@ -44,22 +43,6 @@ class DatesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Date $date)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Date $date)
@@ -72,21 +55,5 @@ class DatesController extends Controller
             'saveEndpoint' => route('api.dates.update', $date->id),
             'redirectUrl' => route('dates.index'),
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Date $date)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Date $date)
-    {
-        //
     }
 }

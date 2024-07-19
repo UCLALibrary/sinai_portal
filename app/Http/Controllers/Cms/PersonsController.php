@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PersonRequest;
 use App\Models\Person;
 use Inertia\Inertia;
 
@@ -41,22 +40,6 @@ class PersonsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(PersonRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Person $person)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Person $person)
@@ -69,21 +52,5 @@ class PersonsController extends Controller
             'saveEndpoint' => route('api.persons.update', $person->id),
             'redirectUrl' => route('persons.index'),
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(PersonRequest $request, Person $person)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Person $person)
-    {
-        //
     }
 }

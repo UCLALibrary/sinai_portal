@@ -18,7 +18,10 @@ class UsersController extends Controller
             'title' => 'Users',
             'resourceName' => 'users',
             'resources' => User::paginate(20),
-            'columns' => ['name' => 'Name', 'email' => 'E-mail'],
+            'columns' => [
+                'name' => 'Name',
+                'email' => 'E-mail'
+            ],
             'createEndpoint' => route('users.create'),
         ]);
     }
