@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('manuscripts', function (Blueprint $table) {
             $table->id();
-            $table->string('ark')->nullable();
-            $table->string('identifier')->nullable();
+            $table->string('ark');
+            $table->string('identifier');
             $table->jsonb('json');
             $table->timestamps();
         });
