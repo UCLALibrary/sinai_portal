@@ -1,0 +1,122 @@
+{
+  "title": "Bibliography",
+  "description": "A bibliographic citation connected with an object or entity",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "$comment": "Foreign key referring to the bibliographic item in the database"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "cite",
+        "edition",
+        "otherdigversion",
+        "ref",
+        "refno",
+        "translation"
+      ]
+    },
+    "range": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "alt_shelf": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "note": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "title": "Note",
+        "description": "A prose note of a specified type",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "assoc_date",
+              "assoc_name",
+              "assoc_place",
+              "bib",
+              "binding",
+              "cataloguer",
+              "coll",
+              "condition",
+              "contents",
+              "excerpt",
+              "foliation",
+              "general",
+              "layout",
+              "ornamentation",
+              "para",
+              "provenance",
+              "rel_work",
+              "related_mss",
+              "support",
+              "writing"
+            ]
+          },
+          "value": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          }
+        },
+        "required": [
+          "type",
+          "value"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "if": {
+    "properties": {
+      "type": {
+        "const": "otherdigversion"
+      }
+    },
+    "required": [
+      "type"
+    ]
+  },
+  "then": {
+    "properties": {
+      "url": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "required": [
+      "id",
+      "type",
+      "url"
+    ]
+  },
+  "unevaluatedProperties": false
+}

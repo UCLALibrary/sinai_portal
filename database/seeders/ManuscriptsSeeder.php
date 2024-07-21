@@ -176,32 +176,8 @@ class ManuscriptsSeeder extends Seeder
                     ]
                 ],
                 'bib' => [
-                    [
-                        'id' => '$id-for-Kamil',
-                        'type' => 'ref',
-                        'range' => '[50], pg. 152',
-                        'url' => 'https://search.worldcat.org/title/101411',
-                        'alt_shelf' => 'Lorem ipsum',
-                        'note' => [
-                            [
-                                'type' => 'bib',
-                                'value' => 'Kamil inadvertently dated this manuscript to the 10th century, not realizing there are two parts'
-                            ],
-                        ]
-                    ],
-                    [
-                        'id' => '$id-for-LOC',
-                        'type' => 'otherdigversion',
-                        'range' => 'Entry: Syriac Manuscripts 12. Lectionary and Gospel of Luke',
-                        'url' => 'https://www.loc.gov/item/00279386334-ms/',
-                        'alt_shelf' => 'Syriac Manuscripts 12',
-                        'note' => [
-                            [
-                                'type' => 'bib',
-                                'value' => 'The LOC provides the incorrect date of 7th c. for this manuscript, which is only true of the first part'
-                            ]
-                        ]
-                    ]
+                    1,
+                    2
                 ],
                 'cataloguer' => [
                     [

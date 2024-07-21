@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bibliography;
 use App\Models\Date;
 use App\Models\Part;
 use App\Models\Person;
@@ -51,6 +52,17 @@ class FormsController extends Controller
         return response()->json([
             'schema' => json_decode(Place::$schema),
             'uischema' => json_decode(Place::$uiSchema),
+        ]);
+    }
+
+    /**
+     * Get the schemas for a bibliography resource.
+     */
+    public function createBib()
+    {
+        return response()->json([
+            'schema' => json_decode(Bibliography::$schema),
+            'uischema' => json_decode(Bibliography::$uiSchema),
         ]);
     }
 }

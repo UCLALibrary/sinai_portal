@@ -184,19 +184,7 @@ class PartsSeeder extends Seeder
                     ]
                 ],
                 'bib' => [
-                    [
-                        'id' => '$local-id-for-Kamil',
-                        'type' => 'ref',
-                        'range' => '[50], pg. 152',
-                        'alt_shelf' => 'VALUE',
-                        'url' => 'https://viscodex.library.utoronto.ca/project/60c18ea186a72250fa7ca176',
-                        'note' => [
-                            [
-                                'type' => 'bib',
-                                'value' => 'Kamil incorrectly dates this manuscript to the 10th century'
-                            ]
-                        ]
-                    ]
+                    3
                 ],
                 'cataloguer' => [
                     [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BibliographyController;
 use App\Http\Controllers\Api\ContentsController;
 use App\Http\Controllers\Api\DatesController;
 use App\Http\Controllers\Api\FormsController;
@@ -38,8 +39,13 @@ Route::apiResource('dates', DatesController::class, [
     'as' => 'api'
 ]);
 
+Route::apiResource('bibliography', BibliographyController::class, [
+    'as' => 'api'
+]);
+
 // forms
+Route::get('forms/cod_unit', [FormsController::class, 'createCodUnit'])->name('api.forms.cod_unit');
 Route::get('forms/assoc_name', [FormsController::class, 'createAssocName'])->name('api.forms.assoc_name');
 Route::get('forms/assoc_place', [FormsController::class, 'createAssocPlace'])->name('api.forms.assoc_place');
 Route::get('forms/assoc_date', [FormsController::class, 'createAssocDate'])->name('api.forms.assoc_date');
-Route::get('forms/cod_unit', [FormsController::class, 'createCodUnit'])->name('api.forms.cod_unit');
+Route::get('forms/bib', [FormsController::class, 'createBib'])->name('api.forms.bib');

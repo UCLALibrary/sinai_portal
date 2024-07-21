@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Cms\BibliographyController;
 use App\Http\Controllers\Cms\ContentsController;
 use App\Http\Controllers\Cms\DatesController;
 use App\Http\Controllers\Cms\ManuscriptsController;
@@ -46,4 +47,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // dates
     Route::resource('dates', DatesController::class);
+
+    // bibliography
+    Route::resource('bibliography', BibliographyController::class);
 });

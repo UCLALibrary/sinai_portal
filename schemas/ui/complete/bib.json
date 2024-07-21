@@ -1,0 +1,30 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/type"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/range"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/alt_shelf"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/url"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/note"
+        }
+      ]
+    }
+  ]
+}
