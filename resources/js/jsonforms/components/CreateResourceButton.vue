@@ -47,7 +47,7 @@
   const initialize = async () => {
     const response = await axios.get(props.formEndpoint)
     if (response.data) {
-      formComponent.value = defineAsyncComponent(() => import('@/jsonforms/components/CreateEditForm.vue'))
+      formComponent.value = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
       schema.value = response.data.schema
       uischema.value = response.data.uischema
     }

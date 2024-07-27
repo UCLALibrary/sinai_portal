@@ -10,14 +10,14 @@
           </div>
         </div>
 
-        <CreateEditForm
+        <ResourceForm
           :schema="schema"
           :uischema="uischema"
           :data="data || {}"
           @on-save="onSave"
           @on-cancel="onCancel"
-          class="px-4 sm:px-6 lg:px-8 mb-16">
-        </CreateEditForm>
+          class="px-4 sm:px-6 lg:px-8 mb-16"
+        />
       </div>
     </div>
   </AppLayout>
@@ -27,7 +27,7 @@
   import { defineAsyncComponent } from 'vue'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
-  const CreateEditForm = defineAsyncComponent(() => import('@/jsonforms/components/CreateEditForm.vue'))
+  const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
 
   const props = defineProps({
     title: { type: String, required: true },
