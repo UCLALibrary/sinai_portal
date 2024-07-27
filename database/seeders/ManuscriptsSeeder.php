@@ -98,7 +98,21 @@ class ManuscriptsSeeder extends Seeder
                             1
                         ],
                         'assoc_date' => [
-                            1
+                            [
+                                'type' => 'purchase',
+                                'iso' => [
+                                    'not_before' => '1564',
+                                    'not_after' => '1564',
+                                ],
+                                'value' => '1564 CE',
+                                'as_written' => '1564',
+                                'note' => [
+                                    [
+                                        'type' => 'assoc_date',
+                                        'value' => 'Surprisingly, the date provided is Gregorian'
+                                    ]
+                                ],
+                            ],
                         ],
                         'note' => [
                             [
@@ -125,7 +139,21 @@ class ManuscriptsSeeder extends Seeder
                     ]
                 ],
                 'assoc_date' => [
-                    2
+                    [
+                        'type' => 'binding',
+                        'iso' => [
+                            'not_before' => '1201',
+                            'not_after' => '1700',
+                        ],
+                        'value' => 'Between 13th - 17th c. CE',
+                        'as_written' => 'Lorem ipsum',
+                        'note' => [
+                            [
+                                'type' => 'assoc_date',
+                                'value' => 'Binding date estimated from production dates of the two codicological units'
+                            ]
+                        ],
+                    ],
                 ],
                 'note' => [
                     [
@@ -225,7 +253,6 @@ class ManuscriptsSeeder extends Seeder
                     ],
                 ],
                 'cod_units' => DB::table('parts')->inRandomOrder()->limit(2)->pluck('id'),
-                'assoc_date' => DB::table('dates')->inRandomOrder()->limit(3)->pluck('id')
             ];
 
             // update the record with the json field

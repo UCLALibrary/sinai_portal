@@ -23,7 +23,6 @@ import myArrayListRenderer from '@/jsonforms/renderers/array/MyArrayListRenderer
 import myEnumArrayRenderer from '@/jsonforms/renderers/complex/MyEnumArrayRenderer.vue'
 import myPersonSelectionRenderer from '@/jsonforms/renderers/selectors/MyPersonSelectionRenderer.vue'
 import myPlaceSelectionRenderer from '@/jsonforms/renderers/selectors/MyPlaceSelectionRenderer.vue'
-import myDateSelectionRenderer from '@/jsonforms/renderers/selectors/MyDateSelectionRenderer.vue'
 import myPartSelectionRenderer from '@/jsonforms/renderers/selectors/MyPartSelectionRenderer.vue'
 import myManuscriptSelectionRenderer from '@/jsonforms/renderers/selectors/MyManuscriptSelectionRenderer.vue'
 import myBibliographySelectionRenderer from '@/jsonforms/renderers/selectors/MyBibliographySelectionRenderer.vue'
@@ -58,9 +57,6 @@ export const myPersonSelectionRendererEntry = buildRendererRegistryEntry(myPerso
 // selector: persons
 export const myPlaceSelectionRendererEntry = buildRendererRegistryEntry(myPlaceSelectionRenderer, scopeEndIs('assoc_place'), 5)
 
-// selector: dates
-export const myDateSelectionRendererEntry = buildRendererRegistryEntry(myDateSelectionRenderer, scopeEndIs('assoc_date'), 5)
-
 // selector: parts
 export const myPartSelectionRendererEntry = buildRendererRegistryEntry(myPartSelectionRenderer, scopeEndIs('cod_units'), 5)
 
@@ -81,7 +77,6 @@ export const customRenderers = [
   myEnumArrayRendererEntry,
   myPersonSelectionRendererEntry,
   myPlaceSelectionRendererEntry,
-  myDateSelectionRendererEntry,
   myPartSelectionRendererEntry,
   myManuscriptSelectionRendererEntry,
   myBibliographySelectionRendererEntry,

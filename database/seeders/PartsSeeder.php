@@ -124,7 +124,21 @@ class PartsSeeder extends Seeder
                     2
                 ],
                 'assoc_date' => [
-                    3
+                    [
+                        'type' => 'origin',
+                        'iso' => [
+                            'not_before' => '1201',
+                            'not_after' => '1300',
+                        ],
+                        'value' => '13th c. CE',
+                        'as_written' => 'VALUE',
+                        'note' => [
+                            [
+                                'type' => 'assoc_date',
+                                'value' => 'Based on the script, this manuscript is from the 13th cenutry'
+                            ]
+                        ],
+                    ],
                 ],
                 'features' => [
                     'Headpiece(s)',
@@ -236,7 +250,6 @@ class PartsSeeder extends Seeder
                 ],
                 'summary' => fake()->sentence(),
                 'locus' => 'f. ' . fake()->randomNumber(),
-                'assoc_date' => DB::table('dates')->inRandomOrder()->limit(3)->pluck('id'),
             ];
 
             // update the record with the json field

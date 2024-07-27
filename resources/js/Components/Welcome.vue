@@ -20,17 +20,17 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
             <div>
                 <div class="flex items-center">
                     <h2 class="text-xl font-semibold text-gray-900">
-                        <a href="/cms/manuscripts">Manuscript Objects</a>
+                        <a href="/cms/manuscripts">Manuscripts</a>
                     </h2>
                 </div>
 
                 <p class="mt-4 text-gray-500 text-sm leading-relaxed">
-                    Create and edit all manuscript objects in the database. Manuscript objects are the highest level of description in the database and are the parent records for all other descriptive data.
+                    Create and edit all manuscripts in the database. Manuscripts are the highest level of description in the database and are the parent records for all other descriptive data.
                 </p>
 
                 <p class="mt-4 text-sm">
                     <a href="/cms/manuscripts" class="inline-flex items-center font-semibold text-sinai-red">
-                        Manage Manuscript objects
+                        Manage Manuscripts
 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
                             <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
@@ -64,17 +64,83 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
             <div>
                 <div class="flex items-center">
                     <h2 class="text-xl font-semibold text-gray-900">
-                        <a href="'/cms/dates">Dates</a>
+                        <a href="'/cms/content-units">Content Units</a>
                     </h2>
                 </div>
 
                 <p class="mt-4 text-gray-500 text-sm leading-relaxed">
-                    Manage Dates that can be attached to other records in the database. Dates are used to describe the temporal aspects of manuscript objects and codicological units.
+                    Manage Content Units that can be attached to other records in the database.
                 </p>
 
                 <p class="mt-4 text-sm">
-                    <a href="/cms/dates" class="inline-flex items-center font-semibold text-sinai-red">
-                        Manage Dates
+                    <a href="/cms/content-units" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Content Units
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
+                            <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </p>
+            </div>
+
+            <div>
+                <div class="flex items-center">
+                    <h2 class="text-xl font-semibold text-gray-900">
+                        <a href="'/cms/persons">Persons</a>
+                    </h2>
+                </div>
+
+                <p class="mt-4 text-gray-500 text-sm leading-relaxed">
+                    Manage Persons that can be attached to other records in the database.
+                </p>
+
+                <p class="mt-4 text-sm">
+                    <a href="/cms/persons" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Persons
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
+                            <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </p>
+            </div>
+
+            <div>
+                <div class="flex items-center">
+                    <h2 class="text-xl font-semibold text-gray-900">
+                        <a href="'/cms/places">Places</a>
+                    </h2>
+                </div>
+
+                <p class="mt-4 text-gray-500 text-sm leading-relaxed">
+                    Manage Places that can be attached to other records in the database.
+                </p>
+
+                <p class="mt-4 text-sm">
+                    <a href="/cms/places" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Places
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
+                            <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </p>
+            </div>
+
+            <div>
+                <div class="flex items-center">
+                    <h2 class="text-xl font-semibold text-gray-900">
+                        <a href="'/cms/bibliography">Bibliography</a>
+                    </h2>
+                </div>
+
+                <p class="mt-4 text-gray-500 text-sm leading-relaxed">
+                    Manage Bibliography that can be attached to other records in the database.
+                </p>
+
+                <p class="mt-4 text-sm">
+                    <a href="/cms/bibliography" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Bibliography
 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
                             <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
