@@ -22,3 +22,7 @@
 .el-select-dropdown__item.is-selected {
   --el-color-primary: rgb(171, 47, 10);
 }
+
+.el-tag__content {
+  @apply flex items-center
+}

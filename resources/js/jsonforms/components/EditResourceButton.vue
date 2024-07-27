@@ -1,9 +1,9 @@
 <template>
-  <button
-    type="button"
+  <el-icon
     :class="styles"
     @click="isDialogOpen = true">
-  </button>
+    <Edit />
+  </el-icon>
 
   <el-dialog
     :title="title"
@@ -14,7 +14,7 @@
       :schema="schema"
       :uischema="uischema"
       :data="data"
-      mode="create"
+      mode="update"
       @on-save="onSave"
       @on-cancel="onCancel">
     </component>
@@ -26,8 +26,9 @@
 
   const props = defineProps({
     title: { type: String, required: false, default: '' },
-    styles: { type: String, required: false, default: '' },
+    resourceId: { type: Number, required: true },
     formEndpoint: { type: String, required: true },
+    styles: { type: String, required: false, default: '' },
   })
 
   const emit = defineEmits(['on-save']);
@@ -52,6 +53,7 @@
       formComponent.value = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
       schema.value = response.data.schema
       uischema.value = response.data.uischema
+      data.value = response.data.data
     }
   }
 
@@ -60,7 +62,10 @@
   }
 
   const onSave = (payload) => {
-    emit('on-save', payload.data)
+    // set the resource id in the payload
+    payload.resourceId = props.resourceId
+
+    emit('on-save', payload)
     isDialogOpen.value = false
   }
 

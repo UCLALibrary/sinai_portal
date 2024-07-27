@@ -11,14 +11,16 @@
     <v-container>
       <v-row>
         <v-col class="flex justify-end space-x-4">
-          <button
-            type="button"
-            @click="onCancel"
-            class="cancel-button">
-            <i class="mdi mdi-cancel"></i> Cancel
-          </button>
+          <template v-if="mode !== 'show'">
+            <button
+              type="button"
+              @click="onCancel"
+              class="cancel-button">
+              <i class="mdi mdi-cancel"></i> Cancel
+            </button>
+          </template>
 
-          <template v-if="mode == 'create'">
+          <template v-if="mode === 'create' || mode === 'update'">
             <button
               type="button"
               @click="onSave(false)"
@@ -28,7 +30,7 @@
               <i class="mdi mdi-content-save"></i> Save
             </button>
           </template>
-          <template v-else-if="mode == 'edit'">
+          <template v-else-if="mode === 'edit'">
             <button
               type="button"
               @click="onSave(true)"
@@ -45,6 +47,14 @@
               :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
               :disabled="!isValid">
               <i class="mdi mdi-content-save"></i> Save &amp; Finish
+            </button>
+          </template>
+          <template v-else-if="mode === 'show'">
+            <button
+              type="button"
+              @click="onCancel"
+              class="cancel-button">
+              <i class="mdi mdi-close"></i> Close
             </button>
           </template>
         </v-col>
@@ -66,7 +76,7 @@
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
-    mode: { type: String, required: false, default: 'create' },
+    mode: { type: String, required: true },
   })
 
   const renderers = Object.freeze([

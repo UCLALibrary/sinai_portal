@@ -25,11 +25,12 @@ class FormsController extends Controller
     /**
      * Get the schemas for a codicological unit resource.
      */
-    public function createCodUnit()
+    public function codUnit(Part $codicologicalUnit = null)
     {
         return response()->json([
             'schema' => json_decode(Part::$schema),
             'uischema' => json_decode(Part::$uiSchema),
+            'data' => $codicologicalUnit ? json_decode($codicologicalUnit->json) : null,
         ]);
     }
 

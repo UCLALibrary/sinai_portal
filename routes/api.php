@@ -44,7 +44,7 @@ Route::apiResource('bibliography', BibliographyController::class, [
 ]);
 
 // forms
-Route::get('forms/cod_unit', [FormsController::class, 'createCodUnit'])->name('api.forms.cod_unit');
+Route::get('forms/codicological-units/{codicological_unit?}', [FormsController::class, 'codUnit'])->name('api.forms.codicological-units');
 Route::get('forms/assoc_name', [FormsController::class, 'createAssocName'])->name('api.forms.assoc_name');
 Route::get('forms/assoc_place', [FormsController::class, 'createAssocPlace'])->name('api.forms.assoc_place');
 Route::get('forms/assoc_date', [FormsController::class, 'createAssocDate'])->name('api.forms.assoc_date');

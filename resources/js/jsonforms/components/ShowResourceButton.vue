@@ -1,9 +1,9 @@
 <template>
-  <button
-    type="button"
+  <el-icon
     :class="styles"
     @click="isDialogOpen = true">
-  </button>
+    <View />
+  </el-icon>
 
   <el-dialog
     :title="title"
@@ -14,8 +14,7 @@
       :schema="schema"
       :uischema="uischema"
       :data="data"
-      mode="create"
-      @on-save="onSave"
+      mode="show"
       @on-cancel="onCancel">
     </component>
   </el-dialog>
@@ -29,8 +28,6 @@
     styles: { type: String, required: false, default: '' },
     formEndpoint: { type: String, required: true },
   })
-
-  const emit = defineEmits(['on-save']);
 
   const isDialogOpen = ref(false)
 
@@ -51,17 +48,19 @@
     if (response.data) {
       formComponent.value = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
       schema.value = response.data.schema
+
+      // disable all form fields by adding "readonly" as a top-level form option
       uischema.value = response.data.uischema
+      uischema.value.options = {
+        readonly: true
+      }
+
+      data.value = response.data.data
     }
   }
 
   const clear = () => {
     formComponent.value = null
-  }
-
-  const onSave = (payload) => {
-    emit('on-save', payload.data)
-    isDialogOpen.value = false
   }
 
   const onCancel = () => {
