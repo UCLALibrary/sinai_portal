@@ -18,7 +18,7 @@ class FormsController extends Controller
     {
         return response()->json([
             'schema' => json_decode(Date::$schema),
-            'uischema' => json_decode(Date::$uiSchemaMinimal),
+            'uischema' => json_decode(Date::$uiSchema),
         ]);
     }
 
@@ -28,8 +28,8 @@ class FormsController extends Controller
     public function createCodUnit()
     {
         return response()->json([
-            'schema' => json_decode(Part::$schemaMinimal),
-            'uischema' => json_decode(Part::$uiSchemaMinimal),
+            'schema' => json_decode(Part::$schema),
+            'uischema' => json_decode(Part::$uiSchema),
         ]);
     }
 
