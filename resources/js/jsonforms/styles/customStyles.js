@@ -2,11 +2,12 @@ const customStyles = {
   // extend defaults
   control: {
     root: 'flex flex-col gap-y-2',
+    wrapper: 'flex-1',
     label: 'block text-sm font-medium text-gray-700',
-    input: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
+    input: 'w-full border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
     checkbox: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm cursor-pointer',
     textarea: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
-    select: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
+    select: 'w-full border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
     error: 'text-xs text-red-500 ml-1',
     asterisk: 'text-red-500',
   },

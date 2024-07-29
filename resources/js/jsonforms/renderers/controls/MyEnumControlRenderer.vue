@@ -29,7 +29,7 @@
   import { defineComponent } from 'vue'
   import { ControlElement } from '@jsonforms/core'
   import { rendererProps, RendererProps, useJsonFormsEnumControl } from '@jsonforms/vue'
-  import { default as ControlWrapper } from './MyControlWrapper.vue'
+  import { default as ControlWrapper } from './MyInlineControlWrapper.vue'
   import { useVanillaControl } from '@jsonforms/vue-vanilla/src/util'
 
   const controlRenderer = defineComponent({
