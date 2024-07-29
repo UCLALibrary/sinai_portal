@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,6 +19,7 @@ class User extends Authenticatable
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use JsonSchemas;
 
     /**
      * The attributes that are mass assignable.
@@ -63,3 +66,8 @@ class User extends Authenticatable
         ];
     }
 }
+
+/*
+ * Execute the static initializer to load the schemas for JSON Forms.
+ */
+User::initialize('user');

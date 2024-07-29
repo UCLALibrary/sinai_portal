@@ -1,0 +1,21 @@
+{
+  "title": "Associated Name",
+  "description": "A person, group, or organization entity connected with an object via a given role",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "password"
+  ]
+}
