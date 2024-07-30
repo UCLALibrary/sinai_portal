@@ -17,7 +17,7 @@ class PartsSeeder extends Seeder
         $parts = $this->getSyriac12Parts();
         $this->seedParts($parts);
 
-        $this->seedRandomManuscripts(100);
+        // $this->seedRandomManuscripts(100);
     }
 
     private function seedParts($parts)
@@ -118,10 +118,8 @@ class PartsSeeder extends Seeder
                     ]
                 ],
                 'assoc_name' => [
-                    2
                 ],
                 'assoc_place' => [
-                    2
                 ],
                 'assoc_date' => [
                     [

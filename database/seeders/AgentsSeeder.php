@@ -103,28 +103,8 @@ class AgentsSeeder extends Seeder
                     ]
                 ],
                 'assoc_name' => [
-                    [
-                        'id' => 1,
-                        'role' => 'AbbotOver',
-                        'note' => [
-                            [
-                                'type' => 'assoc_name',
-                                'value' => 'John was not only a monk but eventually became an abbot over the Monastery'
-                            ]
-                        ]
-                    ]
                 ],
                 'assoc_place' => [
-                    [
-                        'id' => 1,
-                        'event' => 'ResidedAt',
-                        'note' => [
-                            [
-                                'type' => 'assoc_place',
-                                'value' => 'John was both a monk and abbot at the Monastery on Mt. Sinai around 600 CE'
-                            ]
-                        ]
-                    ]
                 ],
                 'cataloguer' => [
                     [

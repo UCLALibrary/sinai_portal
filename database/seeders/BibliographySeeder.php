@@ -15,7 +15,6 @@ class BibliographySeeder extends Seeder
     {
         $bibliography = $this->getSyriac12Bibliography();
         $this->seedBibliography($bibliography);
-
     }
 
     private function seedBibliography($bibliography)
@@ -24,8 +23,8 @@ class BibliographySeeder extends Seeder
             // extract and flatten fields from the JSON representation of the metadata to create the record
             $bibliography = Bibliography::create([
                 'type' => $jsonData['type'],
-                'range' => $jsonData['range'],
-                'alt_shelf' => $jsonData['alt_shelf'],
+                'range' => $jsonData['range'] ?? '',
+                'alt_shelf' => $jsonData['alt_shelf'] ?? '',
                 'json' => '{}'
             ]);
 
@@ -77,6 +76,38 @@ class BibliographySeeder extends Seeder
                     ]
                 ]
             ],
+            [
+                'type' => 'bibl',
+                'range' => 's.v., \'John Climacus\'',
+                'url' => 'https://gedsh.bethmardutho.org/entry/John-Climacus',
+                'note' => [
+                    [
+                        'type' => 'bib',
+                        'value' => 'Deals solely with John\'s relationship to the Syriac tradition and reception of his works in Syriac communities'
+                    ]
+                ]
+            ],
+            [
+                'type' => 'bibl',
+                'range' => 'p. 567',
+                'note' => [
+                    [
+                        'type' => 'bib',
+                        'value' => 'A note about this bibliography item'
+                    ]
+                ]
+            ],
+            [
+                'type' => 'refno',
+                'range' => 'entry 7852',
+                'url' => 'https://clavis.brepols.net/clacla/OA/Link.aspx?clavis=cpg&number=7852',
+                'note' => [
+                    [
+                        'type' => 'bib',
+                        'value' => 'Title given as Scala Paradisi'
+                    ]
+                ]
+            ]
         ];
     }
 }

@@ -17,7 +17,7 @@ class ManuscriptsSeeder extends Seeder
         $manuscripts = $this->getSyriac12Manuscripts();
         $this->seedManuscripts($manuscripts);
 
-        $this->seedRandomManuscripts(100);
+        // $this->seedRandomManuscripts(100);
     }
 
     private function seedManuscripts($manuscripts)
@@ -92,10 +92,8 @@ class ManuscriptsSeeder extends Seeder
                             ]
                         ],
                         'assoc_name' => [
-                            1
                         ],
                         'assoc_place' => [
-                            1
                         ],
                         'assoc_date' => [
                             [
