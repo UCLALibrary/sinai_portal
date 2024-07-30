@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ManuscriptsController;
 use App\Http\Controllers\Api\PartsController;
 use App\Http\Controllers\Api\PersonsController;
 use App\Http\Controllers\Api\PlacesController;
+use App\Http\Controllers\Api\WorksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,10 @@ Route::apiResource('codicological-units', PartsController::class, [
 ]);
 
 Route::apiResource('content-units', ContentsController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('works', WorksController::class, [
     'as' => 'api'
 ]);
 

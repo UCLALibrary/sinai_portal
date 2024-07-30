@@ -1,0 +1,70 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/pref_title"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/orig_lang"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/orig_lang_title"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/alt_title"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/desc"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/genre"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/excerpt"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/rel_con"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/bib"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/note"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_date"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_name"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_place"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/rel_work"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/cataloguer"
+        }
+      ]
+    }
+  ]
+}

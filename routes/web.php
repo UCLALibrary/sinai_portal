@@ -7,6 +7,7 @@ use App\Http\Controllers\Cms\PartsController;
 use App\Http\Controllers\Cms\PersonsController;
 use App\Http\Controllers\Cms\PlacesController;
 use App\Http\Controllers\Cms\UsersController;
+use App\Http\Controllers\Cms\WorksController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +38,9 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // contents
     Route::resource('content-units', ContentsController::class);
+
+    // works
+    Route::resource('works', WorksController::class);
 
     // persons
     Route::resource('persons', PersonsController::class);
