@@ -66,7 +66,7 @@
         try {
           const response = await axios.get(route('api.places.index'))
           records.value = response.data.data.map((record) => ({
-            label: [_.capitalize(record['event']) + ':', record['as_written']].join(' '),
+            label: [_.capitalize(record['type']) + ':', record['pref_name']].join(' '),
             value: record['id'],
           }))
         } catch (error) {

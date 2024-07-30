@@ -16,8 +16,8 @@ class Place extends Model
      * @var array
      */
     protected $fillable = [
-        'event',
-        'as_written',
+        'type',
+        'pref_name',
         'json',
     ];
 }
@@ -25,4 +25,4 @@ class Place extends Model
 /*
  * Execute the static initializer to load the schemas for JSON Forms.
  */
-Place::initialize('assoc_place');
+Place::initialize('place');

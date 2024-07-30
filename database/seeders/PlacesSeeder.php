@@ -22,8 +22,8 @@ class PlacesSeeder extends Seeder
         foreach ($places as $jsonData) {
             // extract and flatten fields from the JSON representation of the metadata to create the record
             $place = Place::create([
-                'event' => $jsonData['event'],
-                'as_written' => $jsonData['as_written'],
+                'type' => $jsonData['type'],
+                'pref_name' => $jsonData['pref_name'],
                 'json' => '{}'
             ]);
 
@@ -40,22 +40,80 @@ class PlacesSeeder extends Seeder
     {
         return [
             [
-                'as_written' => 'يبشيبشل',
-                'event' => 'previous_repository',
-                'note' => [
+                'type' => 'mountain',
+                'pref_name' => 'Mount Sinai',
+                'alt_name' => [
                     [
-                        'type' => 'general',
-                        'value' => 'The bishop took the ms from a previous place when endowing it'
+                        'lang' => 'English',
+                        'value' => 'Sinai'
+                    ],
+                    [
+                        'lang' => 'Syriac',
+                        'value' => 'ܛܘܪܐ ܕܣܝܢܝ'
                     ]
-                ]
-            ],
-            [
-                'as_written' => 'Antakya',
-                'event' => 'origin',
+                ],
+                'desc' => 'A mountain in the Sinai Peninsula.',
+                'rel_con' => [
+                    [
+                        'label' => 'Mount Sinai',
+                        'uri' => 'http://syriaca.org/place/563',
+                        'source' => 'Syriaca'
+                    ],
+                    [
+                        'label' => 'Syna M.',
+                        'uri' => 'https://pleiades.stoa.org/places/746815',
+                        'source' => 'Pleiades'
+                    ],
+                    [
+                        'label' => 'Sinai, Mount',
+                        'uri' => 'https://w3id.org/haf/place/445637422551',
+                        'source' => 'HAF'
+                    ],
+                    [
+                        'label' => 'Mūsá, Jabal (mountain) ',
+                        'uri' => 'http://vocab.getty.edu/page/tgn/7001247',
+                        'source' => 'TGN'
+                    ],
+                    [
+                        'label' => 'Sinai, Mount (Egypt)',
+                        'uri' => 'http://viaf.org/viaf/315149342',
+                        'source' => 'VIAF'
+                    ]
+                ],
+                'bib' => [
+                    5,
+                ],
                 'note' => [
                     [
-                        'type' => 'assoc_place',
-                        'value' => 'Given the Melkite origin and the regional variations in the liturgy, it is fairly certain that this manuscript was produced in Antioch'
+                        'type' => 'admin',
+                        'value' => 'Add contained-within relationship to the Sinai Peninsula'
+                    ]
+                ],
+                'assoc_date' => [
+                    [
+                        'type' => 'inhabitation',
+                        'iso' => [
+                            'notBefore' => '0575',
+                            'notAfter' => '2024'
+                        ],
+                        'value' => 'from the 6th century onward',
+                        'note' => [
+                            [
+                                'type' => 'assoc_date',
+                                'value' => 'The region around the mountain has been continuously inhabited by the monks of St. Catherine, as well as people in surrounding villages, since the 6th c. CE'
+                            ]
+                        ]
+                    ]
+                ],
+                'assoc_name' => [
+                ],
+                'assoc_place' => [
+                ],
+                'cataloguer' => [
+                    [
+                        'id' => '$id-for-Will',
+                        'timestamp' => '2024-05-21T15:27:32.728Z',
+                        'comment' => 'Created record and added metadata'
                     ]
                 ]
             ]
@@ -75,8 +133,7 @@ class PlacesSeeder extends Seeder
             $data = [
                 'id' => $id,
                 'type' => $place->type,
-                'as_written' => $place->as_written,
-                'note' => $place->note
+                'pref_name' => $place->pref_name,
             ];
 
             // update the record with the json field

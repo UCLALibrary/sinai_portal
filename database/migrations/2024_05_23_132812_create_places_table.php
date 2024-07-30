@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('places', function (Blueprint $table) {
             $table->id();
-            $table->string('event');
-            $table->string('as_written')->nullable();
+            $table->string('type');
+            $table->string('pref_name');
             $table->jsonb('json');
             $table->timestamps();
         });

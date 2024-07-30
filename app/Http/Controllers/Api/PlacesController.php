@@ -75,8 +75,8 @@ class PlacesController extends Controller
         $metadata = [];
         if ($jsonData) {
             $metadata['json'] = json_encode($jsonData);
-            $metadata['event'] = isset($jsonData['event']) ? $jsonData['event'] : null;
-            $metadata['as_written'] = isset($jsonData['as_written']) ? $jsonData['as_written'] : null;
+            $metadata['type'] = isset($jsonData['type']) ? $jsonData['type'] : null;
+            $metadata['pref_name'] = isset($jsonData['pref_name']) ? $jsonData['pref_name'] : null;
         }
         return $metadata;
     }

@@ -17,9 +17,32 @@ class PlaceFactory extends Factory
     public function definition(): array
     {
         return [
-            'type' => fake()->word(),
-            'as_written' => fake()->name(),
-            'note' => fake()->sentence(),
+            'type' => fake()->randomElement([
+                'building',
+                'church',
+                'composite',
+                'designated-space',
+                'diocese',
+                'fortification',
+                'island',
+                'madrasa',
+                'monastery',
+                'mosque',
+                'mountain',
+                'natural feature',
+                'open-water',
+                'parish',
+                'province',
+                'quarter',
+                'region',
+                'river',
+                'settlement',
+                'state',
+                'synagogue',
+                'temple',
+                'unknown'
+            ]),
+            'pref_name' => fake()->name(),
             'json' => '{}',
         ];
     }

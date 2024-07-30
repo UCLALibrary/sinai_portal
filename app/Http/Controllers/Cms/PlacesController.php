@@ -18,8 +18,8 @@ class PlacesController extends Controller
             'resourceName' => 'places',
             'resources' => Place::paginate(20),
             'columns' => [
-                'event' => 'Event',
-                'as_written' => 'As Written'
+                'type' => 'Type',
+                'pref_name' => 'Preferred Name'
             ],
             'createEndpoint' => route('places.create'),
         ]);
