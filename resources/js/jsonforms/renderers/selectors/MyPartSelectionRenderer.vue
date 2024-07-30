@@ -22,6 +22,7 @@
           closable
           disable-transitions
           @click.stop
+          @close="removeTag(resourceId)"
           class="cursor-auto">
           <div>
             {{ getResourceLabelById(resourceId) }}
@@ -110,6 +111,11 @@
         return resource ? resource.label : ''
       }
 
+      const removeTag = (id) => {
+        const data = control.control.value.data
+        data.splice(data.indexOf(id), 1)
+      }
+
       const onFocus = () => {
         // fetch the latest set of resources when the control is focused to ensure the list of selectable options is up to date
         fetchResources()
@@ -164,6 +170,7 @@
         ...control,
         resources,
         getResourceLabelById,
+        removeTag,
         onFocus,
         onCreate,
         onUpdate,
