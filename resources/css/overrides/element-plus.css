@@ -5,7 +5,7 @@
 }
 
 .el-select__wrapper {
-  @apply py-2 min-h-10 rounded-none
+  @apply py-2 min-h-10 rounded
 }
 
 .el-select__wrapper.is-focused {

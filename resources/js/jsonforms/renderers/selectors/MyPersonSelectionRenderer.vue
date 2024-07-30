@@ -33,7 +33,7 @@
   import { ControlElement } from '@jsonforms/core'
   import { rendererProps, RendererProps, useJsonFormsControl } from '@jsonforms/vue'
   import { useCustomVanillaControl } from '@/jsonforms/util'
-  import { default as ControlWrapper } from '../controls/MyControlWrapper.vue'
+  import { default as ControlWrapper } from '../controls/MyInlineControlWrapper.vue'
   import axios from 'axios'
   import _ from 'lodash'
   import useEmitter from '@/composables/useEmitter'

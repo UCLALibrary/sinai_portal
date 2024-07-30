@@ -11,6 +11,8 @@
         <slot></slot>
       </div>
 
+      <slot name="actions"></slot>
+
       <div v-if="showAsterisk || showAsteriskForPublishing">
         <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
         <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
