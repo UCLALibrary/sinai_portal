@@ -7,13 +7,14 @@ use App\Models\Bibliography;
 use App\Models\Part;
 use App\Models\Person;
 use App\Models\Place;
+use Illuminate\Http\JsonResponse;
 
 class FormsController extends Controller
 {
     /**
      * Get the schemas for a codicological unit resource.
      */
-    public function codUnit(Part $codicologicalUnit = null)
+    public function codUnit(Part $codicologicalUnit = null): JsonResponse
     {
         return response()->json([
             'schema' => json_decode(Part::$schema),
@@ -25,7 +26,7 @@ class FormsController extends Controller
     /**
      * Get the schemas for a person resource.
      */
-    public function createAssocName()
+    public function createAssocName(): JsonResponse
     {
         return response()->json([
             'schema' => json_decode(Person::$schema),
@@ -36,7 +37,7 @@ class FormsController extends Controller
     /**
      * Get the schemas for a person resource.
      */
-    public function createAssocPlace()
+    public function createAssocPlace(): JsonResponse
     {
         return response()->json([
             'schema' => json_decode(Place::$schema),
@@ -47,7 +48,7 @@ class FormsController extends Controller
     /**
      * Get the schemas for a bibliography resource.
      */
-    public function createBib()
+    public function createBib(): JsonResponse
     {
         return response()->json([
             'schema' => json_decode(Bibliography::$schema),

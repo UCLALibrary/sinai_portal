@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PartRequest;
 use App\Http\Resources\PartResource;
 use App\Models\Part;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class PartsController extends Controller
@@ -21,17 +22,18 @@ class PartsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PartRequest $request)
+    public function store(PartRequest $request): JsonResponse
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // save the json metadata
+            // create the resource
             $part = Part::create($metadata);
 
             // insert the id into the json field
             $part->json = json_encode(array_merge(json_decode($part->json, true), ['id' => $part->id]));
+
             $part->save();
 
             return new PartResource($part);
@@ -41,13 +43,13 @@ class PartsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PartRequest $request, Part $codicologicalUnit)
+    public function update(PartRequest $request, Part $codicologicalUnit): PartResource
     {
         return DB::transaction(function () use ($request, $codicologicalUnit) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // save the json metadata
+            // update the resource
             $codicologicalUnit->update($metadata);
 
             return new PartResource($codicologicalUnit);
@@ -57,13 +59,15 @@ class PartsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Part $codicologicalUnit)
+    public function destroy(Part $codicologicalUnit): PartResource
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $codicologicalUnit->delete();
+        $response = $codicologicalUnit->delete();
  
-        return response()->noContent();
+        return $response
+            ? response()->json(['message' => 'Part deleted successfully'])
+            : response()->json(['error' => 'Error deleting part']);
     }
 
     private function _extractMetadataFromJsonData($jsonData)

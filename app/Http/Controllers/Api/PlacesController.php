@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PlaceRequest;
 use App\Http\Resources\PlaceResource;
 use App\Models\Place;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class PlacesController extends Controller
@@ -21,17 +22,18 @@ class PlacesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PlaceRequest $request)
+    public function store(PlaceRequest $request): JsonResponse
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // save the json metadata
+            // create the resource
             $place = Place::create($metadata);
 
             // insert the id into the json field
             $place->json = json_encode(array_merge(json_decode($place->json, true), ['id' => $place->id]));
+
             $place->save();
 
             return new PlaceResource($place);
@@ -41,13 +43,13 @@ class PlacesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PlaceRequest $request, Place $place)
+    public function update(PlaceRequest $request, Place $place): JsonResponse
     {
         return DB::transaction(function () use ($request, $place) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // save the json metadata
+            // update the resource
             $place->update($metadata);
 
             return new PlaceResource($place);
@@ -57,13 +59,15 @@ class PlacesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Place $place)
+    public function destroy(Place $place): JsonResponse
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $place->delete();
+        $response = $place->delete();
  
-        return response()->noContent();
+        return $response
+            ? response()->json(['message' => 'Place deleted successfully'])
+            : response()->json(['error' => 'Error deleting place']);
     }
 
     private function _extractMetadataFromJsonData($jsonData)

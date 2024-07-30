@@ -8,6 +8,7 @@ use App\Http\Requests\ManuscriptRequest;
 use App\Http\Resources\ManuscriptResource;
 use App\Models\Manuscript;
 use App\Models\Part;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ManuscriptsController extends Controller
@@ -23,13 +24,13 @@ class ManuscriptsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ManuscriptRequest $request)
+    public function store(ManuscriptRequest $request): ManuscriptResource
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // create the manuscript record
+            // create the resource
             $manuscript = Manuscript::create([
                 'ark' => $metadata['ark'],
                 'identifier' => $metadata['identifier'],
@@ -38,6 +39,7 @@ class ManuscriptsController extends Controller
 
             // insert the id into the json field
             $manuscript->json = json_encode(array_merge(json_decode($manuscript->json, true), ['id' => $manuscript->id]));
+
             $manuscript->save();
 
             // attach the manuscript to its corresponding parts
@@ -50,13 +52,13 @@ class ManuscriptsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ManuscriptRequest $request, Manuscript $manuscript)
+    public function update(ManuscriptRequest $request, Manuscript $manuscript): ManuscriptResource
     {
         return DB::transaction(function () use ($request, $manuscript) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // update the manuscript record
+            // update the resource
             $manuscript->update([
                 'ark' => $metadata['ark'],
                 'identifier' => $metadata['identifier'],
@@ -73,13 +75,15 @@ class ManuscriptsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Manuscript $manuscript)
+    public function destroy(Manuscript $manuscript): JsonResponse
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $manuscript->delete();
+        $response = $manuscript->delete();
  
-        return response()->noContent();
+        return $response
+            ? response()->json(['message' => 'Manuscript deleted successfully'])
+            : response()->json(['error' => 'Error deleting manuscript']);
     }
 
     private function _extractMetadataFromJsonData($jsonData)

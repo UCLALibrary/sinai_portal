@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BibliographyRequest;
 use App\Http\Resources\BibliographyResource;
 use App\Models\Bibliography;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class BibliographyController extends Controller
@@ -21,13 +22,13 @@ class BibliographyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(BibliographyRequest $request)
+    public function store(BibliographyRequest $request): BibliographyResource
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // create the bibliography record
+            // create the resource
             $bibliography = Bibliography::create([
                 'type' => $metadata['type'],
                 'range' => $metadata['range'],
@@ -37,6 +38,7 @@ class BibliographyController extends Controller
 
             // insert the id into the json field
             $bibliography->json = json_encode(array_merge(json_decode($bibliography->json, true), ['id' => $bibliography->id]));
+
             $bibliography->save();
 
             return new BibliographyResource($bibliography);
@@ -46,13 +48,13 @@ class BibliographyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BibliographyRequest $request, Bibliography $bibliography)
+    public function update(BibliographyRequest $request, Bibliography $bibliography): BibliographyResource
     {
         return DB::transaction(function () use ($request, $bibliography) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // update the bibliography record
+            // update the resource
             $bibliography->update([
                 'type' => $metadata['type'],
                 'range' => $metadata['range'],
@@ -67,29 +69,24 @@ class BibliographyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bibliography $bibliography)
+    public function destroy(Bibliography $bibliography): JsonResponse
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $bibliography->delete();
+        $response = $bibliography->delete();
  
-        return response()->noContent();
+        return $response
+            ? response()->json(['message' => 'Bibliography deleted successfully'])
+            : response()->json(['error' => 'Error deleting bibliography']);
     }
 
     private function _extractMetadataFromJsonData($jsonData)
     {
         $metadata = [];
         if ($jsonData) {
-            // json
             $metadata['json'] = json_encode($jsonData);
-
-            // type
             $metadata['type'] = isset($jsonData['type']) ? $jsonData['type'] : null;
-
-            // range
             $metadata['range'] = isset($jsonData['range']) ? $jsonData['range'] : null;
-
-            // range
             $metadata['alt_shelf'] = isset($jsonData['alt_shelf']) ? $jsonData['alt_shelf'] : null;
         }
         return $metadata;

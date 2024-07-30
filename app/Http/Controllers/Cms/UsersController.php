@@ -52,6 +52,7 @@ class UsersController extends Controller
         // extract and validate metadata from the json field
         $data = $this->_validatedJsonMetadata($request);
 
+        // create the resource
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -89,6 +90,7 @@ class UsersController extends Controller
         // extract and validate metadata from the json field
         $data = $this->_validatedJsonMetadata($request);
 
+        // update the resource
         $response = $user->update([
             'name' => $data['name'],
             'email' => $data['email'],

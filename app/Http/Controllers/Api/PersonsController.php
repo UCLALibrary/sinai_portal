@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PersonRequest;
 use App\Http\Resources\PersonResource;
 use App\Models\Person;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class PersonsController extends Controller
@@ -21,17 +22,18 @@ class PersonsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PersonRequest $request)
+    public function store(PersonRequest $request): PersonResource
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // save the json metadata
+            // create the resource
             $person = Person::create($metadata);
 
             // insert the id into the json field
             $person->json = json_encode(array_merge(json_decode($person->json, true), ['id' => $person->id]));
+
             $person->save();
 
             return new PersonResource($person);
@@ -41,13 +43,13 @@ class PersonsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PersonRequest $request, Person $person)
+    public function update(PersonRequest $request, Person $person): PersonResource
     {
         return DB::transaction(function () use ($request, $person) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
-            // save the json metadata
+            // update the resource
             $person->update($metadata);
 
             return new PersonResource($person);
@@ -57,13 +59,15 @@ class PersonsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Person $person)
+    public function destroy(Person $person): JsonResponse
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $person->delete();
+        $response = $person->delete();
  
-        return response()->noContent();
+        return $response
+            ? response()->json(['message' => 'Person deleted successfully'])
+            : response()->json(['error' => 'Error deleting person']);
     }
 
     private function _extractMetadataFromJsonData($jsonData)
