@@ -64,9 +64,9 @@
 
       const fetchRecords = async () => {
         try {
-          const response = await axios.get(route('api.persons.index'))
+          const response = await axios.get(route('api.agents.index'))
           records.value = response.data.data.map((record) => ({
-            label: [_.capitalize(record['role']) + ':', record['as_written']].join(' '),
+            label: [_.capitalize(record['type']) + ':', record['pref_name']].join(' '),
             value: record['id'],
           }))
         } catch (error) {
@@ -80,7 +80,7 @@
       }
 
       const onSave = (jsonData) => {
-        axios.post(route('api.persons.store'), {
+        axios.post(route('api.agents.store'), {
           json: jsonData,
         }).then(response => {
           // fetch the latest set of records so the new record can be attached via its id
