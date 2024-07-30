@@ -29,7 +29,7 @@
           </div>
 
           <ShowResourceButton
-            title="Show Part"
+            :title="getResourceLabelById(resourceId)"
             :form-endpoint="route('api.forms.codicological-units', { id: resourceId })"
             styles="ml-2 hover:bg-sinai-red hover:text-white"
           />
