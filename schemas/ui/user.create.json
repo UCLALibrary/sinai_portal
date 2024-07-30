@@ -14,7 +14,10 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/password"
+          "scope": "#/properties/password",
+          "options": {
+            "format": "password"
+          }
         }
       ]
     }

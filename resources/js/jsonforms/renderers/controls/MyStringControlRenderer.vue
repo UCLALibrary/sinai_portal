@@ -6,6 +6,7 @@
     :applied-options="appliedOptions">
     <input
       :id="control.id + '-input'"
+      :type="appliedOptions.format || 'text'"
       :class="styles.control.input"
       :value="control.data"
       :disabled="!control.enabled"
