@@ -17,7 +17,7 @@ class PartsSeeder extends Seeder
         $parts = $this->getSyriac12Parts();
         $this->seedParts($parts);
 
-        $this->seedRandomManuscripts(100);
+        // $this->seedRandomManuscripts(100);
     }
 
     private function seedParts($parts)
