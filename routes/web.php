@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\Cms\AgentsController;
 use App\Http\Controllers\Cms\BibliographyController;
 use App\Http\Controllers\Cms\ContentsController;
 use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\PartsController;
-use App\Http\Controllers\Cms\PersonsController;
 use App\Http\Controllers\Cms\PlacesController;
 use App\Http\Controllers\Cms\UsersController;
 use App\Http\Controllers\Cms\WorksController;
@@ -42,8 +42,8 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     // works
     Route::resource('works', WorksController::class);
 
-    // persons
-    Route::resource('persons', PersonsController::class);
+    // agents
+    Route::resource('agents', AgentsController::class);
 
     // places
     Route::resource('places', PlacesController::class);

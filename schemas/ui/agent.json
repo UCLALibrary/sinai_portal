@@ -1,0 +1,58 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/type"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/pref_name"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/alt_name"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/desc"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/gender"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/rel_con"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/bib"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/note"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_date"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_name"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/assoc_place"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/cataloguer"
+        }
+      ]
+    }
+  ]
+}

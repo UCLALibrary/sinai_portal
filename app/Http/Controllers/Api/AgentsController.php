@@ -3,71 +3,71 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PersonRequest;
-use App\Http\Resources\PersonResource;
-use App\Models\Person;
+use App\Http\Requests\AgentRequest;
+use App\Http\Resources\AgentResource;
+use App\Models\Agent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
-class PersonsController extends Controller
+class AgentsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return PersonResource::collection(Person::all());
+        return AgentResource::collection(Agent::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PersonRequest $request): PersonResource
+    public function store(AgentRequest $request): AgentResource
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // create the resource
-            $person = Person::create($metadata);
+            $agent = Agent::create($metadata);
 
             // insert the id into the json field
-            $person->json = json_encode(array_merge(json_decode($person->json, true), ['id' => $person->id]));
+            $agent->json = json_encode(array_merge(json_decode($agent->json, true), ['id' => $agent->id]));
 
-            $person->save();
+            $agent->save();
 
-            return new PersonResource($person);
+            return new AgentResource($agent);
         });
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PersonRequest $request, Person $person): PersonResource
+    public function update(AgentRequest $request, Agent $agent): AgentResource
     {
-        return DB::transaction(function () use ($request, $person) {
+        return DB::transaction(function () use ($request, $agent) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // update the resource
-            $person->update($metadata);
+            $agent->update($metadata);
 
-            return new PersonResource($person);
+            return new AgentResource($agent);
         });
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Person $person): JsonResponse
+    public function destroy(Agent $agent): JsonResponse
     {
         // TODO: do we want to allow deletion or just soft delete?
 
-        $response = $person->delete();
+        $response = $agent->delete();
  
         return $response
-            ? response()->json(['message' => 'Person deleted successfully'])
-            : response()->json(['error' => 'Error deleting person']);
+            ? response()->json(['message' => 'Agent deleted successfully'])
+            : response()->json(['error' => 'Error deleting agent']);
     }
 
     private function _extractMetadataFromJsonData($jsonData)
@@ -75,8 +75,8 @@ class PersonsController extends Controller
         $metadata = [];
         if ($jsonData) {
             $metadata['json'] = json_encode($jsonData);
-            $metadata['role'] = isset($jsonData['role']) ? $jsonData['role'] : null;
-            $metadata['as_written'] = isset($jsonData['as_written']) ? $jsonData['as_written'] : null;
+            $metadata['type'] = isset($jsonData['type']) ? $jsonData['type'] : null;
+            $metadata['pref_name'] = isset($jsonData['pref_name']) ? $jsonData['pref_name'] : null;
         }
         return $metadata;
     }

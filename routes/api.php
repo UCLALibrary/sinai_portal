@@ -1,11 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\AgentsController;
 use App\Http\Controllers\Api\BibliographyController;
 use App\Http\Controllers\Api\ContentsController;
 use App\Http\Controllers\Api\FormsController;
 use App\Http\Controllers\Api\ManuscriptsController;
 use App\Http\Controllers\Api\PartsController;
-use App\Http\Controllers\Api\PersonsController;
 use App\Http\Controllers\Api\PlacesController;
 use App\Http\Controllers\Api\WorksController;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ Route::apiResource('works', WorksController::class, [
     'as' => 'api'
 ]);
 
-Route::apiResource('persons', PersonsController::class, [
+Route::apiResource('agents', AgentsController::class, [
     'as' => 'api'
 ]);
 

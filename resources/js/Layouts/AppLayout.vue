@@ -69,8 +69,8 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('persons.index')" :active="route().current('persons.*')">
-                                    Persons
+                                <NavLink :href="route('agents.index')" :active="route().current('agents.*')">
+                                    Agents
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -252,8 +252,8 @@ const logout = () => {
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('persons.index')" :active="route().current('persons.*')">
-                            Persons
+                        <ResponsiveNavLink :href="route('agents.index')" :active="route().current('agents.*')">
+                            Agents
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
