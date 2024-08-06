@@ -88,7 +88,7 @@ class UsersController extends Controller
     public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
         // extract and validate metadata from the json field
-        $data = $this->_validatedJsonMetadata($request);
+        $data = $this->_validatedJsonMetadata($request, $user);
 
         // update the resource
         $response = $user->update([
@@ -118,13 +118,13 @@ class UsersController extends Controller
      *
      * @return array
      */
-    private function _validatedJsonMetadata($request)
+    private function _validatedJsonMetadata($request, $user)
     {
         // extract metadata from json field
         $metadata = $this->_extractMetadataFromJsonData($request->json);
 
         // manually validate the metadata
-        $validator = Validator::make($metadata, $request->myRules());
+        $validator = Validator::make($metadata, $request->myRules($user));
 
         if ($validator->fails()) {
             $request->failedValidation($validator);

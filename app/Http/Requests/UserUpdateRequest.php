@@ -22,7 +22,7 @@ class UserUpdateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function myRules(): array
+    public function myRules($user): array
     {
         return [
             'name' => [
@@ -33,7 +33,7 @@ class UserUpdateRequest extends FormRequest
                 'required',
                 'max:50',
                 'email',
-                Rule::unique('users')->ignore(Auth::user()->id)
+                Rule::unique('users')->ignore($user->id)
             ],
             'password' => [
                 'nullable'
