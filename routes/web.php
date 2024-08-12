@@ -28,7 +28,9 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     })->name('cms');
 
     // users
-    Route::resource('users', UsersController::class);
+    Route::resource('users', UsersController::class)->middleware([
+        'index' => 'can:read user'
+    ]);
 
     // manuscripts
     Route::resource('manuscripts', ManuscriptsController::class);
