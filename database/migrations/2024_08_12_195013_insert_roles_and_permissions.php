@@ -43,13 +43,23 @@ return new class extends Migration
 
         $registeredUser->givePermissionTo($commentRecord);
 
-        $contributor->givePermissionTo($createRecord)
+        $contributor->givePermissionTo($commentRecord)
+            ->givePermissionTo($createRecord)
             ->givePermissionTo($editRecord)
             ->givePermissionTo($suggestTerm);
 
-        $associateEditor->givePermissionTo($deleteComment);
+        $associateEditor->givePermissionTo($commentRecord)
+            ->givePermissionTo($createRecord)
+            ->givePermissionTo($editRecord)
+            ->givePermissionTo($suggestTerm)
+            ->givePermissionTo($deleteComment);
 
-        $managingEditor->givePermissionTo($approveTerm)
+        $managingEditor->givePermissionTo($commentRecord)
+            ->givePermissionTo($createRecord)
+            ->givePermissionTo($editRecord)
+            ->givePermissionTo($suggestTerm)
+            ->givePermissionTo($deleteComment)
+            ->givePermissionTo($approveTerm)
             ->givePermissionTo($rejectTerm)
             ->givePermissionTo($createUser)
             ->givePermissionTo($editUser)
@@ -143,6 +153,7 @@ return new class extends Migration
 
         $rejectTerm = Permission::findOrCreate('reject term');
         $rejectTerm->delete();
+
 
         $registeredUser = Role::findOrCreate('registered_user');
         $registeredUser->delete();

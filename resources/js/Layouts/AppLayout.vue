@@ -87,12 +87,11 @@ const logout = () => {
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" v-if="can('read user')">
                                 <NavLink :href="route('users.index')" :active="route().current('users.*')">
                                     Users
                                 </NavLink>
                             </div>
-
 
                             <!-- Settings Dropdown -->
                             <div class="ms-3 relative">
