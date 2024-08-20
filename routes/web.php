@@ -27,14 +27,8 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
         return Inertia::render('Dashboard');
     })->name('cms');
 
-    Route::get('/users', [UsersController::class, 'index'])->middleware('can:read user')->name('users.index');
-    Route::post('/users', [UsersController::class, 'store'])->middleware('can:create user')->name('users.store');
-    Route::get('/users/create', [UsersController::class, 'create'])->middleware('can:create user')->name('users.create');
-    Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->middleware('can:edit user')->name('users.edit');
-    Route::match(['put', 'patch'], '/users/{user}', [UsersController::class, 'update'])->middleware('can:edit user')->name('users.update');
-
     // users
-    //Route::resource('users', UsersController::class);
+    Route::resource('users', UsersController::class);
 
     // manuscripts
     Route::resource('manuscripts', ManuscriptsController::class);
