@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PlacesSeeder::class);
         $this->call(BibliographySeeder::class);
         $this->call(LanguagesSeeder::class);
+        $this->call(ReferencesSeeder::class);
     }
 }

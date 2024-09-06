@@ -1,0 +1,34 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/short_title"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/formatted_citation"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/zotero_uri"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/date"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/creator"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/category"
+        }
+      ]
+    }
+  ]
+}

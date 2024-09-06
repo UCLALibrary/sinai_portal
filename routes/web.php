@@ -7,6 +7,7 @@ use App\Http\Controllers\Cms\LanguagesController;
 use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\PartsController;
 use App\Http\Controllers\Cms\PlacesController;
+use App\Http\Controllers\Cms\ReferencesController;
 use App\Http\Controllers\Cms\UsersController;
 use App\Http\Controllers\Cms\WorksController;
 use Illuminate\Foundation\Application;
@@ -52,5 +53,9 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     // bibliography
     Route::resource('bibliography', BibliographyController::class);
 
+    // languages
     Route::resource('languages', LanguagesController::class);
+
+    // references
+    Route::resource('references', ReferencesController::class);
 });

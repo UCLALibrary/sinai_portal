@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LanguageRequest;
 use App\Http\Resources\LanguageResource;
 use App\Models\Language;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class LanguagesController extends Controller
@@ -30,8 +31,6 @@ class LanguagesController extends Controller
                 'when_in_use' => $metadata['when_in_use'],
                 'regions' => $metadata['regions'],
             ]);
-
-            $language->id = $metadata['id'];
 
             $language->save();
 
@@ -62,6 +61,20 @@ class LanguagesController extends Controller
 
             return new LanguageResource($language);
         });
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Language $language): JsonResponse
+    {
+        // TODO: do we want to allow deletion or just soft delete?
+
+        $response = $language->delete();
+
+        return $response
+            ? response()->json(['message' => 'Language deleted successfully'])
+            : response()->json(['error' => 'Error deleting language']);
     }
 
     private function _extractMetadataFromJsonData($jsonData): array

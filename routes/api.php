@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\LanguagesController;
 use App\Http\Controllers\Api\ManuscriptsController;
 use App\Http\Controllers\Api\PartsController;
 use App\Http\Controllers\Api\PlacesController;
+use App\Http\Controllers\Api\ReferencesController;
 use App\Http\Controllers\Api\WorksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,10 @@ Route::apiResource('bibliography', BibliographyController::class, [
 ]);
 
 Route::apiResource('languages', LanguagesController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('references', ReferencesController::class, [
     'as' => 'api'
 ]);
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Models\Language;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class LanguagesController extends Controller

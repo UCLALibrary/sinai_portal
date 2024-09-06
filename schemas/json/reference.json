@@ -1,0 +1,50 @@
+{
+  "title": "Reference",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer"
+    },
+    "short_title": {
+      "type": "string"
+    },
+    "formatted_citation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "zotero_uri": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "creator": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "category": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    }
+  },
+  "required": [
+    "short_title",
+    "formatted_citation"
+  ],
+  "unevaluatedProperties": false
+}
