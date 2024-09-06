@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('languages', function (Blueprint $table) {
-            $table->string('id', 8)->primary();
-            $table->string('label', 50);
-            $table->string('iso', 3)->nullable();
-            $table->string('glottolog', 8)->nullable();
-            $table->string('writing_systems', 100)->nullable();
-            $table->string('other_names', 100)->nullable();
-            $table->string('when_in_use', 150)->nullable();
-            $table->string('regions', 100)->nullable();
+            $table->string('id')->primary();
+            $table->string('label');
+            $table->string('iso')->nullable();
+            $table->string('glottolog')->nullable();
+            $table->string('writing_systems')->nullable();
+            $table->string('other_names')->nullable();
+            $table->string('when_in_use')->nullable();
+            $table->string('regions')->nullable();
             $table->timestamps();
         });
     }
