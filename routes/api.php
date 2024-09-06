@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AgentsController;
 use App\Http\Controllers\Api\BibliographyController;
 use App\Http\Controllers\Api\ContentsController;
 use App\Http\Controllers\Api\FormsController;
+use App\Http\Controllers\Api\LanguagesController;
 use App\Http\Controllers\Api\ManuscriptsController;
 use App\Http\Controllers\Api\PartsController;
 use App\Http\Controllers\Api\PlacesController;
@@ -40,6 +41,10 @@ Route::apiResource('places', PlacesController::class, [
 ]);
 
 Route::apiResource('bibliography', BibliographyController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('languages', LanguagesController::class, [
     'as' => 'api'
 ]);
 

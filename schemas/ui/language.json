@@ -1,0 +1,42 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/id"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/label"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/iso"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/glottolog"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/writing_systems"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/other_names"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/when_in_use"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/regions"
+        }
+      ]
+    }
+  ]
+}
