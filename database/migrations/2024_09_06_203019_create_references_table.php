@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('references', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('short_title');
             $table->text('formatted_citation');
             $table->string('zotero_uri')->nullable();

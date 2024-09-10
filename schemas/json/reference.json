@@ -4,7 +4,8 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "integer"
+      "type": "string",
+      "format": "uuid"
     },
     "short_title": {
       "type": "string"
