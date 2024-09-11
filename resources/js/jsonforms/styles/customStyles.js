@@ -4,7 +4,7 @@ const customStyles = {
     root: 'flex flex-col gap-y-2',
     wrapper: 'flex-1',
     label: 'block text-sm font-medium text-gray-700 min-w-36',
-    input: 'w-full border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white max-w-3xl',
+    input: 'w-full border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white max-w-3xl disabled:cursor-not-allowed',
     checkbox: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm cursor-pointer',
     textarea: 'border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
     select: 'w-full border border-gray-300 rounded-md shadow-sm focus:ring-sinai-red focus:border-sinai-red sm:text-sm bg-white',
