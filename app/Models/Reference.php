@@ -30,7 +30,9 @@ class Reference extends Model
 
     public static function booted() {
         static::creating(function ($model) {
-            $model->id = Str::uuid();
+            if(!isset($model->id)) {
+                $model->id = Str::uuid();
+            }
         });
     }
 

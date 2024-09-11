@@ -15,6 +15,7 @@ class ReferencesSeeder extends Seeder
     {
         $references = [
             [
+                'id' => 'f45e8665-84fc-4b1c-92cc-befee93bba2a',
                 'short_title' => 'Akhrass and Syryany',
                 'formatted_citation' => 'Akhrass, Roger and Imad Syryany, eds. 160 Unpublished Homilies of Jacob of Serugh. 2 vols. Damascus, 2017',
                 'zotero_uri' => null,
@@ -23,6 +24,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '36ac2d29-349f-496d-b4ea-aff4e605c4ba',
                 'short_title' => 'Aland',
                 'formatted_citation' => 'Aland, K. Kurzgefasste Liste der griechischen Handschriften des Neuen Testaments. Berlin: De Gruyter, 1963, rev. ed. 1994',
                 'zotero_uri' => null,
@@ -31,6 +33,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '087ba7ab-401c-4edc-b474-7b86bc83cbce',
                 'short_title' => 'Aleksidze, et al.',
                 'formatted_citation' => 'Aleksidze, Z., et al. Catalogue of Georgian manuscripts discovered in 1975 at St. Catherine\'s Monastery on Mount Sinai. Athens, 2005',
                 'zotero_uri' => null,
@@ -39,6 +42,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '306681bc-375b-4914-bfbc-17551c68cb30',
                 'short_title' => 'Atiya',
                 'formatted_citation' => 'Atiya, Aziz Suryal. The Arabic Manuscripts of Mount Sinai: A Hand-List of the Arabic Manuscripts and Scrolls Microfilmed at the Library of the Monastery of St. Catherine, Mount Sinai',
                 'zotero_uri' => null,
@@ -47,6 +51,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '4693593d-2e88-4784-ab3d-501539acf1a0',
                 'short_title' => 'Balageorgos and Kriticou',
                 'formatted_citation' => 'Balageorgos and Kriticou. Les manuscrits de musique byzantine: Sinaï. Athens, 2008',
                 'zotero_uri' => null,
@@ -55,6 +60,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'd943377f-b641-4984-bcb1-0f859e11616f',
                 'short_title' => 'Bhayro, et al. 2012',
                 'formatted_citation' => 'S. Bhayro, R. Hawley, G. Kessel, and P. E. Pormann. "Collaborative research on the digital Syriac Galen palimpsest.” Semitica et Classica 5 (2012): 261-264. https://doi.org/10.1484/J.SEC.1.103064',
                 'zotero_uri' => null,
@@ -63,6 +69,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '77fa1dc7-194d-438f-9724-b54fe1ad65e8',
                 'short_title' => 'Bhayro, et al. 2013',
                 'formatted_citation' => 'S. Bhayro, R. Hawley, G. Kessel, and P. E. Pormann. "The Syriac Galen palimpsest: Progress, prospects and problems.” Journal of Semitic Studies 58 (2013): 131-148. https://doi.org/10.1093/jss/fgs042',
                 'zotero_uri' => null,
@@ -71,6 +78,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '3a20a9e1-0b02-476c-966e-649b62ac5761',
                 'short_title' => 'Binggeli',
                 'formatted_citation' => 'Binggeli, André. "Les trois David copistes arabes de Palestine aux 9e-10e s.” In Manuscripta graeca et orientalia: Mélanges monastiques et patristiques en l’honneur de Paul Géhin. Edited by André Binggeli, Anne Boud\'hors, and Matthieu Cassin, 79-118. Leuven: Peeters, 2016.',
                 'zotero_uri' => null,
@@ -79,6 +87,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '874101cc-626a-43d5-91a7-a9b1091871cd',
                 'short_title' => 'Boudalis and Rossetto',
                 'formatted_citation' => 'G. Boudalis, G. Rossetto. "Colour Mapping of Sin. ar. NF 8 + Sin. ar. NF 28." In M. P. Brown and J. Lockhart, eds. The Apollonius of Tyre Fragment in Arabic NF 8: Studies of a Latin Palimpsest at St Catherine’s Monastery, Sinai. [Forthcoming]',
                 'zotero_uri' => null,
@@ -87,6 +96,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '6ced4f13-e0b7-43d6-aa6d-260c00656341',
                 'short_title' => 'Brock 1995',
                 'formatted_citation' => 'Brock, Sebastian P. Catalogue of Syriac Fragments (New Finds) in the Library of the Monastery of Saint Catherine, Mount Sinai. Mount Sinai Foundation, 1995.',
                 'zotero_uri' => null,
@@ -95,6 +105,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '34ba1655-f27f-4da2-9234-a09e9b3d7922',
                 'short_title' => 'Brock 2003',
                 'formatted_citation' => 'Brock, S. “Syriac on Sinai: The Main Connections.” In Eukosmia: Studi miscellanei per il 75° di Vincenzo Poggi S.J. Edited by V. Ruggieri and L. Pieralli, 103-117. Catanzaro, 2003',
                 'zotero_uri' => null,
@@ -103,6 +114,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'd5b070e2-686e-4b15-923e-2dbf2e6403b2',
                 'short_title' => 'Brock 2011',
                 'formatted_citation' => 'Brock, Sebastian P. "The Syriac \'New Finds\' at St Catherine\'s Monastery, Sinai, and Their Significance." The Harp 27 (2011): 39-52',
                 'zotero_uri' => null,
@@ -111,6 +123,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '8eab4b8e-e5d8-40c6-9a5f-70748ca6d41e',
                 'short_title' => 'Brock 2012',
                 'formatted_citation' => 'Brock, S. P. “Sinai: A Meeting Point of Georgian with Syriac and Christian Palestinian Aramaic.” In Caucasus: Between East and West. Historical and Philological Studies in Honour of Zaza Aleksidze, 482-494. Tbilisi: National Centre of Manuscripts, 2012',
                 'zotero_uri' => null,
@@ -119,14 +132,16 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'd8f4d186-3fda-4768-b7e0-eb072e3bebd3',
                 'short_title' => 'Brock and Kessel',
-                'formatted_citation' => 'Brock and Kessel, S. P. Brock and G. Kessel. “The ‘Departure of Mary’ in Two Palimpsests at the Monastery of St. Catherine (Sinai Syr. 30 & Sinai Arabic 514).” Christian Orient: Journal of Studies in the Christian Culture of Asia and Africa 8 (2017): 115-152',
+                'formatted_citation' => 'S. P. Brock and G. Kessel. “The ‘Departure of Mary’ in Two Palimpsests at the Monastery of St. Catherine (Sinai Syr. 30 & Sinai Arabic 514).” Christian Orient: Journal of Studies in the Christian Culture of Asia and Africa 8 (2017): 115-152',
                 'zotero_uri' => null,
                 'date' => '2017',
                 'creator' => null,
                 'category' => null,
             ],
             [
+                'id' => 'dc777e76-90ae-4fdd-bc69-ae64bb61b74c',
                 'short_title' => 'Clark',
                 'formatted_citation' => 'Clark, Kenneth W, ed. Checklist of Manuscripts in St. Catherine’s Monastery Mount Sinai. Washington, D.C.: Library of Congress, 1952',
                 'zotero_uri' => null,
@@ -135,14 +150,16 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '5256f5da-f751-4cdc-85ce-35b9b20ae818',
                 'short_title' => 'CPG',
-                'formatted_citation' => 'Geerard, Maurice and Jacques Noret, eds. Clavis Patrum Graecorum. Corpus Christianorum. Turnhout: Brepols, 1974-1987',
+                'formatted_citation' => 'Geerard, Maruice and Jacques Noret, eds. Clavis Patrum Graecorum. Corpus Christianorum. Turnhout: Brepols, 1974-1987',
                 'zotero_uri' => null,
                 'date' => '1974-1987',
                 'creator' => null,
                 'category' => null,
             ],
             [
+                'id' => 'a68d6ad1-06fd-4799-a210-04cef4803386',
                 'short_title' => 'Desreumaux 1997',
                 'formatted_citation' => 'A. Desreumaux. Codex sinaiticus Zosimi rescriptus. Lausanne, 1997',
                 'zotero_uri' => null,
@@ -151,6 +168,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '428b16d3-7342-429a-85ce-ff91a8cccef7',
                 'short_title' => 'Desreumaux 2010',
                 'formatted_citation' => 'A. Desreumaux. "Les manuscrits araméens christo-palestiniens du nouveau fonds du monastère de Sainte-Catherine du Sinaï." Comptes rendus des séances de l\'Académie des Inscriptions et Belles-Lettres 154 (2010): 1317-1328',
                 'zotero_uri' => null,
@@ -159,6 +177,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '7b0241ed-3cf7-44e2-ab9d-a1102bb9258c',
                 'short_title' => 'Froyshov',
                 'formatted_citation' => 'Froyshov, S. R. “L’horloge \'géorgien\' du Sinaiticus ibericus 34.” PhD diss., Paris IV-Sorbonne, 2003',
                 'zotero_uri' => null,
@@ -167,6 +186,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '55eae5e7-ad84-46af-a814-4f5524b2d09d',
                 'short_title' => 'Gardthausen',
                 'formatted_citation' => 'Gardthausen, V. E. Catalogus codicum Graecorum Sinaiticorum. Oxford, 1886',
                 'zotero_uri' => null,
@@ -175,6 +195,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '467167dd-e012-4f87-a1c8-cd8a79c3e8d5',
                 'short_title' => 'Géhin 2006',
                 'formatted_citation' => 'Géhin, Paul. “Manuscrits sinaïtiques dispersés, I: les fragments arabes et syriaques de Paris.” OC 90 (2006): 23-43',
                 'zotero_uri' => null,
@@ -183,6 +204,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'f3536560-fc15-43db-82b5-0861b86a1107',
                 'short_title' => 'Géhin 2009',
                 'formatted_citation' => 'Géhin, Paul. "Fragments patristiques syriaques des Nouvelles découvertes du Sinaï." Collectanea Christiana Orientalia 6 (2009): 67-93',
                 'zotero_uri' => null,
@@ -191,6 +213,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'b1a3a9c9-ed90-440a-9e37-fade7a17796d',
                 'short_title' => 'Géhin 2017',
                 'formatted_citation' => 'Géhin, Paul. Les manuscrits syriaques de parchemin du Sinaï et leurs membra disjecta',
                 'zotero_uri' => null,
@@ -199,6 +222,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'cdb52f1c-7c0e-4d5e-973f-1692deb447a5',
                 'short_title' => 'Gibson',
                 'formatted_citation' => 'Gibson, Margaret Dunlop. Catalogue of the Arabic Manuscripts in the Convent of S. Catharine on Mount Sinai. Cambridge University Press, 1894',
                 'zotero_uri' => null,
@@ -207,14 +231,16 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '6e8ae70b-30a1-4bff-87d8-69a54cdc3a7b',
                 'short_title' => 'Gippert',
-                'formatted_citation' => 'Gippert, J. Gippert. “New Perspectives of (Multi-)Spectral Manuscript Analysis," Pages 165–176 and [331–350] in C. Brockmann, D. Deckers, Daniel, L. Koch, Lutz, and S. Valente, eds. Handschriften-und Textforschung heute: Zur Überlieferung der griechischen Literatur. Festschrift für Dieter Harlfinger aus Anlass seines 70. Geburtstages. Serta Graeca 30. Wiesbaden, 2014',
+                'formatted_citation' => 'J. Gippert. “New Perspectives of (Multi-)Spectral Manuscript Analysis," Pages 165–176 and [331–350] in C. Brockmann, D. Deckers, Daniel, L. Koch, Lutz, and S. Valente, eds. Handschriften-und Textforschung heute: Zur Überlieferung der griechischen Literatur. Festschrift für Dieter Harlfinger aus Anlass seines 70. Geburtstages. Serta Graeca 30. Wiesbaden, 2014',
                 'zotero_uri' => null,
                 'date' => '2014',
                 'creator' => null,
                 'category' => null,
             ],
             [
+                'id' => '31086588-c563-4dca-b793-d9e4cbdc887b',
                 'short_title' => 'Greek New Finds',
                 'formatted_citation' => 'Nikolopoulos, P. G. Τα νέα ευρήματα του Σινά (Athens, 1998). English translation: A. Hatzopoulos, The New Finds of Sinai (Athens, 1999)',
                 'zotero_uri' => null,
@@ -223,6 +249,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '6e969e87-70b6-4d13-bcff-a087e4b2b924',
                 'short_title' => 'Gvaramia, et al. 1987',
                 'formatted_citation' => 'R. Gvaramia, E. Met\'reveli, C. Č\'ank\'ievi, L. Xevsuriani, and L. Džġamaia. Kartul xelnacerta aġc\'eriloba: Sinuri k\'olekcia [Description of Georgian manuscripts: Sinai collection III]. Tbilisi, 1987',
                 'zotero_uri' => null,
@@ -231,6 +258,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'ce9cdae8-81ce-4c29-8431-ab599cd5491c',
                 'short_title' => 'Gwilliam, Burkitt, and Stenning',
                 'formatted_citation' => 'G. H. Gwilliam, F. C. Burkitt, and J. F. Stenning, eds. Biblical and Patristic Relics of the Palestinian Syriac Literature from MSS. in the Bodleian Library and in the Library of Saint Catherine on Mount Sinai. Anecdota Oxoniensia 1:9. Oxford, 1896',
                 'zotero_uri' => null,
@@ -239,14 +267,16 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'bfa7ef83-eff2-4715-9e04-ae851adc5014',
                 'short_title' => 'Hawley',
-                'formatted_citation' => 'Hawley, R. Hawley. "More identifications of the Syriac Galen palimpsest.” Semitica et Classica 7 (2014): 237-272. https://doi.org/10.1484/J.SEC.5.103532',
+                'formatted_citation' => 'R. Hawley. "More identifications of the Syriac Galen palimpsest.” Semitica et Classica 7 (2014): 237-272. https://doi.org/10.1484/J.SEC.5.103532',
                 'zotero_uri' => null,
                 'date' => '2014',
                 'creator' => null,
                 'category' => null,
             ],
             [
+                'id' => 'deb668b6-feec-4828-8749-a97441881226',
                 'short_title' => 'Kamil',
                 'formatted_citation' => 'Kāmil, Murād. Catalogue of All Manuscripts in the Monastery of St. Catherine on Mount Sinai. Harrassowitz, 1970.',
                 'zotero_uri' => null,
@@ -255,6 +285,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'ebe32f6b-ad60-472c-aceb-d86913448530',
                 'short_title' => 'Kashouh 2008',
                 'formatted_citation' => 'Kashouh, Hikmat. “Sinai Ar. N.F. Parchment 8 and 28: Its Contribution to Textual Criticism of the Gospel of Luke.” Novum Testamentum 50 (2008): 28-57',
                 'zotero_uri' => null,
@@ -263,6 +294,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '01d4a639-d314-4271-b7f8-3f559c6c744c',
                 'short_title' => 'Kashouh 2012',
                 'formatted_citation' => 'Kashouh, Hikmat. The Arabic Versions of the Gospels: The Manuscripts and their Families. Berlin: De Gruyter, 2012',
                 'zotero_uri' => null,
@@ -271,6 +303,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'a4bfd252-a8ad-4464-912a-a6f70b9f5daf',
                 'short_title' => 'Kessel',
                 'formatted_citation' => 'Kessel, G. "A Syriac Palimpsest Fragment of the Epistle to the Hebrews dated to 551/2 CE." Pages 77-96 in Ephrem A. Ishac, Thomas Csanady, Theresa Zammit Lupi, eds. Tracing Written Heritage in the Digital Age / Auf den Spuren schriftlichen Kulturerbes im digitalen Zeitalter. Wiesbaden: Harrassowitz, 2021',
                 'zotero_uri' => null,
@@ -279,6 +312,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'c46288ef-92c0-49ee-9b8a-2579b5ba23fb',
                 'short_title' => 'Kiknadze',
                 'formatted_citation' => 'G. Kiknadze. Nevmirebuli dzlisp\'irni. Tbilisi, 1982',
                 'zotero_uri' => null,
@@ -287,6 +321,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '2d85be7b-2722-4e39-8417-bc67a3075bd8',
                 'short_title' => 'Lamoreaux',
                 'formatted_citation' => 'Lamoreaux, J.C., ed. The Life of Stephen of Mar Sabas. Leuven: Peeters, 1999',
                 'zotero_uri' => null,
@@ -295,6 +330,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '33aadcf6-1e7a-4533-abd9-052809f06b83',
                 'short_title' => 'Lewis',
                 'formatted_citation' => 'Lewis, A. S. Catalogue of the Syriac Manuscripts in the Convent of S. Catharine on Mount Sinai. Studia Sinaitica I. London: Cambridge University Press, 1894',
                 'zotero_uri' => null,
@@ -303,6 +339,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '66a7ffc8-0d0a-46c7-96a5-1434d0a70f39',
                 'short_title' => 'Lewis 1902',
                 'formatted_citation' => 'A. S. Lewis, Apocrypha Syriaca. Studia Sinaitica XI. London, 1902',
                 'zotero_uri' => null,
@@ -311,6 +348,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'ec7c937f-655a-4459-b327-3793637b9db9',
                 'short_title' => 'LOC',
                 'formatted_citation' => 'Manuscripts in St. Catherine\'s Monastery, Mount Sinai. Library of Congress.',
                 'zotero_uri' => null,
@@ -319,6 +357,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'cb8b8b52-569b-4d1f-8d5c-adf911afd205',
                 'short_title' => 'Meimaris',
                 'formatted_citation' => 'Meimaris, Yiannis E. A Catalogue Of The New Arabic Manuscripts Found At St. Catherine\'s Monastery, Mount Sinai',
                 'zotero_uri' => null,
@@ -327,6 +366,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '7502e15c-0626-4086-9f3d-14febce6efc9',
                 'short_title' => 'Metreveli',
                 'formatted_citation' => 'Metreveli, E. Dzlisp\'irni da ġmrtismšoblisani. Tbilisi, 1971',
                 'zotero_uri' => null,
@@ -335,6 +375,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '8fc3d6c1-089b-4c76-adec-f94e728fd539',
                 'short_title' => 'Metreveli, Č\'ank\'ievi, and Xevsuriani',
                 'formatted_citation' => 'E. Metreveli, C. Č\'ank\'ievi, and L. Xevsuriani. Udzvelesi Iadgari. Tbilisi, 1980',
                 'zotero_uri' => null,
@@ -343,6 +384,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'a24d07c7-8ba4-4293-ac7d-ff5e797298f0',
                 'short_title' => 'Miklas 2000',
                 'formatted_citation' => 'Miklas, H. “Zur editorischen Vorbereitung des sog. Missale Sinaiticum (Sin. slav. 5/N).” In Glagolitica: Zum Ursprung der slavischen Schriftkultur. Edited by H. Miklas, Sylvia Richter, and Veliza Sadovski, 117-129. Wien: Verlag der Österreichischen Akademie der Wissenschaften, 2000',
                 'zotero_uri' => null,
@@ -351,6 +393,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '03f2516b-1a60-4cb9-89de-24c655df4020',
                 'short_title' => 'Miklas, et al.',
                 'formatted_citation' => 'Miklas, H., et al. Psalterium Demetrii Sinaitici (monasterii sanctae Catharinae codex slav. 3/N). Glagolitica Sinaitica 1. Vienna, 2012',
                 'zotero_uri' => null,
@@ -359,6 +402,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'b4ee85d4-739f-4f08-8f11-a940adc5f279',
                 'short_title' => 'Müller-Kessler 2014',
                 'formatted_citation' => 'C. Müller-Kessler. “Codex Sinaiticus Rescriptus (CSRG/O/P/S): A Collection of Christian Palestinian Aramaic Manuscripts.” Le Muséon 127 (2014): 263-309. https://dx.doi.org/10.2143/MUS.127.3.3062095',
                 'zotero_uri' => null,
@@ -367,6 +411,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '2928e54d-04d0-459d-9765-30c9dbd791a9',
                 'short_title' => 'Müller-Kessler 2016',
                 'formatted_citation' => 'C. Müller-Kessler. “Christlich-palästinische-aramäische Palimpseste im St. Katharinenkloster, Sinai mit dem Martyrium des Mamas von Kaisareia in Kappadokien (Arabic NF 66).” Oriens Christianus 99 (2016): 76-84',
                 'zotero_uri' => null,
@@ -375,6 +420,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'afba79a3-c57f-44cf-9005-ed6e2f3d76b8',
                 'short_title' => 'Müller-Kessler 2017',
                 'formatted_citation' => 'C. Müller-Kessler. “The Martyrdom of Arianos and the Four Protectores in an Unpublished Christian Palestinian Aramaic Palimpsest, St Catherine’s Monastery (Sinai, Arabic NF 66).” Collectanea Christiana Orientalia 14 (2017): 115-125. https://doi.org/10.21071/cco.v14i.14448',
                 'zotero_uri' => null,
@@ -383,6 +429,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'ea513297-8a76-4142-9ea4-1d876a7e8921',
                 'short_title' => 'Müller-Kessler 2018a',
                 'formatted_citation' => 'C. Müller-Kessler. “The Unknown Martyrdom of Patriklos of Caesarea in Christian Palestinian Aramaic from St Catharine’s Monastery (Sinai, Arabic NF 66).” Analecta Bollandiana 136 (2018): 63-71. https://doi.org/10.1484/J.ABOLL.4.2019024',
                 'zotero_uri' => null,
@@ -391,6 +438,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '549d0e71-caaa-4a92-9a7c-0f6a8eed0fa8',
                 'short_title' => 'Müller-Kessler 2018b',
                 'formatted_citation' => 'C. Müller-Kessler. “Three Early Witnesses of the ‘Dormition of Mary’ in Christian Palestinian Aramaic from the Cairo Genizah (Taylor-Schechter Collection) and the New Finds in St Catherine’s Monastery.” Apocrypha 29 (2018): 69-95. https://doi.org/10.1484/J.APOCRA.5.116638',
                 'zotero_uri' => null,
@@ -399,6 +447,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '594e9647-a3e4-4441-8a47-97062404916d',
                 'short_title' => 'Müller-Kessler 2019',
                 'formatted_citation' => 'C. Müller-Kessler. “An Overlooked Christian Palestinian Aramaic Witness of the Dormition of Mary in Codex Climaci Rescriptus (CCR IV).” Collectanea Christiana Orientalia 16 (2019): 81-98. https://doi.org/10.21071/cco.v16i.14598',
                 'zotero_uri' => null,
@@ -407,6 +456,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '61cb179b-42e5-4ec7-a2d6-adbc62c2481c',
                 'short_title' => 'Müller-Kessler 2021',
                 'formatted_citation' => 'C. Müller-Kessler. “Neue Palimpsestfragmente zu den Katechesen des Cyrill von Jerusalem im Codex Sinaiticus Rescriptusi (Georg. NF 19, 71) mit einem zweiten Textzeugen (Syr. NF 11) aus dem Fundus des St. Katherinenklosters.” Oriens Christianus 104 (2021): 25-66',
                 'zotero_uri' => null,
@@ -415,6 +465,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '94398d51-62f5-47a2-b0e4-0e36ed9c5245',
                 'short_title' => 'Müller-Kessler 2022',
                 'formatted_citation' => 'C. Müller-Kessler. “Piecing together Christian Palestinian Aramaic Texts under Georgian Manuscripts (St Petersburg, NLR, Syr. 16; Sinai, Georg. NF 19, 71; Oslo, Martin Schøyen MS 35, 37; Princeton, Garrett MS 24; Göttingen, Syr. 17, 19, 23, 25).” Digital Kartvelology 1 (2022): 1-25',
                 'zotero_uri' => null,
@@ -423,6 +474,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '99133ede-c09e-41b9-89ab-0516184fdbae',
                 'short_title' => 'Müller-Kessler 2023',
                 'formatted_citation' => 'C. Müller-Kessler. “A Palimpsest with the Martyrdom of Proklos and Hilarios (BHG 2374) in the Christian Palestinian Aramaic Transmission from the Monastery Library of Saint Catherine (Sinai, CPA NF frg. 7, fol. 5/6).” Analecta Bollandiana 141 (2023): 5-15. https://doi.org/10.1484/J.ABOL.5.136114',
                 'zotero_uri' => null,
@@ -431,6 +483,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '19f12371-91e3-4b00-8a68-d07856514dbe',
                 'short_title' => 'Müller-Kessler and Sokoloff',
                 'formatted_citation' => 'C. Müller-Kessler and M. Sokoloff. The Christian Palestinian Aramaic New Testament Version from the Early Period: Gospels. A corpus of Christian Palestinian Aramaic 2A. Groningen, 1998',
                 'zotero_uri' => null,
@@ -439,6 +492,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'b6bf1889-3b36-44a2-bf71-e2aaa07f7db1',
                 'short_title' => 'NLI',
                 'formatted_citation' => 'Manuscripts in the Holy Monastery of St. Catherine at Mount Sinai. National Library of Israel',
                 'zotero_uri' => null,
@@ -447,6 +501,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'bd38b5ff-7b02-4b05-b19a-5c28e6d4dc1e',
                 'short_title' => 'Perria',
                 'formatted_citation' => 'Perria, Lidia. Repertorio dei manoscritti greci di area orientale, palestino-sinaitica. Messina, 2000',
                 'zotero_uri' => null,
@@ -455,6 +510,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '9c329e63-d59e-49d5-9e49-033798c73d12',
                 'short_title' => 'Philothée',
                 'formatted_citation' => 'Philothée du Sinaï, Nouveaux manuscrits syriaques du Sinaï. Athens, 2008',
                 'zotero_uri' => null,
@@ -463,6 +519,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '0c603802-8999-46fd-bab4-2e45c3483993',
                 'short_title' => 'Protopresbyterou Themistokleous',
                 'formatted_citation' => 'Protopresbyterou Themistokleous St. Christodoulou. He nekrosime akolouthia kata tous cheirographous kodikes 10ou-12ou aionos, 2 vols. Thera, 2005',
                 'zotero_uri' => null,
@@ -471,6 +528,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '5ab3cd23-05d9-43ef-a65b-d053db8e329e',
                 'short_title' => 'Rossetto 2021',
                 'formatted_citation' => 'G. Rossetto. "Fragments from the Orphic Rhapsodies? Hitherto Unknown Hexameters in the Palimpsest Sin. ar. NF 66." Zeitschrift für Papyrologie und Epigraphik 219 (2021): 34–60',
                 'zotero_uri' => null,
@@ -479,6 +537,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '1b0a2e17-b856-4d06-9380-90cfeb899715',
                 'short_title' => 'Rossetto 2023a',
                 'formatted_citation' => 'Rossetto, G. Greek Palimpsests at Saint Catherine’s Monastery (Sinai) Three Euchologia as Case Studies. Veröffentlichungen zur Byzanzforschung 44. Wien: Austrian Academy of Sciences Press, 2023',
                 'zotero_uri' => null,
@@ -487,6 +546,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '58b989c0-a90b-482d-8670-fbfa3132d13b',
                 'short_title' => 'Rossetto 2023b',
                 'formatted_citation' => 'G. Rossetto. “Classical Texts Among the Palimpsests of the Monastery of St. Catherine (Sinai): An Overview.” Pages 55-71 in C. Rapp, G. Rossetto, J. Grusková, and G. Kessel, eds. New Light on Old Manuscripts: The Sinai Palimpsests and Other Advances in Palimpsest Studies. Veröffentlichungen zur Byzanzforschung 45. Austrian Academy of Sciences, Vienna 2023. https://doi.org/10.1553/978OEAW91575s55',
                 'zotero_uri' => null,
@@ -495,6 +555,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '151a13dd-7d3f-4bc4-af89-69c535ead6ff',
                 'short_title' => 'Rossetto, et al.',
                 'formatted_citation' => 'G. Rossetto, et al. "A Revised Text of the Poem with Orphic Content in the Palimpsest Sin. ar. NF 66." Zeitschrift für Papyrologie und Epigraphik 222 (2022): 9–15',
                 'zotero_uri' => null,
@@ -503,6 +564,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '0e72ede5-5e72-4a48-93d8-32abd4cc4064',
                 'short_title' => 'SIBE 2/1-2',
                 'formatted_citation' => 'Gippert, J., W. Schulze, Z. Aleksidze, and J.-P. Mahé, eds. The Caucasian Albanian Palimpsests of Mount Sinai. Monumenta Palaeographica Medii Aevi: Series Ibero-Caucasica 2. Turnhout, 2008',
                 'zotero_uri' => null,
@@ -511,6 +573,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => 'daf01440-95e7-4536-8ea4-d0a03a3c3fda',
                 'short_title' => 'SIBE 2/3',
                 'formatted_citation' => 'Gippert, J., W. Schulze, Z. Aleksidze, and J.-P. Mahé, eds. The Caucasian Albanian Palimpsests of Mount Sinai. Volume III: The Armenian Layer. Monumenta Palaeographica Medii Aevi: Series Ibero-Caucasica 2. Turnhout, 2008',
                 'zotero_uri' => null,
@@ -519,6 +582,7 @@ class ReferencesSeeder extends Seeder
                 'category' => null,
             ],
             [
+                'id' => '8f9f6fa5-f960-4d0b-b8b8-cfcf17813b10',
                 'short_title' => 'Treiger',
                 'formatted_citation' => 'Treiger, Alexander. “Christian Graeco-Arabica: Prolegomena to a History of the Arabic Translations of the Greek Fathers.” In Intellectual History of the Islamicate World, 3:188-227. Leiden: Brill, 2015',
                 'zotero_uri' => null,
