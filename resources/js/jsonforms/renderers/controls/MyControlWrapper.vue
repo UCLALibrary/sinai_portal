@@ -11,11 +11,11 @@
         :styles="styles"
       />
 
-      <slot name="actions"></slot>
-    </div>
+      <div :class="styles.control.wrapper">
+        <slot></slot>
+      </div>
 
-    <div :class="styles.control.wrapper">
-      <slot></slot>
+      <slot name="actions"></slot>
     </div>
 
     <FieldErrors
@@ -53,3 +53,11 @@
     },
   })
 </script>
+
+<style>
+  .array-list-item {
+    label { 
+      @apply min-w-40
+    }
+  }
+</style>
