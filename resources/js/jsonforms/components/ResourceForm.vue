@@ -8,58 +8,54 @@
       @change="onChange"
     />
 
-    <v-container>
-      <v-row>
-        <v-col class="flex justify-end space-x-4">
-          <template v-if="mode !== 'show'">
-            <button
-              type="button"
-              @click="onCancel"
-              class="cancel-button">
-              <i class="mdi mdi-cancel"></i> Cancel
-            </button>
-          </template>
+    <div class="flex justify-start space-x-4 mt-8 pt-4 border-t">
+      <template v-if="mode !== 'show'">
+        <button
+          type="button"
+          @click="onCancel"
+          class="cancel-button">
+          <i class="mdi mdi-cancel"></i> Cancel
+        </button>
+      </template>
 
-          <template v-if="mode === 'create' || mode === 'update'">
-            <button
-              type="button"
-              @click="onSave(false)"
-              class="save-button"
-              :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
-              :disabled="!isValid">
-              <i class="mdi mdi-content-save"></i> Save
-            </button>
-          </template>
-          <template v-else-if="mode === 'edit'">
-            <button
-              type="button"
-              @click="onSave(true)"
-              class="save-button"
-              :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
-              :disabled="!isValid">
-              <i class="mdi mdi-content-save-edit"></i> Save &amp; Continue
-            </button>
+      <template v-if="mode === 'create' || mode === 'update'">
+        <button
+          type="button"
+          @click="onSave(false)"
+          class="save-button"
+          :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
+          :disabled="!isValid">
+          <i class="mdi mdi-content-save"></i> Save
+        </button>
+      </template>
+      <template v-else-if="mode === 'edit'">
+        <button
+          type="button"
+          @click="onSave(true)"
+          class="save-button"
+          :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
+          :disabled="!isValid">
+          <i class="mdi mdi-content-save-edit"></i> Save &amp; Continue
+        </button>
 
-            <button
-              type="button"
-              @click="onSave(false)"
-              class="save-button"
-              :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
-              :disabled="!isValid">
-              <i class="mdi mdi-content-save"></i> Save &amp; Finish
-            </button>
-          </template>
-          <template v-else-if="mode === 'show'">
-            <button
-              type="button"
-              @click="onCancel"
-              class="cancel-button">
-              <i class="mdi mdi-close"></i> Close
-            </button>
-          </template>
-        </v-col>
-      </v-row>
-    </v-container>
+        <button
+          type="button"
+          @click="onSave(false)"
+          class="save-button"
+          :class="{ 'cursor-not-allowed pointer-events-auto opacity-50': !isValid }"
+          :disabled="!isValid">
+          <i class="mdi mdi-content-save"></i> Save &amp; Finish
+        </button>
+      </template>
+      <template v-else-if="mode === 'show'">
+        <button
+          type="button"
+          @click="onCancel"
+          class="cancel-button">
+          <i class="mdi mdi-close"></i> Close
+        </button>
+      </template>
+    </div>
   </div>
 </template>
 
