@@ -5,28 +5,29 @@
         :for="id"
         :class="[styles.control.label, required ? styles.control.required : '']">
         {{ label }}
+        <div v-if="showAsterisk || showAsteriskForPublishing">
+          <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
+          <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
+          <span v-else> &nbsp;</span>
+        </div>
       </label>
+
 
       <div :class="styles.control.wrapper">
         <slot></slot>
+
+        <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
+          <span :class="styles.tooltip.icon"></span>
+          <template #popper>
+            <span class="text-xs">
+              {{ description }}
+            </span>
+          </template>
+        </Tooltip>
       </div>
 
       <slot name="actions"></slot>
 
-      <div v-if="showAsterisk || showAsteriskForPublishing">
-        <span v-if="showAsterisk" :class="styles.control.asterisk">*</span>
-        <span v-if="showAsteriskForPublishing" :class="styles.control.asterisk">*</span>
-        <span v-else> &nbsp;</span>
-      </div>
-
-      <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
-        <span :class="styles.tooltip.icon"></span>
-        <template #popper>
-          <span class="text-xs">
-            {{ description }}
-          </span>
-        </template>
-      </Tooltip>
     </div>
 
     <FieldErrors
