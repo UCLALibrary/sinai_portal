@@ -24,8 +24,8 @@ const customStyles = {
   arrayList: {
     root: 'border border-gray-300 divide-y divide-gray-300',
     legend: 'flex flex-row-reverse w-full justify-between mb-2',
-    addButton: 'mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mx-1',
-    label: 'block text-base font-medium text-gray-700',
+    addButton: 'h-8 mt-8 text-xl hover:text-sinai-red mdi mdi-plus-circle-outline focus:outline-none focus:ring-2 focus:ring-sinai-red focus:border-sinai-red cursor-pointer mx-1',
+    label: 'mt-8 block text-lg font-medium text-gray-700',
     itemWrapper: '',
     noData: 'px-3 py-2 text-sm bg-gray-200',
     itemToolbar: '!m-0 p-2 border-b bg-gray-200',
@@ -41,16 +41,16 @@ const customStyles = {
   },
   // custom classes
   container: {
-    label: 'flex items-center',
-    checkbox: 'relative flex items-center gap-x-1 my-1',
-    checkboxList: 'flex flex-wrap gap-x-4',
+    label: 'flex items-start',
+    checkbox: 'flex items-center gap-x-1 my-1',
+    checkboxList: 'grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 max-w-max',
     arrayList: 'flex items-center gap-x-2',
   },
   label: {
     wrapper: 'flex items-center gap-x-2',
   },
   tooltip: {
-    icon: 'text-base mdi mdi-information-slab-circle-outline cursor-pointer',
+    icon: 'text-base mdi mdi-information-slab-circle-outline cursor-pointer hover:text-sinai-red',
   },
 }
 
