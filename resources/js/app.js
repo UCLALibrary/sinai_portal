@@ -13,6 +13,8 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import mitt from 'mitt'
 const emitter = mitt()
 
+import VueObserveVisibility from 'vue3-observe-visibility'
+
 // vuetify
 import vuetify from './vuetify'
 
@@ -43,6 +45,7 @@ createInertiaApp({
         return app
             .use(plugin)
             .use(ZiggyVue)
+            .use(VueObserveVisibility)
             .use(vuetify)
             .use(ElementPlus)
             .mount(el)

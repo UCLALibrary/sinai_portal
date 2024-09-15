@@ -15,6 +15,9 @@ class AgentsController extends Controller
     {
         return Inertia::render('Frontend/Browse/Agents/Index', [
             'title' => 'Agents',
+            'appId' => env('ALGOLIA_APP_ID'),
+            'apiKey' => env('ALGOLIA_SECRET'),
+            'indexName' => env('SCOUT_PREFIX') . 'agents',
         ]);
     }
 
