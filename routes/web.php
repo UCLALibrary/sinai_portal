@@ -10,21 +10,20 @@ use App\Http\Controllers\Cms\PlacesController;
 use App\Http\Controllers\Cms\ReferencesController;
 use App\Http\Controllers\Cms\UsersController;
 use App\Http\Controllers\Cms\WorksController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Frontend\AgentsController as FrontendAgentsController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+// frontend
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+    return Inertia::render('Welcome');
+})->name('home');
 
+Route::resource('/agents', FrontendAgentsController::class)->only(['index', 'show'])->names('frontend.agents');
+
+// cms
 Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstream.auth_session'), 'verified']], function () {
-    // cms
+    // dashboard
     Route::get('/', function () {
         return Inertia::render('Dashboard');
     })->name('cms');
