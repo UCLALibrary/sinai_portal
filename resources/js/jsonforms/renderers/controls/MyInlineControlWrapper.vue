@@ -12,28 +12,28 @@
         </div>
       </label>
 
+      <div class="flex flex-col flex-1">
+        <div :class="styles.control.wrapper">
+          <slot></slot>
 
-      <div :class="styles.control.wrapper">
-        <slot></slot>
-
-        <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
-          <span :class="styles.tooltip.icon"></span>
-          <template #popper>
-            <span class="text-xs">
-              {{ description }}
-            </span>
-          </template>
-        </Tooltip>
+          <Tooltip v-if="showDescription" :triggers="['hover', 'click']">
+            <span :class="styles.tooltip.icon"></span>
+            <template #popper>
+              <span class="text-xs">
+                {{ description }}
+              </span>
+            </template>
+          </Tooltip>
+        </div>
+        <FieldErrors
+          :errors="errors"
+          :styles="styles.control.error"
+        />
       </div>
 
       <slot name="actions"></slot>
 
     </div>
-
-    <FieldErrors
-      :errors="errors"
-      :styles="styles.control.error"
-    />
   </div>
 </template>
 
