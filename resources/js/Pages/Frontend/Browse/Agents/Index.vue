@@ -1,6 +1,6 @@
 <template>
   <FrontendLayout :title="title">
-    <h2 class="font-dosis flex text-center justify-center mx-auto text-4xl">
+    <h2 class="font-dosis flex mx-auto text-3xl border-b pb-2">
       Agents
     </h2>
 
@@ -104,7 +104,7 @@
               </template>
             </AisStateResults>
           </template>
-
+  
           <template v-slot:item="{ item }">
             <AgentResult
               :result="item"
@@ -168,7 +168,7 @@
    */
 
   .facet-sidebar {
-    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 py-5 pl-4 lg:pl-10 pr-4 lg:w-1/3 2xl:w-1/4 bg-gray-300
+    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 py-5 lg:pl-4 pr-4 lg:w-1/3 2xl:w-1/4 bg-gray-200 opacity-90
   }
   .main-container {
     @apply w-full sm:pl-4 sm:pr-5 py-8 mb-24 lg:p-0
@@ -200,7 +200,7 @@
 
   /* the input element */
   .ais-SearchBox-input {
-    @apply block w-full pl-2 pr-8 max-sm:text-[16px] text-base border-b-2 border-black max-w-none
+    @apply block w-full pl-2 pr-8 max-sm:text-[16px] text-base border-b-2 border-black max-w-none rounded focus:ring-sinai-red
   }
 
   /* the submit button element */
@@ -242,7 +242,7 @@
   .ais-RefinementList {}
 
   .clear-filter {
-    @apply inline-flex items-center gap-x-0.5 rounded-full border border-black hover:bg-white px-2 py-1 gap-x-1 text-sm font-sans text-black
+    @apply inline-flex items-center gap-x-1 rounded-full border border-black hover:bg-white px-2 py-1 text-sm font-sans text-black
   }
   .clear-filter button {
     @apply relative -mr-1 h-5 w-5 rounded-full bg-sinai-red
@@ -273,14 +273,19 @@
   }
 
   .ais-RefinementList-checkbox {
-    @apply cursor-pointer w-4 h-4 shadow-none
+    @apply rounded cursor-pointer w-4 h-4 shadow-none ml-1
   }
 
+  .ais-RefinementList-checkbox:checked, .ais-RefinementList-checkbox:focus, .ais-RefinementList-checkbox:focus-visible {
+    @apply bg-sinai-red text-sinai-red
+  }
   .ais-RefinementList-labelText {
     @apply flex-1 max-sm:text-[14px] text-sm lg:text-base
   }
 
-  .ais-RefinementList-count {}
+  .ais-RefinementList-count {
+    @apply text-sm
+  }
 
 
   /*

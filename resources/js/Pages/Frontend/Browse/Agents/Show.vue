@@ -1,7 +1,7 @@
 <template>
   <FrontendLayout :title="title">
-    <h2 class="font-dosis flex text-center justify-center mx-auto text-4xl">
-      Agent: {{ agent.pref_name }}
+      <h2 class="font-dosis flex mx-auto text-3xl border-b pb-2">
+        {{ agent.pref_name }}
     </h2>
   </FrontendLayout>
 </template>
