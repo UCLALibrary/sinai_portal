@@ -14,7 +14,7 @@ defineProps({
     <Head :title="title" />
     <div class="bg-sinai-beige text-gray-800">
         <div class="relative flex flex-col items-center justify-start">
-            <div class="relative h-screen flex flex-col w-full max-w-2xl px-6 lg:max-w-7xl">
+            <div class="relative min-h-screen flex flex-col w-full max-w-2xl px-6 lg:max-w-7xl">
                 <header class="items-center gap-2 py-10 lg:grid-cols-3">
                     <nav class="-mx-3 flex flex-1 justify-between">
                         <div class="">
