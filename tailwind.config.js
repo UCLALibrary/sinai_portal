@@ -39,5 +39,8 @@ export default {
         '!p-4',
         '!px-1',
         '!px-2',
+        'max-w-4xl',
+        'max-w-5xl',
+        'max-w-6xl',
     ],
 };

@@ -3,6 +3,7 @@ import {
   uiTypeIs,
   scopeEndIs,
   isStringControl,
+  isIntegerControl,
   isMultiLineControl,
   isBooleanControl,
   isEnumControl,
@@ -15,6 +16,7 @@ import {
 
 import myHorizontalRuleRenderer from '@/jsonforms/renderers/layouts/MyHorizontalRuleRenderer.vue'
 import myStringControlRenderer from '@/jsonforms/renderers/controls/MyStringControlRenderer.vue'
+import myIntegerControlRenderer from '@/jsonforms/renderers/controls/MyIntegerControlRenderer.vue'
 import myMultiStringControlRenderer from '@/jsonforms/renderers/controls/MyMultiStringControlRenderer.vue'
 import myBooleanControlRenderer from '@/jsonforms/renderers/controls/MyBooleanControlRenderer.vue'
 import myEnumControlRenderer from '@/jsonforms/renderers/controls/MyEnumControlRenderer.vue'
@@ -32,6 +34,9 @@ export const myHorizontalRuleRendererEntry = buildRendererRegistryEntry(myHorizo
 
 // control: text field
 export const myStringControlRendererEntry = buildRendererRegistryEntry(myStringControlRenderer, isStringControl)
+
+// control: number field
+export const myIntegerControlRendererEntry = buildRendererRegistryEntry(myIntegerControlRenderer, isIntegerControl)
 
 // control: text area
 export const myMultiStringControlRendererEntry = buildRendererRegistryEntry(myMultiStringControlRenderer, isMultiLineControl, 5)
@@ -69,6 +74,7 @@ export const myBibliographySelectionRendererEntry = buildRendererRegistryEntry(m
 export const customRenderers = [
   myHorizontalRuleRendererEntry,
   myStringControlRendererEntry,
+  myIntegerControlRendererEntry,
   myMultiStringControlRendererEntry,
   myBooleanControlRendererEntry,
   myEnumControlRendererEntry,

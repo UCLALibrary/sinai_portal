@@ -10,6 +10,9 @@ class Agent extends Model
 {
     use HasFactory, JsonSchemas;
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     /**
      * The table associated with the model.
      *
@@ -23,6 +26,7 @@ class Agent extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'type',
         'pref_name',
         'json',

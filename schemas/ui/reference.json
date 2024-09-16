@@ -17,7 +17,11 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/formatted_citation"
+          "scope": "#/properties/formatted_citation",
+          "options": {
+            "multi": true,
+            "rows": 2
+          }
         },
         {
           "type": "Control",
