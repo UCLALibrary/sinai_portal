@@ -29,6 +29,20 @@ class FeaturesController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('Resources/Create', [
+            'title' => 'Features > Add Feature',
+            'schema' => json_decode(Feature::$schema),
+            'uischema' => json_decode(Feature::$uiSchema),
+            'saveEndpoint' => route('api.features.store'),
+            'redirectUrl' => route('features.index'),
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Feature $feature)

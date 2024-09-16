@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LanguageRequest;
-use App\Http\Resources\LanguageResource;
-use App\Models\Language;
+use App\Http\Requests\FeatureRequest;
+use App\Http\Resources\FeatureResource;
+use App\Models\Feature;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,52 +14,44 @@ class FeaturesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(LanguageRequest $request): LanguageResource
+    public function store(FeatureRequest $request): FeatureResource
     {
         return DB::transaction(function () use ($request) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // create the resource
-            $language = Language::create([
-                'id' => $metadata['id'],
-                'label' => $metadata['label'],
-                'iso' => $metadata['iso'],
-                'glottolog' => $metadata['glottolog'],
-                'writing_systems' => $metadata['writing_systems'],
-                'other_names' => $metadata['other_names'],
-                'when_in_use' => $metadata['when_in_use'],
-                'regions' => $metadata['regions'],
+            $feature = Feature::create([
+                'term' => $metadata['term'],
+                'corresp_note' => $metadata['corresp_note'],
+                'summary' => $metadata['summary'],
+                'scope' => $metadata['scope']
             ]);
 
-            $language->save();
+            $feature->save();
 
-            return new LanguageResource($language);
+            return new FeatureResource($feature);
         });
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(LanguageRequest $request, Language $language): LanguageResource
+    public function update(FeatureRequest $request, Feature $feature): FeatureResource
     {
-        return DB::transaction(function () use ($request, $language) {
+        return DB::transaction(function () use ($request, $feature) {
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
             // update the resource
-            $language->update([
-                'id' => $metadata['id'],
-                'label' => $metadata['label'],
-                'iso' => $metadata['iso'],
-                'glottolog' => $metadata['glottolog'],
-                'writing_systems' => $metadata['writing_systems'],
-                'other_names' => $metadata['other_names'],
-                'when_in_use' => $metadata['when_in_use'],
-                'regions' => $metadata['regions'],
+            $feature->update([
+                'term' => $metadata['term'],
+                'corresp_note' => $metadata['corresp_note'],
+                'summary' => $metadata['summary'],
+                'scope' => $metadata['scope']
             ]);
 
-            return new LanguageResource($language);
+            return new FeatureResource($feature);
         });
     }
 

@@ -11,6 +11,18 @@ class Feature extends Model
 {
     use HasFactory, JsonSchemas;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'term',
+        'corresp_note',
+        'summary',
+        'scope',
+    ];
+
     public function formContexts(): BelongsToMany
     {
         return $this->belongsToMany(FormContext::class);
