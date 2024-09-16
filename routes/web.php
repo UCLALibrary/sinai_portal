@@ -3,6 +3,7 @@
 use App\Http\Controllers\Cms\AgentsController;
 use App\Http\Controllers\Cms\BibliographyController;
 use App\Http\Controllers\Cms\ContentsController;
+use App\Http\Controllers\Cms\FeaturesController;
 use App\Http\Controllers\Cms\LanguagesController;
 use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\PartsController;
@@ -58,4 +59,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // references
     Route::resource('references', ReferencesController::class);
+
+    // features
+    Route::resource('features', FeaturesController::class);
 });

@@ -53,6 +53,10 @@ Route::apiResource('references', ReferencesController::class, [
     'as' => 'api'
 ]);
 
+Route::apiResource('features', ReferencesController::class, [
+    'as' => 'api'
+]);
+
 // forms
 Route::get('forms/codicological-units/{codicological_unit?}', [FormsController::class, 'codUnit'])->name('api.forms.codicological-units');
 Route::get('forms/assoc_name', [FormsController::class, 'createAssocName'])->name('api.forms.assoc_name');

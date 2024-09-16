@@ -97,9 +97,11 @@ const logout = () => {
                                         <DropdownLink :href="route('languages.index')" :active="route().current('languages.*')">
                                             Languages
                                         </DropdownLink>
-
                                         <DropdownLink :href="route('references.index')" :active="route().current('references.*')">
                                             References
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('features.index')" :active="route().current('features.*')">
+                                          Features
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
