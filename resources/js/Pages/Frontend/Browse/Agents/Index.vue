@@ -168,7 +168,7 @@
    */
 
   .facet-sidebar {
-    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 py-5 lg:pl-4 pr-4 lg:w-1/3 2xl:w-1/4 bg-gray-200 opacity-90
+    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 py-5 pl-4 pr-4 lg:w-1/3 2xl:w-1/4 bg-gray-200 opacity-90
   }
   .main-container {
     @apply w-full sm:pl-4 sm:pr-5 py-8 mb-24 lg:p-0
@@ -200,7 +200,7 @@
 
   /* the input element */
   .ais-SearchBox-input {
-    @apply block w-full pl-2 pr-8 max-sm:text-[16px] text-base border-b-2 border-black max-w-none rounded focus:ring-sinai-red
+    @apply block w-full pl-2 pr-8 max-sm:text-[16px] text-base border-b-2 border-black max-w-none rounded focus:ring-gray-400
   }
 
   /* the submit button element */
@@ -284,7 +284,7 @@
   }
 
   .ais-RefinementList-count {
-    @apply text-sm
+    @apply text-sm text-gray-600
   }
 
 
@@ -300,7 +300,7 @@
   }
 
   .ais-Hits-item {
-    @apply py-4 px-4 sm:px-2
+    @apply py-4 px-4 sm:px-2 hover:bg-sinai-red hover:text-gray-50 rounded-sm
   }
 
 

@@ -29,7 +29,10 @@ defineProps({
                               Agents
                           </Link>
                         </div>
-                          <div>
+                        <div class="flex text-lg font-medium">
+                            <img src="/sinai-logo.svg" alt="logo" class="h-6 w-6 mr-2">Sinai Manuscripts Data Portal
+                        </div>
+                        <div>
                             <Link
                                 v-if="$page.props.auth.user"
                                 :href="route('cms')"
@@ -37,21 +40,21 @@ defineProps({
                                 SMDP Dashboard
                             </Link>
 
-                            <template v-if="!$page.props.auth.user">
-                              <Link
-                                  
-                                  :href="route('login')"
-                                  class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                  Log in
-                              </Link>
+                        <template v-if="!$page.props.auth.user">
+                            <Link
+                                
+                                :href="route('login')"
+                                class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                Log in
+                            </Link>
 
-                              <Link
-                                  :href="route('register')"
-                                  class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                  Register
-                              </Link>
-                          </template>
-                        </div>
+                            <Link
+                                :href="route('register')"
+                                class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                Register
+                            </Link>
+                        </template>
+                    </div>
                         
                     </nav>
                 </header>

@@ -4,9 +4,7 @@
 
 <template>
     <FrontendLayout title="Sinai Manuscripts Data Portal">
-        <div class="font-dosis flex text-center justify-center mx-auto text-4xl">
-            Sinai Manuscripts Data Portal
-        </div>
+        
         <div class="flex justify-center mt-16 mb-16">
             <img src="/sinai-logo.svg" alt="Logo" class="w-32 h-32" />
         </div>
