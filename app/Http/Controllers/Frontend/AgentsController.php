@@ -29,6 +29,7 @@ class AgentsController extends Controller
         return Inertia::render('Frontend/Browse/Agents/Show', [
             'title' => 'Agent: ' . $agent->pref_name,
             'agent' => $agent,
+            'last_modified' => \Carbon\Carbon::parse($agent->updated_at)->format('F j, Y')
         ]);
     }
 }
