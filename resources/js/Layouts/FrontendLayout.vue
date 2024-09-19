@@ -1,3 +1,91 @@
+<template>
+    <Head :title="title" />
+    <div class="relative min-h-screen flex flex-col">
+        <header class="border-b">
+            <div class="wrap">
+                <div class="flex justify-end">
+                    <nav class="service flex gap-4 py-2">
+                        <Link
+                            v-if="$page.props.auth.user"
+                            :href="route('cms')"
+                            title="Log in">
+                            Dashboard
+                        </Link>
+
+                    <template v-if="!$page.props.auth.user">
+                        <Link
+                            :href="route('register')">
+                            Register
+                        </Link>
+
+                        <Link                         
+                            :href="route('login')"
+                            class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg>
+                        </Link>
+
+                    </template>
+                    </nav>
+                </div>
+                <div class="flex flex-col lg:flex-row items-center gap-y-6 pb-10 justify-between">
+                    <Link
+                        :href="route('home')"
+                        class="logo">
+                        <img src="/sinai-logo.svg" alt="logo">Sinai Manuscripts Data Portal
+                    </Link>
+
+                    <nav class="flex flex-col lg:flex-row items-center gap-x-10 text-lg">
+                        <div class="flex gap-x-4">
+                            <Link
+                                :href="route('frontend.agents.index')"
+                                class="active">
+                                Agents
+                            </Link>
+                            <Link
+                                href="#"
+                                class="">
+                                Places
+                            </Link>
+                            <Link
+                                href="#"
+                                class="">
+                                Works
+                            </Link>
+                            <Link
+                                href="#"
+                                class="">
+                                Manuscripts
+                            </Link>
+                            <Link
+                                href="#"
+                                class="">
+                                About
+                            </Link>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="wrap">
+                <slot />
+            </div>
+        </main>
+
+        <footer class="bg-black mt-auto py-16 text-sm text-white">
+            <div class="wrap">
+                <div class="pb-12 flex items-center gap-8">
+                    <img src="/img/logo-sinai-wht.png" alt="St Catherine Monastery logo" class="h-16">
+                    <img src="/img/logo-uclalib-wht.svg" alt="St Catherine Monastery logo" class="h-10">
+
+                </div>
+                © 2024 Sinai Manuscripts Data Portal. All rights reserved.
+            </div>
+        </footer>
+    </div>
+</template>
+
 <script setup>
 import { Head, Link } from '@inertiajs/vue3';
 
@@ -10,63 +98,28 @@ defineProps({
 });
 </script>
 
-<template>
-    <Head :title="title" />
-    <div class="bg-sinai-beige text-gray-800">
-        <div class="relative flex flex-col items-center justify-start">
-            <div class="relative min-h-screen flex flex-col w-full max-w-2xl px-6 lg:max-w-7xl">
-                <header class="items-center gap-2 py-10 lg:grid-cols-3">
-                    <nav class="-mx-3 flex flex-1 justify-between">
-                        <div class="">
-                          <Link
-                              :href="route('home')"
-                              class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                              Home
-                          </Link>
-                          <Link
-                              :href="route('frontend.agents.index')"
-                              class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                              Agents
-                          </Link>
-                        </div>
-                        <div class="flex text-lg font-medium">
-                            <img src="/sinai-logo.svg" alt="logo" class="h-6 w-6 mr-2">Sinai Manuscripts Data Portal
-                        </div>
-                        <div>
-                            <Link
-                                v-if="$page.props.auth.user"
-                                :href="route('cms')"
-                                class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                SMDP Dashboard
-                            </Link>
+<style lang="postcss" scoped>
+    .wrap {
+        @apply mx-auto w-full lg:max-w-8xl px-4 lg:px-6
+    }
 
-                        <template v-if="!$page.props.auth.user">
-                            <Link
-                                
-                                :href="route('login')"
-                                class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                Log in
-                            </Link>
+    .logo {
+        img {
+            @apply h-12 w-12 xl:h-14 xl:w-14 mr-2 lg:mr-3 xl:mr-4
+        }
+        @apply flex items-center font-dosis font-medium text-xl lg:text-2xl xl:text-3xl text-black uppercase
+    }
 
-                            <Link
-                                :href="route('register')"
-                                class="font-dosis rounded-md px-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-sinai-red dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                                Register
-                            </Link>
-                        </template>
-                    </div>
-                        
-                    </nav>
-                </header>
+    nav a {
+        &.active {
+            @apply border-black
+        }
+        @apply font-dosis uppercase font-medium text-base md:text-lg tracking-wide underline-offset-4 border-b-2 border-b-transparent hover:border-black
 
-                <main class="mt-2">
-                    <slot />
-                </main>
+    }
 
-                <footer class="mt-auto py-16 text-center text-sm text-black dark:text-white/70">
-                    © 2024 Sinai Manuscripts Data Portal. All rights reserved.
-                </footer>
-            </div>
-        </div>
-    </div>
-</template>
+    nav.service a {
+        @apply text-sm lg:text-base border-0 hover:text-sinai-red
+    }
+
+</style>
