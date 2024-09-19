@@ -59,7 +59,7 @@
 
       </section>
 
-      <section class="w-full lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 pt-8 lg:pt-0 lg:pl-8 h-auto">
+      <section class="w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
         <template v-if="agentJson.rel_con && agentJson.rel_con.length > 0">
           <h3 class="mt-0">See Also</h3>
           <p v-for="rel in agentJson.rel_con" :key="rel">
@@ -128,7 +128,7 @@
   }
 
   a.button {
-    @apply px-2 py-1 rounded-full bg-white shadow border-0 hover:bg-sinai-beige
+    @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-beige text-sm
   }
 
   p {

@@ -202,7 +202,7 @@
 
   /* the input element */
   .ais-SearchBox-input {
-    @apply block w-full pl-2 pr-8 max-sm:text-[16px] text-base border-b-2 border-black max-w-none rounded focus:ring-gray-400
+    @apply block w-full pl-2 pr-8 max-sm:text-[16px] text-base border-b-2 border-black max-w-none rounded focus:ring-gray-900
   }
 
   /* the submit button element */
@@ -275,7 +275,7 @@
   }
 
   .ais-RefinementList-checkbox {
-    @apply rounded cursor-pointer w-4 h-4 shadow-none ml-1
+    @apply rounded cursor-pointer w-4 h-4 shadow-none ml-1 focus:ring-0 focus:ring-offset-0
   }
 
   .ais-RefinementList-checkbox:checked {
