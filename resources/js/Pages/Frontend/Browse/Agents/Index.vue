@@ -1,9 +1,5 @@
 <template>
   <FrontendLayout :title="title">
-    <h2 class="font-dosis flex mx-auto text-3xl border-b pb-2">
-      Agents
-    </h2>
-
     <AisInstantSearch
       v-if="initialUiState"
       :index-name="indexName"
@@ -12,6 +8,31 @@
       :future="{ preserveSharedStateOnUnmount: true }">
 
       <div class="facet-sidebar">
+        <div class="flex justify-between">
+          <span class="font-dosis text-lg font-medium uppercase">
+            Agents
+          </span>
+          <AisClearRefinements>
+            <template v-slot="{ canRefine, refine, createURL }">
+              <a
+                v-if="canRefine"
+                :href="createURL()"
+                class="w-auto"
+                @click.prevent="onClearFilters(refine)">
+                <span class="clear-filter">
+                  Clear Filters
+                  <button type="button">
+                    <span class="sr-only">Clear Filters</span>
+                    <svg viewBox="0 0 14 14" class="h-full w-full stroke-black">
+                      <path d="M4 4l6 6m0-6l-6 6" />
+                    </svg>
+                    <span class="-inset-1" />
+                  </button>
+                </span>
+              </a>
+            </template>
+          </AisClearRefinements>
+        </div>
         <AisSearchBox
           placeholder="Search term"
           submit-title="Search"
@@ -20,31 +41,12 @@
           @keyup="onKeyup"
           @reset="onReset">
           <template v-slot:submit-icon>
-            <img src="/img/search.svg" alt="Search" title="Search" class="w-7 h-7">
+            <img src="/img/search.svg" alt="Search" title="Search" class="w-6 h-6">
           </template>
         </AisSearchBox>
 
-        <img src="/img/algolia-logo-black.svg" alt="Algolia" class="w-16 opacity-60 self-end -mt-2">
+        <img src="/img/algolia-logo-black.svg" alt="Algolia" class="w-14 opacity-60 self-end -mt-2">
         
-        <AisClearRefinements>
-          <template v-slot="{ canRefine, refine, createURL }">
-            <a
-              v-if="canRefine"
-              :href="createURL()"
-              @click.prevent="onClearFilters(refine)">
-              <span class="clear-filter">
-                Clear Filters
-                <button type="button">
-                  <span class="sr-only">Clear Filters</span>
-                  <svg viewBox="0 0 14 14" class="h-full w-full stroke-white">
-                    <path d="M4 4l6 6m0-6l-6 6" />
-                  </svg>
-                  <span class="-inset-1" />
-                </button>
-              </span>
-            </a>
-          </template>
-        </AisClearRefinements>
 
         <div class="accordion-items">
           <AccordionCard title="Type" class="accordion-item">
@@ -168,16 +170,16 @@
    */
 
   .facet-sidebar {
-    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 py-5 pl-4 pr-4 lg:w-1/3 2xl:w-1/4 bg-gray-200 opacity-90
+    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 p-4 lg:w-1/3 2xl:w-1/4 bg-sinai-dark-beige
   }
   .main-container {
-    @apply w-full sm:pl-4 sm:pr-5 py-8 mb-24 lg:p-0
+    @apply w-full
   }
   .filter-bar {
     @apply lg:sticky top-0 z-10 pt-5 pb-1 lg:pr-10 flex justify-between items-center bg-gradient-to-t from-transparent to-gray-300
   }
   .ais-InstantSearch {
-    @apply flex flex-col lg:flex-row gap-x-4 my-4 w-full
+    @apply flex flex-col lg:flex-row gap-x-4 mb-4 w-full
   }
 
   /*
@@ -233,19 +235,19 @@
    */
 
   .facet-sidebar .accordion-items {
-    @apply flex flex-col gap-y-2 overflow-y-scroll pr-4 -mr-4 pb-10
+    @apply flex flex-col gap-y-2 overflow-y-scroll pr-4 -mr-4
   }
   .facet-sidebar .accordion-item {
-    @apply border-b border-black pb-2
+    @apply border-t border-black border-dotted pt-2
   }
 
   .ais-RefinementList {}
 
   .clear-filter {
-    @apply inline-flex items-center gap-x-1 rounded-full border border-black hover:bg-white px-2 py-1 text-sm font-sans text-black
+    @apply inline-flex items-center gap-x-1 rounded-full bg-white px-2 py-1 text-sm font-sans text-black shadow-lg hover:bg-sinai-beige
   }
   .clear-filter button {
-    @apply relative -mr-1 h-5 w-5 rounded-full bg-sinai-red
+    @apply relative -mr-1 h-5 w-5
   }
 
   .ais-ClearRefinements-button {
@@ -269,22 +271,23 @@
   }
 
   .ais-RefinementList-label {
-    @apply flex items-center gap-x-2 text-sm lg:text-base cursor-pointer
+    @apply flex items-center gap-x-2 mb-1.5 text-sm lg:text-base cursor-pointer focus:!ring-0
   }
 
   .ais-RefinementList-checkbox {
     @apply rounded cursor-pointer w-4 h-4 shadow-none ml-1
   }
 
-  .ais-RefinementList-checkbox:checked, .ais-RefinementList-checkbox:focus, .ais-RefinementList-checkbox:focus-visible {
-    @apply bg-sinai-red text-sinai-red
+  .ais-RefinementList-checkbox:checked {
+    @apply bg-black text-black
   }
+
   .ais-RefinementList-labelText {
     @apply flex-1 max-sm:text-[14px] text-sm lg:text-base
   }
 
   .ais-RefinementList-count {
-    @apply text-sm text-gray-600
+    @apply bg-gray-100 px-1 text-center min-w-6 rounded-full text-xs text-black
   }
 
 
@@ -300,7 +303,7 @@
   }
 
   .ais-Hits-item {
-    @apply py-4 px-4 sm:px-2 hover:bg-sinai-red hover:text-gray-50 rounded-sm
+    @apply py-4 px-4 sm:px-2 hover:bg-white
   }
 
 

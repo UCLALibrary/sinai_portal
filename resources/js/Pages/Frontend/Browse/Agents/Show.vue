@@ -1,26 +1,25 @@
 <template>
   <FrontendLayout :title="title">
-    <h2 class="font-dosis flex mx-auto text-3xl border-b pb-2 mb-4">
-      {{ agent.pref_name }}
-    </h2>
-    <div class="mx-auto flex">
-
-      <section class="w-3/4 pr-8 min-h-screen">
+    <div class="flex flex-col lg:flex-row gap-y-8 bg-white p-4 xl:p-8">
+      <section class="w-full lg:w-3/4 lg:pr-16">
+        <h2>
+          {{ agent.pref_name }}
+        </h2>
         <p v-if="agentJson.description && agentJson.description !== ''" class="mb-4">
           {{ agentJson.description }}
         </p>
         
         <p v-if="agent.type && agent.type !== ''">
-          <span class="label">Type:</span>
+          <span class="label">Type</span>
           {{ agent.type }}
         </p>
         
         <p v-if="agentJson.ark && agentJson.ark !== ''">
-          <span class="label">ARK:</span>
+          <span class="label">ARK</span>
           {{ agentJson.ark }}
         </p>
         
-        <p><span class="label">URI:</span>
+        <p><span class="label">URI</span>
           {{ $page.props.appUrl }}/agents/{{ agent.id }}
         </p>
 
@@ -41,7 +40,7 @@
         </p>
 
         <p v-if="agentJson.gender && agentJson.gender !== ''">
-          <span class="label">Gender:</span>
+          <span class="label">Gender</span>
           {{ agentJson.gender }}
         </p>
 
@@ -53,22 +52,24 @@
         </template>
 
         <h3>Preferred Citation</h3>
-        "{{ agent.pref_name }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
-        {{ $page.props.appUrl }}/agents/{{ agent.id }}
+        <p>
+          "{{ agent.pref_name }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
+          {{ $page.props.appUrl }}/agents/{{ agent.id }}
+        </p>
 
       </section>
 
-      <section class="w-1/4 border p-4 min-h-screen">
+      <section class="w-full lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 pt-8 lg:pt-0 lg:pl-8 h-auto">
         <template v-if="agentJson.rel_con && agentJson.rel_con.length > 0">
-          <h3>See Also</h3>
+          <h3 class="mt-0">See Also</h3>
           <p v-for="rel in agentJson.rel_con" :key="rel">
-            <a :href="rel.uri">{{ rel.source }}</a>
+            <a :href="rel.uri" class="button">&rarr; {{ rel.source }}</a>
           </p>
         </template>
   
         <h3>Downloads</h3>
         <p>
-          <a :href="downloadUrl" :download="fileName">JSON</a>
+          <a :href="downloadUrl" class="button" :download="fileName">&darr; JSON</a>
         </p>
       </section>
 
@@ -110,18 +111,31 @@
 </script>
 
 <style lang="postcss" scoped>
-  h3 {
-    @apply mt-4 mb-2 font-bold text-xl
+  h2 {
+    @apply text-2xl xl:text-3xl pb-8
   }
+
+  h3 {
+    @apply uppercase tracking-wider font-medium text-base border-b border-gray-300 py-2 mt-8 mb-2
+  }
+  
   p {
-    @apply mb-2  
+    @apply mb-2 max-w-2xl xl:max-w-4xl
   }
 
   a {
-    @apply text-blue-600
+    @apply text-black border-black border-b border-dotted hover:border-solid
+  }
+
+  a.button {
+    @apply px-2 py-1 rounded-full bg-white shadow border-0 hover:bg-sinai-beige
+  }
+
+  p {
+    @apply xl:text-lg
   }
 
   .label {
-    @apply font-bold
+    @apply inline-block text-sm uppercase font-medium w-28
   }
 </style>
