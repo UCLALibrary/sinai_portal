@@ -21,7 +21,11 @@ export default {
             },
             colors: {
                 'sinai-beige': 'rgb(247, 242, 234)',
+                'sinai-dark-beige': 'rgb(231, 227, 221)',
                 'sinai-red': 'rgb(171, 47, 10)'
+            },
+            maxWidth: {
+                '8xl': '96rem',
             },
         },
     },
