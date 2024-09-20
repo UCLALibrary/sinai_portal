@@ -18,11 +18,10 @@ class FeaturesController extends Controller
             'resourceName' => 'features',
             'resources' => Feature::paginate(20),
             'columns' => [
-                'id' => 'Id',
                 'term' => 'Term',
                 'corresp_note' => 'Note',
                 'summary' => 'Summary',
-                'scope' => 'Scope',
+                'scope' => 'Scope'
             ],
             'createEndpoint' => route('features.create'),
         ]);
@@ -47,12 +46,16 @@ class FeaturesController extends Controller
      */
     public function edit(Feature $feature)
     {
+        // Fetch the feature with related formContexts, but only retrieve IDs for formContexts
+        $feature = Feature::with('formContexts:id')->find($feature->id)->toArray();
+        $feature['form_contexts'] = array_column($feature['form_contexts'], 'id');
+
         return Inertia::render('Resources/Edit', [
             'title' => 'Features > Edit Feature',
             'schema' => json_decode(Feature::$schema),
             'uischema' => json_decode(Feature::$uiSchema),
-            'data' => json_decode($feature),
-            'saveEndpoint' => route('api.features.update', $feature->id),
+            'data' => $feature,
+            'saveEndpoint' => route('api.features.update', $feature['id']),
             'redirectUrl' => route('features.index'),
         ]);
     }

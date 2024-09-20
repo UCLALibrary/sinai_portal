@@ -19,6 +19,10 @@
         {
           "type": "Control",
           "scope": "#/properties/scope"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/form_contexts"
         }
       ]
     }

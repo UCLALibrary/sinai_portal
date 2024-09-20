@@ -30,6 +30,8 @@ class FeaturesController extends Controller
 
             $feature->save();
 
+            $feature->formContexts()->sync($metadata['form_contexts']);
+
             return new FeatureResource($feature);
         });
     }
@@ -40,6 +42,7 @@ class FeaturesController extends Controller
     public function update(FeatureRequest $request, Feature $feature): FeatureResource
     {
         return DB::transaction(function () use ($request, $feature) {
+
             // extract metadata from the json field to populate database columns for list view
             $metadata = $this->_extractMetadataFromJsonData($request->json);
 
@@ -50,6 +53,8 @@ class FeaturesController extends Controller
                 'summary' => $metadata['summary'],
                 'scope' => $metadata['scope']
             ]);
+
+            $feature->formContexts()->sync($metadata['form_contexts']);
 
             return new FeatureResource($feature);
         });
@@ -63,6 +68,7 @@ class FeaturesController extends Controller
             $metadata['corresp_note'] = $jsonData['corresp_note'] ?? null;
             $metadata['summary'] = $jsonData['summary'] ?? null;
             $metadata['scope'] = $jsonData['scope'] ?? null;
+            $metadata['form_contexts'] = $jsonData['form_contexts'] ?? null;
         }
         return $metadata;
     }
