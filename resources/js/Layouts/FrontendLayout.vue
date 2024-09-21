@@ -38,31 +38,32 @@
                         <div class="flex gap-x-4">
                             <Link
                                 :href="route('frontend.agents.index')"
-                                class="active">
+                                :class="{ 'active': route().current('frontend.agents.index') || route().current('frontend.agents.show') }">
                                 Agents
                             </Link>
                             <Link
-                                href="#"
-                                class="">
+                                :href="route('frontend.places.index')"
+                                :class="{ 'active': route().current('frontend.places.index') || route().current('frontend.places.show') }">
                                 Places
                             </Link>
                             <Link
-                                href="#"
-                                class="">
+                                :href="route('frontend.works.index')"
+                                :class="{ 'active': route().current('frontend.works.index') || route().current('frontend.works.show') }">
                                 Works
                             </Link>
                             <Link
-                                href="#"
-                                class="">
+                                :href="route('frontend.manuscripts.index')"
+                                :class="{ 'active': route().current('frontend.manuscripts.index') || route().current('frontend.manuscripts.show') }">
                                 Manuscripts
                             </Link>
                             <Link
-                                href="#"
-                                class="">
+                                :href="route('frontend.about')"
+                                :class="{ 'active': route().current('frontend.about') }">
                                 About
                             </Link>
                         </div>
                     </nav>
+
                 </div>
             </div>
         </header>
