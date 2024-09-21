@@ -20,6 +20,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::resource('/agents', FrontendAgentsController::class)->only(['index', 'show'])->names('frontend.agents');
+Route::resource('/works', FrontendWorksController::class)->only(['index', 'show'])->names('frontend.works');
 
 // cms
 Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstream.auth_session'), 'verified']], function () {
