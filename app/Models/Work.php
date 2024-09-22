@@ -25,6 +25,11 @@ class Work extends Model
         'json',
     ];
 
+    /**
+     * The attributes that should be appended to the model.
+     *
+     * @var array
+     */
     protected $appends = ['authors'];
 
     /**
@@ -43,39 +48,21 @@ class Work extends Model
         $array['ark'] = $data['ark'] ?? null;
 
         // authors
-        $authors = [];
-
-        $creators = $data['creator'] ?? [];
-        $authorIds = [];
-
-        foreach ($creators as $creator) {
-            if ($creator['role'] === 'author' && isset($creator['id'])) {
-                $arkParts = explode('/', $creator['id']);
-                $authorIds[] = end($arkParts);
-            }
-        }
-
-        if (!empty($authorIds)) {
-            $agents = Agent::whereIn('id', $authorIds)->get();
-            foreach ($agents as $agent) {
-                $authors[] = $agent->pref_name;
-            }
-        }
-
-        $array['creator'] = count($authors) > 0 ? $authors : null;
+        $authors = $this->authors()->pluck('pref_name')->all();
+        $array['creator'] = !empty($authors) ? $authors : null;
 
         // incipit
         $incipit = $data['incipit'] ?? null;
         if ($incipit) {
             $array['incipit_value'] = $incipit['value'] ?? null;
-            $array['incipit_translation'] = implode('; ', $incipit['translation']) ?? null;
+            $array['incipit_translation'] = isset($incipit['translation']) ? implode('; ', $incipit['translation']) : null;
         }
         
         // explicit
         $explicit = $data['explicit'] ?? null;
         if ($explicit) {
             $array['explicit_value'] = $explicit['value'] ?? null;
-            $array['explicit_translation'] = implode('; ', $explicit['translation']) ?? null;
+            $array['explicit_translation'] = isset($explicit['translation']) ? implode('; ', $explicit['translation']) : null;
         }
 
         // genre
@@ -103,11 +90,11 @@ class Work extends Model
     }
 
     /**
-     * Get the authors of the work.
+     * Extract author IDs from the JSON data.
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      */
-    public function authors()
+    private function getAuthorIds()
     {
         $data = json_decode($this->json, true);
 
@@ -126,6 +113,18 @@ class Work extends Model
             }
         }
 
+        return $authorIds;
+    }
+
+    /**
+     * Get the authors of the work.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function authors()
+    {
+        $authorIds = $this->getAuthorIds();
+
         if (!empty($authorIds)) {
             // Fetch authors from the agents table
             return Agent::whereIn('id', $authorIds)->get();
@@ -134,6 +133,11 @@ class Work extends Model
         return collect([]);
     }
 
+    /**
+     * Accessor to include authors when the model is serialized.
+     *
+     * @return array
+     */
     public function getAuthorsAttribute()
     {
         return $this->authors()->map(function ($author) {
