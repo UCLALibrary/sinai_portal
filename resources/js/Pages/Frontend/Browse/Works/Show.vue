@@ -47,13 +47,11 @@
           {{ workJson.creation.value }}
         </p>
 
-        
         <p v-if="workJson.genre && workJson.genre.length > 0">
           <span class="label">Genre</span>
           {{ workJson.genre.join('; ') }}
         </p>
       
-
         <template v-if="workJson.incipit && workJson.incipit.value != ''">
           <h3>Incipit</h3>
           <p v-if="workJson.incipit && workJson.incipit.value && workJson.incipit.value !== ''">
@@ -97,6 +95,14 @@
           </p>
         </template>
 
+        <template v-if="workJson.note && workJson.note.value !== ''">
+          <h3>Notes</h3>
+          <p v-for="currentNote in workJson.note" :key="currentNote">
+            <span class="label">{{ currentNote.type.label }}</span>
+            {{ currentNote.value }}
+          </p>
+        </template>
+        
         <h3>Preferred Citation</h3>
         <p>
           "{{ work.pref_title }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
