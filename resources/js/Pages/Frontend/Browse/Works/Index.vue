@@ -71,6 +71,28 @@
             </template>
           </AccordionCard>
 
+           <AccordionCard title="Creator" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRefinementList
+                  :show-more-limit="maxFacetValuesToShow"
+                  attribute="creator"
+                  :show-more="true"
+                  @change="onFilter('creator', $event.target.value)">
+                  <template v-slot="{ items }">
+                    <div v-if="!items.length">
+                      No results found
+                    </div>
+                  </template>
+
+                  <template v-slot:showMoreLabel="{ isShowingMore }">
+                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
+                  </template>
+                </AisRefinementList>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
+
           <AccordionCard title="Original Language" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">

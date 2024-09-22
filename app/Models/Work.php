@@ -40,6 +40,28 @@ class Work extends Model
         // ark
         $array['ark'] = $data['ark'] ?? null;
 
+        // authors
+        $authors = [];
+
+        $creators = $data['creator'] ?? [];
+        $authorIds = [];
+
+        foreach ($creators as $creator) {
+            if ($creator['role'] === 'author' && isset($creator['id'])) {
+                $arkParts = explode('/', $creator['id']);
+                $authorIds[] = end($arkParts);
+            }
+        }
+
+        if (!empty($authorIds)) {
+            $agents = Agent::whereIn('id', $authorIds)->get();
+            foreach ($agents as $agent) {
+                $authors[] = $agent->pref_name;
+            }
+        }
+
+        $array['creator'] = count($authors) > 0 ? $authors : null;
+
         // incipit
         $incipit = $data['incipit'] ?? null;
         if ($incipit) {
