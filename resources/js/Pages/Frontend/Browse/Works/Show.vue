@@ -25,7 +25,7 @@
           </p>
         </template>
 
-        <p class="mt-8"></p>
+        <div class="mt-8"></div>
 
         <p v-if="workJson.orig_lang && workJson.orig_lang.label && workJson.orig_lang.label !== ''">
           <span class="label">Original Language</span>
