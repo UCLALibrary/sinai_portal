@@ -25,6 +25,8 @@ class Work extends Model
         'json',
     ];
 
+    protected $appends = ['authors'];
+
     /**
      * Get the indexable data array for the model.
      *
@@ -98,6 +100,48 @@ class Work extends Model
         // $array = $this->transform($array);
 
         return $array;
+    }
+
+    /**
+     * Get the authors of the work.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function authors()
+    {
+        $data = json_decode($this->json, true);
+
+        $creators = $data['creator'] ?? [];
+        $authorIds = [];
+
+        foreach ($creators as $creator) {
+            if ($creator['role'] === 'author' && isset($creator['id'])) {
+                // Extract the last part of the ARK identifier
+                $arkParts = explode('/', $creator['id']);
+                $authorId = end($arkParts);
+
+                if ($authorId) {
+                    $authorIds[] = $authorId;
+                }
+            }
+        }
+
+        if (!empty($authorIds)) {
+            // Fetch authors from the agents table
+            return Agent::whereIn('id', $authorIds)->get();
+        }
+
+        return collect([]);
+    }
+
+    public function getAuthorsAttribute()
+    {
+        return $this->authors()->map(function ($author) {
+            return [
+                'id' => $author->id,
+                'pref_name' => $author->pref_name,
+            ];
+        });
     }
 }
 

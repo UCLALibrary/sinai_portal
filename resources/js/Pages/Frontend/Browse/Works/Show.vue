@@ -34,6 +34,11 @@
           <span class="label">Original Language Title</span>
           {{ workJson.orig_lang_title }}
         </p>
+        
+        <p v-if="work.authors && work.authors.length > 0">
+          <span class="label">Author</span>
+          {{ work.authors.map(author => author.pref_name).join('; ') }}
+        </p>
 
         <p v-if="workJson.creation && workJson.creation.value && workJson.creation.value !== ''">
           <span class="label">Creation Date</span>
