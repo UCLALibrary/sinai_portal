@@ -30,7 +30,7 @@ class Work extends Model
      *
      * @var array
      */
-    protected $appends = ['authors', 'related_works'];
+    protected $appends = ['authors', 'related_works', 'related_agents'];
 
     /**
      * Get the indexable data array for the model.
@@ -200,6 +200,63 @@ class Work extends Model
                 'pref_title' => $work->pref_title,
             ];
         });
+    }
+
+    private function getRelatedAgentIds()
+    {
+        $data = json_decode($this->json, true);
+
+        $relatedAgents = $data['rel_agent'] ?? [];
+        $relatedAgentIds = [];
+        $relatedAgentRels = [];
+
+        foreach ($relatedAgents as $relatedAgent) {
+            if (isset($relatedAgent['id'])) {
+                // Extract the last part of the ARK identifier
+                $arkParts = explode('/', $relatedAgent['id']);
+                $relatedAgentId = end($arkParts);
+
+                if ($relatedAgentId) {
+                    $relatedAgentIds[] = $relatedAgentId;
+                    $relatedAgentRels[$relatedAgentId] = $relatedAgent['rel'] ?? null;
+                }
+            }
+        }
+
+        return ['ids' => $relatedAgentIds, 'rels' => $relatedAgentRels];
+    }
+
+    public function relatedAgents()
+    {
+        $relatedAgentData = $this->getRelatedAgentIds();
+        $relatedAgentIds = $relatedAgentData['ids'];
+        $relatedAgentRels = $relatedAgentData['rels'];
+
+        if (!empty($relatedAgentIds)) {
+            // Fetch all related agents in a single query
+            $agents = Agent::whereIn('id', $relatedAgentIds)->get();
+
+            // Map the agents with their relationship types
+            return $agents->map(function ($agent) use ($relatedAgentRels) {
+                return [
+                    'id' => $agent->id,
+                    'pref_name' => $agent->pref_name,
+                    'rel' => $relatedAgentRels[$agent->id] ?? null,
+                ];
+            });
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * Accessor to include related agents when the model is serialized.
+     *
+     * @return array
+     */
+    public function getRelatedAgentsAttribute()
+    {
+        return $this->relatedAgents();
     }
 }
 
