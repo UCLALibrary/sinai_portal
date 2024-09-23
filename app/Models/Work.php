@@ -30,7 +30,7 @@ class Work extends Model
      *
      * @var array
      */
-    protected $appends = ['authors', 'related_works', 'related_agents'];
+    protected $appends = ['authors', 'related_works', 'related_agents', 'editions', 'translations', 'citations'];
 
     /**
      * Get the indexable data array for the model.
@@ -257,6 +257,124 @@ class Work extends Model
     public function getRelatedAgentsAttribute()
     {
         return $this->relatedAgents();
+    }
+
+    /**
+     * Extract bib IDs from the JSON data based on type IDs.
+     *
+     * @param array $typeIds
+     * @return array
+     */
+    private function getBibIdsByType(array $typeIds)
+    {
+        $data = json_decode($this->json, true);
+
+        $bibEntries = $data['bib'] ?? [];
+        $bibIds = [];
+
+        foreach ($bibEntries as $bibEntry) {
+            if (isset($bibEntry['id'], $bibEntry['type']['id'])) {
+                $bibTypeId = $bibEntry['type']['id'];
+                if (in_array($bibTypeId, $typeIds)) {
+                    $bibIds[] = $bibEntry['id'];
+                }
+            }
+        }
+
+        return $bibIds;
+    }
+
+    /**
+     * Get the editions of the work.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function editions()
+    {
+        $editionIds = $this->getBibIdsByType(['edition']);
+
+        if (!empty($editionIds)) {
+            return Reference::whereIn('id', $editionIds)->get();
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * Get the modern translations of the work.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function translations()
+    {
+        $translationIds = $this->getBibIdsByType(['translation']);
+
+        if (!empty($translationIds)) {
+            return Reference::whereIn('id', $translationIds)->get();
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * Get the references (citations) of the work.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function citations()
+    {
+        $citationIds = $this->getBibIdsByType(['cite', 'ref']);
+
+        if (!empty($citationIds)) {
+            return Reference::whereIn('id', $citationIds)->get();
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * Accessor to include editions when the model is serialized.
+     *
+     * @return array
+     */
+    public function getEditionsAttribute()
+    {
+        return $this->editions()->map(function ($reference) {
+            return [
+                'id' => $reference->id,
+                'formatted_citation' => $reference->formatted_citation,
+            ];
+        });
+    }
+
+    /**
+     * Accessor to include translations when the model is serialized.
+     *
+     * @return array
+     */
+    public function getTranslationsAttribute()
+    {
+        return $this->translations()->map(function ($reference) {
+            return [
+                'id' => $reference->id,
+                'formatted_citation' => $reference->formatted_citation,
+            ];
+        });
+    }
+
+    /**
+     * Accessor to include citations when the model is serialized.
+     *
+     * @return array
+     */
+    public function getCitationsAttribute()
+    {
+        return $this->citations()->map(function ($reference) {
+            return [
+                'id' => $reference->id,
+                'formatted_citation' => $reference->formatted_citation,
+            ];
+        });
     }
 }
 
