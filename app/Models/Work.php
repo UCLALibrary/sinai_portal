@@ -53,6 +53,21 @@ class Work extends Model
     }
 
     /**
+     * Extract the last part of an ARK identifier to get the ID.
+     *
+     * @param string $arkIdentifier
+     * @return string|null
+     */
+    protected function extractIdFromArk($arkIdentifier)
+    {
+        if ($arkIdentifier) {
+            $arkParts = explode('/', $arkIdentifier);
+            return end($arkParts);
+        }
+        return null;
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
@@ -122,9 +137,7 @@ class Work extends Model
 
         foreach ($creators as $creator) {
             if ($creator['role'] === 'author' && isset($creator['id'])) {
-                // Extract the last part of the ARK identifier
-                $arkParts = explode('/', $creator['id']);
-                $authorId = end($arkParts);
+                $authorId = $this->extractIdFromArk($creator['id']);
 
                 if ($authorId) {
                     $authorIds[] = $authorId;
@@ -181,9 +194,7 @@ class Work extends Model
 
         foreach ($relatedWorks as $relatedWork) {
             if (isset($relatedWork['id'])) {
-                // Extract the last part of the ARK identifier
-                $arkParts = explode('/', $relatedWork['id']);
-                $relatedWorkId = end($arkParts);
+                $relatedWorkId = $this->extractIdFromArk($relatedWork['id']);
 
                 if ($relatedWorkId) {
                     $relatedWorkIds[] = $relatedWorkId;
@@ -231,9 +242,7 @@ class Work extends Model
 
         foreach ($relatedAgents as $relatedAgent) {
             if (isset($relatedAgent['id'])) {
-                // Extract the last part of the ARK identifier
-                $arkParts = explode('/', $relatedAgent['id']);
-                $relatedAgentId = end($arkParts);
+                $relatedAgentId = $this->extractIdFromArk($relatedAgent['id']);
 
                 if ($relatedAgentId) {
                     $relatedAgentIds[] = $relatedAgentId;
