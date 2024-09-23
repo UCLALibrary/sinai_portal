@@ -53,14 +53,15 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRangeInput
+                  v-if="rangeFilters"
                   attribute="date_min"
-                  :min="minMaxRangeValues.date.min"
-                  :max="minMaxRangeValues.date.max"
+                  :min="minMaxRangeValues.date[0]"
+                  :max="minMaxRangeValues.date[1]"
                   class="px-3 pt-10">
                   <template v-slot="{ currentRefinement, range, refine }">
                     <VRangeSlider
-                      :min="minMaxRangeValues.date.min"
-                      :max="minMaxRangeValues.date.max"
+                      :min="minMaxRangeValues.date[0]"
+                      :max="minMaxRangeValues.date[1]"
                       v-model="rangeFilters.date"
                       @end="onRangeFilter('date', $event[0], $event[1])"
                       step="1"
@@ -178,30 +179,11 @@
   import useFacetFilters from '@/composables/search/useFacetFilters'
   const { filters, onFilter, onClearFilters } = useFacetFilters()
 
-  import useRangeFilters from '@/composables/search/useRangeFilters'
-  const { minMaxRangeValues, rangeFilters, onRangeFilter, onClearRangeFilters } = useRangeFilters()
-
   const maxFacetValuesToShow = 200
 
   const initialUiState = ref(null)
 
-  onBeforeMount(async () => {
-    // initialize the min and max range values for each category
-    await setDateRangeValues()
-
-    // initialize the state of the user interface
-    initialUiState.value = {
-      [props.indexName]: {
-        query: query.value,
-        refinementList: filters.value,
-        range: {
-          date_min: rangeFilters.value.date[0] + ':' + rangeFilters.value.date[1],
-        }
-      }
-    }
-  })
-
-  const setDateRangeValues = async () => {
+  const getMinMaxDateRangeValues = async () => {
     const index = searchClient.initIndex(props.indexName)
     const results = await index.search('', {
       hitsPerPage: 2000,
@@ -211,31 +193,39 @@
     // set the min and max date range values
     let dateMin = 0
     let dateMax = 0
-    results.hits.forEach(hit => {
+    for (const hit of results.hits) {
       if (hit.date_min < dateMin) {
         dateMin = hit.date_min
       }
       if (hit.date_max > dateMax) {
         dateMax = hit.date_max
       }
-    })
-
-    minMaxRangeValues.value = {
-      date: {
-        min: dateMin,
-        max: dateMax,
-      }
     }
 
-    rangeFilters.value = {
+    return {
       date: [dateMin, dateMax]
     }
   }
 
+  import useRangeFilters from '@/composables/search/useRangeFilters'
+  const { minMaxRangeValues, rangeFilters, onRangeFilter, onClearRangeFilters } = useRangeFilters(getMinMaxDateRangeValues)
+
+  onBeforeMount(async () => {
+    // initialize the state of the user interface
+    initialUiState.value = {
+      [props.indexName]: {
+        query: query.value,
+        refinementList: filters.value,
+      }
+    }
+  })
+
   const dateRangeFilterQuery = computed(() => {
-    const min = rangeFilters.value.date[0] || minMaxRangeValues.value.date.min
-    const max = rangeFilters.value.date[1] || minMaxRangeValues.value.date.max
-    return `(date_max >= ${min} AND date_min <= ${max})`
+    if (rangeFilters.value) {
+      const min = rangeFilters.value.date[0] || minMaxRangeValues.value.date[0]
+      const max = rangeFilters.value.date[1] || minMaxRangeValues.value.date[1]
+      return `(date_max >= ${min} AND date_min <= ${max})`
+    }
   })
 </script>
 

@@ -1,7 +1,7 @@
 import { ref, computed, onBeforeMount } from 'vue'
 import useUrlQueryParams from '@/composables/useUrlQueryParams'
 
-export default function useRangeFilters() {
+export default function useRangeFilters(init) {
   const { setUrlQueryParameter, deleteUrlQueryParameter } = useUrlQueryParams()
 
   const filterQueryParamKey = 'ranges'
@@ -9,7 +9,7 @@ export default function useRangeFilters() {
   // store the min and max range values for each filter category
   const minMaxRangeValues = ref(null)
 
-  // transform the filter url query parameters into an array of objects
+  // transform the filter url query parameters into an object
   const rangeFilters = ref(null)
 
   // get the filter query parameters from the url
@@ -20,11 +20,14 @@ export default function useRangeFilters() {
   })
 
   onBeforeMount(async () => {
-    // transform the filter query parameters into an array
+    // initialize the min and max range values for each category
+    minMaxRangeValues.value = await init()
+
+    // transform the filter query parameters into an object
     const filterQueryParams = JSON.parse(filterQueryParamString.value)
 
-    // serialize the filter query parameters into an object
-    rangeFilters.value = serializeFilterQueryParameters(filterQueryParams)
+    // set the range filters from the url query parameters
+    rangeFilters.value = filterQueryParams ?? { ...minMaxRangeValues.value }
   })
 
   const onRangeFilter = (filterCategory, min, max) => {
@@ -70,7 +73,7 @@ export default function useRangeFilters() {
   }
 
   const isDefaultFilterValue = (filterCategory, filterValue) => {
-    return !isEmptyObject(rangeFilters.value) && rangeFilters.value[filterCategory] && JSON.stringify(filterValue) === JSON.stringify([minMaxRangeValues.value.date.min, minMaxRangeValues.value.date.max])
+    return !isEmptyObject(rangeFilters.value) && rangeFilters.value[filterCategory] && JSON.stringify(filterValue) === JSON.stringify([minMaxRangeValues.value[filterCategory][0], minMaxRangeValues.value[filterCategory][1]])
   }
 
   const updateFilter = (filterCategory, filterValue) => {
@@ -96,41 +99,6 @@ export default function useRangeFilters() {
     return {
       'filters-cleared': true,
     }
-  }
-
-  /*
-   * Transforms the following data structure:
-   *
-   *   [
-   *     "country:Bahamas",
-   *     "country:Ecuador",
-   *     "disciplines:Asian American Studies",
-   *     "languages:Bengali",
-   *     "scholar_inquiry_categories:Mentoring"
-   *   ]
-   *
-   * into:
-   *
-   *   {
-   *     country: ["Bahamas", "Ecuador"],
-   *     disciplines: ["Asian American Studies"],
-   *     languages: ["Bengali"], 
-   *     scholar_inquiry_categories: ["Mentoring"]
-   *   }
-   *
-   */
-  const serializeFilterQueryParameters = (filterQueryParams) => {
-    const object = {}
-    if (!isEmptyObject(filterQueryParams)) {
-      filterQueryParams.forEach(filterQuery => {
-        const [key, value] = filterQuery.split(':')
-        if (!object[key]) {
-          object[key] = []
-        }
-        object[key].push(value)
-      })
-    }
-    return object
   }
 
   const isEmptyObject = (obj) => {
