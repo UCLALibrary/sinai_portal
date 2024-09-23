@@ -102,7 +102,34 @@
             {{ currentNote.value }}
           </p>
         </template>
-        
+
+        <template v-if="work.editions && work.editions.length > 0">
+          <h3>Editions</h3>
+          <ul>
+            <li v-for="edition in work.editions" :key="edition.id">
+              {{ edition.formatted_citation }}
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="work.translations && work.translations.length > 0">
+          <h3>Modern Translations</h3>
+          <ul>
+            <li v-for="translation in work.translations" :key="translation.id">
+              {{ translation.formatted_citation }}
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="work.citations && work.citations.length > 0">
+          <h3>References</h3>
+          <ul>
+            <li v-for="citation in work.citations" :key="citation.id">
+              {{ citation.formatted_citation }}
+            </li>
+          </ul>
+        </template>        
+
         <h3>Preferred Citation</h3>
         <p>
           "{{ work.pref_title }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
@@ -113,7 +140,7 @@
 
       <section class="w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
         
-        <div v-if="work.related_works && work.related_works.length > 0">
+        <template v-if="work.related_works && work.related_works.length > 0">
           <h3>Related Works</h3>
           <ul>
             <li v-for="relatedWork in work.related_works" :key="relatedWork.id">
@@ -122,9 +149,9 @@
               </Link>
             </li>
           </ul>
-        </div>
+        </template>
 
-        <div v-if="work.related_agents && work.related_agents.length > 0">
+        <template v-if="work.related_agents && work.related_agents.length > 0">
           <h3>Related Agents</h3>
           <ul>
             <li v-for="relatedAgent in work.related_agents" :key="relatedAgent.id">
@@ -134,7 +161,7 @@
               <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel }})</span>
             </li>
           </ul>
-        </div>
+        </template>
 
         <template v-if="workJson.rel_con && workJson.rel_con.length > 0">
           <h3>See Also</h3>
