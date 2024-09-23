@@ -87,14 +87,14 @@ class Work extends Model
 
         // incipit
         if (!empty($data['incipit'])) {
-            $array['incipit_value'] = $incipit['value'] ?? null;
-            $array['incipit_translation'] = isset($incipit['translation']) ? implode('; ', $incipit['translation']) : null;
+            $array['incipit_value'] = $data['incipit']['value'] ?? null;
+            $array['incipit_translation'] = isset($data['incipit']['translation']) ? implode('; ', $data['incipit']['translation']) : null;
         }
         
         // explicit
         if (!empty($data['explicit'])) {
-            $array['explicit_value'] = $explicit['value'] ?? null;
-            $array['explicit_translation'] = isset($explicit['translation']) ? implode('; ', $explicit['translation']) : null;
+            $array['explicit_value'] = $data['explicit']['value'] ?? null;
+            $array['explicit_translation'] = isset($data['explicit']['translation']) ? implode('; ', $data['explicit']['translation']) : null;
         }
 
         // genre
@@ -105,9 +105,9 @@ class Work extends Model
 
         // creation date
         if (!empty($data['creation'])) {
-            $array['creation_value'] = $creationDate['value'] ?? null;
-            $array['not_before'] = $creationDate['iso']['not_before'] ?? null;
-            $array['not_after'] = $creationDate['iso']['not_after'] ?? null;
+            $array['creation_value'] = $data['creation']['value'] ?? null;
+            $array['not_before'] = $data['creation']['iso']['not_before'] ?? null;
+            $array['not_after'] = $data['creation']['iso']['not_after'] ?? null;
         }
 
         /*
