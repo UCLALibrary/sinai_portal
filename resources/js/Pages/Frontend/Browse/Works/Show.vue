@@ -124,6 +124,18 @@
           </ul>
         </div>
 
+        <div v-if="work.related_agents && work.related_agents.length > 0">
+          <h3>Related Agents</h3>
+          <ul>
+            <li v-for="relatedAgent in work.related_agents" :key="relatedAgent.id">
+              <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
+                {{ relatedAgent.pref_name }}
+              </Link>
+              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel }})</span>
+            </li>
+          </ul>
+        </div>
+
         <template v-if="workJson.rel_con && workJson.rel_con.length > 0">
           <h3>See Also</h3>
           <p v-for="rel in workJson.rel_con" :key="rel">
