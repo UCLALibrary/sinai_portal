@@ -58,7 +58,7 @@ class Work extends Model
      * @param string $arkIdentifier
      * @return string|null
      */
-    protected function extractIdFromArk($arkIdentifier): string | null
+    protected function extractIdFromArk(string $arkIdentifier): string|null
     {
         if ($arkIdentifier) {
             $arkParts = explode('/', $arkIdentifier);
