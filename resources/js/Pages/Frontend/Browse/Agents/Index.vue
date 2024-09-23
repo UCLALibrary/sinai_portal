@@ -6,7 +6,6 @@
       :search-client="searchClient"
       :initial-ui-state="initialUiState"
       :future="{ preserveSharedStateOnUnmount: true }">
-
       <div class="facet-sidebar">
         <div class="flex justify-between">
           <span class="font-dosis text-lg font-medium uppercase">
@@ -46,9 +45,31 @@
         </AisSearchBox>
 
         <img src="/img/algolia-logo-black.svg" alt="Algolia" class="w-14 opacity-60 self-end -mt-2">
-        
 
         <div class="accordion-items">
+          <AccordionCard title="Dates" :toggleable="false" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRangeInput
+                  attribute="not_before_min"
+                  :min="dateRangeValues[0]"
+                  :max="dateRangeValues[1]"
+                  class="px-3 pt-10">
+                  <template v-slot="{ currentRefinement, range, refine }">
+                    <VRangeSlider
+                      :min="dateRangeValues[0]"
+                      :max="dateRangeValues[1]"
+                      v-model="selectedDateRangeValues"
+                      @end="onRangeChange({ min: $event[0], max: $event[1] }, refine)"
+                      step="1"
+                      thumb-label="always">
+                    </VRangeSlider>
+                  </template>
+                </AisRangeInput>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
+
           <AccordionCard title="Type" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
@@ -97,6 +118,8 @@
         </div>
       </div>
 
+      <AisConfigure :filters="dateRangeFilter" />
+
       <div class="main-container">
         <InfiniteHits>
           <template v-slot:loading-indicator>
@@ -121,17 +144,19 @@
 </template>
 
 <script setup>
-  import { ref, onBeforeMount } from 'vue'
+  import { ref, computed, onBeforeMount } from 'vue'
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
   import AgentResult from '@/Shared/Search/AgentResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
   import { AisInstantSearch,
+    AisConfigure,
     AisStateResults,
     AisSearchBox,
     AisDynamicWidgets,
     AisRefinementList,
-    AisClearRefinements
+    AisRangeInput,
+    AisClearRefinements,
   } from 'vue-instantsearch/vue3/es'
   import InfiniteHits from '@/Shared/Search/InfiniteHits.vue'
 
@@ -150,12 +175,18 @@
 
   import useFacetFilters from '@/composables/search/useFacetFilters'
   const { filters, onFilter, onClearFilters } = useFacetFilters()
-  
+
   const maxFacetValuesToShow = 200
 
   const initialUiState = ref(null)
 
+  const dateRangeValues = ref([null, null])
+  const selectedDateRangeValues = ref([null, null])
+
   onBeforeMount(async () => {
+    // initialize the min and max values for the date range slider
+    await setMinMaxDateRangeValues()
+
     // initialize the state of the user interface
     initialUiState.value = {
       [props.indexName]: {
@@ -163,6 +194,41 @@
         refinementList: filters.value,
       }
     }
+  })
+
+  const setMinMaxDateRangeValues = async () => {
+    const index = searchClient.initIndex(props.indexName)
+    const results = await index.search('', {
+      hitsPerPage: 2000,
+      attributesToRetrieve: ['not_before_min', 'not_after_max'],
+    })
+
+    // set the min and max date range values
+    let notBeforeMin = 0
+    let notAfterMax = 0
+    results.hits.forEach(hit => {
+      if (hit.not_before_min < notBeforeMin) {
+        notBeforeMin = hit.not_before_min
+      }
+      if (hit.not_after_max > notAfterMax) {
+        notAfterMax = hit.not_after_max
+      }
+    })
+    dateRangeValues.value = [notBeforeMin, notAfterMax]
+    selectedDateRangeValues.value = [notBeforeMin, notAfterMax]
+  }
+
+  const onRangeChange = ({ min, max }) => {
+    selectedDateRangeValues.value = [
+      min !== undefined ? min : dateRangeValues.value[0],
+      max !== undefined ? max : dateRangeValues.value[1]
+    ]
+  }
+
+  const dateRangeFilter = computed(() => {
+    const min = selectedDateRangeValues.value[0] || dateRangeValues.value[0]
+    const max = selectedDateRangeValues.value[1] || dateRangeValues.value[1]
+    return `(not_after_max >= ${min} AND not_before_min <= ${max})`
   })
 </script>
 
