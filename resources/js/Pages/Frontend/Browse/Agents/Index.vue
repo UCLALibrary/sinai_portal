@@ -56,7 +56,8 @@
                   :show-more-limit="maxFacetValuesToShow"
                   attribute="type"
                   :show-more="true"
-                  @change="onFilter('type', $event.target.value)">
+                  @change="onFilter('type', $event.target.value)"
+                  class="py-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
@@ -78,7 +79,8 @@
                   :show-more-limit="maxFacetValuesToShow"
                   attribute="gender"
                   :show-more="true"
-                  @change="onFilter('gender', $event.target.value)">
+                  @change="onFilter('gender', $event.target.value)"
+                  class="py-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
