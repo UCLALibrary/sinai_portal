@@ -44,8 +44,7 @@ export default function useRangeFilters(init) {
     }
   }
 
-  const onClearRangeFilters = (refine) => {
-    refine()
+  const onClearRangeFilters = () => {
     let status = clearFilters()
     if (status && status.hasOwnProperty('filters-cleared') && status['filters-cleared']) {
       deleteUrlQueryParameter(filterQueryParamKey)
@@ -65,7 +64,7 @@ export default function useRangeFilters(init) {
 
   const clearFilters = () => {
     // update the state of the filters ref to trigger any watchers
-    rangeFilters.value = {}
+    rangeFilters.value = { ...minMaxRangeValues.value }
 
     return {
       'filters-cleared': true,

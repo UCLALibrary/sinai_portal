@@ -18,7 +18,7 @@
                 v-if="canRefine"
                 :href="createURL()"
                 class="w-auto"
-                @click.prevent="onClearFilters(refine)">
+                @click.prevent="onClearRefinements(refine)">
                 <span class="clear-filter">
                   Clear Filters
                   <button type="button">
@@ -227,6 +227,11 @@
       return `(date_max >= ${min} AND date_min <= ${max})`
     }
   })
+
+  const onClearRefinements = (refine) => {
+    onClearFilters(refine)
+    onClearRangeFilters()
+  }
 </script>
 
 <style lang="postcss">
