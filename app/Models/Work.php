@@ -33,6 +33,26 @@ class Work extends Model
     protected $appends = ['authors', 'related_works', 'related_agents', 'editions', 'translations', 'citations'];
 
     /**
+     * Cached decoded JSON data.
+     *
+     * @var array|null
+     */
+    protected $jsonData = null;
+
+    /**
+     * Get the decoded JSON data.
+     *
+     * @return array
+     */
+    protected function getJsonData()
+    {
+        if ($this->jsonData === null) {
+            $this->jsonData = json_decode($this->json, true);
+        }
+        return $this->jsonData;
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
@@ -41,8 +61,7 @@ class Work extends Model
     {
         $array = $this->toArray();
 
-        // decode json field
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         // ark
         $array['ark'] = $data['ark'] ?? null;
@@ -96,7 +115,7 @@ class Work extends Model
      */
     private function getAuthorIds()
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $creators = $data['creator'] ?? [];
         $authorIds = [];
@@ -155,7 +174,7 @@ class Work extends Model
      */
     private function getRelatedWorkIds()
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $relatedWorks = $data['rel_work'] ?? [];
         $relatedWorkIds = [];
@@ -204,7 +223,7 @@ class Work extends Model
 
     private function getRelatedAgentIds()
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $relatedAgents = $data['rel_agent'] ?? [];
         $relatedAgentIds = [];
@@ -267,7 +286,7 @@ class Work extends Model
      */
     private function getBibIdsByType(array $typeIds)
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $bibEntries = $data['bib'] ?? [];
         $bibIds = [];
