@@ -112,8 +112,20 @@
       </section>
 
       <section class="w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+        
+        <div v-if="work.related_works && work.related_works.length > 0">
+          <h3>Related Works</h3>
+          <ul>
+            <li v-for="relatedWork in work.related_works" :key="relatedWork.id">
+              <Link :href="route('frontend.works.show', relatedWork.id)">
+                {{ relatedWork.pref_title }}
+              </Link>
+            </li>
+          </ul>
+        </div>
+
         <template v-if="workJson.rel_con && workJson.rel_con.length > 0">
-          <h3 class="mt-0">See Also</h3>
+          <h3>See Also</h3>
           <p v-for="rel in workJson.rel_con" :key="rel">
             <a :href="rel.uri" class="button">&rarr; {{ rel.source }}</a>
           </p>
@@ -131,6 +143,7 @@
 
 <script setup>
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+  import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
 
   const props = defineProps({

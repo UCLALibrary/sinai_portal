@@ -30,7 +30,7 @@ class Work extends Model
      *
      * @var array
      */
-    protected $appends = ['authors'];
+    protected $appends = ['authors', 'related_works'];
 
     /**
      * Get the indexable data array for the model.
@@ -144,6 +144,60 @@ class Work extends Model
             return [
                 'id' => $author->id,
                 'pref_name' => $author->pref_name,
+            ];
+        });
+    }
+
+    /**
+     * Extract related work IDs from the JSON data.
+     *
+     * @return array
+     */
+    private function getRelatedWorkIds()
+    {
+        $data = json_decode($this->json, true);
+
+        $relatedWorks = $data['rel_work'] ?? [];
+        $relatedWorkIds = [];
+
+        foreach ($relatedWorks as $relatedWork) {
+            if (isset($relatedWork['id'])) {
+                // Extract the last part of the ARK identifier
+                $arkParts = explode('/', $relatedWork['id']);
+                $relatedWorkId = end($arkParts);
+
+                if ($relatedWorkId) {
+                    $relatedWorkIds[] = $relatedWorkId;
+                }
+            }
+        }
+
+        return $relatedWorkIds;
+    }
+
+    public function relatedWorks()
+    {
+        $relatedWorkIds = $this->getRelatedWorkIds();
+
+        if (!empty($relatedWorkIds)) {
+            // Fetch related works from the works table
+            return self::whereIn('id', $relatedWorkIds)->get();
+        }
+
+        return collect([]);
+    }
+
+    /**
+     * Accessor to include related works when the model is serialized.
+     *
+     * @return array
+     */
+    public function getRelatedWorksAttribute()
+    {
+        return $this->relatedWorks()->map(function ($work) {
+            return [
+                'id' => $work->id,
+                'pref_title' => $work->pref_title,
             ];
         });
     }
