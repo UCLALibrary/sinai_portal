@@ -98,8 +98,8 @@
         <template v-if="workJson.note && workJson.note.value !== ''">
           <h3>Notes</h3>
           <p v-for="currentNote in workJson.note" :key="currentNote">
-            <span class="label">{{ currentNote.type.label }}</span>
-            {{ currentNote.value }}
+            <div class="label">{{ currentNote.type.label }}</div>
+            <div>{{ currentNote.value }}</div>
           </p>
         </template>
 

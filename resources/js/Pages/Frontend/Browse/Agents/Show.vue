@@ -58,6 +58,14 @@
           </p>
         </template>
 
+        <template v-if="agentJson.note && agentJson.note.value !== ''">
+          <h3>Notes</h3>
+          <p v-for="currentNote in agentJson.note" :key="currentNote">
+            <div class="label">{{ currentNote.type.label }}</div>
+            <div>{{ currentNote.value }}</div>
+          </p>
+        </template>
+
         <h3>Preferred Citation</h3>
         <p>
           "{{ agent.pref_name }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
