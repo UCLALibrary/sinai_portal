@@ -20,7 +20,7 @@
       </div>
 
        <div class="w-full lg:flex-1">
-        <div class="flex">
+        <div class="flex gap-x-2">
           <p>{{ result.birth_value }}</p>
           <p>{{ result.death_value }}</p>
           <p>{{ result.floruit_value }}</p>
