@@ -18,6 +18,7 @@ class WorksController extends Controller
             'appId' => env('ALGOLIA_APP_ID'),
             'apiKey' => env('ALGOLIA_SECRET'),
             'indexName' => env('SCOUT_PREFIX') . 'works',
+            'searchQuery' => request('q') ?? '',
         ]);
     }
 

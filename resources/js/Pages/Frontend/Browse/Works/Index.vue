@@ -162,6 +162,7 @@
     appId: { type: String, required: true },
     apiKey: { type: String, required: true },
     indexName: { type: String, required: true },
+    searchQuery: { type: String, required: true },
   })
 
   import algoliasearch from 'algoliasearch/lite'
