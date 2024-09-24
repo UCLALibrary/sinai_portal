@@ -2,7 +2,7 @@
   <a :href="'/agents/' + result.id">
     <div class="flex flex-col lg:flex-row">
       <div class="w-full lg:w-4/12">
-        <h3 class="font-medium text-lg pr-4">
+        <h3 class="font-medium text-lg pr-4 tracking-wide">
           {{ result.pref_name }}
         </h3>
       </div>
@@ -19,7 +19,7 @@
         </p>
       </div>
 
-       <div class="w-full lg:w-3/12">
+       <div class="w-full lg:flex-1">
         <div class="flex">
           <p>{{ result.birth_value }}</p>
           <p>{{ result.death_value }}</p>
