@@ -138,7 +138,7 @@
 
       </section>
 
-      <section class="w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+      <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
         
         <template v-if="work.related_works && work.related_works.length > 0">
           <h3>Related Works</h3>
@@ -223,6 +223,10 @@
     @apply uppercase tracking-wider font-medium text-base border-b border-gray-300 py-2 mt-8 mb-2
   }
   
+  section.sidebar h3:first-of-type {
+    @apply mt-0
+  }
+
   p {
     @apply mb-2 max-w-2xl xl:max-w-4xl
   }
@@ -241,5 +245,9 @@
 
   .label {
     @apply inline-block text-sm uppercase font-medium w-56
+  }
+
+  ul li {
+    @apply my-2
   }
 </style>
