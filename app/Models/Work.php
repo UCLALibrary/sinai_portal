@@ -33,16 +33,50 @@ class Work extends Model
     protected $appends = ['authors', 'related_works', 'related_agents', 'editions', 'translations', 'citations'];
 
     /**
+     * Cached decoded JSON data.
+     *
+     * @var array|null
+     */
+    protected $jsonData = null;
+
+    /**
+     * Get the decoded JSON data.
+     *
+     * @return array
+     */
+    protected function getJsonData(): array
+    {
+        if ($this->jsonData === null) {
+            $this->jsonData = json_decode($this->json, true);
+        }
+        return $this->jsonData;
+    }
+
+    /**
+     * Extract the last part of an ARK identifier to get the ID.
+     *
+     * @param string $arkIdentifier
+     * @return string|null
+     */
+    protected function extractIdFromArk(string $arkIdentifier): string|null
+    {
+        if ($arkIdentifier) {
+            $arkParts = explode('/', $arkIdentifier);
+            return end($arkParts);
+        }
+        return null;
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
      */
-    public function toSearchableArray()
+    public function toSearchableArray(): array
     {
         $array = $this->toArray();
 
-        // decode json field
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         // ark
         $array['ark'] = $data['ark'] ?? null;
@@ -52,17 +86,15 @@ class Work extends Model
         $array['creator'] = !empty($authors) ? $authors : null;
 
         // incipit
-        $incipit = $data['incipit'] ?? null;
-        if ($incipit) {
-            $array['incipit_value'] = $incipit['value'] ?? null;
-            $array['incipit_translation'] = isset($incipit['translation']) ? implode('; ', $incipit['translation']) : null;
+        if (!empty($data['incipit'])) {
+            $array['incipit_value'] = $data['incipit']['value'] ?? null;
+            $array['incipit_translation'] = isset($data['incipit']['translation']) ? implode('; ', $data['incipit']['translation']) : null;
         }
         
         // explicit
-        $explicit = $data['explicit'] ?? null;
-        if ($explicit) {
-            $array['explicit_value'] = $explicit['value'] ?? null;
-            $array['explicit_translation'] = isset($explicit['translation']) ? implode('; ', $explicit['translation']) : null;
+        if (!empty($data['explicit'])) {
+            $array['explicit_value'] = $data['explicit']['value'] ?? null;
+            $array['explicit_translation'] = isset($data['explicit']['translation']) ? implode('; ', $data['explicit']['translation']) : null;
         }
 
         // genre
@@ -72,11 +104,10 @@ class Work extends Model
         $array['orig_lang_label'] = $data['orig_lang']['label'] ?? null;
 
         // creation date
-        $creationDate = $data['creation'] ?? null;
-        if ($creationDate) {
-            $array['creation_value'] = $creationDate['value'] ?? null;
-            $array['not_before'] = $creationDate['iso']['not_before'] ?? null;
-            $array['not_after'] = $creationDate['iso']['not_after'] ?? null;
+        if (!empty($data['creation'])) {
+            $array['creation_value'] = $data['creation']['value'] ?? null;
+            $array['not_before'] = $data['creation']['iso']['not_before'] ?? null;
+            $array['not_after'] = $data['creation']['iso']['not_after'] ?? null;
         }
 
         /*
@@ -94,18 +125,16 @@ class Work extends Model
      *
      * @return array
      */
-    private function getAuthorIds()
+    private function getAuthorIds(): array
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $creators = $data['creator'] ?? [];
         $authorIds = [];
 
         foreach ($creators as $creator) {
             if ($creator['role'] === 'author' && isset($creator['id'])) {
-                // Extract the last part of the ARK identifier
-                $arkParts = explode('/', $creator['id']);
-                $authorId = end($arkParts);
+                $authorId = $this->extractIdFromArk($creator['id']);
 
                 if ($authorId) {
                     $authorIds[] = $authorId;
@@ -121,7 +150,7 @@ class Work extends Model
      *
      * @return \Illuminate\Support\Collection
      */
-    public function authors()
+    public function authors(): \Illuminate\Support\Collection
     {
         $authorIds = $this->getAuthorIds();
 
@@ -136,9 +165,9 @@ class Work extends Model
     /**
      * Accessor to include authors when the model is serialized.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function getAuthorsAttribute()
+    public function getAuthorsAttribute(): \Illuminate\Support\Collection
     {
         return $this->authors()->map(function ($author) {
             return [
@@ -153,18 +182,16 @@ class Work extends Model
      *
      * @return array
      */
-    private function getRelatedWorkIds()
+    private function getRelatedWorkIds(): array
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $relatedWorks = $data['rel_work'] ?? [];
         $relatedWorkIds = [];
 
         foreach ($relatedWorks as $relatedWork) {
             if (isset($relatedWork['id'])) {
-                // Extract the last part of the ARK identifier
-                $arkParts = explode('/', $relatedWork['id']);
-                $relatedWorkId = end($arkParts);
+                $relatedWorkId = $this->extractIdFromArk($relatedWork['id']);
 
                 if ($relatedWorkId) {
                     $relatedWorkIds[] = $relatedWorkId;
@@ -175,7 +202,7 @@ class Work extends Model
         return $relatedWorkIds;
     }
 
-    public function relatedWorks()
+    public function relatedWorks(): \Illuminate\Support\Collection
     {
         $relatedWorkIds = $this->getRelatedWorkIds();
 
@@ -190,9 +217,9 @@ class Work extends Model
     /**
      * Accessor to include related works when the model is serialized.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function getRelatedWorksAttribute()
+    public function getRelatedWorksAttribute(): \Illuminate\Support\Collection
     {
         return $this->relatedWorks()->map(function ($work) {
             return [
@@ -202,9 +229,9 @@ class Work extends Model
         });
     }
 
-    private function getRelatedAgentIds()
+    private function getRelatedAgentIds(): array
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $relatedAgents = $data['rel_agent'] ?? [];
         $relatedAgentIds = [];
@@ -212,9 +239,7 @@ class Work extends Model
 
         foreach ($relatedAgents as $relatedAgent) {
             if (isset($relatedAgent['id'])) {
-                // Extract the last part of the ARK identifier
-                $arkParts = explode('/', $relatedAgent['id']);
-                $relatedAgentId = end($arkParts);
+                $relatedAgentId = $this->extractIdFromArk($relatedAgent['id']);
 
                 if ($relatedAgentId) {
                     $relatedAgentIds[] = $relatedAgentId;
@@ -226,7 +251,7 @@ class Work extends Model
         return ['ids' => $relatedAgentIds, 'rels' => $relatedAgentRels];
     }
 
-    public function relatedAgents()
+    public function relatedAgents(): \Illuminate\Support\Collection
     {
         $relatedAgentData = $this->getRelatedAgentIds();
         $relatedAgentIds = $relatedAgentData['ids'];
@@ -252,9 +277,9 @@ class Work extends Model
     /**
      * Accessor to include related agents when the model is serialized.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function getRelatedAgentsAttribute()
+    public function getRelatedAgentsAttribute(): \Illuminate\Support\Collection
     {
         return $this->relatedAgents();
     }
@@ -265,9 +290,9 @@ class Work extends Model
      * @param array $typeIds
      * @return array
      */
-    private function getBibIdsByType(array $typeIds)
+    private function getBibIdsByType(array $typeIds): array
     {
-        $data = json_decode($this->json, true);
+        $data = $this->getJsonData();
 
         $bibEntries = $data['bib'] ?? [];
         $bibIds = [];
@@ -289,7 +314,7 @@ class Work extends Model
      *
      * @return \Illuminate\Support\Collection
      */
-    public function editions()
+    public function editions(): \Illuminate\Support\Collection
     {
         $editionIds = $this->getBibIdsByType(['edition']);
 
@@ -305,7 +330,7 @@ class Work extends Model
      *
      * @return \Illuminate\Support\Collection
      */
-    public function translations()
+    public function translations(): \Illuminate\Support\Collection
     {
         $translationIds = $this->getBibIdsByType(['translation']);
 
@@ -321,7 +346,7 @@ class Work extends Model
      *
      * @return \Illuminate\Support\Collection
      */
-    public function citations()
+    public function citations(): \Illuminate\Support\Collection
     {
         $citationIds = $this->getBibIdsByType(['cite', 'ref']);
 
@@ -335,9 +360,9 @@ class Work extends Model
     /**
      * Accessor to include editions when the model is serialized.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function getEditionsAttribute()
+    public function getEditionsAttribute(): \Illuminate\Support\Collection
     {
         return $this->editions()->map(function ($reference) {
             return [
@@ -350,9 +375,9 @@ class Work extends Model
     /**
      * Accessor to include translations when the model is serialized.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function getTranslationsAttribute()
+    public function getTranslationsAttribute(): \Illuminate\Support\Collection
     {
         return $this->translations()->map(function ($reference) {
             return [
@@ -365,9 +390,9 @@ class Work extends Model
     /**
      * Accessor to include citations when the model is serialized.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    public function getCitationsAttribute()
+    public function getCitationsAttribute(): \Illuminate\Support\Collection
     {
         return $this->citations()->map(function ($reference) {
             return [
