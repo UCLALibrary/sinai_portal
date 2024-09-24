@@ -23,6 +23,13 @@
           {{ $page.props.appUrl }}/agents/{{ agent.id }}
         </p>
 
+        <template v-if="agentJson.refno && agentJson.refno.length > 0">
+          <p v-for="ref in agentJson.refno" :key="ref.id">
+            <span class="label">{{ ref.source }}</span>
+            {{ ref.idno }}
+          </p>
+        </template>
+
         <h3>Personal Information</h3>
          <p v-if="agentJson.birth && agentJson.birth.value !== ''">
           <span class="label">Birth Date</span>
