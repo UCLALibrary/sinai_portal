@@ -66,6 +66,15 @@
           </p>
         </template>
 
+        <template v-if="agent.citations && agent.citations.length > 0">
+          <h3>References</h3>
+          <ul>
+            <li v-for="citation in agent.citations" :key="citation.id">
+              {{ citation.formatted_citation }}
+            </li>
+          </ul>
+        </template>
+
         <h3>Preferred Citation</h3>
         <p>
           "{{ agent.pref_name }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
@@ -74,9 +83,33 @@
 
       </section>
 
-      <section class="w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+      <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+        
+        <template v-if="agent.related_works && agent.related_works.length > 0">
+          <h3>Related Works</h3>
+          <ul>
+            <li v-for="relatedWork in agent.related_works" :key="relatedWork.id">
+              <Link :href="route('frontend.works.show', relatedWork.id)">
+                {{ relatedWork.pref_title }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="agent.related_agents && agent.related_agents.length > 0">
+          <h3>Related Agents</h3>
+          <ul>
+            <li v-for="relatedAgent in agent.related_agents" :key="relatedAgent.id">
+              <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
+                {{ relatedAgent.pref_name }}
+              </Link>
+              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel }})</span>
+            </li>
+          </ul>
+        </template>
+
         <template v-if="agentJson.rel_con && agentJson.rel_con.length > 0">
-          <h3 class="mt-0">See Also</h3>
+          <h3>See Also</h3>
           <p v-for="rel in agentJson.rel_con" :key="rel">
             <a :href="rel.uri" class="button">&rarr; {{ rel.source }}</a>
           </p>
@@ -94,6 +127,7 @@
 
 <script setup>
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+  import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
 
   const props = defineProps({
@@ -134,6 +168,10 @@
     @apply uppercase tracking-wider font-medium text-base border-b border-gray-300 py-2 mt-8 mb-2
   }
   
+  section.sidebar h3:first-of-type {
+    @apply mt-0
+  }
+
   p {
     @apply mb-2 max-w-2xl xl:max-w-4xl
   }
@@ -152,5 +190,9 @@
 
   .label {
     @apply inline-block text-sm uppercase font-medium w-28
+  }
+
+  ul li {
+    @apply my-2
   }
 </style>
