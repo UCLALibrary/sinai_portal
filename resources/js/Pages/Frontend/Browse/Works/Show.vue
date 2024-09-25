@@ -244,7 +244,7 @@
   }
 
   .label {
-    @apply inline-block text-sm uppercase font-medium w-56
+    @apply block md:inline-block text-sm uppercase font-medium w-56
   }
 
   ul li {

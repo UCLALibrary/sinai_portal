@@ -189,7 +189,7 @@
   }
 
   .label {
-    @apply inline-block text-sm uppercase font-medium w-28
+    @apply block md:inline-block text-sm uppercase font-medium w-28
   }
 
   ul li {
