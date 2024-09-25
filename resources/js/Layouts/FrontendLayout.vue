@@ -76,12 +76,12 @@
 
         <footer class="bg-black mt-auto py-16 text-sm text-white">
             <div class="wrap">
-                <div class="pb-12 flex items-center gap-8">
+                <div class="pb-12 flex flex-col sm:flex-row items-center gap-8">
                     <img src="/img/logo-sinai-wht.png" alt="St Catherine Monastery logo" class="h-16">
                     <img src="/img/logo-uclalib-wht.svg" alt="St Catherine Monastery logo" class="h-10">
 
                 </div>
-                © 2024 Sinai Manuscripts Data Portal. All rights reserved.
+                <div class="w-full block text-center sm:w-96">© 2024 Sinai Manuscripts Data Portal. All rights reserved.</div>
             </div>
         </footer>
     </div>
