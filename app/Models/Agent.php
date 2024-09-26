@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\JsonSchemas;
 use App\Traits\HasRelatedEntities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Laravel\Scout\Searchable;
 
 class Agent extends Model
 {
-    use HasFactory, Searchable, HasRelatedEntities;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
 
     protected $keyType = 'string';
     public $incrementing = false;
@@ -177,3 +178,8 @@ class Agent extends Model
         return $array;
     }
 }
+
+/*
+ * Execute the static initializer to load the schemas for JSON Forms.
+ */
+Agent::initialize('agent');

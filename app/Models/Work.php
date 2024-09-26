@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\JsonSchemas;
 use App\Traits\HasRelatedEntities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,7 +10,7 @@ use Laravel\Scout\Searchable;
 
 class Work extends Model
 {
-    use HasFactory, Searchable, HasRelatedEntities;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
 
     protected $keyType = 'string';
     public $incrementing = false;
@@ -239,3 +240,8 @@ class Work extends Model
         return $array;
     }
 }
+
+/*
+ * Execute the static initializer to load the schemas for JSON Forms.
+ */
+Work::initialize('work');
