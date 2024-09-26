@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\AgentsController;
 use App\Http\Controllers\Api\BibliographyController;
 use App\Http\Controllers\Api\ContentsController;
+use App\Http\Controllers\Api\FeaturesController;
+use App\Http\Controllers\Api\FormContextsController;
 use App\Http\Controllers\Api\FormsController;
 use App\Http\Controllers\Api\LanguagesController;
 use App\Http\Controllers\Api\ManuscriptsController;
@@ -50,6 +52,14 @@ Route::apiResource('languages', LanguagesController::class, [
 ]);
 
 Route::apiResource('references', ReferencesController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('features', FeaturesController::class, [
+    'as' => 'api'
+]);
+
+Route::apiResource('form-contexts', FormContextsController::class, [
     'as' => 'api'
 ]);
 

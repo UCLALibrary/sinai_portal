@@ -28,6 +28,7 @@ import myPlaceSelectionRenderer from '@/jsonforms/renderers/selectors/MyPlaceSel
 import myPartSelectionRenderer from '@/jsonforms/renderers/selectors/MyPartSelectionRenderer.vue'
 import myManuscriptSelectionRenderer from '@/jsonforms/renderers/selectors/MyManuscriptSelectionRenderer.vue'
 import myBibliographySelectionRenderer from '@/jsonforms/renderers/selectors/MyBibliographySelectionRenderer.vue'
+import myFormContextSelectionRenderer from '@/jsonforms/renderers/selectors/MyFormContextSelectionRenderer.vue'
 
 // layout: horizontal rule
 export const myHorizontalRuleRendererEntry = buildRendererRegistryEntry(myHorizontalRuleRenderer, uiTypeIs('HorizontalRule'))
@@ -71,6 +72,9 @@ export const myManuscriptSelectionRendererEntry = buildRendererRegistryEntry(myM
 // selector: bibliography
 export const myBibliographySelectionRendererEntry = buildRendererRegistryEntry(myBibliographySelectionRenderer, scopeEndIs('bib'), 5)
 
+// selector: bibliography
+export const myFormContextSelectionRendererEntry = buildRendererRegistryEntry(myFormContextSelectionRenderer, scopeEndIs('form_contexts'), 5)
+
 export const customRenderers = [
   myHorizontalRuleRendererEntry,
   myStringControlRendererEntry,
@@ -86,4 +90,5 @@ export const customRenderers = [
   myPartSelectionRendererEntry,
   myManuscriptSelectionRendererEntry,
   myBibliographySelectionRendererEntry,
+  myFormContextSelectionRendererEntry
 ]

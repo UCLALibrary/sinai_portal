@@ -97,9 +97,11 @@ const logout = () => {
                                         <DropdownLink :href="route('languages.index')" :active="route().current('languages.*')">
                                             Languages
                                         </DropdownLink>
-
                                         <DropdownLink :href="route('references.index')" :active="route().current('references.*')">
                                             References
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('features.index')" :active="route().current('features.*')">
+                                          Features
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -285,6 +287,21 @@ const logout = () => {
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('bibliography.index')" :active="route().current('bibliography.*')">
                             Bibliography
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('languages.index')" :active="route().current('languages.*')">
+                            Languages
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('references.index')" :active="route().current('references.*')">
+                            References
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('features.index')" :active="route().current('features.*')">
+                            Features
                         </ResponsiveNavLink>
                     </div>
 

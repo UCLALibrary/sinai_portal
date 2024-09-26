@@ -1,0 +1,30 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/term"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/corresp_note"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/summary"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/scope"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/form_contexts"
+        }
+      ]
+    }
+  ]
+}
