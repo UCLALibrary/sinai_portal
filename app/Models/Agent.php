@@ -151,6 +151,22 @@ class Agent extends Model
             $array['floruit_not_after'] = isset($floruit['iso']['not_after']) ? $floruit['iso']['not_after'] : null;
         }
 
+        // minimum date from birth, death, and floruit 'not_before' fields
+        $values = array_filter([
+            $array['birth_not_before'] ?? null,
+            $array['death_not_before'] ?? null,
+            $array['floruit_not_before'] ?? null
+        ], fn($value) => $value !== null);
+        $array['date_min'] = $values ? min(array_map('intval', $values)) : null;
+
+        // maximum date from birth, death, and floruit 'not_after' fields
+        $values = array_filter([
+            $array['birth_not_after'] ?? null,
+            $array['death_not_after'] ?? null,
+            $array['floruit_not_after'] ?? null
+        ], fn($value) => $value !== null);
+        $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
+
         /*
          * Apply default transformations if desired.
          * 

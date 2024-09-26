@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 @click="toggle">
+    <h3 v-if="toggleable" @click="toggle">
       <button type="button" class="" :aria-controls="'accordion-card-' + id" aria-expanded="false">
         <span class="title">
           {{ title }}
@@ -17,8 +17,13 @@
         </span>
       </button>
     </h3>
+    <h3 v-else>
+      <span class="title">
+        {{ title }}
+      </span>
+    </h3>
 
-    <div :class="['py-4', { 'hidden': !isOpen }]" :id="'accordion-card-' + id">
+    <div :class="[{ 'hidden': !isOpen }]" :id="'accordion-card-' + id">
       <slot name="content" />
     </div>
   </div>
@@ -31,7 +36,8 @@
 
   const props = defineProps({  
     title: { type: String, required: true },
-    open: { type: Boolean, required: false, default: true }
+    open: { type: Boolean, required: false, default: true },
+    toggleable: { type: Boolean, required: false, default: true },
   })
 
   const emit = defineEmits()
@@ -71,7 +77,6 @@
 </script>
 
 <style lang="postcss" scoped>
-
   h3 {
     @apply flow-root
   }
