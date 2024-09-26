@@ -8,7 +8,7 @@
         <div class="flex justify-center mt-16 mb-16">
             <img src="/sinai-logo.svg" alt="Logo" class="w-32 h-32" />
         </div>
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2 m-16">
             <div class="bg-white dark:bg-black dark:text-white rounded-lg shadow-lg p-6">
                 <h2 class="font-dosis text-2xl">About</h2>
                 <p class="mt-4 text-lg">
