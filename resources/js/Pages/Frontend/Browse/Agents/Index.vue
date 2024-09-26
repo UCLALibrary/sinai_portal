@@ -49,30 +49,6 @@
         <img src="/img/algolia-logo-black.svg" alt="Algolia" class="w-14 opacity-60 self-end -mt-2">
 
         <div class="accordion-items">
-          <AccordionCard title="Dates" :toggleable="false" class="accordion-item">
-            <template v-slot:content>
-              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
-                <AisRangeInput
-                  v-if="rangeFilters"
-                  attribute="date_min"
-                  :min="minMaxRangeValues.date[0]"
-                  :max="minMaxRangeValues.date[1]"
-                  class="px-3 pt-10">
-                  <template v-slot="{ currentRefinement, range, refine }">
-                    <VRangeSlider
-                      :min="minMaxRangeValues.date[0]"
-                      :max="minMaxRangeValues.date[1]"
-                      v-model="rangeFilters.date"
-                      @end="onRangeFilter('date', $event[0], $event[1])"
-                      step="1"
-                      thumb-label="always">
-                    </VRangeSlider>
-                  </template>
-                </AisRangeInput>
-              </AisDynamicWidgets>
-            </template>
-          </AccordionCard>
-
           <AccordionCard title="Type" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
@@ -120,8 +96,6 @@
           </AccordionCard>
         </div>
       </div>
-
-      <AisConfigure :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
         <InfiniteHits>
@@ -231,7 +205,6 @@
 
   const onClearRefinements = (refine) => {
     onClearFilters(refine)
-    onClearRangeFilters()
   }
 </script>
 
