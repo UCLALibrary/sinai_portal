@@ -9,7 +9,7 @@
       <div class="facet-sidebar">
         <div class="flex justify-between">
           <span class="font-dosis text-lg font-medium uppercase">
-            Agents
+            Search Agents
           </span>
 
           <AisClearRefinements>
@@ -98,6 +98,13 @@
       </div>
 
       <div class="main-container">
+        <div class="hidden lg:grid lg:grid-cols-5 p-2 gap-x-1 font-bold border-b">
+          <h3>Name</h3>
+          <h3>Type</h3>
+          <h3>Gender</h3>
+          <h3>Date</h3>
+          <h3>ARK</h3>
+        </div>
         <InfiniteHits>
           <template v-slot:loading-indicator>
             <AisStateResults>
@@ -347,7 +354,7 @@
   }
 
   .ais-Hits-item {
-    @apply py-4 px-4 sm:px-2 hover:bg-white
+    @apply py-4 sm:px-2 hover:bg-white
   }
 
 

@@ -10,7 +10,7 @@
       <div class="facet-sidebar">
         <div class="flex justify-between">
           <span class="font-dosis text-lg font-medium uppercase">
-            Works
+            Search Works
           </span>
           <AisClearRefinements>
             <template v-slot="{ canRefine, refine, createURL }">
@@ -120,6 +120,13 @@
       </div>
 
       <div class="main-container">
+         <div class="hidden lg:grid lg:grid-cols-5 gap-x-1 p-2 font-bold border-b">
+          <h3>Title</h3>
+          <h3>Language</h3>
+          <h3>Genre</h3>
+          <h3>Date</h3>
+          <h3>ARK</h3>
+        </div>
         <InfiniteHits>
           <template v-slot:loading-indicator>
             <AisStateResults>
@@ -329,7 +336,7 @@
   }
 
   .ais-Hits-item {
-    @apply py-4 px-4 sm:px-2 hover:bg-white
+    @apply py-4 sm:px-2 hover:bg-white
   }
 
 
