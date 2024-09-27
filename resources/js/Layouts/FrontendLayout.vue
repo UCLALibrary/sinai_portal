@@ -30,8 +30,8 @@
                 <div class="flex flex-col lg:flex-row items-center gap-y-6 pb-10 justify-between">
                     <Link
                         :href="route('home')"
-                        class="logo">
-                        <img src="/sinai-logo.svg" alt="logo">Sinai Manuscripts Data Portal
+                        class="logo flex w-full">
+                        <img src="/sinai-logo.svg" alt="logo" class="mr-4">Sinai Manuscripts Data Portal
                     </Link>
 
                     <nav class="flex flex-col lg:flex-row items-center gap-x-10 text-lg">
