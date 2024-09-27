@@ -56,6 +56,7 @@ class Agent extends Model
                 return [
                     'id' => $work->id,
                     'pref_title' => $work->pref_title,
+                    'rel' => $item['rel'] ?? null,
                 ];
             }
         )->toArray();

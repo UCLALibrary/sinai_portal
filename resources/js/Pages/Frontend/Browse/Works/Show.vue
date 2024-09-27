@@ -147,6 +147,7 @@
               <Link :href="route('frontend.works.show', relatedWork.id)">
                 {{ relatedWork.pref_title }}
               </Link>
+              <span class="ml-1" v-if="relatedWork.rel">({{ relatedWork.rel }})</span>
             </li>
           </ul>
         </template>
