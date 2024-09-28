@@ -110,7 +110,7 @@
           <h3>Editions</h3>
           <ul>
             <li v-for="edition in work.editions" :key="edition.id">
-              {{ edition.formatted_citation }}
+              {{ edition.formatted_citation }}<span v-if="edition.range">, {{ edition.range }}.</span>
             </li>
           </ul>
         </template>
@@ -119,7 +119,7 @@
           <h3>Modern Translations</h3>
           <ul>
             <li v-for="translation in work.translations" :key="translation.id">
-              {{ translation.formatted_citation }}
+              {{ translation.formatted_citation }}<span v-if="translation.range">, {{ translation.range }}.</span>
             </li>
           </ul>
         </template>
@@ -128,7 +128,7 @@
           <h3>References</h3>
           <ul>
             <li v-for="citation in work.citations" :key="citation.id">
-              {{ citation.formatted_citation }}
+              {{ citation.formatted_citation }}<span v-if="citation.range">, {{ citation.range }}.</span>
             </li>
           </ul>
         </template>        
@@ -196,7 +196,6 @@
   })
 
   const workJson = computed(() => {
-console.log(JSON.parse(props.work.json).explicit);
     if (typeof props.work.json === 'string') {
       return JSON.parse(props.work.json);
     }

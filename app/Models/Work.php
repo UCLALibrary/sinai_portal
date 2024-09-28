@@ -155,6 +155,7 @@ class Work extends Model
             return [
                 'id' => $reference->id,
                 'formatted_citation' => $reference->formatted_citation,
+                'range' => $this->getRangeForReference($reference->id)
             ];
         });
     }
@@ -170,6 +171,7 @@ class Work extends Model
             return [
                 'id' => $reference->id,
                 'formatted_citation' => $reference->formatted_citation,
+                'range' => $this->getRangeForReference($reference->id)
             ];
         });
     }
@@ -185,8 +187,23 @@ class Work extends Model
             return [
                 'id' => $reference->id,
                 'formatted_citation' => $reference->formatted_citation,
+                'range' => $this->getRangeForReference($reference->id)
             ];
         });
+    }
+
+    private function getRangeForReference($referenceId): ?string
+    {
+        $data = $this->getJsonData();
+        $entries = $data['bib'] ?? [];
+
+        foreach ($entries as $entry) {
+            if (isset($entry['id'], $entry['range']) && $entry['id'] === $referenceId) {
+                return $entry['range'] ?? null;
+            }
+        }
+
+        return null;
     }
 
     /**
