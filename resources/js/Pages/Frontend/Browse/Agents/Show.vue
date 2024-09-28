@@ -66,7 +66,7 @@
           <h3>References</h3>
           <ul>
             <li v-for="citation in agent.citations" :key="citation.id">
-              {{ citation.formatted_citation }}
+              {{ citation.formatted_citation }}<span v-if="citation.range">, {{ citation.range }}.</span>
             </li>
           </ul>
         </template>

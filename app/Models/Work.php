@@ -192,20 +192,6 @@ class Work extends Model
         });
     }
 
-    private function getRangeForReference($referenceId): ?string
-    {
-        $data = $this->getJsonData();
-        $entries = $data['bib'] ?? [];
-
-        foreach ($entries as $entry) {
-            if (isset($entry['id'], $entry['range']) && $entry['id'] === $referenceId) {
-                return $entry['range'] ?? null;
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Get the indexable data array for the model.
      *

@@ -109,6 +109,21 @@ trait HasRelatedEntities
         return $ids;
     }
 
+    protected function getRangeForReference($referenceId): ?string
+    {
+        $data = $this->getJsonData();
+        $entries = $data['bib'] ?? [];
+
+        foreach ($entries as $entry) {
+            if (isset($entry['id'], $entry['range']) && $entry['id'] === $referenceId) {
+                return $entry['range'] ?? null;
+            }
+        }
+
+        return null;
+    }
+
+
     /**
      * Helper method for mapping collections to arrays.
      *

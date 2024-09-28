@@ -93,6 +93,7 @@ class Agent extends Model
             return [
                 'id' => $reference->id,
                 'formatted_citation' => $reference->formatted_citation,
+                'range' => $this->getRangeForReference($reference->id),
             ];
         });
     }
