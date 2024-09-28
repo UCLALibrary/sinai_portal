@@ -53,54 +53,57 @@
         </p>
       
         <template v-if="workJson.incipit && workJson.incipit.value != ''">
-          <h3>Incipit</h3>
+          <div class="separator"></div>
           <p v-if="workJson.incipit && workJson.incipit.value && workJson.incipit.value !== ''">
-            <span class="label">Incipit</span>
-            {{ workJson.incipit.value }}
+            <span class="label">Incipit</span>{{ workJson.incipit.value }}
           </p>
   
           <p v-if="workJson.incipit && workJson.incipit.translation.length > 0">
             <span class="label">Translation</span>
-            {{ workJson.incipit.translation.join('; ') }}
+            <span v-for="(translation, index) in workJson.incipit.translation" :key="index">
+              <span v-if="index > 0" class="block"></span>
+              <span v-if="index > 0" class="label"></span>{{ translation }}
+            </span>
           </p>
   
           <p v-if="workJson.incipit && workJson.incipit.source && workJson.incipit.source !== ''">
             <span class="label">Source</span>
-            <span class="text-sm">{{ workJson.incipit.source.join('; ') }}</span>
+            <span class="text-base">{{ workJson.incipit.source.join('; ') }}</span>
           </p>
         </template>
 
-         <template v-if="workJson.explicit && workJson.explicit.value != ''">
-           <h3>Explicit</h3>
-           <p v-if="workJson.explicit && workJson.explicit.value && workJson.explicit.value !== ''">
-            <span class="label">Explicit</span>
-            {{ workJson.explicit.value }}
+        <template v-if="workJson.explicit && workJson.explicit.value != ''">
+          <div class="separator"></div>
+          <p v-if="workJson.explicit && workJson.explicit.value && workJson.explicit.value !== ''">
+            <span class="label">Explicit</span>{{ workJson.explicit.value }}
           </p>
   
           <p v-if="workJson.explicit && workJson.explicit.translation.length > 0">
             <span class="label">Translation</span>
-            {{ workJson.explicit.translation.join('; ') }}
+            <span v-for="(translation, index) in workJson.explicit.translation" :key="index">
+              <span v-if="index > 0" class="block"></span>
+              <span v-if="index > 0" class="label"></span>{{ translation }}
+            </span>
           </p>
   
           <p v-if="workJson.explicit && workJson.explicit.source && workJson.explicit.source !== ''">
             <span class="label">Source</span>
-            <span class="text-sm">{{ workJson.explicit.source.join('; ') }}</span>
+            <span class="text-base">{{ workJson.explicit.source.join('; ') }}</span>
           </p>
          </template>
 
         <template v-if="workJson.alt_title && workJson.alt_title.length > 0">
           <h3>Title Variants</h3>
-          <p v-for="alt_title in workJson.alt_title" :key="alt_title">
-            {{ alt_title }}
-          </p>
+          <ul v-for="alt_title in workJson.alt_title" :key="alt_title">
+            <li>{{ alt_title }}</li>
+          </ul>
         </template>
 
         <template v-if="workJson.note && workJson.note.value !== ''">
           <h3>Notes</h3>
-          <p v-for="currentNote in workJson.note" :key="currentNote">
-            <div class="label">{{ currentNote.type.label }}</div>
-            <div>{{ currentNote.value }}</div>
-          </p>
+          <ul v-for="currentNote in workJson.note" :key="currentNote">
+            <li>{{ currentNote.value }}</li>
+          </ul>
         </template>
 
         <template v-if="work.editions && work.editions.length > 0">
@@ -193,6 +196,7 @@
   })
 
   const workJson = computed(() => {
+console.log(JSON.parse(props.work.json).explicit);
     if (typeof props.work.json === 'string') {
       return JSON.parse(props.work.json);
     }
@@ -232,6 +236,10 @@
     @apply mb-2 max-w-2xl xl:max-w-4xl
   }
 
+  .separator {
+    @apply border-b border-gray-300 my-8
+  }
+
   a {
     @apply text-black border-black border-b border-dotted hover:border-solid
   }
@@ -249,6 +257,6 @@
   }
 
   ul li {
-    @apply my-2
+    @apply my-2 list-disc ml-4 text-base xl:text-lg
   }
 </style>

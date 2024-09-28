@@ -10,23 +10,20 @@
         </p>
         
         <p v-if="agent.type && agent.type !== ''">
-          <span class="label">Type</span>
-          {{ agent.type }}
+          <span class="label">Type</span>{{ agent.type }}
         </p>
         
         <p v-if="agentJson.ark && agentJson.ark !== ''">
-          <span class="label">ARK</span>
-          {{ agentJson.ark }}
+          <span class="label">ARK</span>{{ agentJson.ark }}
         </p>
         
-        <p><span class="label">URI</span>
-          {{ $page.props.appUrl }}/agents/{{ agent.id }}
+        <p>
+          <span class="label">URI</span>{{ $page.props.appUrl }}/agents/{{ agent.id }}
         </p>
 
         <template v-if="agentJson.refno && agentJson.refno.length > 0">
           <p v-for="ref in agentJson.refno" :key="ref.id">
-            <span class="label">{{ ref.source }}</span>
-            {{ ref.idno }}
+            <span class="label">{{ ref.source }}</span>{{ ref.idno }}
           </p>
         </template>
 
@@ -53,17 +50,16 @@
 
         <template v-if="agentJson.alt_name && agentJson.alt_name.length > 0">
           <h3>Name Variants</h3>
-          <p>
-            {{ agentJson.alt_name.join(', ') }}
-          </p>
+          <ul v-for="alt_name in agentJson.alt_name" :key="alt_name">
+            <li>{{ alt_name }}</li>
+          </ul>
         </template>
 
         <template v-if="agentJson.note && agentJson.note.value !== ''">
           <h3>Notes</h3>
-          <p v-for="currentNote in agentJson.note" :key="currentNote">
-            <div class="label">{{ currentNote.type.label }}</div>
-            <div>{{ currentNote.value }}</div>
-          </p>
+          <ul v-for="currentNote in agentJson.note" :key="currentNote">
+            <li>{{ currentNote.value }}</li>
+          </ul>
         </template>
 
         <template v-if="agent.citations && agent.citations.length > 0">
@@ -194,6 +190,6 @@
   }
 
   ul li {
-    @apply my-2
+    @apply my-2 list-disc ml-4 xl:text-lg
   }
 </style>
