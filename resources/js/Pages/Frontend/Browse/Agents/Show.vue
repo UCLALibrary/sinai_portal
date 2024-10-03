@@ -45,7 +45,7 @@
 
         <p v-if="agentJson.gender && agentJson.gender !== ''">
           <span class="label">Gender</span>
-          {{ agentJson.gender }}
+          {{ agentJson.gender.label }}
         </p>
 
         <template v-if="agentJson.alt_name && agentJson.alt_name.length > 0">
@@ -58,7 +58,7 @@
         <template v-if="agentJson.note && agentJson.note.value !== ''">
           <h3>Notes</h3>
           <ul v-for="currentNote in agentJson.note" :key="currentNote">
-            <li>{{ currentNote.value }}</li>
+            <li>{{ currentNote }}</li>
           </ul>
         </template>
 
@@ -88,7 +88,7 @@
               <Link :href="route('frontend.works.show', relatedWork.id)">
                 {{ relatedWork.pref_title }}
               </Link>
-              <span class="ml-1" v-if="relatedWork.rel">({{ relatedWork.rel }})</span>
+              <span class="ml-1" v-if="relatedWork.rel">({{ relatedWork.rel.label }})</span>
             </li>
           </ul>
         </template>
@@ -100,7 +100,7 @@
               <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
                 {{ relatedAgent.pref_name }}
               </Link>
-              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel }})</span>
+              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.label }})</span>
             </li>
           </ul>
         </template>

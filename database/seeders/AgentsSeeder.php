@@ -37,7 +37,7 @@ class AgentsSeeder extends Seeder
             }
 
             $ark = $data['ark'] ?? null;
-            $type = $data['type'] ?? null;
+            $type = $data['type']['label'] ?? null;
             $pref_name = $data['pref_name'] ?? null;
 
             if (!$ark || !$type || !$pref_name) {

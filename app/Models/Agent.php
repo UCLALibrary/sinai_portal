@@ -128,7 +128,7 @@ class Agent extends Model
         $array['ark'] = $data['ark'] ?? null;
 
         // gender
-        $array['gender'] = $data['gender'] ?? null;
+        $array['gender'] = isset($data['gender']['label']) ? $data['gender']['label'] : null;
 
         // birth
         $birth = $data['birth'] ?? null;

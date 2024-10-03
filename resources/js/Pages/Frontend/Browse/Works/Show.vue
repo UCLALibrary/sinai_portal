@@ -49,7 +49,7 @@
 
         <p v-if="workJson.genre && workJson.genre.length > 0">
           <span class="label">Genre</span>
-          {{ workJson.genre.join('; ') }}
+          {{ workJson.genre.map(genre => genre.label).join('; ') }}
         </p>
       
         <template v-if="workJson.incipit && workJson.incipit.value != ''">
@@ -102,7 +102,7 @@
         <template v-if="workJson.note && workJson.note.value !== ''">
           <h3>Notes</h3>
           <ul v-for="currentNote in workJson.note" :key="currentNote">
-            <li>{{ currentNote.value }}</li>
+            <li>{{ currentNote }}</li>
           </ul>
         </template>
 
@@ -150,7 +150,7 @@
               <Link :href="route('frontend.works.show', relatedWork.id)">
                 {{ relatedWork.pref_title }}
               </Link>
-              <span class="ml-1" v-if="relatedWork.rel">({{ relatedWork.rel }})</span>
+              <span class="ml-1" v-if="relatedWork.rel">({{ relatedWork.rel.map(rel => rel.label).join('; ') }})</span>
             </li>
           </ul>
         </template>
@@ -162,7 +162,7 @@
               <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
                 {{ relatedAgent.pref_name }}
               </Link>
-              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel }})</span>
+              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.map(rel => rel.label).join('; ') }})</span>
             </li>
           </ul>
         </template>

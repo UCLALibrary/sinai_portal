@@ -44,7 +44,7 @@ class Work extends Model
             'creator',
             Agent::class,
             function ($item) {
-                return isset($item['role']) && $item['role'] === 'author';
+                return isset($item['role']['id']) && $item['role']['id'] === 'author';
             },
             function ($agent, $item) {
                 return [
@@ -220,9 +220,11 @@ class Work extends Model
             $array['explicit_value'] = isset($data['explicit']['value']) ? $data['explicit']['value'] : null;
             $array['explicit_translation'] = isset($data['explicit']['translation']) ? implode('; ', $data['explicit']['translation']) : null;
         }
-
         // genre
-        $array['genre'] = $data['genre'] ?? null;
+        $array['genre'] = [];
+        foreach ($data['genre'] as $genre) {
+            $array['genre'][] = isset($genre['label']) ? $genre['label'] : null;
+        }
 
         // original language
         $array['orig_lang_label'] = isset($data['orig_lang']['label']) ? $data['orig_lang']['label'] : null;
