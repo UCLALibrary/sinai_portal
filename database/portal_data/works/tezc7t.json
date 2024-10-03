@@ -13,16 +13,29 @@
     ],
     "desc": "A letter to Gregory Nazianzus, in which he describes the importance of humility in ascetic practice",
     "genre": [
-        "Theological works",
-        "Historical works"],
+        {
+            "id": "theological-works",
+            "label": "Theological works"
+            },
+        {
+            "id": "historical-works",
+            "label": "Historical works"
+        }
+    ],
     "creator": [
         {
             "id": "ark:/21198/s1101c",
-            "role": "author"
+            "role": {
+                "id": "author",
+                "label": "Author"
+            }
         },
         {
             "id": "ark:/21198/tev887",
-            "role": "translator"
+            "role": {
+                 "id": "translator",
+                 "label": "Translator"
+              }
         }
     ],
     "creation": {
@@ -91,13 +104,7 @@
             "alt_shelf": null,
             "url": "https://archive.org/details/patrologiae_cursus_completus_gr_vol_032/page/n116",
             "note": [
-                {
-                    "type": {
-                        "id": "bib",
-                        "label": "Bibliography"
-                    },
-                    "value": "Test record bibl; Akhrass and Syryany"
-                }
+                "Test record bibl; Akhrass and Syryany"
             ]
         },
         {
@@ -110,13 +117,7 @@
             "alt_shelf": null,
             "url": null,
             "note": [
-                {
-                    "type": {
-                        "id": "bib",
-                        "label": "Bibliography"
-                    },
-                    "value": "Test record bibl; Desreumaux 2010"
-                }
+                "Test record bibl; Desreumaux 2010"
             ]
         },
         {
@@ -129,28 +130,19 @@
             "alt_shelf": null,
             "url": null,
             "note": [
-                {
-                    "type": {
-                        "id": "bib",
-                        "label": "Bibliography"
-                    },
-                    "value": "Test record bibl; Aland"
-                }
+                "Test record bibl; Aland"
             ]
         }],
     "note": [
-        {
-            "type": {
-                "id": "general",
-                "label": "General"
-            },
-            "value": "This is perhaps the most well-known of Basil's letters"
-        }
+        "This is perhaps the most well-known of Basil's letters"
     ],
     "rel_work": [
         {
             "id": "ark:/21198/s1v01t",
-            "rel": "PartOf",
+            "rel": [{
+                "id": "part-of",
+                "label": "Part Of"
+                }],
             "source": [
                 "Test record, constructed info for development"
             ]
@@ -159,7 +151,15 @@
     "rel_agent": [
         {
             "id": "ark:/21198/s12s3c",
-            "rel": "Addressee",
+            "rel": [{
+                "id": "addressee",
+                "label": "Addressee"
+                },
+                {
+                    "id": "commemorates",
+                    "label": "Commemorates"
+                }
+                ],
             "source": [
                 "Test record, constructed info for development"
             ]
@@ -168,7 +168,10 @@
     "rel_place": [
         {
             "id": "ark:/21198/tev123",
-            "rel": "CreationPlace",
+            "rel": [{
+                "id": "composition",
+                "label": "Place of Composition"
+                }],
             "source": [
                 "This is a faked place record for Nisibis"
             ]

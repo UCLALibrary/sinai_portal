@@ -1,6 +1,9 @@
 {
     "ark": "ark:/21198/tev887",
-    "type": "person",
+    "type": {
+        "id": "person",
+        "label": "Person"
+    },
     "pref_name": "Ephrem the Syrian",
     "alt_name": [
         "Ephrem",
@@ -10,7 +13,10 @@
         "مار افرام الملفان السرياني"
     ],
     "desc": "Deacon, poet, and theologian. Many poetic works are ascribed to him, not all of them genuine.",
-    "gender": "Man",
+    "gender": {
+        "id": "man",
+        "label": "Man"
+        },
     "birth": {
         "value": "early 4th cent. CE",
         "iso": {
@@ -76,14 +82,8 @@
             "alt_shelf": null,
             "url": "https://gedsh.bethmardutho.org/entry/Ephrem",
             "note": [
-                {
-                    "type": {
-                        "id": "bib",
-                        "label": "Bibliography"
-                    },
-                    "value": "Test record bibl; Desreumaux 1997"
-                }
-            ]
+                "Test record bibl; Desreumaux 1997"
+                ]
         },
         {
             "id": "6ced4f13-e0b7-43d6-aa6d-260c00656341",
@@ -95,43 +95,31 @@
             "alt_shelf": null,
             "url": null,
             "note": [
-                {
-                    "type": {
-                        "id": "bib",
-                        "label": "Bibliography"
-                    },
-                    "value": "Test record bibl; Brock 1995"
-                }
+                "Test record bibl; Brock 1995"
             ]
         }
     ],
     "note": [
-        {
-            "type": {
-                "id": "general",
-                "label": "General"
-            },
-            "value": "A whole separate tradition of literature in Greek is attributed to Ephrem, often designated as Ephraem Greacus, most of which is incorrectly attributed"
-        },
-        {
-            "type": {
-                "id": "general",
-                "label": "General"
-            },
-            "value": "Ephrem’s genuine writings fall into four main categories, prose, artistic prose, stanzaic poetry (madrāše), and 7+7 syllable couplets (memre)"
-        }
+        "A whole separate tradition of literature in Greek is attributed to Ephrem, often designated as Ephraem Greacus, most of which is incorrectly attributed",
+        "Ephrem’s genuine writings fall into four main categories, prose, artistic prose, stanzaic poetry (madrāše), and 7+7 syllable couplets (memre)"
     ],
     "rel_agent": [
         {
             "id": "ark:/21198/s1jp42",
-            "rel": "memberOf",
+            "rel": {
+                "id": "member-of",
+                "label": "Member Of"
+            },
             "source": [
                 "This is for development purposes only"
             ]
         },
         {
             "id": "ark:/21198/s1xw2s",
-            "rel": "familyMember",
+            "rel": {
+                "id": "family-member",
+                "label": "Family Member"
+            },
             "source": [
                 "This is not true but used for development purposes"
             ]
@@ -140,7 +128,10 @@
     "rel_place": [
         {
             "id": "ark:/21198/tev123",
-            "rel": "deathPlace",
+            "rel": {
+                "id": "death",
+                "label": "Place of Death"
+            },
             "source": [
                 "This is a faked place record for Nisibis"
             ]
