@@ -83,6 +83,29 @@ const logout = () => {
                                     Bibliography
                                 </NavLink>
                             </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <Dropdown>
+                                    <template #trigger>
+                                        <button type="button" class="inline-flex items-center pt-1 border-b-2 border-transparent text-sm font-medium leading-5 !text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                            Vocabulary
+                                            <svg class="ms-2 -me-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </button>
+                                    </template>
+                                    <template #content>
+                                        <DropdownLink :href="route('languages.index')" :active="route().current('languages.*')">
+                                            Languages
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('references.index')" :active="route().current('references.*')">
+                                            References
+                                        </DropdownLink>
+                                        <DropdownLink :href="route('features.index')" :active="route().current('features.*')">
+                                          Features
+                                        </DropdownLink>
+                                    </template>
+                                </Dropdown>
+                            </div>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -208,6 +231,21 @@ const logout = () => {
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('bibliography.index')" :active="route().current('bibliography.*')">
                             Bibliography
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('languages.index')" :active="route().current('languages.*')">
+                            Languages
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('references.index')" :active="route().current('references.*')">
+                            References
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('features.index')" :active="route().current('features.*')">
+                            Features
                         </ResponsiveNavLink>
                     </div>
 

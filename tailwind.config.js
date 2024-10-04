@@ -10,6 +10,7 @@ export default {
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
         './resources/js/**/*.vue',
+        './resources/js/jsonforms/styles/*.js',
     ],
 
     theme: {
@@ -20,7 +21,11 @@ export default {
             },
             colors: {
                 'sinai-beige': 'rgb(247, 242, 234)',
+                'sinai-dark-beige': 'rgb(231, 227, 221)',
                 'sinai-red': 'rgb(171, 47, 10)'
+            },
+            maxWidth: {
+                '8xl': '96rem',
             },
         },
     },
@@ -38,5 +43,8 @@ export default {
         '!p-4',
         '!px-1',
         '!px-2',
+        'max-w-4xl',
+        'max-w-5xl',
+        'max-w-6xl',
     ],
 };

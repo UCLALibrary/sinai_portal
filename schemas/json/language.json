@@ -1,0 +1,60 @@
+{
+  "title": "Language",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "iso": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "glottolog": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "writing_systems": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "other_names": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "when_in_use": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "regions": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "label"
+  ],
+  "unevaluatedProperties": false
+}

@@ -18,6 +18,7 @@ class AgentsController extends Controller
             'resourceName' => 'agents',
             'resources' => Agent::paginate(20),
             'columns' => [
+                'id' => 'Id',
                 'type' => 'Type',
                 'pref_name' => 'Preferred Name'
             ],

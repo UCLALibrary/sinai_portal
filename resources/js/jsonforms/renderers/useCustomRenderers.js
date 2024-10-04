@@ -3,6 +3,7 @@ import {
   uiTypeIs,
   scopeEndIs,
   isStringControl,
+  isIntegerControl,
   isMultiLineControl,
   isBooleanControl,
   isEnumControl,
@@ -15,6 +16,7 @@ import {
 
 import myHorizontalRuleRenderer from '@/jsonforms/renderers/layouts/MyHorizontalRuleRenderer.vue'
 import myStringControlRenderer from '@/jsonforms/renderers/controls/MyStringControlRenderer.vue'
+import myIntegerControlRenderer from '@/jsonforms/renderers/controls/MyIntegerControlRenderer.vue'
 import myMultiStringControlRenderer from '@/jsonforms/renderers/controls/MyMultiStringControlRenderer.vue'
 import myBooleanControlRenderer from '@/jsonforms/renderers/controls/MyBooleanControlRenderer.vue'
 import myEnumControlRenderer from '@/jsonforms/renderers/controls/MyEnumControlRenderer.vue'
@@ -26,12 +28,16 @@ import myPlaceSelectionRenderer from '@/jsonforms/renderers/selectors/MyPlaceSel
 import myPartSelectionRenderer from '@/jsonforms/renderers/selectors/MyPartSelectionRenderer.vue'
 import myManuscriptSelectionRenderer from '@/jsonforms/renderers/selectors/MyManuscriptSelectionRenderer.vue'
 import myBibliographySelectionRenderer from '@/jsonforms/renderers/selectors/MyBibliographySelectionRenderer.vue'
+import myFormContextSelectionRenderer from '@/jsonforms/renderers/selectors/MyFormContextSelectionRenderer.vue'
 
 // layout: horizontal rule
 export const myHorizontalRuleRendererEntry = buildRendererRegistryEntry(myHorizontalRuleRenderer, uiTypeIs('HorizontalRule'))
 
 // control: text field
 export const myStringControlRendererEntry = buildRendererRegistryEntry(myStringControlRenderer, isStringControl)
+
+// control: number field
+export const myIntegerControlRendererEntry = buildRendererRegistryEntry(myIntegerControlRenderer, isIntegerControl)
 
 // control: text area
 export const myMultiStringControlRendererEntry = buildRendererRegistryEntry(myMultiStringControlRenderer, isMultiLineControl, 5)
@@ -66,9 +72,13 @@ export const myManuscriptSelectionRendererEntry = buildRendererRegistryEntry(myM
 // selector: bibliography
 export const myBibliographySelectionRendererEntry = buildRendererRegistryEntry(myBibliographySelectionRenderer, scopeEndIs('bib'), 5)
 
+// selector: bibliography
+export const myFormContextSelectionRendererEntry = buildRendererRegistryEntry(myFormContextSelectionRenderer, scopeEndIs('form_contexts'), 5)
+
 export const customRenderers = [
   myHorizontalRuleRendererEntry,
   myStringControlRendererEntry,
+  myIntegerControlRendererEntry,
   myMultiStringControlRendererEntry,
   myBooleanControlRendererEntry,
   myEnumControlRendererEntry,
@@ -80,4 +90,5 @@ export const customRenderers = [
   myPartSelectionRendererEntry,
   myManuscriptSelectionRendererEntry,
   myBibliographySelectionRendererEntry,
+  myFormContextSelectionRendererEntry
 ]

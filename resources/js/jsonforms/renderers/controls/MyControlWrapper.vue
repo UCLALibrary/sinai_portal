@@ -10,18 +10,18 @@
         :applied-options="appliedOptions"
         :styles="styles"
       />
+      <div class="flex flex-col flex-1">
+        <div :class="styles.control.wrapper">
+          <slot></slot>
+        </div>
+        <FieldErrors
+          :errors="errors"
+          :styles="styles.control.error"
+        />
+      </div>
 
       <slot name="actions"></slot>
     </div>
-
-    <div :class="styles.control.wrapper">
-      <slot></slot>
-    </div>
-
-    <FieldErrors
-      :errors="errors"
-      :styles="styles.control.error"
-    />
   </div>
 </template>
 
@@ -53,3 +53,11 @@
     },
   })
 </script>
+
+<style>
+  .array-list-item {
+    label { 
+      @apply min-w-40
+    }
+  }
+</style>
