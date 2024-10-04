@@ -22,7 +22,10 @@ export default {
             colors: {
                 'sinai-beige': 'rgb(247, 242, 234)',
                 'sinai-dark-beige': 'rgb(231, 227, 221)',
-                'sinai-red': 'rgb(171, 47, 10)'
+                'sinai-red': 'rgb(171, 47, 10)',
+                'sinai-light-blue': 'rgba(149, 204, 209, 0.24)',
+                'sinai-dark-blue': 'rgb(31, 105, 113)',
+                'sinai-gray': 'rgba(227, 227, 227, 0.37)'
             },
             maxWidth: {
                 '8xl': '96rem',

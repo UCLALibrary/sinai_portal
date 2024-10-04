@@ -141,7 +141,7 @@
 
       </section>
 
-      <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-beige border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+      <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
         
         <template v-if="work.related_works && work.related_works.length > 0">
           <h3>Related Works</h3>
@@ -244,7 +244,7 @@
   }
 
   a.button {
-    @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-beige text-sm
+    @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-light-blue text-sm
   }
 
   p {

@@ -27,7 +27,7 @@
                     </template>
                     </nav>
                 </div>
-                <div class="flex flex-col lg:flex-row items-center gap-y-6 pb-10 justify-between">
+                <div class="flex flex-col lg:flex-row items-center gap-y-6 pb-6 justify-between">
                     <Link
                         :href="route('home')"
                         class="logo flex w-full">
@@ -113,7 +113,7 @@ defineProps({
 
     nav a {
         &.active {
-            @apply border-black
+            @apply border-sinai-red
         }
         @apply font-dosis uppercase font-medium text-base md:text-lg tracking-wide underline-offset-4 border-b-2 border-b-transparent hover:border-black
 
