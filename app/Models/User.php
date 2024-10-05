@@ -55,6 +55,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+		'role_names'
     ];
 
     /**
@@ -69,6 +70,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+	public function getRoleNamesAttribute(): string
+	{
+		return implode(', ', $this->roles->pluck('name')->toArray());
+	}
 }
 
 /*

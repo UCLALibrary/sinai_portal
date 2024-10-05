@@ -22,18 +22,19 @@ class UsersController extends Controller
     public function index()
     {
 
-        $this->authorize('viewAny', User::class);
+		$this->authorize('viewAny', User::class);
 
-        return Inertia::render('Resources/Index', [
-            'title' => 'Users',
-            'resourceName' => 'users',
-            'resources' => User::paginate(20),
-            'columns' => [
-                'name' => 'Name',
-                'email' => 'E-mail'
-            ],
-            'createEndpoint' => route('users.create'),
-        ]);
+		return Inertia::render('Resources/Index', [
+			'title' => 'Users',
+			'resourceName' => 'users',
+			'resources' => User::paginate(20),
+			'columns' => [
+				'name' => 'Name',
+				'email' => 'E-mail',
+				'role_names' => 'Role'
+			],
+			'createEndpoint' => route('users.create'),
+		]);
     }
 
     /**
