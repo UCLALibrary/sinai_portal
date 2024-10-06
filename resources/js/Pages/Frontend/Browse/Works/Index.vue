@@ -56,7 +56,8 @@
                   :show-more-limit="maxFacetValuesToShow"
                   attribute="genre"
                   :show-more="true"
-                  @change="onFilter('genre', $event.target.value)">
+                  @change="onFilter('genre', $event.target.value)"
+                  class="py-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
@@ -78,7 +79,8 @@
                   :show-more-limit="maxFacetValuesToShow"
                   attribute="creator"
                   :show-more="true"
-                  @change="onFilter('creator', $event.target.value)">
+                  @change="onFilter('creator', $event.target.value)"
+                  class="py-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
@@ -100,7 +102,8 @@
                   :show-more-limit="maxFacetValuesToShow"
                   attribute="orig_lang_label"
                   :show-more="true"
-                  @change="onFilter('type', $event.target.value)">
+                  @change="onFilter('type', $event.target.value)"
+                  class="py-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
@@ -203,7 +206,7 @@
    */
 
   .facet-sidebar {
-    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 p-4 lg:w-1/3 2xl:w-1/4 bg-sinai-dark-beige
+    @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 p-4 lg:w-1/3 2xl:w-1/4 bg-sinai-gray
   }
   .main-container {
     @apply w-full
@@ -274,10 +277,18 @@
     @apply border-t border-black border-dotted pt-2
   }
 
+  .facet-sidebar .accordion-item .icon {
+    @apply text-sinai-red
+  }
+
+  .facet-sidebar .accordion-item .title {
+    @apply uppercase
+  }
+
   .ais-RefinementList {}
 
   .clear-filter {
-    @apply inline-flex items-center gap-x-1 rounded-full bg-white px-2 py-1 text-sm font-sans text-black shadow-lg hover:bg-sinai-beige
+    @apply inline-flex items-center gap-x-1 rounded-full bg-white px-2 py-1 text-sm font-sans text-black shadow-lg hover:bg-sinai-light-blue
   }
   .clear-filter button {
     @apply relative -mr-1 h-5 w-5
