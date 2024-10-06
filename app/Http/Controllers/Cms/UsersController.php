@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
@@ -90,6 +91,7 @@ class UsersController extends Controller
             'data' => [
                 'name' => $user->name,
                 'email' => $user->email,
+				'role' => $user->roles()->first()->id ?? null
             ],
             'saveEndpoint' => route('users.update', $user->id),
             'redirectUrl' => route('users.index'),
@@ -112,6 +114,11 @@ class UsersController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
         ]);
+
+		$role = Role::findById($data['role'], 'web');
+		if($role) {
+			$user->syncRoles($role);
+		}
 
         return $response
             ? response()->json(['message' => 'User updated successfully'])
@@ -159,6 +166,7 @@ class UsersController extends Controller
             $metadata['name'] = isset($jsonData['name']) ? $jsonData['name'] : null;
             $metadata['email'] = isset($jsonData['email']) ? $jsonData['email'] : null;
             $metadata['password'] = isset($jsonData['password']) ? $jsonData['password'] : null;
+			$metadata['role'] = isset($jsonData['role']) ? $jsonData['role'] : null;
         }
         return $metadata;
     }

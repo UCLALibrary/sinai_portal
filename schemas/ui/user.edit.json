@@ -11,6 +11,10 @@
         {
           "type": "Control",
           "scope": "#/properties/email"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/role"
         }
       ]
     }

@@ -39,7 +39,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        return $user->can('edit user');
+        return $user->can('update user');
     }
 
     /**
