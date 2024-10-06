@@ -15,9 +15,9 @@ class RolesPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-		$frontendUser = Role::findOrCreate('frontend_user');
-		$editor = Role::findOrCreate('editor');
-		$admin = Role::findOrCreate('admin');
+		$frontendUser = Role::findOrCreate('Frontend user');
+		$editor = Role::findOrCreate('Editor');
+		$admin = Role::findOrCreate('Admin');
 
 		$createUser = Permission::findOrCreate('create user');
 		$readUser = Permission::findOrCreate('read user');
