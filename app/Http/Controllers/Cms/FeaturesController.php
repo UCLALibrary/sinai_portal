@@ -18,7 +18,7 @@ class FeaturesController extends Controller
             'resourceName' => 'features',
             'resources' => Feature::paginate(20),
             'columns' => [
-                'term' => 'Term',
+                'label' => 'Label',
                 'corresp_note' => 'Note',
                 'summary' => 'Summary',
                 'scope' => 'Scope'

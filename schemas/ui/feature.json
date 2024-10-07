@@ -6,7 +6,14 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/term"
+          "scope": "#/properties/id",
+          "options": {
+            "readonly": true
+          }
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/label"
         },
         {
           "type": "Control",

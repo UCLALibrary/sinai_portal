@@ -22,7 +22,7 @@ class FeaturesController extends Controller
 
             // create the resource
             $feature = Feature::create([
-                'term' => $metadata['term'],
+                'label' => $metadata['label'],
                 'corresp_note' => $metadata['corresp_note'],
                 'summary' => $metadata['summary'],
                 'scope' => $metadata['scope']
@@ -48,7 +48,7 @@ class FeaturesController extends Controller
 
             // update the resource
             $feature->update([
-                'term' => $metadata['term'],
+                'label' => $metadata['label'],
                 'corresp_note' => $metadata['corresp_note'],
                 'summary' => $metadata['summary'],
                 'scope' => $metadata['scope']
@@ -64,7 +64,7 @@ class FeaturesController extends Controller
     {
         $metadata = [];
         if ($jsonData) {
-            $metadata['term'] = $jsonData['term'] ?? null;
+            $metadata['label'] = $jsonData['label'] ?? null;
             $metadata['corresp_note'] = $jsonData['corresp_note'] ?? null;
             $metadata['summary'] = $jsonData['summary'] ?? null;
             $metadata['scope'] = $jsonData['scope'] ?? null;
