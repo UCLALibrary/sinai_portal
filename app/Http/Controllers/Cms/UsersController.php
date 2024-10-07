@@ -6,28 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Role;
 
 class UsersController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Inertia::render('Resources/Index', [
-            'title' => 'Users',
-            'resourceName' => 'users',
-            'resources' => User::paginate(20),
-            'columns' => [
-                'name' => 'Name',
-                'email' => 'E-mail'
-            ],
-            'createEndpoint' => route('users.create'),
-        ]);
+
+		$this->authorize('viewAny', User::class);
+
+		return Inertia::render('Resources/Index', [
+			'title' => 'Users',
+			'resourceName' => 'users',
+			'resources' => User::paginate(20),
+			'columns' => [
+				'name' => 'Name',
+				'email' => 'E-mail',
+				'role_names' => 'Role'
+			],
+			'createEndpoint' => route('users.create'),
+		]);
     }
 
     /**
@@ -35,6 +43,9 @@ class UsersController extends Controller
      */
     public function create()
     {
+
+        $this->authorize('create', User::class);
+
         return Inertia::render('Resources/Create', [
             'title' => 'Users > Add User',
             'schema' => json_decode(User::$createSchema),
@@ -49,6 +60,8 @@ class UsersController extends Controller
      */
     public function store(UserStoreRequest $request): JsonResponse
     {
+        $this->authorize('create', User::class);
+
         // extract and validate metadata from the json field
         $data = $this->_validatedJsonMetadata($request);
 
@@ -69,6 +82,8 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
+
         return Inertia::render('Resources/Edit', [
             'title' => 'Users > Edit User',
             'schema' => json_decode(User::$editSchema),
@@ -76,6 +91,7 @@ class UsersController extends Controller
             'data' => [
                 'name' => $user->name,
                 'email' => $user->email,
+				'role' => $user->roles()->first()->id ?? null
             ],
             'saveEndpoint' => route('users.update', $user->id),
             'redirectUrl' => route('users.index'),
@@ -87,6 +103,9 @@ class UsersController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user): JsonResponse
     {
+
+        $this->authorize('update', $user);
+
         // extract and validate metadata from the json field
         $data = $this->_validatedJsonMetadata($request, $user);
 
@@ -95,6 +114,11 @@ class UsersController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
         ]);
+
+		$role = Role::findById($data['role'], 'web');
+		if($role) {
+			$user->syncRoles($role);
+		}
 
         return $response
             ? response()->json(['message' => 'User updated successfully'])
@@ -106,6 +130,9 @@ class UsersController extends Controller
      */
     public function destroy(User $user): JsonResponse
     {
+
+        $this->authorize('delete', User::class);
+
         $response = $user->delete();
 
         return $response
@@ -118,7 +145,7 @@ class UsersController extends Controller
      *
      * @return array
      */
-    private function _validatedJsonMetadata($request, $user)
+    private function _validatedJsonMetadata($request, $user = null)
     {
         // extract metadata from json field
         $metadata = $this->_extractMetadataFromJsonData($request->json);
@@ -139,6 +166,7 @@ class UsersController extends Controller
             $metadata['name'] = isset($jsonData['name']) ? $jsonData['name'] : null;
             $metadata['email'] = isset($jsonData['email']) ? $jsonData['email'] : null;
             $metadata['password'] = isset($jsonData['password']) ? $jsonData['password'] : null;
+			$metadata['role'] = isset($jsonData['role']) ? $jsonData['role'] : null;
         }
         return $metadata;
     }

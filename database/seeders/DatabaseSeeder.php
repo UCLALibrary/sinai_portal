@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ReferencesSeeder::class);
         $this->call(FormContextsSeeder::class);
         $this->call(FeaturesSeeder::class);
+		$this->call(RolesPermissionsSeeder::class);
     }
 }

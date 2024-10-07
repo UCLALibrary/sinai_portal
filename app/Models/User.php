@@ -5,21 +5,25 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Traits\JsonSchemas;
+use App\Traits\RolesPermissionsVue;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
+    use HasRoles;
     use Notifiable;
     use TwoFactorAuthenticatable;
     use JsonSchemas;
+    use RolesPermissionsVue;
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +55,7 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+		'role_names'
     ];
 
     /**
@@ -65,6 +70,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+	public function getRoleNamesAttribute(): string
+	{
+		return implode(', ', $this->roles->pluck('name')->toArray());
+	}
 }
 
 /*

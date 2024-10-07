@@ -38,6 +38,10 @@ class UserUpdateRequest extends FormRequest
             'password' => [
                 'nullable'
             ],
+			'role' => [
+				'required',
+				'integer'
+			]
         ];
     }
 }

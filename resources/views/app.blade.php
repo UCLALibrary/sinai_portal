@@ -19,5 +19,8 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <script type="text/javascript">
+          window.rolesPermissions = {!! auth()->check() ? auth()->user()->getRolesPermissionsAsJson() : 0 !!}
+        </script>
     </body>
 </html>

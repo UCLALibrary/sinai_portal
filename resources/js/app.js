@@ -26,6 +26,8 @@ import '../css/overrides/element-plus.css'
 // element-plus icons
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
+import RolesPermissionsVue from "./directives/rolesPermissionsVue.js";
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
 
 createInertiaApp({
@@ -48,6 +50,7 @@ createInertiaApp({
             .use(VueObserveVisibility)
             .use(vuetify)
             .use(ElementPlus)
+            .use(RolesPermissionsVue)
             .mount(el)
     },
     progress: {

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ManuscriptsController;
 use App\Http\Controllers\Api\PartsController;
 use App\Http\Controllers\Api\PlacesController;
 use App\Http\Controllers\Api\ReferencesController;
+use App\Http\Controllers\Api\RolesController;
 use App\Http\Controllers\Api\WorksController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +62,10 @@ Route::apiResource('features', FeaturesController::class, [
 
 Route::apiResource('form-contexts', FormContextsController::class, [
     'as' => 'api'
+]);
+
+Route::apiResource('roles', RolesController::class, [
+	'as' => 'api'
 ]);
 
 // forms
