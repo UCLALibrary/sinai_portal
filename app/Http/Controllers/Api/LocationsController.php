@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class LocationsController extends Controller
 {
+
+	/**
+	 * Display a listing of the resource.
+	 */
+	public function index()
+	{
+		return LocationResource::collection(Location::all());
+	}
+
 	/**
 	 * Store a newly created resource in storage.
 	 */

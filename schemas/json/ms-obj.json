@@ -834,31 +834,6 @@
             },
             "unevaluatedItems": false
         },
-        "location": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "repository": {
-                        "type": "integer"
-                    },
-                    "collection": {
-                        "type": "string",
-                        "enum": [
-                            "Old Collection",
-                            "New Finds",
-                            "Reconstructions"
-                        ]
-                    }
-                },
-                "required": [
-                    "repository",
-                    "collection"
-                ],
-                "unevaluatedProperties": false
-            },
-            "unevaluatedItems": false
-        },
         "assoc_date": {
             "type": [
                 "array",
