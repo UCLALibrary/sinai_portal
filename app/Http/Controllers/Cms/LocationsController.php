@@ -49,7 +49,7 @@ class LocationsController extends Controller
 	public function edit(Location $location)
 	{
 		return Inertia::render('Resources/Edit', [
-			'title' => 'Languages > Edit Language',
+			'title' => 'Locations > Edit Location',
 			'schema' => json_decode(Location::$schema),
 			'uischema' => json_decode(Location::$uiSchema),
 			'data' => json_decode($location),
