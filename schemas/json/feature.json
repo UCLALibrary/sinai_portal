@@ -4,9 +4,9 @@
   "type": "object",
   "properties": {
     "id": {
-      "type": "integer"
+      "type": "string"
     },
-    "term": {
+    "label": {
       "type": "string",
       "minLength": 1
     },
@@ -33,7 +33,7 @@
     }
   },
   "required": [
-    "term"
+    "label"
   ],
   "unevaluatedProperties": false
 }
