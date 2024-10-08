@@ -103,6 +103,9 @@ const logout = () => {
                                         <DropdownLink :href="route('features.index')" :active="route().current('features.*')">
                                           Features
                                         </DropdownLink>
+                                        <DropdownLink :href="route('locations.index')" :active="route().current('locations.*')">
+                                          Locations
+                                        </DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>
@@ -247,6 +250,11 @@ const logout = () => {
                         <ResponsiveNavLink :href="route('features.index')" :active="route().current('features.*')">
                             Features
                         </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                      <ResponsiveNavLink :href="route('locations.index')" :active="route().current('locations.*')">
+                        Locations
+                      </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->

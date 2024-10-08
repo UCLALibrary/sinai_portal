@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\FeaturesController;
 use App\Http\Controllers\Api\FormContextsController;
 use App\Http\Controllers\Api\FormsController;
 use App\Http\Controllers\Api\LanguagesController;
+use App\Http\Controllers\Api\LocationsController;
 use App\Http\Controllers\Api\ManuscriptsController;
 use App\Http\Controllers\Api\PartsController;
 use App\Http\Controllers\Api\PlacesController;
@@ -58,6 +59,10 @@ Route::apiResource('references', ReferencesController::class, [
 
 Route::apiResource('features', FeaturesController::class, [
     'as' => 'api'
+]);
+
+Route::apiResource('locations', LocationsController::class, [
+	'as' => 'api'
 ]);
 
 Route::apiResource('form-contexts', FormContextsController::class, [

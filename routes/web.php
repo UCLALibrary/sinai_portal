@@ -5,6 +5,7 @@ use App\Http\Controllers\Cms\BibliographyController;
 use App\Http\Controllers\Cms\ContentsController;
 use App\Http\Controllers\Cms\FeaturesController;
 use App\Http\Controllers\Cms\LanguagesController;
+use App\Http\Controllers\Cms\LocationsController;
 use App\Http\Controllers\Cms\ManuscriptsController;
 use App\Http\Controllers\Cms\PartsController;
 use App\Http\Controllers\Cms\PlacesController;
@@ -72,4 +73,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
 
     // features
     Route::resource('features', FeaturesController::class);
+
+	// features
+	Route::resource('locations', LocationsController::class);
 });

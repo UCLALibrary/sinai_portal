@@ -1,0 +1,58 @@
+{
+  "title": "Location",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "collection": {
+      "type": "string"
+    },
+    "repository": {
+      "type": "string"
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "country": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "address": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "contact_info": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "coordinates": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "collection",
+    "repository"
+  ],
+  "unevaluatedProperties": false
+}
