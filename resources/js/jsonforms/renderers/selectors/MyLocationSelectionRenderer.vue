@@ -53,7 +53,6 @@
       const fetchRecords = async () => {
         try {
           const response = await axios.get(route('api.locations.index'))
-          console.log(response)
           records.value = response.data.data.map((record) => ({
             label: record['repository'] + ' ' + record['collection'],
             value: record['id'],
