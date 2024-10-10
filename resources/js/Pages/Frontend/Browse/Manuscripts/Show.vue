@@ -47,7 +47,7 @@
 
   // Generate the download link when the component mounts
   onMounted(() => {
-    const jsonString = props.manuscript.json; // Pretty print the JSON
+    const jsonString = JSON.stringify(manuscriptJson.value, null, 2); // Pretty print the JSON
     const blob = new Blob([jsonString], { type: 'application/json' });
     downloadUrl.value = URL.createObjectURL(blob);
   });
