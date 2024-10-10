@@ -18,6 +18,7 @@ class ManuscriptsController extends Controller
             'appId' => env('ALGOLIA_APP_ID'),
             'apiKey' => env('ALGOLIA_SECRET'),
             'indexName' => env('SCOUT_PREFIX') . 'manuscripts',
+            'searchQuery' => request('q') ?? '',
         ]);
     }
 
@@ -27,7 +28,8 @@ class ManuscriptsController extends Controller
     public function show(Manuscript $manuscript)
     {
         return Inertia::render('Frontend/Browse/Manuscripts/Show', [
-            'manucript' => $manuscript,
+            'title' => $manuscript->type . ': ' . $manuscript->identifier,
+            'manuscript' => $manuscript,
             'last_modified' => \Carbon\Carbon::parse($manuscript->updated_at)->format('F j, Y')
         ]);
     }
