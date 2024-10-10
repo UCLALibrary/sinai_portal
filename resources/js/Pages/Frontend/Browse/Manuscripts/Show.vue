@@ -5,11 +5,42 @@
         <h2>
           {{ manuscript.identifier }}
         </h2>
-      
+
+        <p class="pb-8">
+          {{ manuscriptJson.summary }}
+        </p>
+
         <p v-if="manuscriptJson.ark && manuscriptJson.ark !== ''">
           <span class="label">ARK</span>
           {{ manuscriptJson.ark }}
         </p>
+
+        <p v-if="[manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').length">
+          <span class="label">Extent</span>
+          {{ [manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').join(', ') }}
+        </p>
+
+        <p v-if="manuscriptJson.state && manuscriptJson.state.label !== ''">
+          <span class="label">State</span>
+          {{ manuscriptJson.state.label }}
+        </p>
+
+        <p v-if="manuscriptJson.fol && manuscriptJson.fol !== ''">
+          <span class="label">Foliation</span>
+          {{ manuscriptJson.fol }}
+        </p>
+
+        <p v-if="manuscriptJson.coll && manuscriptJson.coll !== ''">
+          <span class="label">Collation</span>
+          {{ manuscriptJson.coll }}
+        </p>
+
+        <h3>Preferred Citation</h3>
+        <p>
+          "{{ manuscriptJson.shelfmark }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
+          {{ $page.props.appUrl }}/manuscripts/{{ manuscript.id }}
+        </p>
+
       </section>
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
@@ -60,7 +91,7 @@
 
 <style lang="postcss" scoped>
   h2 {
-    @apply text-2xl xl:text-3xl pb-8
+    @apply text-2xl xl:text-3xl pb-2
   }
 
   h3 {
