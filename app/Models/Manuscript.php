@@ -12,6 +12,9 @@ class Manuscript extends Model
 {
     use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *

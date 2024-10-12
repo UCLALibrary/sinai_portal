@@ -52,8 +52,11 @@ class ManuscriptsSeeder extends Seeder
                 $this->command->error('Missing "ark", "type", or "identifier" in file: ' . $file->getFilename());
                 continue;
             }
+            
+            $arkSegments = explode('/', $ark);
 
             DB::table('manuscripts')->insert([
+                'id' => end($arkSegments), // use the last part of the ARK as the id
                 'ark' => $ark,
                 'type' => $type,
                 'identifier' => $identifier,
