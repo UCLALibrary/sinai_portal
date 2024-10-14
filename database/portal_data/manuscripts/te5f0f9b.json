@@ -388,9 +388,10 @@
     ], 
     "has_bind": true, 
     "location": [
-        { 
-            "id": "sinai-oc", 
-            "label": "St. Catherine's Monastery of the Sinai, Old Collection" 
+        {
+            "id": "sinai-oc",
+            "repository": "St. Catherine's Monastery of the Sinai",
+            "collection": "Old Collection"
         } 
     ], 
     "assoc_date": [
