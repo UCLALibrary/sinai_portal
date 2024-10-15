@@ -15,6 +15,14 @@
           {{ manuscriptJson.ark }}
         </p>
 
+        <p v-if="manuscriptJson.location && manuscriptJson.location.length > 0">
+          <span class="label">Location</span>
+          <span v-for="(location, index) in manuscriptJson.location" :key="index">
+              <span v-if="index > 0" class="block"></span>
+              <span v-if="index > 0" class="label"></span> {{ location.repository }}, {{ location.collection }}
+            </span>
+        </p>
+
         <p v-if="[manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').length">
           <span class="label">Extent</span>
           {{ [manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').join(', ') }}
@@ -30,9 +38,23 @@
           {{ manuscriptJson.fol }}
         </p>
 
+        <p v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'foliation').length > 0">
+          <span v-for="(foliation, index) in manuscriptJson.note.filter(note => note.type.id === 'foliation')" :key="index">
+            <span v-if="index >= 0" class="block"></span>
+            <span v-if="index >= 0" class="label"></span> {{ foliation.value }}
+          </span>
+        </p>
+
         <p v-if="manuscriptJson.coll && manuscriptJson.coll !== ''">
           <span class="label">Collation</span>
           {{ manuscriptJson.coll }}
+        </p>
+
+        <p v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'collation').length > 0">
+          <span v-for="(collation, index) in manuscriptJson.note.filter(note => note.type.id === 'collation')" :key="index">
+            <span v-if="index >= 0" class="block"></span>
+            <span v-if="index >= 0" class="label"></span> {{ collation.value }}
+          </span>
         </p>
 
         <h3>Preferred Citation</h3>
