@@ -60,7 +60,16 @@ class Manuscript extends Model
             }
         }
         
-        // TODO: location (repository, collection)
+        // location (repository, collection)
+        $array['repository'] = [];
+        $array['collection'] = [];
+        if (isset($data['location'])) {
+            foreach($data['location'] as $location) {
+                $array['repository'] = isset($location['repository']) ? $location['repository'] : null;
+                $array['collection'] = isset($location['collection']) ? $location['collection'] : null;
+            }
+        }
+        
 
         /*
          * Apply default transformations if desired.
