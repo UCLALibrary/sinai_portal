@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('manuscripts', function (Blueprint $table) {
-            $table->bigInteger('id')->change();
+            DB::statement('ALTER TABLE manuscripts ALTER COLUMN id TYPE bigint USING id::bigint');
         });
     }
 };
