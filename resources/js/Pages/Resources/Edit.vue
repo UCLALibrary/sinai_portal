@@ -10,6 +10,15 @@
           </div>
         </div>
 
+        <FileUploadForm
+          v-if="uploadEndpoint"
+          label="Select a JSON file"
+          :multiple="false"
+          :hint="uploadHint"
+          class="py-4"
+          :upload-endpoint="uploadEndpoint"
+        />
+
         <ResourceForm
           :schema="schema"
           :uischema="uischema"
@@ -17,7 +26,7 @@
           mode="edit"
           @on-save="onSave"
           @on-cancel="onCancel"
-          class="px-4 sm:px-6 lg:px-8 mb-16"
+          class="px-4 sm:px-6 lg:px-8 my-8"
         />
       </div>
     </div>
@@ -25,9 +34,10 @@
 </template>
 
 <script setup>
-  import { defineAsyncComponent } from 'vue'
+  import { computed, defineAsyncComponent } from 'vue'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
+  import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
   const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
 
   const props = defineProps({
@@ -36,10 +46,15 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     saveEndpoint: { type: String, required: true },
+    uploadEndpoint: { type: String, required: false, default: null },
     redirectUrl: { type: String, required: true },
   })
 
   const emitter = useEmitter()
+
+  const uploadHint = computed(() => {
+    return 'Note: The uploaded file will override the existing data'
+  })
 
   const onSave = (payload) => {
     axios.put(props.saveEndpoint, {

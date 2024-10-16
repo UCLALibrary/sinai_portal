@@ -9,7 +9,9 @@ use App\Http\Resources\ManuscriptResource;
 use App\Models\Manuscript;
 use App\Models\Part;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 class ManuscriptsController extends Controller
 {
@@ -84,6 +86,60 @@ class ManuscriptsController extends Controller
         return $response
             ? response()->json(['message' => 'Manuscript deleted successfully'])
             : response()->json(['error' => 'Error deleting manuscript']);
+    }
+
+    /**
+     * Replace the resource data.
+     */
+    public function upload(Request $request, Manuscript $manuscript)
+    {
+        // TODO: do not allow uploading of files with mismatching arks
+
+        $file = $request->file('files');
+
+        $jsonContent = File::get($file->getRealPath());
+        $data = json_decode($jsonContent, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $error = 'Error decoding JSON from file: ' . $file->getFilename();
+            return request()->inertia()
+                ? redirect()->back()->with('error', $error)
+                : response()->json(['error' => $error]);
+        }
+
+        $ark = $data['ark'] ?? null;
+        $type = $data['type']['label'] ?? null;
+        $identifier = $data['shelfmark'] ?? null;
+
+        if (!$ark || !$type || !$identifier) {
+            $error = 'Missing "ark", "type", or "identifier" in file: ' . $file->getFilename();
+            return request()->inertia()
+                ? redirect()->back()->with('error', $error)
+                : response()->json(['error' => $error]);
+        }
+        
+        $arkSegments = explode('/', $ark);
+
+        // update the resource
+        $response = $manuscript->update([
+            'id' => end($arkSegments),
+            'ark' => $ark,
+            'type' => $type,
+            'identifier' => $identifier,
+            'json' => $jsonContent,
+        ]);
+
+        if ($response) {
+            $message = 'The JSON file has been successfully uploaded.';
+            $status = 'success';
+        } else {
+            $message = 'Error uploading JSON file for manuscript.';
+            $status = 'error';
+        }
+
+        return request()->inertia()
+            ? redirect()->back()->with($status, $message)
+            : response()->json([$status => $message]);
     }
 
     private function _extractMetadataFromJsonData($jsonData)

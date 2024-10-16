@@ -23,6 +23,7 @@ Route::get('/user', function (Request $request) {
 
 // manuscripts
 Route::apiResource('manuscripts', ManuscriptsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
+Route::post('manuscripts/upload/{manuscript}', [ManuscriptsController::class, 'upload'])->name('api.manuscripts.upload');
 
 // parts
 Route::apiResource('codicological-units', PartsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');

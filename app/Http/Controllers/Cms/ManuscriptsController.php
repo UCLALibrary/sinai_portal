@@ -50,6 +50,7 @@ class ManuscriptsController extends Controller
             'uischema' => json_decode(Manuscript::$uiSchema),
             'data' => json_decode($manuscript->json),
             'saveEndpoint' => route('api.manuscripts.update', $manuscript->id),
+            'uploadEndpoint' => route('api.manuscripts.upload', $manuscript->id),
             'redirectUrl' => route('manuscripts.index'),
         ]);
     }
