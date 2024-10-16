@@ -21,57 +21,44 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('manuscripts', ManuscriptsController::class, [
-    'as' => 'api'
-]);
+// manuscripts
+Route::apiResource('manuscripts', ManuscriptsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('codicological-units', PartsController::class, [
-    'as' => 'api'
-]);
+// parts
+Route::apiResource('codicological-units', PartsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('content-units', ContentsController::class, [
-    'as' => 'api'
-]);
+// text units
+Route::apiResource('content-units', ContentsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('works', WorksController::class, [
-    'as' => 'api'
-]);
+// works
+Route::apiResource('works', WorksController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('agents', AgentsController::class, [
-    'as' => 'api'
-]);
+// agents
+Route::apiResource('agents', AgentsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('places', PlacesController::class, [
-    'as' => 'api'
-]);
+// places
+Route::apiResource('places', PlacesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('bibliography', BibliographyController::class, [
-    'as' => 'api'
-]);
+// bibliography
+Route::apiResource('bibliography', BibliographyController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('languages', LanguagesController::class, [
-    'as' => 'api'
-]);
+// languages
+Route::apiResource('languages', LanguagesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('references', ReferencesController::class, [
-    'as' => 'api'
-]);
+// references
+Route::apiResource('references', ReferencesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('features', FeaturesController::class, [
-    'as' => 'api'
-]);
+// features
+Route::apiResource('features', FeaturesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('locations', LocationsController::class, [
-	'as' => 'api'
-]);
+// locations
+Route::apiResource('locations', LocationsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('form-contexts', FormContextsController::class, [
-    'as' => 'api'
-]);
+// form contexts
+Route::apiResource('form-contexts', FormContextsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-Route::apiResource('roles', RolesController::class, [
-	'as' => 'api'
-]);
+// roles
+Route::apiResource('roles', RolesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
 // forms
 Route::get('forms/codicological-units/{codicological_unit?}', [FormsController::class, 'codUnit'])->name('api.forms.codicological-units');

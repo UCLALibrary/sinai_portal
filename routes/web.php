@@ -45,35 +45,35 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     Route::resource('users', UsersController::class);
 
     // manuscripts
-    Route::resource('manuscripts', ManuscriptsController::class);
+    Route::resource('manuscripts', ManuscriptsController::class)->only('index', 'create', 'edit');
 
     // parts
-    Route::resource('codicological-units', PartsController::class);
+    Route::resource('codicological-units', PartsController::class)->only('index', 'create', 'edit');
 
     // contents
-    Route::resource('content-units', ContentsController::class);
+    Route::resource('content-units', ContentsController::class)->only('index', 'create', 'edit');
 
     // works
-    Route::resource('works', WorksController::class);
+    Route::resource('works', WorksController::class)->only('index', 'create', 'edit');
 
     // agents
-    Route::resource('agents', AgentsController::class);
+    Route::resource('agents', AgentsController::class)->only('index', 'create', 'edit');
 
     // places
-    Route::resource('places', PlacesController::class);
+    Route::resource('places', PlacesController::class)->only('index', 'create', 'edit');
 
     // bibliography
-    Route::resource('bibliography', BibliographyController::class);
+    Route::resource('bibliography', BibliographyController::class)->only('index', 'create', 'edit');
 
     // languages
-    Route::resource('languages', LanguagesController::class);
+    Route::resource('languages', LanguagesController::class)->only('index', 'create', 'edit');
 
     // references
-    Route::resource('references', ReferencesController::class);
+    Route::resource('references', ReferencesController::class)->only('index', 'create', 'edit');
 
     // features
-    Route::resource('features', FeaturesController::class);
+    Route::resource('features', FeaturesController::class)->only('index', 'create', 'edit');
 
 	// features
-	Route::resource('locations', LocationsController::class);
+	Route::resource('locations', LocationsController::class)->only('index', 'create', 'edit');
 });
