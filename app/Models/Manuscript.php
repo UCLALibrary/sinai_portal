@@ -21,6 +21,7 @@ class Manuscript extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'ark',
         'identifier',
         'type',

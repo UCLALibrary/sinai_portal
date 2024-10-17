@@ -57,7 +57,8 @@ class ManuscriptJsonFileUploadRequest extends FormRequest
                 }
 
                 // ensure the "ark" field is not empty
-                if (empty(data_get($jsonData, 'ark'))) {
+                $ark = data_get($jsonData, 'ark');
+                if (empty($ark)) {
                     $validator->errors()->add('ark', 'The "ark" field is required and cannot be empty.');
                     return;
                 }
@@ -77,10 +78,19 @@ class ManuscriptJsonFileUploadRequest extends FormRequest
                 // retrieve the manuscript object from the route
                 $manuscript = $this->route('manuscript');
 
-                // ensure the "ark" in the json file matches the "ark" of the manuscript
-                if (data_get($jsonData, 'ark') !== $manuscript->ark) {
-                    $validator->errors()->add('ark', 'The "ark" in the JSON file must match the "ark" of the manuscript.');
-                    return;
+                // on update, ensure the "ark" in the json file matches the "ark" of the manuscript
+                if ($manuscript) {
+                    if ($ark !== $manuscript->ark) {
+                        $validator->errors()->add('ark', 'The "ark" in the JSON file must match the "ark" of the manuscript.');
+                        return;
+                    }
+                }
+                // on store, ensure that an existing manuscript with the same ark does not exist
+                else {
+                    if (Manuscript::where('ark', $ark)->exists()) {
+                        $validator->errors()->add('ark', 'A manuscript with this "ark" already exists.');
+                        return;
+                    }
                 }
             }
         });

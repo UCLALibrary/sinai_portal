@@ -10,6 +10,14 @@
           </div>
         </div>
 
+        <FileUploadForm
+          v-if="uploadEndpoint"
+          label="Select a JSON file"
+          :multiple="false"
+          class="py-4"
+          :upload-endpoint="uploadEndpoint"
+        />
+
         <ResourceForm
           :schema="schema"
           :uischema="uischema"
@@ -28,6 +36,7 @@
   import { defineAsyncComponent } from 'vue'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
+  import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
   const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
 
   const props = defineProps({
@@ -36,6 +45,7 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     saveEndpoint: { type: String, required: true },
+    uploadEndpoint: { type: String, required: false, default: null },
     redirectUrl: { type: String, required: true },
   })
 

@@ -14,7 +14,7 @@
           v-if="uploadEndpoint"
           label="Select a JSON file"
           :multiple="false"
-          :hint="uploadHint"
+          hint="Note: The uploaded file will override the existing data"
           class="py-4"
           :upload-endpoint="uploadEndpoint"
         />
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-  import { computed, defineAsyncComponent } from 'vue'
+  import { defineAsyncComponent } from 'vue'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
@@ -51,10 +51,6 @@
   })
 
   const emitter = useEmitter()
-
-  const uploadHint = computed(() => {
-    return 'Note: The uploaded file will override the existing data'
-  })
 
   const onSave = (payload) => {
     axios.put(props.saveEndpoint, {

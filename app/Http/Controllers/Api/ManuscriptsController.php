@@ -89,23 +89,57 @@ class ManuscriptsController extends Controller
     }
 
     /**
-     * Replace the resource data.
+     * Store a newly created resource in storage on file upload.
      */
-    public function upload(ManuscriptJsonFileUploadRequest $request, Manuscript $manuscript)
+    public function storeOnUpload(ManuscriptJsonFileUploadRequest $request)
     {
         $file = $request->file('files');
 
         // decode the json file
-        $jsonContent = $file->get();
-        $jsonData = json_decode($file->get(), true);
+        $json = $file->get();
+        $metadata = json_decode($file->get(), true);
+
+        // use the trailing ark segment as the manuscript id
+        $manuscriptId = basename($metadata['ark']);
+
+        // create the resource
+        $manuscript = Manuscript::create([
+            'id' => $manuscriptId,
+            'ark' => $metadata['ark'],
+            'type' => $metadata['type']['label'],
+            'identifier' => $metadata['shelfmark'],
+            'json' => $json,
+        ]);
+
+        $message = $manuscript
+            ? 'The JSON file has been successfully uploaded.'
+            : 'Error uploading JSON file for manuscript.';
+
+        $status = $manuscript ? 'success' : 'error';
+
+        return request()->inertia()
+            ? redirect()->route('manuscripts.edit', $manuscriptId)->with($status, $message)
+            : response()->json([$status => $message]);
+    }
+
+    /**
+     * Update the specified resource in storage on file upload.
+     */
+    public function updateOnUpload(ManuscriptJsonFileUploadRequest $request, Manuscript $manuscript)
+    {
+        $file = $request->file('files');
+
+        // decode the json file
+        $json = $file->get();
+        $metadata = json_decode($file->get(), true);
 
         // update the resource
         $response = $manuscript->update([
-            'id' => basename($jsonData['ark']),
-            'ark' => $jsonData['ark'],
-            'type' => $jsonData['type']['label'],
-            'identifier' => $jsonData['shelfmark'],
-            'json' => $jsonContent,
+            'id' => basename($metadata['ark']),
+            'ark' => $metadata['ark'],
+            'type' => $metadata['type']['label'],
+            'identifier' => $metadata['shelfmark'],
+            'json' => $json,
         ]);
 
         $message = $response
