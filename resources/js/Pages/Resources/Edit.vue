@@ -1,5 +1,5 @@
 <template>
-  <AppLayout title="Add Resource">
+  <AppLayout title="Edit Resource">
     <div class="lg:py-12">
       <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-8 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
@@ -15,8 +15,9 @@
           label="Select a JSON file"
           :multiple="false"
           hint="Note: The uploaded file will override the existing data"
+          :endpoint="uploadEndpoint"
+          @on-success="onUploadSuccess"
           class="py-4"
-          :upload-endpoint="uploadEndpoint"
         />
 
         <ResourceForm
@@ -35,6 +36,7 @@
 
 <script setup>
   import { defineAsyncComponent } from 'vue'
+  import { router } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
@@ -52,6 +54,19 @@
 
   const emitter = useEmitter()
 
+  const onUploadSuccess = (payload) => {
+    router.visit(window.location.href, {
+      onSuccess: () => {
+        // display alert that the resource has been saved
+        emitter.emit('show-dismissable-alert', {
+          type: payload.status,
+          message: payload.message,
+          timeout: 4000,
+        })
+      },
+    })
+  }
+
   const onSave = (payload) => {
     axios.put(props.saveEndpoint, {
       json: payload.data,
@@ -64,7 +79,7 @@
           timeout: 2000,
         })
       } else {
-        window.location.href = props.redirectUrl
+        router.visit(props.redirectUrl)
       }
     }).catch(error => {
       // display alert that there was an error saving the resource
@@ -77,6 +92,6 @@
   }
 
   const onCancel = () => {
-    window.location.href = props.redirectUrl
+    router.visit(props.redirectUrl)
   }
 </script>

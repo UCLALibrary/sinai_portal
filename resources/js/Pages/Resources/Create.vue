@@ -14,8 +14,9 @@
           v-if="uploadEndpoint"
           label="Select a JSON file"
           :multiple="false"
+          :endpoint="uploadEndpoint"
+          @on-success="onUploadSuccess"
           class="py-4"
-          :upload-endpoint="uploadEndpoint"
         />
 
         <ResourceForm
@@ -25,7 +26,7 @@
           mode="create"
           @on-save="onSave"
           @on-cancel="onCancel"
-          class="px-4 sm:px-6 lg:px-8 mb-16"
+          class="px-4 sm:px-6 lg:px-8 my-8"
         />
       </div>
     </div>
@@ -34,6 +35,7 @@
 
 <script setup>
   import { defineAsyncComponent } from 'vue'
+  import { router } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
@@ -51,11 +53,24 @@
 
   const emitter = useEmitter()
 
+  const onUploadSuccess = (payload) => {
+    router.visit(route('manuscripts.edit', payload.resourceId), {
+      onSuccess: () => {
+        // display alert that the resource has been saved
+        emitter.emit('show-dismissable-alert', {
+          type: payload.status,
+          message: payload.message,
+          timeout: 4000,
+        })
+      },
+    })
+  }
+
   const onSave = (payload) => {
     axios.post(props.saveEndpoint, {
       json: payload.data,
     }).then(() => {
-      window.location.href = props.redirectUrl
+      router.visit(props.redirectUrl)
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
@@ -67,6 +82,6 @@
   }
 
   const onCancel = () => {
-    window.location.href = props.redirectUrl
+    router.visit(props.redirectUrl)
   }
 </script>

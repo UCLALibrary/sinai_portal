@@ -11,7 +11,6 @@ use App\Models\Manuscript;
 use App\Models\Part;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class ManuscriptsController extends Controller
 {
@@ -104,22 +103,18 @@ class ManuscriptsController extends Controller
 
         // create the resource
         $manuscript = Manuscript::create([
-            'id' => $manuscriptId,
+            'id' => $manuscriptId,  
             'ark' => $metadata['ark'],
             'type' => $metadata['type']['label'],
             'identifier' => $metadata['shelfmark'],
             'json' => $json,
         ]);
 
-        $message = $manuscript
-            ? 'The JSON file has been successfully uploaded.'
-            : 'Error uploading JSON file for manuscript.';
-
-        $status = $manuscript ? 'success' : 'error';
-
-        return request()->inertia()
-            ? redirect()->route('manuscripts.edit', $manuscriptId)->with($status, $message)
-            : response()->json([$status => $message]);
+        return response()->json([
+            'status' => $manuscript ? 'success' : 'error',
+            'message' => $manuscript ? 'The JSON file has been successfully uploaded.' : 'Error uploading JSON file for manuscript.',
+            'resourceId' => $manuscriptId,
+        ]);
     }
 
     /**
@@ -135,22 +130,16 @@ class ManuscriptsController extends Controller
 
         // update the resource
         $response = $manuscript->update([
-            'id' => basename($metadata['ark']),
-            'ark' => $metadata['ark'],
             'type' => $metadata['type']['label'],
             'identifier' => $metadata['shelfmark'],
             'json' => $json,
         ]);
 
-        $message = $response
-            ? 'The JSON file has been successfully uploaded.'
-            : 'Error uploading JSON file for manuscript.';
-
-        $status = $response ? 'success' : 'error';
-
-        return request()->inertia()
-            ? redirect()->back()->with($status, $message)
-            : response()->json([$status => $message]);
+        return response()->json([
+            'status'   => $response ? 'success' : 'error',
+            'message'  => $response ? 'The JSON file has been successfully uploaded.' : 'Error uploading JSON file for manuscript.',
+            'resourceId' => basename($manuscript->ark),
+        ]);
     }
 
     private function _extractMetadataFromJsonData($jsonData)

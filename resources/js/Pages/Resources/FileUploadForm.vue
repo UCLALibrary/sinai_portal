@@ -13,15 +13,11 @@
         variant="outlined">
       </v-file-input>
 
-      <div v-if="$page.props.flash.success" class="mx-12 text-success" :class="{ 'mt-4': hint }">
-        <div>
-          {{ $page.props.flash.success }}
-        </div>
-      </div>
-
       <div v-if="form.errors && Object.keys(form.errors).length > 0" class="mx-12 text-red" :class="{ 'mt-4': hint }">
         <ul>
-          <li v-for="(error, index) in form.errors" :key="index" v-html="error.replace('\n', '<br />')"></li>
+          <li v-for="(errors, key) in form.errors" :key="key">
+            {{ errors[0] }}
+          </li>
         </ul>
       </div>
     </div>
@@ -36,25 +32,35 @@
 </template>
 
 <script setup>
+  import { defineEmits } from 'vue'
   import { useForm } from '@inertiajs/vue3'
 
   const props = defineProps({
     label: { type: String, required: false, default: '' },
     multiple: { type: Boolean, required: false, default: true },
     hint: { type: String, required: false, default: '' },
-    uploadEndpoint: { type: String, required: true },
+    endpoint: { type: String, required: true },
   })
+
+  const emit = defineEmits(['on-success', 'on-error'])
 
   const form = useForm({
     files: props.multiple ? [] : null,
   })
 
   const onUpload = () => {
-    form.post(props.uploadEndpoint, {
-      onSuccess: (response) => {
+    const formData = new FormData()
+    formData.append('files', form.files)
+
+    axios.post(props.endpoint, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .then(response => {
         form.reset()
-      }
-    })
+        emit('on-success', response.data)
+      })
+      .catch(error => {
+        form.errors = error.response.data.errors
+        emit('on-error', error.response.data.errors)
+      })
   }
 </script>
 

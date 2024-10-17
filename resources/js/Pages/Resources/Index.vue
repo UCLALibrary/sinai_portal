@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+  import { router } from '@inertiajs/vue3'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import ResourceListTable from '@/Shared/ResourceListTable.vue'
 
@@ -48,6 +49,6 @@
   })
 
   const redirectToUrl = (url) => {
-    window.location = url
+    router.visit(url)
   }
 </script>
