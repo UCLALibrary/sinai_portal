@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\JsonDataHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ManuscriptJsonFileUploadRequest;
 use App\Http\Requests\ManuscriptRequest;
 use App\Http\Resources\ManuscriptResource;
 use App\Models\Manuscript;
 use App\Models\Part;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -91,51 +91,28 @@ class ManuscriptsController extends Controller
     /**
      * Replace the resource data.
      */
-    public function upload(Request $request, Manuscript $manuscript)
+    public function upload(ManuscriptJsonFileUploadRequest $request, Manuscript $manuscript)
     {
-        // TODO: do not allow uploading of files with mismatching arks
-
         $file = $request->file('files');
 
-        $jsonContent = File::get($file->getRealPath());
-        $data = json_decode($jsonContent, true);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            $error = 'Error decoding JSON from file: ' . $file->getFilename();
-            return request()->inertia()
-                ? redirect()->back()->with('error', $error)
-                : response()->json(['error' => $error]);
-        }
-
-        $ark = $data['ark'] ?? null;
-        $type = $data['type']['label'] ?? null;
-        $identifier = $data['shelfmark'] ?? null;
-
-        if (!$ark || !$type || !$identifier) {
-            $error = 'Missing "ark", "type", or "identifier" in file: ' . $file->getFilename();
-            return request()->inertia()
-                ? redirect()->back()->with('error', $error)
-                : response()->json(['error' => $error]);
-        }
-        
-        $arkSegments = explode('/', $ark);
+        // decode the json file
+        $jsonContent = $file->get();
+        $jsonData = json_decode($file->get(), true);
 
         // update the resource
         $response = $manuscript->update([
-            'id' => end($arkSegments),
-            'ark' => $ark,
-            'type' => $type,
-            'identifier' => $identifier,
+            'id' => basename($jsonData['ark']),
+            'ark' => $jsonData['ark'],
+            'type' => $jsonData['type']['label'],
+            'identifier' => $jsonData['shelfmark'],
             'json' => $jsonContent,
         ]);
 
-        if ($response) {
-            $message = 'The JSON file has been successfully uploaded.';
-            $status = 'success';
-        } else {
-            $message = 'Error uploading JSON file for manuscript.';
-            $status = 'error';
-        }
+        $message = $response
+            ? 'The JSON file has been successfully uploaded.'
+            : 'Error uploading JSON file for manuscript.';
+
+        $status = $response ? 'success' : 'error';
 
         return request()->inertia()
             ? redirect()->back()->with($status, $message)
