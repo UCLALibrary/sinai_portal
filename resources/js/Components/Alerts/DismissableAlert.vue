@@ -3,8 +3,9 @@
     <VAlert
       v-if="alert !== null"
       :type="alert.type"
-      dismissible>
-      {{ alert.message }}
+      dismissible
+      closable>
+      <div v-html="alert.message"></div>
     </VAlert>
   </VFadeTransition>
 </template>
@@ -29,6 +30,6 @@
 
 <style lang="postcss" scoped>
   .v-alert {
-    @apply fixed top-12 left-1/2 transform -translate-x-1/2 w-fit max-w-md
+    @apply fixed top-12 left-1/2 transform -translate-x-1/2 w-fit max-w-xl
   }
 </style>
