@@ -146,26 +146,64 @@ class ManuscriptsController extends Controller
     public function batchUpload(ManuscriptJsonBatchUploadRequest $request)
     {
         $files = $request->file('files');
+        
+        $updatedManuscripts = array();
+        $createdManuscripts = array();
 
-        // TODO: create new records 
         foreach ($files as $file) {
-            dd($file);
 
+            $fileContent = $file->get();
+            $metadata = json_decode($fileContent, true);
+            $manuscriptId = basename($metadata['ark']);
+            $manuscript = Manuscript::find($manuscriptId);
 
-        //     $metadata = json_decode($file->get(), true);
+            if ($manuscript) {
+                // update the resource
+                $response = $manuscript->update([
+                    'type' => $metadata['type']['label'],
+                    'identifier' => $metadata['shelfmark'],
+                    'json' => $fileContent,
+                ]);
 
-        //     // update the resource
-        //     $response = $manuscript->update([
-        //         'type' => $metadata['type']['label'],
-        //         'identifier' => $metadata['shelfmark'],
-        //         'json' => $json,
-        //     ]);
+                if ($response) {
+                    $updatedManuscripts[$manuscriptId] = $metadata['shelfmark'];
+                }
 
+            } else {
+                // create the resource
+                $response = Manuscript::create([
+                    'id' => $manuscriptId,
+                    'ark' => $metadata['ark'],
+                    'type' => $metadata['type']['label'],
+                    'identifier' => $metadata['shelfmark'],
+                    'json' => $fileContent,
+                ]);
 
-
-        //     $filename = $file->getClientOriginalName();
-        //     $file->storeAs('uploads', $filename);
+                if ($response) {
+                    $createdManuscripts[$manuscriptId] = $metadata['shelfmark'];
+                }
+            }
         }
+
+        $status = count($updatedManuscripts) > 0 || $createdManuscripts > 0 ? 'success' : 'error';
+        
+        // create a list of all updated and created manuscripts for the response message
+        $formattedMessage = '';
+        if ($status === 'success') {
+            $formattedMessage .= '</ul>';
+            foreach ($createdManuscripts as $createdManuscriptId => $createdManuscriptShelfmark) {
+                $formattedMessage .= '<li><b>' . $createdManuscriptId . '</b>: ' . $createdManuscriptShelfmark . ' has been created.</li>';
+            }
+            foreach ($updatedManuscripts as $updatedManuscriptId => $updatedManuscriptShelfmark) {
+                $formattedMessage .= '<li><b>' . $updatedManuscriptId . '</b>: ' . $updatedManuscriptShelfmark . ' has been updated.</li>';
+            }
+            $formattedMessage .= '</ul>';
+        }
+
+        return response()->json([
+            'status'   => $status,
+            'message'  => $status === 'success' ? $formattedMessage : 'Error uploading JSON file(s).',
+        ]);
     }
 
     private function _extractMetadataFromJsonData($jsonData)
