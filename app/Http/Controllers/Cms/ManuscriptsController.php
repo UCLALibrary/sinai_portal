@@ -24,6 +24,7 @@ class ManuscriptsController extends Controller
             ],
             'routes' => [
                 'create' => 'manuscripts.create',
+                'upload' => 'api.manuscripts.upload.batch',
             ],
         ]);
     }
@@ -41,7 +42,7 @@ class ManuscriptsController extends Controller
                 'index' => 'manuscripts.index',
                 'edit' => 'manuscripts.edit',
                 'store' => 'api.manuscripts.store',
-                'upload' => 'api.manuscripts.store.upload',
+                'upload' => 'api.manuscripts.upload.store',
             ],
         ]);
     }
@@ -60,7 +61,7 @@ class ManuscriptsController extends Controller
             'routes' => [
                 'index' => 'manuscripts.index',
                 'update' => 'api.manuscripts.update',
-                'upload' => 'api.manuscripts.update.upload',
+                'upload' => 'api.manuscripts.upload.update',
             ],
         ]);
     }

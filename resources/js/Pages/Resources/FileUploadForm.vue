@@ -48,9 +48,26 @@
     files: props.multiple ? [] : null,
   })
 
+//   const onFilesChange = (files) => {
+// console.log('files:', files)
+// console.log('is array:', Array.isArray(files))
+//     form.clearErrors()
+
+//     if (props.multiple) {
+//       form.files = Array.isArray(files) ? files : [files]
+//     } else {
+//       form.files = files
+//     }
+//   }
+
   const onUpload = () => {
     const formData = new FormData()
-    formData.append('files', form.files)
+
+    if (props.multiple) {
+      form.files.forEach(file => formData.append('files[]', file))
+    } else {
+      formData.append('files', form.files)
+    }
 
     axios.post(props.endpoint, formData, { headers: { 'Content-Type': 'multipart/form-data' } })
       .then(response => {

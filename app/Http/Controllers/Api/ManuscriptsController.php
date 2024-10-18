@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\JsonDataHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ManuscriptJsonBatchUploadRequest;
 use App\Http\Requests\ManuscriptJsonFileUploadRequest;
 use App\Http\Requests\ManuscriptRequest;
 use App\Http\Resources\ManuscriptResource;
@@ -140,6 +141,31 @@ class ManuscriptsController extends Controller
             'message'  => $response ? 'The JSON file has been successfully uploaded.' : 'Error uploading JSON file for manuscript.',
             'resourceId' => basename($manuscript->ark),
         ]);
+    }
+
+    public function batchUpload(ManuscriptJsonBatchUploadRequest $request)
+    {
+        $files = $request->file('files');
+
+        // TODO: create new records 
+        foreach ($files as $file) {
+            dd($file);
+
+
+        //     $metadata = json_decode($file->get(), true);
+
+        //     // update the resource
+        //     $response = $manuscript->update([
+        //         'type' => $metadata['type']['label'],
+        //         'identifier' => $metadata['shelfmark'],
+        //         'json' => $json,
+        //     ]);
+
+
+
+        //     $filename = $file->getClientOriginalName();
+        //     $file->storeAs('uploads', $filename);
+        }
     }
 
     private function _extractMetadataFromJsonData($jsonData)

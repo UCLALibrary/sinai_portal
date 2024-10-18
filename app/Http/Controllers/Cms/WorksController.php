@@ -33,8 +33,10 @@ class WorksController extends Controller
             'title' => 'Works > Add Work',
             'schema' => json_decode(Work::$schema),
             'uischema' => json_decode(Work::$uiSchema),
-            'saveEndpoint' => route('api.works.store'),
-            'redirectUrl' => route('works.index'),
+            'routes' => [
+                'index' => 'works.index',
+                'store' => 'api.works.store',
+            ],
         ]);
     }
 
@@ -48,8 +50,11 @@ class WorksController extends Controller
             'schema' => json_decode(Work::$schema),
             'uischema' => json_decode(Work::$uiSchema),
             'data' => json_decode($work->json),
-            'saveEndpoint' => route('api.works.update', $work->id),
-            'redirectUrl' => route('works.index'),
+            'resource' => $work,
+            'routes' => [
+                'index' => 'works.index',
+                'update' => 'api.works.update',
+            ],
         ]);
     }
 }

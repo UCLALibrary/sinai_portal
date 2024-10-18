@@ -21,7 +21,9 @@ class PartsController extends Controller
                 'identifier' => 'Identifier',
                 'ark' => 'ARK'
             ],
-            'createEndpoint' => route('codicological-units.create'),
+            'routes' => [
+                'create' => 'codicological-units.create',
+            ],
         ]);
     }
 
@@ -31,11 +33,13 @@ class PartsController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Codicological Units > Add Codicological Unit',
+            'title' => 'Create Codicological Unit',
             'schema' => json_decode(Part::$schema),
             'uischema' => json_decode(Part::$uiSchema),
-            'saveEndpoint' => route('api.codicological-units.store'),
-            'redirectUrl' => route('codicological-units.index'),
+            'routes' => [
+                'index' => 'codicological-units.index',
+                'store' => 'api.codicological-units.store',
+            ],
         ]);
     }
 
@@ -45,12 +49,15 @@ class PartsController extends Controller
     public function edit(Part $codicologicalUnit)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Codicological Units > Edit Codicological Unit',
+            'title' => 'Edit Codicological Unit',
             'schema' => json_decode(Part::$schema),
             'uischema' => json_decode(Part::$uiSchema),
             'data' => json_decode($codicologicalUnit->json),
-            'saveEndpoint' => route('api.codicological-units.update', $codicologicalUnit->id),
-            'redirectUrl' => route('codicological-units.index'),
+            'resource' => $codicologicalUnit,
+            'routes' => [
+                'index' => 'codicological-units.index',
+                'update' => 'api.codicological-units.update',
+            ],
         ]);
     }
 }

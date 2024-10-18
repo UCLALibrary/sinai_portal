@@ -23,8 +23,9 @@ Route::get('/user', function (Request $request) {
 
 // manuscripts
 Route::apiResource('manuscripts', ManuscriptsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
-Route::post('manuscripts/upload', [ManuscriptsController::class, 'storeOnUpload'])->name('api.manuscripts.store.upload');
-Route::post('manuscripts/upload/{manuscript}', [ManuscriptsController::class, 'updateOnUpload'])->name('api.manuscripts.update.upload');
+Route::post('manuscripts/upload', [ManuscriptsController::class, 'storeOnUpload'])->name('api.manuscripts.upload.store');
+Route::post('manuscripts/upload/batch', [ManuscriptsController::class, 'batchUpload'])->name('api.manuscripts.upload.batch');
+Route::post('manuscripts/upload/{manuscript}', [ManuscriptsController::class, 'updateOnUpload'])->name('api.manuscripts.upload.update');
 
 // parts
 Route::apiResource('codicological-units', PartsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
