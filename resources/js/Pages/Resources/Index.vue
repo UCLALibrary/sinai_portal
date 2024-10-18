@@ -11,7 +11,7 @@
           <div class="sm:ml-16 sm:mt-0 sm:flex-none">
             <button
               type="button"
-              @click="redirectToUrl(createEndpoint)"
+              @click="redirectToUrl(route(routes.create))"
               class="block rounded-md bg-sinai-red px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sinai-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sinai-red">
               Create
             </button>
@@ -45,7 +45,7 @@
     resourceName: { type: String, required: true },
     resources: { type: Object, required: false, default: () => {} },
     columns: { type: Object, required: true },
-    createEndpoint: { type: String, required: true },
+    routes: { type: Object, required: true },
   })
 
   const redirectToUrl = (url) => {

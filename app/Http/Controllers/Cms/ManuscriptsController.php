@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Models\Manuscript;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class ManuscriptsController extends Controller
@@ -21,7 +22,9 @@ class ManuscriptsController extends Controller
                 'ark' => 'ARK',
                 'identifier' => 'Identifier'
             ],
-            'createEndpoint' => route('manuscripts.create'),
+            'routes' => [
+                'create' => 'manuscripts.create',
+            ],
         ]);
     }
 
@@ -31,12 +34,15 @@ class ManuscriptsController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Manuscripts > Add Manuscript',
+            'title' => 'Create Manuscript',
             'schema' => json_decode(Manuscript::$schema),
             'uischema' => json_decode(Manuscript::$uiSchema),
-            'saveEndpoint' => route('api.manuscripts.store'),
-            'uploadEndpoint' => route('api.manuscripts.store.upload'),
-            'redirectUrl' => route('manuscripts.index'),
+            'routes' => [
+                'index' => 'manuscripts.index',
+                'edit' => 'manuscripts.edit',
+                'store' => 'api.manuscripts.store',
+                'upload' => 'api.manuscripts.store.upload',
+            ],
         ]);
     }
 
@@ -46,13 +52,16 @@ class ManuscriptsController extends Controller
     public function edit(Manuscript $manuscript)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Manuscripts > Edit Manuscript',
+            'title' => 'Edit Manuscript',
             'schema' => json_decode(Manuscript::$schema),
             'uischema' => json_decode(Manuscript::$uiSchema),
             'data' => json_decode($manuscript->json),
-            'saveEndpoint' => route('api.manuscripts.update', $manuscript->id),
-            'uploadEndpoint' => route('api.manuscripts.update.upload', $manuscript->id),
-            'redirectUrl' => route('manuscripts.index'),
+            'resource' => $manuscript,
+            'routes' => [
+                'index' => 'manuscripts.index',
+                'update' => 'api.manuscripts.update',
+                'upload' => 'api.manuscripts.update.upload',
+            ],
         ]);
     }
 }

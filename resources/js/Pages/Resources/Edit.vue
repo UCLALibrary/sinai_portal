@@ -11,11 +11,11 @@
         </div>
 
         <FileUploadForm
-          v-if="uploadEndpoint"
+          v-if="routes.upload"
           label="Select a JSON file"
           :multiple="false"
-          hint="Note: The uploaded file will override the existing data"
-          :endpoint="uploadEndpoint"
+          hint="Note: The uploaded file will overwrite the existing data"
+          :endpoint="route(routes.upload, resource.id)"
           @on-success="onUploadSuccess"
           class="py-4"
         />
@@ -47,9 +47,8 @@
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
-    saveEndpoint: { type: String, required: true },
-    uploadEndpoint: { type: String, required: false, default: null },
-    redirectUrl: { type: String, required: true },
+    resource: { type: Object, required: true },
+    routes: { type: Object, required: true },
   })
 
   const emitter = useEmitter()
@@ -68,7 +67,7 @@
   }
 
   const onSave = (payload) => {
-    axios.put(props.saveEndpoint, {
+    axios.put(route(props.routes.update), {
       json: payload.data,
     }).then(() => {
       if (payload.continueEditing) {
@@ -79,7 +78,7 @@
           timeout: 2000,
         })
       } else {
-        router.visit(props.redirectUrl)
+        router.visit(route(props.routes.index))
       }
     }).catch(error => {
       // display alert that there was an error saving the resource
@@ -92,6 +91,6 @@
   }
 
   const onCancel = () => {
-    router.visit(props.redirectUrl)
+    router.visit(route(props.routes.index))
   }
 </script>

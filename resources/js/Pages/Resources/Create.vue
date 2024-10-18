@@ -11,10 +11,10 @@
         </div>
 
         <FileUploadForm
-          v-if="uploadEndpoint"
+          v-if="routes.upload"
           label="Select a JSON file"
           :multiple="false"
-          :endpoint="uploadEndpoint"
+          :endpoint="route(routes.upload)"
           @on-success="onUploadSuccess"
           class="py-4"
         />
@@ -46,15 +46,13 @@
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
-    saveEndpoint: { type: String, required: true },
-    uploadEndpoint: { type: String, required: false, default: null },
-    redirectUrl: { type: String, required: true },
+    routes: { type: Object, required: true },
   })
 
   const emitter = useEmitter()
 
   const onUploadSuccess = (payload) => {
-    router.visit(route('manuscripts.edit', payload.resourceId), {
+    router.visit(route(props.routes.edit, payload.resourceId), {
       onSuccess: () => {
         // display alert that the resource has been saved
         emitter.emit('show-dismissable-alert', {
@@ -67,10 +65,10 @@
   }
 
   const onSave = (payload) => {
-    axios.post(props.saveEndpoint, {
+    axios.post(route(props.routes.store), {
       json: payload.data,
     }).then(() => {
-      router.visit(props.redirectUrl)
+      router.visit(route(props.routes.index))
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
@@ -82,6 +80,6 @@
   }
 
   const onCancel = () => {
-    router.visit(props.redirectUrl)
+    router.visit(route(props.routes.index))
   }
 </script>
