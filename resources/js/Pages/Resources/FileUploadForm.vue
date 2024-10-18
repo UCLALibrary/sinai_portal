@@ -48,18 +48,6 @@
     files: props.multiple ? [] : null,
   })
 
-//   const onFilesChange = (files) => {
-// console.log('files:', files)
-// console.log('is array:', Array.isArray(files))
-//     form.clearErrors()
-
-//     if (props.multiple) {
-//       form.files = Array.isArray(files) ? files : [files]
-//     } else {
-//       form.files = files
-//     }
-//   }
-
   const onUpload = () => {
     const formData = new FormData()
 
