@@ -26,7 +26,9 @@ class ReferencesController extends Controller
                 'creator' => 'Creator',
                 'category' => 'Category'
             ],
-            'createEndpoint' => route('references.create'),
+            'routes' => [
+                'create' => 'references.create',
+            ],
         ]);
     }
 
@@ -36,11 +38,13 @@ class ReferencesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'References > Add Reference',
+            'title' => 'Create Reference',
             'schema' => json_decode(Reference::$schema),
             'uischema' => json_decode(Reference::$uiSchema),
-            'saveEndpoint' => route('api.references.store'),
-            'redirectUrl' => route('references.index'),
+            'routes' => [
+                'index' => 'references.index',
+                'store' => 'api.references.store',
+            ],
         ]);
     }
 
@@ -50,12 +54,15 @@ class ReferencesController extends Controller
     public function edit(Reference $reference)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'References > Edit Reference',
+            'title' => 'Edit Reference',
             'schema' => json_decode(Reference::$schema),
             'uischema' => json_decode(Reference::$uiSchema),
             'data' => json_decode($reference),
-            'saveEndpoint' => route('api.references.update', $reference->id),
-            'redirectUrl' => route('references.index'),
+            'resource' => $reference,
+            'routes' => [
+                'index' => 'references.index',
+                'update' => 'api.references.update',
+            ],
         ]);
     }
 

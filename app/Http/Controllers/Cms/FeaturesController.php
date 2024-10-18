@@ -23,7 +23,9 @@ class FeaturesController extends Controller
                 'summary' => 'Summary',
                 'scope' => 'Scope'
             ],
-            'createEndpoint' => route('features.create'),
+            'routes' => [
+                'create' => 'features.create',
+            ],
         ]);
     }
 
@@ -33,11 +35,13 @@ class FeaturesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Features > Add Feature',
+            'title' => 'Create Feature',
             'schema' => json_decode(Feature::$schema),
             'uischema' => json_decode(Feature::$uiSchema),
-            'saveEndpoint' => route('api.features.store'),
-            'redirectUrl' => route('features.index'),
+            'routes' => [
+                'index' => 'features.index',
+                'store' => 'api.features.store',
+            ],
         ]);
     }
 
@@ -51,12 +55,15 @@ class FeaturesController extends Controller
         $feature['form_contexts'] = array_column($feature['form_contexts'], 'id');
 
         return Inertia::render('Resources/Edit', [
-            'title' => 'Features > Edit Feature',
+            'title' => 'Edit Feature',
             'schema' => json_decode(Feature::$schema),
             'uischema' => json_decode(Feature::$uiSchema),
             'data' => $feature,
-            'saveEndpoint' => route('api.features.update', $feature['id']),
-            'redirectUrl' => route('features.index'),
+            'resource' => $feature,
+            'routes' => [
+                'index' => 'features.index',
+                'update' => 'api.features.update',
+            ],
         ]);
     }
 }

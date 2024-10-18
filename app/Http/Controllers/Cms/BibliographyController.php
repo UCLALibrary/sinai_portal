@@ -22,7 +22,9 @@ class BibliographyController extends Controller
                 'alt_shelf' => 'Alternative Shelfmark',
                 'range' => 'Range',
             ],
-            'createEndpoint' => route('bibliography.create'),
+            'routes' => [
+                'create' => 'bibliography.create',
+            ],
         ]);
     }
 
@@ -32,11 +34,13 @@ class BibliographyController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Bibliography > Add Bibliography',
+            'title' => 'Create Bibliography',
             'schema' => json_decode(Bibliography::$schema),
             'uischema' => json_decode(Bibliography::$uiSchema),
-            'saveEndpoint' => route('api.bibliography.store'),
-            'redirectUrl' => route('bibliography.index'),
+            'routes' => [
+                'index' => 'bibliography.index',
+                'store' => 'api.bibliography.store',
+            ],
         ]);
     }
 
@@ -46,12 +50,15 @@ class BibliographyController extends Controller
     public function edit(Bibliography $bibliography)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Bibliography > Edit Bibliography',
+            'title' => 'Edit Bibliography',
             'schema' => json_decode(Bibliography::$schema),
             'uischema' => json_decode(Bibliography::$uiSchema),
             'data' => json_decode($bibliography->json),
-            'saveEndpoint' => route('api.bibliography.update', $bibliography->id),
-            'redirectUrl' => route('bibliography.index'),
+            'resource' => $bibliography,
+            'routes' => [
+                'index' => 'bibliography.index',
+                'update' => 'api.bibliography.update',
+            ],
         ]);
     }
 }

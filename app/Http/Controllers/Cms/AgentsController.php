@@ -22,7 +22,9 @@ class AgentsController extends Controller
                 'type' => 'Type',
                 'pref_name' => 'Preferred Name'
             ],
-            'createEndpoint' => route('agents.create'),
+            'routes' => [
+                'create' => 'agents.create',
+            ],
         ]);
     }
 
@@ -32,11 +34,13 @@ class AgentsController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Agents > Add Agent',
+            'title' => 'Create Agent',
             'schema' => json_decode(Agent::$schema),
             'uischema' => json_decode(Agent::$uiSchema),
-            'saveEndpoint' => route('api.agents.store'),
-            'redirectUrl' => route('agents.index'),
+            'routes' => [
+                'index' => 'agents.index',
+                'store' => 'api.agents.store',
+            ],
         ]);
     }
 
@@ -46,12 +50,15 @@ class AgentsController extends Controller
     public function edit(Agent $agent)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Agents > Edit Agent',
+            'title' => 'Edit Agent',
             'schema' => json_decode(Agent::$schema),
             'uischema' => json_decode(Agent::$uiSchema),
             'data' => json_decode($agent->json),
-            'saveEndpoint' => route('api.agents.update', $agent->id),
-            'redirectUrl' => route('agents.index'),
+            'resource' => $agent,
+            'routes' => [
+                'index' => 'agents.index',
+                'update' => 'api.agents.update',
+            ],
         ]);
     }
 }

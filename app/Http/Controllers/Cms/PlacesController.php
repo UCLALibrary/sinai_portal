@@ -21,7 +21,9 @@ class PlacesController extends Controller
                 'type' => 'Type',
                 'pref_name' => 'Preferred Name'
             ],
-            'createEndpoint' => route('places.create'),
+            'routes' => [
+                'create' => 'places.create',
+            ],
         ]);
     }
 
@@ -31,11 +33,13 @@ class PlacesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Places > Add Place',
+            'title' => 'Create Place',
             'schema' => json_decode(Place::$schema),
             'uischema' => json_decode(Place::$uiSchema),
-            'saveEndpoint' => route('api.places.store'),
-            'redirectUrl' => route('places.index'),
+            'routes' => [
+                'index' => 'places.index',
+                'store' => 'api.places.store',
+            ],
         ]);
     }
 
@@ -45,12 +49,15 @@ class PlacesController extends Controller
     public function edit(Place $place)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Places > Edit Place',
+            'title' => 'Edit Place',
             'schema' => json_decode(Place::$schema),
             'uischema' => json_decode(Place::$uiSchema),
             'data' => json_decode($place->json),
-            'saveEndpoint' => route('api.places.update', $place->id),
-            'redirectUrl' => route('places.index'),
+            'resource' => $place,
+            'routes' => [
+                'index' => 'places.index',
+                'update' => 'api.places.update',
+            ],
         ]);
     }
 }

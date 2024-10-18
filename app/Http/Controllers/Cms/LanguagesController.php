@@ -27,7 +27,9 @@ class LanguagesController extends Controller
                 'when_in_use' => 'When in use',
                 'regions' => 'Regions',
             ],
-            'createEndpoint' => route('languages.create'),
+            'routes' => [
+                'create' => 'languages.create',
+            ],
         ]);
     }
 
@@ -37,11 +39,13 @@ class LanguagesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Languages > Add Language',
+            'title' => 'Create Language',
             'schema' => json_decode(Language::$schema),
             'uischema' => json_decode(Language::$uiSchema),
-            'saveEndpoint' => route('api.languages.store'),
-            'redirectUrl' => route('languages.index'),
+            'routes' => [
+                'index' => 'languages.index',
+                'store' => 'api.languages.store',
+            ],
         ]);
     }
 
@@ -51,12 +55,15 @@ class LanguagesController extends Controller
     public function edit(Language $language)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Languages > Edit Language',
+            'title' => 'Edit Language',
             'schema' => json_decode(Language::$schema),
             'uischema' => json_decode(Language::$uiSchema),
             'data' => json_decode($language),
-            'saveEndpoint' => route('api.languages.update', $language->id),
-            'redirectUrl' => route('languages.index'),
+            'resource' => $language,
+            'routes' => [
+                'index' => 'languages.index',
+                'update' => 'api.languages.update',
+            ],
         ]);
     }
 }

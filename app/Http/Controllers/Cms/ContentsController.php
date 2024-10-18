@@ -20,7 +20,9 @@ class ContentsController extends Controller
             'columns' => [
                 'ark' => 'Ark',
             ],
-            'createEndpoint' => route('content-units.create'),
+            'routes' => [
+                'create' => 'content-units.create',
+            ],
         ]);
     }
 
@@ -30,11 +32,13 @@ class ContentsController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Content Units > Add Content Unit',
+            'title' => 'Create Content Unit',
             'schema' => json_decode(Content::$schema),
             'uischema' => json_decode(Content::$uiSchema),
-            'saveEndpoint' => route('api.content-units.store'),
-            'redirectUrl' => route('content-units.index'),
+            'routes' => [
+                'index' => 'content-units.index',
+                'store' => 'api.content-units.store',
+            ],
         ]);
     }
 
@@ -44,12 +48,15 @@ class ContentsController extends Controller
     public function edit(Content $contentUnit)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Content Units > Edit Content Unit',
+            'title' => 'Edit Content Unit',
             'schema' => json_decode(Content::$schema),
             'uischema' => json_decode(Content::$uiSchema),
             'data' => json_decode($contentUnit->json),
-            'saveEndpoint' => route('api.content-units.update', $contentUnit->id),
-            'redirectUrl' => route('content-units.index'),
+            'resource' => $contentUnit,
+            'routes' => [
+                'index' => 'content-units.index',
+                'update' => 'api.content-units.update',
+            ],
         ]);
     }
 }

@@ -20,7 +20,9 @@ class WorksController extends Controller
             'columns' => [
                 'pref_title' => 'Preferred Title',
             ],
-            'createEndpoint' => route('works.create'),
+            'routes' => [
+                'create' => 'works.create',
+            ],
         ]);
     }
 
@@ -30,7 +32,7 @@ class WorksController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Works > Add Work',
+            'title' => 'Create Work',
             'schema' => json_decode(Work::$schema),
             'uischema' => json_decode(Work::$uiSchema),
             'routes' => [
@@ -46,7 +48,7 @@ class WorksController extends Controller
     public function edit(Work $work)
     {
         return Inertia::render('Resources/Edit', [
-            'title' => 'Works > Edit Work',
+            'title' => 'Edit Work',
             'schema' => json_decode(Work::$schema),
             'uischema' => json_decode(Work::$uiSchema),
             'data' => json_decode($work->json),
