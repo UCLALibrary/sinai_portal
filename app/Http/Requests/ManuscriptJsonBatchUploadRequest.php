@@ -34,4 +34,22 @@ class ManuscriptJsonBatchUploadRequest extends FormRequest
             ],
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        $attributes = [];
+
+        if ($this->hasFile('files')) {
+            foreach ($this->file('files') as $key => $file) {
+                $attributes['files.' . $key] = $file->getClientOriginalName();
+            }
+        }
+
+        return $attributes;
+    }
 }
