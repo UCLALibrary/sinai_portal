@@ -50,6 +50,7 @@
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
   import ResourceListTable from '@/Shared/ResourceListTable.vue'
+  import useEmitter from '@/composables/useEmitter'
 
   defineProps({
     title: { type: String, required: true },
@@ -58,6 +59,8 @@
     columns: { type: Object, required: true },
     routes: { type: Object, required: true },
   })
+  
+  const emitter = useEmitter()
 
   const onUploadSuccess = (payload) => {
     router.visit(window.location.href, {
@@ -65,8 +68,7 @@
         // display alert that the resource has been saved
         emitter.emit('show-dismissable-alert', {
           type: payload.status,
-          message: payload.message,
-          timeout: 4000,
+          message: payload.message
         })
       },
     })
