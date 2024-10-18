@@ -25,7 +25,7 @@
           :multiple="true"
           :endpoint="route(routes.upload)"
           @on-success="onUploadSuccess"
-          class="py-4"
+          class="px-4 sm:px-6 lg:px-8 py-4"
         />
 
         <ResourceListTable
