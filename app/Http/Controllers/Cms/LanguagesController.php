@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class LanguagesController extends Controller
 {
+    protected $routes = [
+        'index' => 'languages.index',
+        'create' => 'languages.create',
+        'store' => 'api.languages.store',
+        'edit' => 'languages.edit',
+        'update' => 'api.languages.update',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +23,6 @@ class LanguagesController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Languages',
-            'resourceName' => 'languages',
             'resources' => Language::paginate(20),
             'columns' => [
                 'id' => 'Id',
@@ -27,9 +34,7 @@ class LanguagesController extends Controller
                 'when_in_use' => 'When in use',
                 'regions' => 'Regions',
             ],
-            'routes' => [
-                'create' => 'languages.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -42,10 +47,7 @@ class LanguagesController extends Controller
             'title' => 'Create Language',
             'schema' => json_decode(Language::$schema),
             'uischema' => json_decode(Language::$uiSchema),
-            'routes' => [
-                'index' => 'languages.index',
-                'store' => 'api.languages.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -60,10 +62,7 @@ class LanguagesController extends Controller
             'uischema' => json_decode(Language::$uiSchema),
             'data' => json_decode($language),
             'resource' => $language,
-            'routes' => [
-                'index' => 'languages.index',
-                'update' => 'api.languages.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

@@ -8,6 +8,20 @@ use Inertia\Inertia;
 
 class ContentsController extends Controller
 {
+    protected $routes = [
+        'index' => 'content-units.index',
+        'create' => 'content-units.create',
+        'store' => 'api.content-units.store',
+        'edit' => 'content-units.edit',
+        'update' => 'api.content-units.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'contentUnit',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,14 +29,11 @@ class ContentsController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Content Units',
-            'resourceName' => 'content-units',
             'resources' => Content::paginate(20),
             'columns' => [
                 'ark' => 'Ark',
             ],
-            'routes' => [
-                'create' => 'content-units.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -36,8 +47,8 @@ class ContentsController extends Controller
             'schema' => json_decode(Content::$schema),
             'uischema' => json_decode(Content::$uiSchema),
             'routes' => [
-                'index' => 'content-units.index',
-                'store' => 'api.content-units.store',
+                'edit' => 'content-units.edit',
+                'upload' => 'api.files.upload.store',
             ],
         ]);
     }
@@ -55,7 +66,7 @@ class ContentsController extends Controller
             'resource' => $contentUnit,
             'routes' => [
                 'index' => 'content-units.index',
-                'update' => 'api.content-units.update',
+                'upload' => 'api.files.upload.update',
             ],
         ]);
     }

@@ -14,7 +14,7 @@
           v-if="routes.upload"
           label="Select a JSON file"
           :multiple="false"
-          :endpoint="route(routes.upload)"
+          :endpoint="route(routes.upload.store, routes.upload.resourceType)"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />

@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AgentsController;
 use App\Http\Controllers\Api\BibliographyController;
 use App\Http\Controllers\Api\ContentsController;
 use App\Http\Controllers\Api\FeaturesController;
+use App\Http\Controllers\Api\FilesController;
 use App\Http\Controllers\Api\FormContextsController;
 use App\Http\Controllers\Api\FormsController;
 use App\Http\Controllers\Api\LanguagesController;
@@ -23,9 +24,6 @@ Route::get('/user', function (Request $request) {
 
 // manuscripts
 Route::apiResource('manuscripts', ManuscriptsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
-Route::post('manuscripts/upload', [ManuscriptsController::class, 'storeOnUpload'])->name('api.manuscripts.upload.store');
-Route::post('manuscripts/upload/batch', [ManuscriptsController::class, 'batchUpload'])->name('api.manuscripts.upload.batch');
-Route::post('manuscripts/upload/{manuscript}', [ManuscriptsController::class, 'updateOnUpload'])->name('api.manuscripts.upload.update');
 
 // parts
 Route::apiResource('codicological-units', PartsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
@@ -62,6 +60,15 @@ Route::apiResource('form-contexts', FormContextsController::class, ['as' => 'api
 
 // roles
 Route::apiResource('roles', RolesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
+
+// files
+Route::pattern('resourceType', 'manuscript|codicologicalUnit|contentUnit|work|agent|place|bibliography');
+Route::group(['prefix' => 'files/{resourceType}'], function () {
+    // upload
+    Route::post('upload', [FilesController::class, 'storeOnUpload'])->name('api.files.upload.store');
+    Route::post('upload/batch', [FilesController::class, 'batchUpload'])->name('api.files.upload.batch');
+    Route::post('upload/{resourceId}', [FilesController::class, 'updateOnUpload'])->name('api.files.upload.update');
+});
 
 // forms
 Route::get('forms/codicological-units/{codicological_unit?}', [FormsController::class, 'codUnit'])->name('api.forms.codicological-units');

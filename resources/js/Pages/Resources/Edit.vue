@@ -15,7 +15,7 @@
           label="Select a JSON file"
           :multiple="false"
           hint="Note: The uploaded file will overwrite the existing data"
-          :endpoint="route(routes.upload, resource.id)"
+          :endpoint="route(routes.upload.update, { resourceType: routes.upload.resourceType, resourceId: resource.id })"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />

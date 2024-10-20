@@ -8,6 +8,20 @@ use Inertia\Inertia;
 
 class AgentsController extends Controller
 {
+    protected $routes = [
+        'index' => 'agents.index',
+        'create' => 'agents.create',
+        'store' => 'api.agents.store',
+        'edit' => 'agents.edit',
+        'update' => 'api.agents.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'agent',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,16 +29,13 @@ class AgentsController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Agents',
-            'resourceName' => 'agents',
             'resources' => Agent::paginate(20),
             'columns' => [
                 'id' => 'Id',
                 'type' => 'Type',
                 'pref_name' => 'Preferred Name'
             ],
-            'routes' => [
-                'create' => 'agents.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -37,10 +48,7 @@ class AgentsController extends Controller
             'title' => 'Create Agent',
             'schema' => json_decode(Agent::$schema),
             'uischema' => json_decode(Agent::$uiSchema),
-            'routes' => [
-                'index' => 'agents.index',
-                'store' => 'api.agents.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -55,10 +63,7 @@ class AgentsController extends Controller
             'uischema' => json_decode(Agent::$uiSchema),
             'data' => json_decode($agent->json),
             'resource' => $agent,
-            'routes' => [
-                'index' => 'agents.index',
-                'update' => 'api.agents.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

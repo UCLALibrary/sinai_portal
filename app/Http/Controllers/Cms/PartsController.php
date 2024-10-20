@@ -8,6 +8,20 @@ use Inertia\Inertia;
 
 class PartsController extends Controller
 {
+    protected $routes = [
+        'index' => 'codicological-units.index',
+        'create' => 'codicological-units.create',
+        'store' => 'api.codicological-units.store',
+        'edit' => 'codicological-units.edit',
+        'update' => 'api.codicological-units.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'codicologicalUnit',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,15 +29,12 @@ class PartsController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Codicological Units',
-            'resourceName' => 'codicological-units',
             'resources' => Part::paginate(20),
             'columns' => [
                 'identifier' => 'Identifier',
                 'ark' => 'ARK'
             ],
-            'routes' => [
-                'create' => 'codicological-units.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -36,10 +47,7 @@ class PartsController extends Controller
             'title' => 'Create Codicological Unit',
             'schema' => json_decode(Part::$schema),
             'uischema' => json_decode(Part::$uiSchema),
-            'routes' => [
-                'index' => 'codicological-units.index',
-                'store' => 'api.codicological-units.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -56,7 +64,7 @@ class PartsController extends Controller
             'resource' => $codicologicalUnit,
             'routes' => [
                 'index' => 'codicological-units.index',
-                'update' => 'api.codicological-units.update',
+                'upload' => 'api.files.upload.update',
             ],
         ]);
     }

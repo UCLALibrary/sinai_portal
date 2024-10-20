@@ -23,13 +23,12 @@
           label="Select one or more JSON files"
           hint="Note: The uploaded files will overwrite any existing data. Any file with an ark that doesn't match an existing record will create a new record."
           :multiple="true"
-          :endpoint="route(routes.upload)"
+          :endpoint="route(routes.upload.batch, routes.upload.resourceType)"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
 
         <ResourceListTable
-          :resource-name="resourceName"
           :resources="resources.data"
           :columns="columns"
           :pagination="{
@@ -38,6 +37,7 @@
             total: resources.total,
             links: resources.links
           }"
+          :routes="routes"
           class="px-4 sm:px-6 lg:px-8 my-8"
         />
       </div>
@@ -54,7 +54,6 @@
 
   defineProps({
     title: { type: String, required: true },
-    resourceName: { type: String, required: true },
     resources: { type: Object, required: false, default: () => {} },
     columns: { type: Object, required: true },
     routes: { type: Object, required: true },

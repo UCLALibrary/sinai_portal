@@ -4,11 +4,24 @@ namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
 use App\Models\Manuscript;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 class ManuscriptsController extends Controller
 {
+    protected $routes = [
+        'index' => 'manuscripts.index',
+        'create' => 'manuscripts.create',
+        'store' => 'api.manuscripts.store',
+        'edit' => 'manuscripts.edit',
+        'update' => 'api.manuscripts.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'manuscript',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -16,16 +29,12 @@ class ManuscriptsController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Manuscripts',
-            'resourceName' => 'manuscripts',
             'resources' => Manuscript::paginate(20),
             'columns' => [
                 'ark' => 'ARK',
                 'identifier' => 'Identifier'
             ],
-            'routes' => [
-                'create' => 'manuscripts.create',
-                'upload' => 'api.manuscripts.upload.batch',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -38,12 +47,7 @@ class ManuscriptsController extends Controller
             'title' => 'Create Manuscript',
             'schema' => json_decode(Manuscript::$schema),
             'uischema' => json_decode(Manuscript::$uiSchema),
-            'routes' => [
-                'index' => 'manuscripts.index',
-                'edit' => 'manuscripts.edit',
-                'store' => 'api.manuscripts.store',
-                'upload' => 'api.manuscripts.upload.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -58,11 +62,7 @@ class ManuscriptsController extends Controller
             'uischema' => json_decode(Manuscript::$uiSchema),
             'data' => json_decode($manuscript->json),
             'resource' => $manuscript,
-            'routes' => [
-                'index' => 'manuscripts.index',
-                'update' => 'api.manuscripts.update',
-                'upload' => 'api.manuscripts.upload.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

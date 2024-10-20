@@ -8,6 +8,20 @@ use Inertia\Inertia;
 
 class BibliographyController extends Controller
 {
+    protected $routes = [
+        'index' => 'bibliography.index',
+        'create' => 'bibliography.create',
+        'store' => 'api.bibliography.store',
+        'edit' => 'bibliography.edit',
+        'update' => 'api.bibliography.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'bibliography',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,16 +29,13 @@ class BibliographyController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Bibliography',
-            'resourceName' => 'bibliography',
             'resources' => Bibliography::paginate(20),
             'columns' => [
                 'type' => 'Type',
                 'alt_shelf' => 'Alternative Shelfmark',
                 'range' => 'Range',
             ],
-            'routes' => [
-                'create' => 'bibliography.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -37,10 +48,7 @@ class BibliographyController extends Controller
             'title' => 'Create Bibliography',
             'schema' => json_decode(Bibliography::$schema),
             'uischema' => json_decode(Bibliography::$uiSchema),
-            'routes' => [
-                'index' => 'bibliography.index',
-                'store' => 'api.bibliography.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -55,10 +63,7 @@ class BibliographyController extends Controller
             'uischema' => json_decode(Bibliography::$uiSchema),
             'data' => json_decode($bibliography->json),
             'resource' => $bibliography,
-            'routes' => [
-                'index' => 'bibliography.index',
-                'update' => 'api.bibliography.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

@@ -8,6 +8,20 @@ use Inertia\Inertia;
 
 class WorksController extends Controller
 {
+    protected $routes = [
+        'index' => 'works.index',
+        'create' => 'works.create',
+        'store' => 'api.works.store',
+        'edit' => 'works.edit',
+        'update' => 'api.works.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'work',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,14 +29,11 @@ class WorksController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Works',
-            'resourceName' => 'works',
             'resources' => Work::paginate(20),
             'columns' => [
                 'pref_title' => 'Preferred Title',
             ],
-            'routes' => [
-                'create' => 'works.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -35,10 +46,7 @@ class WorksController extends Controller
             'title' => 'Create Work',
             'schema' => json_decode(Work::$schema),
             'uischema' => json_decode(Work::$uiSchema),
-            'routes' => [
-                'index' => 'works.index',
-                'store' => 'api.works.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -53,10 +61,7 @@ class WorksController extends Controller
             'uischema' => json_decode(Work::$uiSchema),
             'data' => json_decode($work->json),
             'resource' => $work,
-            'routes' => [
-                'index' => 'works.index',
-                'update' => 'api.works.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

@@ -17,25 +17,31 @@ class UsersController extends Controller
 {
     use AuthorizesRequests;
 
+    protected $routes = [
+        'index' => 'users.index',
+        'create' => 'users.create',
+        'store' => 'users.store',
+        'edit' => 'users.edit',
+        'update' => 'users.update',
+    ];
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
 
-		$this->authorize('viewAny', User::class);
-
-		return Inertia::render('Resources/Index', [
-			'title' => 'Users',
-			'resourceName' => 'users',
-			'resources' => User::paginate(20),
-			'columns' => [
-				'name' => 'Name',
-				'email' => 'E-mail',
-				'role_names' => 'Role'
-			],
-			'createEndpoint' => route('users.create'),
-		]);
+        return Inertia::render('Resources/Index', [
+            'title' => 'Users',
+            'resources' => User::paginate(20),
+            'columns' => [
+                'name' => 'Name',
+                'email' => 'E-mail',
+                'role_names' => 'Role'
+            ],
+            'routes' => $this->routes,
+        ]);
     }
 
     /**
@@ -43,15 +49,13 @@ class UsersController extends Controller
      */
     public function create()
     {
-
         $this->authorize('create', User::class);
 
         return Inertia::render('Resources/Create', [
             'title' => 'Users > Add User',
             'schema' => json_decode(User::$createSchema),
             'uischema' => json_decode(User::$createUiSchema),
-            'saveEndpoint' => route('users.store'),
-            'redirectUrl' => route('users.index'),
+            'routes' => $this->routes,
         ]);
     }
 
@@ -91,10 +95,10 @@ class UsersController extends Controller
             'data' => [
                 'name' => $user->name,
                 'email' => $user->email,
-				'role' => $user->roles()->first()->id ?? null
+                'role' => $user->roles()->first()->id ?? null
             ],
-            'saveEndpoint' => route('users.update', $user->id),
-            'redirectUrl' => route('users.index'),
+            'resource' => $user,
+            'routes' => $this->routes,
         ]);
     }
 
@@ -115,10 +119,10 @@ class UsersController extends Controller
             'email' => $data['email'],
         ]);
 
-		$role = Role::findById($data['role'], 'web');
-		if($role) {
-			$user->syncRoles($role);
-		}
+        $role = Role::findById($data['role'], 'web');
+        if($role) {
+            $user->syncRoles($role);
+        }
 
         return $response
             ? response()->json(['message' => 'User updated successfully'])
@@ -166,7 +170,7 @@ class UsersController extends Controller
             $metadata['name'] = isset($jsonData['name']) ? $jsonData['name'] : null;
             $metadata['email'] = isset($jsonData['email']) ? $jsonData['email'] : null;
             $metadata['password'] = isset($jsonData['password']) ? $jsonData['password'] : null;
-			$metadata['role'] = isset($jsonData['role']) ? $jsonData['role'] : null;
+            $metadata['role'] = isset($jsonData['role']) ? $jsonData['role'] : null;
         }
         return $metadata;
     }

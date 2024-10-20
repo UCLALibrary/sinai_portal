@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class LocationsController extends Controller
 {
+    protected $routes = [
+        'index' => 'locations.index',
+        'create' => 'locations.create',
+        'store' => 'api.locations.store',
+        'edit' => 'locations.edit',
+        'update' => 'api.locations.update',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +23,6 @@ class LocationsController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Locations',
-            'resourceName' => 'locations',
             'resources' => Location::paginate(20),
             'columns' => [
                 'id' => 'ID',
@@ -24,9 +31,7 @@ class LocationsController extends Controller
                 'note' => 'Note',
                 'country' => 'Country'
             ],
-            'routes' => [
-                'create' => 'locations.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -39,10 +44,7 @@ class LocationsController extends Controller
             'title' => 'Create Location',
             'schema' => json_decode(Location::$schema),
             'uischema' => json_decode(Location::$uiSchema),
-            'routes' => [
-                'index' => 'locations.index',
-                'store' => 'api.locations.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -57,10 +59,7 @@ class LocationsController extends Controller
             'uischema' => json_decode(Location::$uiSchema),
             'data' => json_decode($location),
             'resource' => $location,
-            'routes' => [
-                'index' => 'locations.index',
-                'update' => 'api.locations.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

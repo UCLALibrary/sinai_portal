@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class ReferencesController extends Controller
 {
+    protected $routes = [
+        'index' => 'references.index',
+        'create' => 'references.create',
+        'store' => 'api.references.store',
+        'edit' => 'references.edit',
+        'update' => 'api.references.update',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +23,6 @@ class ReferencesController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'References',
-            'resourceName' => 'references',
             'resources' => Reference::paginate(20),
             'columns' => [
                 'id' => 'Id',
@@ -26,9 +33,7 @@ class ReferencesController extends Controller
                 'creator' => 'Creator',
                 'category' => 'Category'
             ],
-            'routes' => [
-                'create' => 'references.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -41,10 +46,7 @@ class ReferencesController extends Controller
             'title' => 'Create Reference',
             'schema' => json_decode(Reference::$schema),
             'uischema' => json_decode(Reference::$uiSchema),
-            'routes' => [
-                'index' => 'references.index',
-                'store' => 'api.references.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -59,10 +61,7 @@ class ReferencesController extends Controller
             'uischema' => json_decode(Reference::$uiSchema),
             'data' => json_decode($reference),
             'resource' => $reference,
-            'routes' => [
-                'index' => 'references.index',
-                'update' => 'api.references.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 

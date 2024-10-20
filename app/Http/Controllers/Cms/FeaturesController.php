@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class FeaturesController extends Controller
 {
+    protected $routes = [
+        'index' => 'features.index',
+        'create' => 'features.create',
+        'store' => 'api.features.store',
+        'edit' => 'features.edit',
+        'update' => 'api.features.update',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +23,6 @@ class FeaturesController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Features',
-            'resourceName' => 'features',
             'resources' => Feature::paginate(20),
             'columns' => [
                 'label' => 'Label',
@@ -23,9 +30,7 @@ class FeaturesController extends Controller
                 'summary' => 'Summary',
                 'scope' => 'Scope'
             ],
-            'routes' => [
-                'create' => 'features.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -38,10 +43,7 @@ class FeaturesController extends Controller
             'title' => 'Create Feature',
             'schema' => json_decode(Feature::$schema),
             'uischema' => json_decode(Feature::$uiSchema),
-            'routes' => [
-                'index' => 'features.index',
-                'store' => 'api.features.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -60,10 +62,7 @@ class FeaturesController extends Controller
             'uischema' => json_decode(Feature::$uiSchema),
             'data' => $feature,
             'resource' => $feature,
-            'routes' => [
-                'index' => 'features.index',
-                'update' => 'api.features.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }

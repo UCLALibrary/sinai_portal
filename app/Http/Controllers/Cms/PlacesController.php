@@ -8,6 +8,20 @@ use Inertia\Inertia;
 
 class PlacesController extends Controller
 {
+    protected $routes = [
+        'index' => 'places.index',
+        'create' => 'places.create',
+        'store' => 'api.places.store',
+        'edit' => 'places.edit',
+        'update' => 'api.places.update',
+        'upload' => [
+            'store' => 'api.files.upload.store',
+            'update' => 'api.files.upload.update',
+            'batch' => 'api.files.upload.batch',
+            'resourceType' => 'place',
+        ],
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,15 +29,12 @@ class PlacesController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Places',
-            'resourceName' => 'places',
             'resources' => Place::paginate(20),
             'columns' => [
                 'type' => 'Type',
                 'pref_name' => 'Preferred Name'
             ],
-            'routes' => [
-                'create' => 'places.create',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -36,10 +47,7 @@ class PlacesController extends Controller
             'title' => 'Create Place',
             'schema' => json_decode(Place::$schema),
             'uischema' => json_decode(Place::$uiSchema),
-            'routes' => [
-                'index' => 'places.index',
-                'store' => 'api.places.store',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 
@@ -54,10 +62,7 @@ class PlacesController extends Controller
             'uischema' => json_decode(Place::$uiSchema),
             'data' => json_decode($place->json),
             'resource' => $place,
-            'routes' => [
-                'index' => 'places.index',
-                'update' => 'api.places.update',
-            ],
+            'routes' => $this->routes,
         ]);
     }
 }
