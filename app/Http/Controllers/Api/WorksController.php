@@ -25,19 +25,10 @@ class WorksController extends Controller
     public function store(WorkRequest $request): WorkResource
     {
         return DB::transaction(function () use ($request) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = (new Work())->getFillableFields($request->json, json_encode($request->json));
 
             // create the resource
-            $work = Work::create([
-                'pref_title' => $metadata['pref_title'],
-                'json' => $metadata['json'],
-            ]);
-
-            // insert the id into the json field
-            $work->json = json_encode(array_merge(json_decode($work->json, true), ['id' => $work->id]));
-
-            $work->save();
+            $work = Work::create($fields);
 
             return new WorkResource($work);
         });
@@ -49,14 +40,10 @@ class WorksController extends Controller
     public function update(WorkRequest $request, Work $work): WorkResource
     {
         return DB::transaction(function () use ($request, $work) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = $work->getFillableFields($request->json, json_encode($request->json));
 
             // update the resource
-            $work->update([
-                'pref_title' => $metadata['pref_title'],
-                'json' => $metadata['json'],
-            ]);
+            $work->update($fields);
  
             return new WorkResource($work);
         });
@@ -74,15 +61,5 @@ class WorksController extends Controller
         return $response
             ? response()->json(['message' => 'Work deleted successfully'])
             : response()->json(['error' => 'Error deleting work']);
-    }
-
-    private function _extractMetadataFromJsonData($jsonData)
-    {
-        $metadata = [];
-        if ($jsonData) {
-            $metadata['json'] = json_encode($jsonData);
-            $metadata['pref_title'] = isset($jsonData['pref_title']) ? $jsonData['pref_title'] : null;
-        }
-        return $metadata;
     }
 }

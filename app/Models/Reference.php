@@ -11,6 +11,9 @@ class Reference extends Model
 {
     use HasFactory, JsonSchemas;
 
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -25,8 +28,20 @@ class Reference extends Model
         'category'
     ];
 
-    protected $keyType = 'string';
-    public $incrementing = false;
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data)
+    {
+        return array_combine($this->fillable, [
+            $data['short_title'],
+            $data['formatted_citation'],
+            $data['zotero_uri'],
+            $data['date'],
+            $data['creator'],
+            $data['category'],
+        ]);
+    }
 
     public static function booted() {
         static::creating(function ($model) {
@@ -35,7 +50,6 @@ class Reference extends Model
             }
         });
     }
-
 }
 
 /*

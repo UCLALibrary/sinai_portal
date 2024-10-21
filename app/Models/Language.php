@@ -29,6 +29,22 @@ class Language extends Model
         'regions',
     ];
 
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data)
+    {
+        return array_combine($this->fillable, [
+            $data['id'],
+            $data['label'],
+            $data['iso'],
+            $data['glottolog'],
+            $data['writing_systems'],
+            $data['other_names'],
+            $data['when_in_use'],
+            $data['regions'],
+        ]);
+    }
 }
 
 /*

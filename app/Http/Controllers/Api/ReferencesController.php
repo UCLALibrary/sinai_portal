@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ReferenceRequest;
 use App\Http\Resources\ReferenceResource;
 use App\Models\Reference;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
 class ReferencesController extends Controller
@@ -16,20 +17,10 @@ class ReferencesController extends Controller
     public function store(ReferenceRequest $request): ReferenceResource
     {
         return DB::transaction(function () use ($request) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = (new Reference())->getFillableFields($request->json);
 
             // create the resource
-            $reference = Reference::create([
-                'short_title' => $metadata['short_title'],
-                'formatted_citation' => $metadata['formatted_citation'],
-                'zotero_uri' => $metadata['zotero_uri'],
-                'date' => $metadata['date'],
-                'creator' => $metadata['creator'],
-                'category' => $metadata['category']
-            ]);
-
-            $reference->save();
+            $reference = Reference::create($fields);
 
             return new ReferenceResource($reference);
         });
@@ -41,18 +32,10 @@ class ReferencesController extends Controller
     public function update(ReferenceRequest $request, Reference $reference): ReferenceResource
     {
         return DB::transaction(function () use ($request, $reference) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = $reference->getFillableFields($request->json);
 
             // update the resource
-            $reference->update([
-                'short_title' => $metadata['short_title'],
-                'formatted_citation' => $metadata['formatted_citation'],
-                'zotero_uri' => $metadata['zotero_uri'],
-                'date' => $metadata['date'],
-                'creator' => $metadata['creator'],
-                'category' => $metadata['category'],
-            ]);
+            $reference->update($fields);
 
             return new ReferenceResource($reference);
         });
@@ -70,19 +53,5 @@ class ReferencesController extends Controller
         return $response
             ? response()->json(['message' => 'Reference deleted successfully'])
             : response()->json(['error' => 'Error deleting reference']);
-    }
-
-    private function _extractMetadataFromJsonData($jsonData): array
-    {
-        $metadata = [];
-        if ($jsonData) {
-            $metadata['short_title'] = $jsonData['short_title'] ?? null;
-            $metadata['formatted_citation'] = $jsonData['formatted_citation'] ?? null;
-            $metadata['zotero_uri'] = $jsonData['zotero_uri'] ?? null;
-            $metadata['date'] = $jsonData['date'] ?? null;
-            $metadata['creator'] = $jsonData['creator'] ?? null;
-            $metadata['category'] = $jsonData['category'] ?? null;
-        }
-        return $metadata;
     }
 }

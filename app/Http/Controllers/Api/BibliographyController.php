@@ -25,21 +25,10 @@ class BibliographyController extends Controller
     public function store(BibliographyRequest $request): BibliographyResource
     {
         return DB::transaction(function () use ($request) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = (new Bibliography())->getFillableFields($request->json, json_encode($request->json));
 
             // create the resource
-            $bibliography = Bibliography::create([
-                'type' => $metadata['type'],
-                'range' => $metadata['range'],
-                'alt_shelf' => $metadata['alt_shelf'],
-                'json' => $metadata['json'],
-            ]);
-
-            // insert the id into the json field
-            $bibliography->json = json_encode(array_merge(json_decode($bibliography->json, true), ['id' => $bibliography->id]));
-
-            $bibliography->save();
+            $bibliography = Bibliography::create($fields);
 
             return new BibliographyResource($bibliography);
         });
@@ -51,16 +40,10 @@ class BibliographyController extends Controller
     public function update(BibliographyRequest $request, Bibliography $bibliography): BibliographyResource
     {
         return DB::transaction(function () use ($request, $bibliography) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = $bibliography->getFillableFields($request->json, json_encode($request->json));
 
             // update the resource
-            $bibliography->update([
-                'type' => $metadata['type'],
-                'range' => $metadata['range'],
-                'alt_shelf' => $metadata['alt_shelf'],
-                'json' => $metadata['json'],
-            ]);
+            $bibliography->update($fields);
  
             return new BibliographyResource($bibliography);
         });
@@ -78,17 +61,5 @@ class BibliographyController extends Controller
         return $response
             ? response()->json(['message' => 'Bibliography deleted successfully'])
             : response()->json(['error' => 'Error deleting bibliography']);
-    }
-
-    private function _extractMetadataFromJsonData($jsonData)
-    {
-        $metadata = [];
-        if ($jsonData) {
-            $metadata['json'] = json_encode($jsonData);
-            $metadata['type'] = isset($jsonData['type']) ? $jsonData['type'] : null;
-            $metadata['range'] = isset($jsonData['range']) ? $jsonData['range'] : null;
-            $metadata['alt_shelf'] = isset($jsonData['alt_shelf']) ? $jsonData['alt_shelf'] : null;
-        }
-        return $metadata;
     }
 }

@@ -25,16 +25,10 @@ class ContentsController extends Controller
     public function store(ContentRequest $request): ContentResource
     {
         return DB::transaction(function () use ($request) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = (new Content())->getFillableFields($request->json, json_encode($request->json));
 
             // create the resource
-            $contentUnit = Content::create($metadata);
-
-            // insert the id into the json field
-            $contentUnit->json = json_encode(array_merge(json_decode($contentUnit->json, true), ['id' => $contentUnit->id]));
-
-            $contentUnit->save();
+            $contentUnit = Content::create($fields);
 
             return new ContentResource($contentUnit);
         });
@@ -46,11 +40,10 @@ class ContentsController extends Controller
     public function update(ContentRequest $request, Content $contentUnit): ContentResource
     {
         return DB::transaction(function () use ($request, $contentUnit) {
-            // extract metadata from the json field to populate database columns for list view
-            $metadata = $this->_extractMetadataFromJsonData($request->json);
+            $fields = $contentUnit->getFillableFields($request->json, json_encode($request->json));
 
             // update the resource
-            $contentUnit->update($metadata);
+            $contentUnit->update($fields);
 
             return new ContentResource($contentUnit);
         });
@@ -68,15 +61,5 @@ class ContentsController extends Controller
         return $response
             ? response()->json(['message' => 'Content deleted successfully'])
             : response()->json(['error' => 'Error deleting content']);
-    }
-
-    private function _extractMetadataFromJsonData($jsonData)
-    {
-        $metadata = [];
-        if ($jsonData) {
-            $metadata['json'] = json_encode($jsonData);
-            $metadata['ark'] = isset($jsonData['ark']) ? $jsonData['ark'] : null;
-        }
-        return $metadata;
     }
 }
