@@ -22,6 +22,7 @@ class Work extends Model
      */
     protected $fillable = [
         'id',
+        'ark',
         'pref_title',
         'json',
     ];
@@ -33,6 +34,7 @@ class Work extends Model
     {
         return array_combine($this->fillable, [
             basename($data['ark']),  // use the trailing ark segment as the id
+            $data['ark'],
             $data['pref_title'],
             $json,
         ]);
