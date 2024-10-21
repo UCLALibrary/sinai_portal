@@ -13,6 +13,7 @@ use App\Http\Controllers\Cms\ReferencesController;
 use App\Http\Controllers\Cms\UsersController;
 use App\Http\Controllers\Cms\WorksController;
 use App\Http\Controllers\Frontend\AgentsController as FrontendAgentsController;
+use App\Http\Controllers\Frontend\LayersController as FrontendLayersController;
 use App\Http\Controllers\Frontend\PlacesController as FrontendPlacesController;
 use App\Http\Controllers\Frontend\ManuscriptsController as FrontendManuscriptsController;
 use App\Http\Controllers\Frontend\WorksController as FrontendWorksController;
@@ -28,6 +29,7 @@ Route::resource('/agents', FrontendAgentsController::class)->only(['index', 'sho
 Route::resource('/places', FrontendPlacesController::class)->only(['index', 'show'])->names('frontend.places');
 Route::resource('/works', FrontendWorksController::class)->only(['index', 'show'])->names('frontend.works');
 Route::resource('/manuscripts', FrontendManuscriptsController::class)->only(['index', 'show'])->names('frontend.manuscripts');
+Route::resource('/layers', FrontendLayersController::class)->only(['index', 'show'])->names('frontend.layers');
 // Route::resource('/about', FrontendAboutController::class)->only(['index', 'show'])->names('frontend.about');
 
 Route::get('/about', function () {

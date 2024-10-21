@@ -57,6 +57,11 @@
                                 Manuscripts
                             </Link>
                             <Link
+                                :href="route('frontend.layers.index')"
+                                :class="{ 'active': route().current('frontend.layers.index') || route().current('frontend.layers.show') }">
+                                Layers
+                            </Link>
+                            <Link
                                 :href="route('frontend.about')"
                                 :class="{ 'active': route().current('frontend.about') }">
                                 About

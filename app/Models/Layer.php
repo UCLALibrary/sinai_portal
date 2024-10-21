@@ -90,7 +90,7 @@ class Layer extends Model
      *
      * @return string|null
      */
-    protected function getSourceIdentifiers(): ?string
+    public function getSourceIdentifiers(): ?string
     {
         $data = $this->getJsonData();
 
