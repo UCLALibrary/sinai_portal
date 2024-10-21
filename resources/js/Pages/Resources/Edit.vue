@@ -67,7 +67,7 @@
   }
 
   const onSave = (payload) => {
-    axios.put(route(props.routes.update), {
+    axios.put(route(props.routes.update, props.resource.id), {
       json: payload.data,
     }).then(() => {
       if (payload.continueEditing) {
