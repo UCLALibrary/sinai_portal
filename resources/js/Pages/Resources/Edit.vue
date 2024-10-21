@@ -1,5 +1,5 @@
 <template>
-  <AppLayout title="Edit Resource">
+  <AppLayout :title="title">
     <div class="lg:py-12">
       <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-8 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
