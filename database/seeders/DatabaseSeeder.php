@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(FeaturesSeeder::class);
 		$this->call(RolesPermissionsSeeder::class);
 		$this->call(LocationsSeeder::class);
+		$this->call(LayersSeeder::class);
     }
 }
