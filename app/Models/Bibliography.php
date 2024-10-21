@@ -21,6 +21,19 @@ class Bibliography extends Model
         'alt_shelf',
         'json',
     ];
+
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        return array_combine($this->fillable, [
+            $data['type'],
+            $data['range'],
+            $data['alt_shelf'],
+            $json,
+        ]);
+    }
 }
 
 /*

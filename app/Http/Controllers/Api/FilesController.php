@@ -3,127 +3,101 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ManuscriptJsonBatchUploadRequest;
-use App\Http\Requests\ManuscriptJsonFileUploadRequest;
-use App\Models\Manuscript;
+use App\Http\Requests\JsonFileUploadRequest;
+use App\Http\Requests\JsonBatchUploadRequest;
 
 class FilesController extends Controller
 {
     /**
      * Store a newly created resource in storage on file upload.
      */
-    public function storeOnUpload(ManuscriptJsonFileUploadRequest $request)
+    public function storeOnUpload(JsonFileUploadRequest $request, $resourceType)
     {
         $file = $request->file('files');
 
         // decode the json file
         $json = $file->get();
-        $metadata = json_decode($file->get(), true);
+        $data = json_decode($json, true);
 
-        // use the trailing ark segment as the manuscript id
-        $manuscriptId = basename($metadata['ark']);
+        // populate the fillable fields for the resource
+        $model = '\\App\\Models\\' . ucfirst($resourceType);
+        $instance = new $model();
+        $fields = $instance->getFillableFields($data, $json);
 
         // create the resource
-        $manuscript = Manuscript::create([
-            'id' => $manuscriptId,  
-            'ark' => $metadata['ark'],
-            'type' => $metadata['type']['label'],
-            'identifier' => $metadata['shelfmark'],
-            'json' => $json,
-        ]);
+        $resource = $model::create($fields);
 
         return response()->json([
-            'status' => $manuscript ? 'success' : 'error',
-            'message' => $manuscript ? 'The JSON file has been successfully uploaded.' : 'Error uploading JSON file for manuscript.',
-            'resourceId' => $manuscriptId,
+            'status' => $resource ? 'success' : 'error',
+            'message' => $resource ? 'The JSON file has been successfully uploaded.' : 'Error uploading the JSON file.',
+            'resourceId' => basename($data['ark']),
         ]);
     }
 
     /**
      * Update the specified resource in storage on file upload.
      */
-    public function updateOnUpload(ManuscriptJsonFileUploadRequest $request, Manuscript $manuscript)
+    public function updateOnUpload(JsonFileUploadRequest $request, $resourceType, $resourceId)
     {
         $file = $request->file('files');
 
         // decode the json file
         $json = $file->get();
-        $metadata = json_decode($file->get(), true);
+        $data = json_decode($json, true);
+
+        // get the resource with the given id
+        $model = '\\App\\Models\\' . ucfirst($resourceType);
+        $resource = $model::find($resourceId);
+
+        // populate the fillable fields for the resource
+        $fields = $resource->getFillableFields($data, $json);
 
         // update the resource
-        $response = $manuscript->update([
-            'type' => $metadata['type']['label'],
-            'identifier' => $metadata['shelfmark'],
-            'json' => $json,
-        ]);
+        $status = $resource->update($fields);
 
         return response()->json([
-            'status'   => $response ? 'success' : 'error',
-            'message'  => $response ? 'The JSON file has been successfully uploaded.' : 'Error uploading JSON file for manuscript.',
-            'resourceId' => basename($manuscript->ark),
+            'status' => $status ? 'success' : 'error',
+            'message' => $status ? 'The JSON file has been successfully uploaded.' : 'Error uploading the JSON file.',
         ]);
     }
 
-    public function batchUpload(ManuscriptJsonBatchUploadRequest $request)
+    public function batchUpload(JsonBatchUploadRequest $request, $resourceType)
     {
+        $messages = [];
+
         $files = $request->file('files');
-        
-        $updatedManuscripts = array();
-        $createdManuscripts = array();
-
         foreach ($files as $file) {
+            // decode the json file
+            $json = $file->get();
+            $data = json_decode($json, true);
 
-            $fileContent = $file->get();
-            $metadata = json_decode($fileContent, true);
-            $manuscriptId = basename($metadata['ark']);
-            $manuscript = Manuscript::find($manuscriptId);
+            // populate the fillable fields for the resource
+            $model = '\\App\\Models\\' . ucfirst($resourceType);
+            $instance = new $model();
+            $fields = $instance->getFillableFields($data, $json);
 
-            if ($manuscript) {
+            // get the resource with the given id
+            $resourceId = basename($fields['id']);
+            $resource = $model::find($resourceId);
+
+            if ($resource) {
                 // update the resource
-                $response = $manuscript->update([
-                    'type' => $metadata['type']['label'],
-                    'identifier' => $metadata['shelfmark'],
-                    'json' => $fileContent,
-                ]);
-
-                if ($response) {
-                    $updatedManuscripts[$manuscriptId] = $metadata['shelfmark'];
+                if ($resource->update($fields)) {
+                    $messages[] = ucfirst($resourceType) . " with '" . $data['ark'] . "' has been updated.";
                 }
-
-            } else {
+            }
+            else {
                 // create the resource
-                $response = Manuscript::create([
-                    'id' => $manuscriptId,
-                    'ark' => $metadata['ark'],
-                    'type' => $metadata['type']['label'],
-                    'identifier' => $metadata['shelfmark'],
-                    'json' => $fileContent,
-                ]);
-
-                if ($response) {
-                    $createdManuscripts[$manuscriptId] = $metadata['shelfmark'];
+                if ($model::create($fields)) {
+                    $messages[] = ucfirst($resourceType) . " with '" . $data['ark'] . "' has been created.";
+                    $createdResources[$resourceId] = $data['ark'];
                 }
             }
-        }
-
-        $status = count($updatedManuscripts) > 0 || $createdManuscripts > 0 ? 'success' : 'error';
-        
-        // create a list of all updated and created manuscripts for the response message
-        $formattedMessage = '';
-        if ($status === 'success') {
-            $formattedMessage .= '</ul>';
-            foreach ($createdManuscripts as $createdManuscriptId => $createdManuscriptShelfmark) {
-                $formattedMessage .= '<li><b>' . $createdManuscriptId . '</b>: ' . $createdManuscriptShelfmark . ' has been created.</li>';
-            }
-            foreach ($updatedManuscripts as $updatedManuscriptId => $updatedManuscriptShelfmark) {
-                $formattedMessage .= '<li><b>' . $updatedManuscriptId . '</b>: ' . $updatedManuscriptShelfmark . ' has been updated.</li>';
-            }
-            $formattedMessage .= '</ul>';
         }
 
         return response()->json([
-            'status'   => $status,
-            'message'  => $status === 'success' ? $formattedMessage : 'Error uploading JSON file(s).',
+            'status' => count($messages) > 0 ? 'success' : 'error',
+            'message' => count($messages) > 0 ? implode('<br>', $messages) : 'Error uploading JSON file(s).',
         ]);
     }
 }

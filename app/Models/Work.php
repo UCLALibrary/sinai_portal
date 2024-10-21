@@ -27,6 +27,18 @@ class Work extends Model
     ];
 
     /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        return array_combine($this->fillable, [
+            basename($data['ark']),  // use the trailing ark segment as the id
+            $data['pref_title'],
+            $json,
+        ]);
+    }
+
+    /**
      * The attributes that should be appended to the model.
      *
      * @var array

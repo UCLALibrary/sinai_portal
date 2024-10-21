@@ -16,9 +16,22 @@ class Content extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'ark',
         'json',
     ];
+
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        return array_combine($this->fillable, [
+            basename($data['ark']),  // use the trailing ark segment as the id
+            $data['ark'],
+            $json,
+        ]);
+    }
 }
 
 /*
