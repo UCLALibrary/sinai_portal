@@ -59,6 +59,16 @@ class Layer extends Model
         
         $array['state'] = isset($data['state']['label']) ? $data['state']['label'] : null;
 
+        // associated dates
+        $array['dates'] = [];
+        if (isset($data['assoc_date'])) {
+            foreach($data['assoc_date'] as $date) {
+                $array['dates'][] = isset($date['type']['id']) && $date['type']['id'] === 'origin'
+                    ? ($date['value'] ?? null)
+                    : null;
+            }
+        }
+
         // script
         $array['script'] = [];
         foreach($data['writing'] as $writing) {
