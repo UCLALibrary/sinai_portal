@@ -29,6 +29,7 @@ class Agent extends Model
      */
     protected $fillable = [
         'id',
+        'ark',
         'type',
         'pref_name',
         'json',
@@ -41,7 +42,8 @@ class Agent extends Model
     {
         return array_combine($this->fillable, [
             basename($data['ark']),  // use the trailing ark segment as the id
-            $data['type'],
+            $data['ark'],
+            $data['type']['label'],
             $data['pref_name'],
             $json,
         ]);
