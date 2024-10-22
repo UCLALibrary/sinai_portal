@@ -3,9 +3,10 @@
   "description": "A record for a conceptual work, which may be carried or embodied by a textual artifact or work witness",
   "type": "object",
   "properties": {
-    "id": {
-      "description": "A unique identifer, supplied by the database",
-      "type": "integer"
+    "ark": {
+      "description": "A unique Archival Resource Key (ARK)",
+      "type": "string",
+      "pattern": "^ark:/21198/([a-z]|[0-9])+"
     },
     "pref_title": {
       "type": "string",
@@ -13,21 +14,23 @@
       "$comment": "Possibly rename as pref_name; add to util.json"
     },
     "orig_lang": {
-      "description": "Names of the ancient languages used in Sinai Manuscripts Data Portal",
-      "enum": [
-        "Arabic",
-        "Armenian",
-        "Caucasian Albanian",
-        "Church Slavonic",
-        "Coptic",
-        "CPA",
-        "Ethiopic",
-        "Georgian",
-        "Greek",
-        "Latin",
-        "Syriac",
-        "Turkish"
-      ]
+      "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "unevaluatedProperties": false
     },
     "orig_lang_title": {
       "type": [
@@ -42,51 +45,8 @@
         "null"
       ],
       "items": {
-        "description": "An alternate title (for Work entities) or name (for Agent or Place entities), including a language code",
-        "type": "object",
-        "properties": {
-          "lang": {
-            "description": "All names available in the Sinai Manuscripts Data Portal, both ancient and modern",
-            "anyOf": [
-              {
-                "description": "Names of the ancient languages used in Sinai Manuscripts Data Portal",
-                "enum": [
-                  "Arabic",
-                  "Armenian",
-                  "Caucasian Albanian",
-                  "Church Slavonic",
-                  "Coptic",
-                  "CPA",
-                  "Ethiopic",
-                  "Georgian",
-                  "Greek",
-                  "Latin",
-                  "Syriac",
-                  "Turkish"
-                ]
-              },
-              {
-                "description": "Names of the modern languages used in Sinai Manuscripts Data Portal",
-                "enum": [
-                  "Arabic",
-                  "English",
-                  "French",
-                  "German",
-                  "Greek"
-                ]
-              }
-            ]
-          },
-          "value": {
-            "type": "string",
-            "minLeng": 1
-          }
-        },
-        "required": [
-          "lang",
-          "value"
-        ],
-        "unevaluatedProperties": false
+        "type": "string",
+        "minLength": 1
       },
       "unevaluatedItems": false
     },
@@ -98,159 +58,333 @@
       "minLength": 1
     },
     "genre": {
-      "description": "The genre of the work record",
-      "type": [
-        "array",
-        "null"
-      ],
-      "uniqueItems": true,
-      "items": {
-        "type": "string",
-        "enum": [
-          "Account books",
-          "Apocrypha",
-          "Apophthegmata",
-          "Biblical texts",
-          "Blessings",
-          "Calendars",
-          "Canon law",
-          "Charters",
-          "Commentaries",
-          "Dictionaries",
-          "Gospel books",
-          "Hagiographies",
-          "Historical works",
-          "Hymnals",
-          "Lectionaries",
-          "Liturgical texts",
-          "Martyrologies",
-          "Mimars",
-          "Philosophical works",
-          "Poetry",
-          "Prayers",
-          "Scientific works",
-          "Sermons",
-          "Theological works"
-        ]
-      },
-      "unevaluatedItems": false
-    },
-    "excerpt": {
       "type": [
         "array",
         "null"
       ],
       "items": {
-        "title": "Excerpt",
-        "description": "An excerpt from a larger work or text, such as the incipit",
+        "anyOf": [
+          {
+            "const": {
+              "id": "account-books",
+              "label": "Account books"
+            }
+          },
+          {
+            "const": {
+              "id": "apocrypha",
+              "label": "Apocrypha"
+            }
+          },
+          {
+            "const": {
+              "id": "apophthegmata",
+              "label": "Apophthegmata"
+            }
+          },
+          {
+            "const": {
+              "id": "biblical-texts",
+              "label": "Biblical texts"
+            }
+          },
+          {
+            "const": {
+              "id": "blessings",
+              "label": "Blessings"
+            }
+          },
+          {
+            "const": {
+              "id": "calendars",
+              "label": "Calendars"
+            }
+          },
+          {
+            "const": {
+              "id": "canon-law",
+              "label": "Canon law"
+            }
+          },
+          {
+            "const": {
+              "id": "charters",
+              "label": "Charters"
+            }
+          },
+          {
+            "const": {
+              "id": "commentaries",
+              "label": "Commentaries"
+            }
+          },
+          {
+            "const": {
+              "id": "dictionaries",
+              "label": "Dictionaries"
+            }
+          },
+          {
+            "const": {
+              "id": "gospel-books",
+              "label": "Gospel books"
+            }
+          },
+          {
+            "const": {
+              "id": "hagiographies",
+              "label": "Hagiographies"
+            }
+          },
+          {
+            "const": {
+              "id": "historical-works",
+              "label": "Historical works"
+            }
+          },
+          {
+            "const": {
+              "id": "hymnals",
+              "label": "Hymnals"
+            }
+          },
+          {
+            "const": {
+              "id": "lectionaries",
+              "label": "Lectionaries"
+            }
+          },
+          {
+            "const": {
+              "id": "liturgical-texts",
+              "label": "Liturgical texts"
+            }
+          },
+          {
+            "const": {
+              "id": "martyrologies",
+              "label": "Martyrologies"
+            }
+          },
+          {
+            "const": {
+              "id": "mimars",
+              "label": "Mimars"
+            }
+          },
+          {
+            "const": {
+              "id": "philosophical-works",
+              "label": "Philosophical works"
+            }
+          },
+          {
+            "const": {
+              "id": "poetry",
+              "label": "Poetry"
+            }
+          },
+          {
+            "const": {
+              "id": "prayers",
+              "label": "Prayers"
+            }
+          },
+          {
+            "const": {
+              "id": "scientific-works",
+              "label": "Scientific works"
+            }
+          },
+          {
+            "const": {
+              "id": "sermons",
+              "label": "Sermons"
+            }
+          },
+          {
+            "const": {
+              "id": "theological-works",
+              "label": "Theological works"
+            }
+          }
+        ],
+        "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "incipit",
-              "explicit",
-              "prologue"
-            ]
-          },
-          "locus": {
-            "type": "string",
-            "minLength": 1,
-            "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
-          },
-          "as_written": {
+          "id": {
             "type": "string",
             "minLength": 1
           },
-          "translation": {
-            "type": [
-              "array",
-              "null"
-            ],
-            "items": {
-              "description": "The translation of a piece of content, such as an excerpt from a text or paratext, or from a conceptual work entity.",
-              "properties": {
-                "lang": {
-                  "description": "Names of the modern languages used in Sinai Manuscripts Data Portal",
-                  "enum": [
-                    "Arabic",
-                    "English",
-                    "French",
-                    "German",
-                    "Greek"
-                  ]
-                },
-                "value": {
-                  "type": "string",
-                  "minLeng": 1
-                }
-              },
-              "required": [
-                "lang",
-                "value"
-              ]
-            },
-            "unevaluatedItems": false
-          },
-          "note": {
-            "type": [
-              "array",
-              "null"
-            ],
-            "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
-            },
-            "unevaluatedItems": false
+          "label": {
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": [
-          "type",
-          "as_written"
-        ]
+          "id",
+          "label"
+        ],
+        "unevaluatedProperties": false
       },
       "unevaluatedItems": false
+    },
+    "creator": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "A unique Archival Resource Key (ARK)",
+            "type": "string",
+            "pattern": "^ark:/21198/([a-z]|[0-9])+"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "const": {
+                  "id": "author",
+                  "label": "Author"
+                }
+              },
+              {
+                "const": {
+                  "id": "editor",
+                  "label": "Editor"
+                }
+              },
+              {
+                "const": {
+                  "id": "translator",
+                  "label": "Translator"
+                }
+              }
+            ],
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
+          }
+        }
+      }
+    },
+    "creation": {
+      "unevaluatedProperties": false,
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iso": {
+          "type": "object",
+          "properties": {
+            "not_before": {
+              "type": "string",
+              "format": "date",
+              "minLength": 3
+            },
+            "not_after": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date",
+              "minLength": 3
+            }
+          },
+          "required": [
+            "not_before"
+          ],
+          "unevaluatedProperties": false
+        }
+      },
+      "required": [
+        "value",
+        "iso"
+      ]
+    },
+    "incipit": {
+      "unevaluatedProperties": false,
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "translation": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "unevaluatedItems": false
+        },
+        "source": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "unevaluatedItems": false
+        }
+      },
+      "required": [
+        "value"
+      ]
+    },
+    "explicit": {
+      "unevaluatedProperties": false,
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string",
+          "minLength": 1
+        },
+        "translation": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "unevaluatedItems": false
+        },
+        "source": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "unevaluatedItems": false
+        }
+      },
+      "required": [
+        "value"
+      ]
     },
     "rel_con": {
       "type": [
@@ -279,13 +413,46 @@
               "Pleiades",
               "Syriaca",
               "VIAF"
-            ],
-            "$comment": "Finalize enum | sources have associated scope, e.g. Syriaca for any entity but Pinakes only works and agents"
+            ]
           }
         },
         "required": [
           "label",
           "uri",
+          "source"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "refno": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "description": "A reference number in a standard reference work, such as the Corpus Clavium Graecorum (CPG)",
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "idno": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "enum": [
+              "CPG",
+              "CPL",
+              "TLG"
+            ]
+          }
+        },
+        "required": [
+          "label",
+          "idno",
           "source"
         ],
         "unevaluatedProperties": false
@@ -303,19 +470,27 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "$comment": "Foreign key referring to the bibliographic item in the database"
+            "type": "string",
+            "format": "uuid"
           },
           "type": {
-            "type": "string",
-            "enum": [
-              "cite",
-              "edition",
-              "otherdigversion",
-              "ref",
-              "refno",
-              "translation"
-            ]
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
           },
           "range": {
             "type": [
@@ -344,49 +519,7 @@
               "null"
             ],
             "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
+              "type": "string"
             },
             "unevaluatedItems": false
           }
@@ -428,352 +561,7 @@
         "null"
       ],
       "items": {
-        "title": "Note",
-        "description": "A prose note of a specified type",
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "admin",
-              "assoc_date",
-              "assoc_name",
-              "assoc_place",
-              "bib",
-              "binding",
-              "cataloguer",
-              "coll",
-              "condition",
-              "contents",
-              "excerpt",
-              "foliation",
-              "general",
-              "layout",
-              "ornamentation",
-              "para",
-              "provenance",
-              "rel_work",
-              "related_mss",
-              "support",
-              "writing"
-            ]
-          },
-          "value": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "minLength": 1
-          }
-        },
-        "required": [
-          "type",
-          "value"
-        ],
-        "unevaluatedProperties": false
-      },
-      "unevaluatedItems": false
-    },
-    "assoc_date": {
-      "type": [
-        "array",
-        "null"
-      ],
-      "items": {
-        "title": "Associated Date",
-        "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
-        "type": "object",
-        "properties": {
-          "type": {
-            "enum": [
-              "creation",
-              "binding",
-              "origin",
-              "purchase",
-              "birth",
-              "death",
-              "floruit",
-              "unknown"
-            ],
-            "$comment": "TBD full list of types"
-          },
-          "iso": {
-            "type": "object",
-            "properties": {
-              "not_before": {
-                "type": "string",
-                "format": "date",
-                "minLength": 3
-              },
-              "not_after": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "format": "date",
-                "minLength": 3
-              }
-            },
-            "required": [
-              "not_before"
-            ],
-            "unevaluatedProperties": false
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          },
-          "as_written": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "minLength": 1
-          },
-          "note": {
-            "type": [
-              "array",
-              "null"
-            ],
-            "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
-            },
-            "unevaluatedItems": false
-          }
-        },
-        "required": [
-          "type",
-          "iso",
-          "value"
-        ],
-        "unevaluatedProperties": false
-      },
-      "unevaluatedItems": false
-    },
-    "assoc_name": {
-      "type": [
-        "array",
-        "null"
-      ],
-      "items": {
-        "title": "Associated Name",
-        "description": "A person, group, or organization entity connected with an object via a given role",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": [
-              "integer",
-              "null"
-            ]
-          },
-          "as_written": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "minLength": 1
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "author",
-              "attributed-author",
-              "creator",
-              "binder",
-              "owner",
-              "unknown"
-            ]
-          },
-          "note": {
-            "type": [
-              "array",
-              "null"
-            ],
-            "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
-            },
-            "unevaluatedItems": false
-          }
-        },
-        "required": [
-          "role"
-        ],
-        "unevaluatedProperties": false
-      },
-      "unevaluatedItems": false
-    },
-    "assoc_place": {
-      "type": [
-        "array",
-        "null"
-      ],
-      "items": {
-        "title": "Associated Place",
-        "description": "A place entity connected with an object via a given role",
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": [
-              "integer",
-              "null"
-            ]
-          },
-          "as_written": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "minLength": 1
-          },
-          "event": {
-            "type": "string",
-            "enum": [
-              "origin",
-              "previous_repository",
-              "unknown"
-            ]
-          },
-          "note": {
-            "type": [
-              "array",
-              "null"
-            ],
-            "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
-            },
-            "unevaluatedItems": false
-          }
-        },
-        "required": [
-          "event"
-        ],
-        "unevaluatedProperties": false
+        "type": "string"
       },
       "unevaluatedItems": false
     },
@@ -784,65 +572,76 @@
       ],
       "items": {
         "type": "object",
-        "properties": {
-          "type": {
-            "enum": [
-              "partOf",
-              "hasPart",
-              "hasVersion"
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "A unique Archival Resource Key (ARK)",
+                "type": "string",
+                "pattern": "^ark:/21198/([a-z]|[0-9])+"
+              },
+              "source": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "unevaluatedItems": false
+              }
+            },
+            "required": [
+              "id"
             ]
-          },
-          "id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "note": {
-            "type": [
-              "array",
-              "null"
-            ],
+          }
+        ],
+        "properties": {
+          "rel": {
+            "type": "array",
             "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
+              "anyOf": [
+                {
+                  "const": {
+                    "id": "has-part",
+                    "label": "Has Part"
+                  }
+                },
+                {
+                  "const": {
+                    "id": "has-version",
+                    "label": "Has Version"
+                  }
+                },
+                {
+                  "const": {
+                    "id": "part-of",
+                    "label": "Part Of"
+                  }
+                },
+                {
+                  "const": {
+                    "id": "version-of",
+                    "label": "Version Of"
+                  }
+                }
+              ],
+              "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
               "type": "object",
               "properties": {
-                "type": {
+                "id": {
                   "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
+                  "minLength": 1
                 },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
+                "label": {
+                  "type": "string",
                   "minLength": 1
                 }
               },
               "required": [
-                "type",
-                "value"
+                "id",
+                "label"
               ],
               "unevaluatedProperties": false
             },
@@ -850,10 +649,169 @@
           }
         },
         "required": [
-          "type",
-          "id"
+          "rel"
         ],
         "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "rel_agent": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "A unique Archival Resource Key (ARK)",
+                "type": "string",
+                "pattern": "^ark:/21198/([a-z]|[0-9])+"
+              },
+              "source": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "unevaluatedItems": false
+              }
+            },
+            "required": [
+              "id"
+            ]
+          }
+        ],
+        "properties": {
+          "rel": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "const": {
+                    "id": "commemorates",
+                    "label": "Commemorates"
+                  }
+                },
+                {
+                  "const": {
+                    "id": "addressee",
+                    "label": "Addressee"
+                  }
+                }
+              ],
+              "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+          }
+        },
+        "required": [
+          "rel"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "rel_place": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "description": "A unique Archival Resource Key (ARK)",
+                "type": "string",
+                "pattern": "^ark:/21198/([a-z]|[0-9])+"
+              },
+              "source": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "unevaluatedItems": false
+              }
+            },
+            "required": [
+              "id"
+            ]
+          }
+        ],
+        "properties": {
+          "rel": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "const": {
+                    "id": "composition",
+                    "label": "Place of Composition"
+                  }
+                }
+              ],
+              "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+          }
+        },
+        "required": [
+          "rel"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "internal": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "string"
       },
       "unevaluatedItems": false
     },
@@ -892,6 +850,7 @@
     }
   },
   "required": [
+    "ark",
     "pref_title"
   ],
   "unevaluatedProperties": false

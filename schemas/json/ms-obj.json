@@ -3,50 +3,36 @@
   "description": "A manuscript or codex, either real or a hypothetical reconstruction",
   "type": "object",
   "properties": {
-    "id": {
-      "description": "A unique identifer, supplied by the database",
-      "type": "integer"
-    },
     "ark": {
-      "description": "A unique Archival Resource Key (ARK) describing the manuscript object",
+      "description": "A unique Archival Resource Key (ARK)",
       "type": "string",
-      "pattern": "^ark:/21198/z1.{6}"
+      "pattern": "^ark:/21198/([a-z]|[0-9])+"
+    },
+    "reconstruction": {
+      "type": "boolean"
     },
     "type": {
-      "description": "The type of manuscript object, whether real or hypothetical reconstructions",
-      "enum": [
-        "shelf",
-        "rebind"
-      ],
-      "$comment": "Is this the same set as #/$defs/cod_unit_types and #/$defs/content_unit_types?"
-    },
-    "idno": {
-      "type": "array",
-      "items": {
-        "description": "An identifier, according to a given scheme",
-        "type": "object",
-        "properties": {
-          "type": {
-            "enum": [
-              "shelfmark",
-              "part_no",
-              "uto_mark"
-            ],
-            "$comment": "Use term 'shelfmark' for both real and digitally rebound manuscript objects"
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          }
+      "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
         },
-        "required": [
-          "type",
-          "value"
-        ],
-        "unevaluatedProperties": false
+        "label": {
+          "type": "string",
+          "minLength": 1
+        }
       },
-      "minItems": 1,
-      "unevaluatedItems": false
+      "required": [
+        "id",
+        "label"
+      ],
+      "unevaluatedProperties": false
+    },
+    "shelfmark": {
+      "type": "string",
+      "minLength": 1
     },
     "summary": {
       "type": [
@@ -69,66 +55,75 @@
       "minLength": 1
     },
     "dim": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "enum": [
-              "ms_block",
-              "folio",
-              "av_folio",
-              "writing_area",
-              "margins"
-            ]
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "required": [
-          "type",
-          "value"
-        ],
-        "unevaluatedProperties": false
-      },
-      "unevaluatedItems": false
+      "description": "A string expression of an object's dimensions, whether manuscript block, folio, or writing area",
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
     },
     "state": {
       "description": "The current state of the manuscript object",
       "anyOf": [
         {
-          "description": "The original form of the manuscript object",
-          "enum": [
-            "Bifolim",
-            "Codex",
-            "Folium",
-            "Quire(s)",
-            "Scroll",
-            null
-          ],
-          "$comment": "This enum is reused and expanded in #/$defs/states"
+          "const": {
+            "id": "codex",
+            "label": "Codex"
+          }
         },
         {
-          "enum": [
-            "Undertext object"
-          ]
+          "const": {
+            "id": "quire",
+            "label": "Quire(s)"
+          }
+        },
+        {
+          "const": {
+            "id": "bifolio",
+            "label": "Bifolio(s)"
+          }
+        },
+        {
+          "const": {
+            "id": "folio",
+            "label": "Folio(s)"
+          }
+        },
+        {
+          "const": {
+            "id": "folio-fragment",
+            "label": "Folio Fragment(s)"
+          }
+        },
+        {
+          "const": {
+            "id": "uto",
+            "label": "Undertext Object"
+          }
+        },
+        {
+          "const": {
+            "id": "scroll",
+            "label": "Scroll"
+          }
         }
       ],
-      "$comment": "State allows the same enumerated value list as #/$defs/forms with the addition of Undertext object"
-    },
-    "form": {
-      "description": "The original form of the manuscript object",
-      "enum": [
-        "Bifolim",
-        "Codex",
-        "Folium",
-        "Quire(s)",
-        "Scroll",
-        null
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "id",
+        "label"
       ],
-      "$comment": "This enum is reused and expanded in #/$defs/states"
+      "unevaluatedProperties": false
     },
     "fol": {
       "description": "A string expressing the foliation of the object in a semi-controlled format",
@@ -140,74 +135,755 @@
       "$comment": "could require a pattern to capture the style of input we require. e.g. 'ff. 1-24 + flyleaves I-III'"
     },
     "coll": {
+      "description": "A string expressing the collation of the object following a semi-controlled format, such as a collational formula",
       "type": [
-        "array",
+        "string",
         "null"
       ],
-      "items": {
-        "description": "A string expressing the collation of the object following a semi-controlled format, such as a collational formula",
-        "type": [
-          "string",
-          "null"
-        ],
-        "minLength": 1,
-        "$comment": "could require a pattern to conform these to a specific collational formula scheme"
-      },
-      "unevaluatedItems": false
+      "minLength": 1,
+      "$comment": "could require a pattern to conform these to a specific collational formula scheme"
     },
     "features": {
       "type": [
         "array",
         "null"
       ],
-      "uniqueItems": true,
       "items": {
-        "type": "string",
-        "enum": [
-          "Border(s)",
-          "Border(s), Decorative",
-          "Calligraphic Practice",
-          "Catchwords",
-          "Colophon",
-          "Dated",
-          "Decoration, Anthropomorphic",
-          "Decoration, Architectural",
-          "Decoration, Calligraphic",
-          "Decoration, Full-page",
-          "Decoration, Geometric",
-          "Decoration, Vegetative",
-          "Decoration, Zoomorphic",
-          "Fragment",
-          "Headpiece(s)",
-          "Illumination(s)",
-          "Illustration(s)",
-          "Initial(s), Anthropomorphic",
-          "Initial(s), Decorated",
-          "Initial(s), Gymnastic",
-          "Initial(s), Historiated",
-          "Initial(s), Inhabited",
-          "Initial(s), Zoomorphic",
-          "Inscription(s)",
-          "Miniature(s)",
-          "Multispectral Imaging",
-          "Music notation",
-          "Palimpsest",
-          "Parallel text",
-          "Signatures",
-          "Table(s)",
-          "Table(s) of Contents",
-          "Unidentified text",
-          null
+        "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "label"
         ],
-        "$comment": "TBD list of features | Could do a series of features based on context with a composition for groups?"
+        "unevaluatedProperties": false
       },
       "unevaluatedItems": false
     },
-    "cod_units": {
+    "part": {
       "type": "array",
       "items": {
-        "type": "integer"
+        "title": "Part",
+        "description": "The physical portion of a manuscript object representing a distinct production unit",
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "summary": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "locus": {
+            "type": "string",
+            "minLength": 1,
+            "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+          },
+          "support": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "const": {
+                    "id": "paper",
+                    "label": "Paper"
+                  }
+                },
+                {
+                  "const": {
+                    "id": "parchment",
+                    "label": "Parchment"
+                  }
+                },
+                {
+                  "const": {
+                    "id": "papyrus",
+                    "label": "Papyrus"
+                  }
+                }
+              ],
+              "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "unevaluatedProperties": false
+            },
+            "minItems": 1,
+            "unevaluatedItems": false
+          },
+          "extent": {
+            "description": "The extent, expressed in number of folios, which comprise the manuscript object",
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "dim": {
+            "description": "A string expression of an object's dimensions, whether manuscript block, folio, or writing area",
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "layer": {
+            "type": [
+              "array"
+            ],
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "description": "A unique Archival Resource Key (ARK)",
+                  "type": "string",
+                  "pattern": "^ark:/21198/([a-z]|[0-9])+"
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "unevaluatedProperties": false,
+                  "anyOf": [
+                    {
+                      "const": {
+                        "id": "overtext",
+                        "label": "Overtext"
+                      }
+                    },
+                    {
+                      "const": {
+                        "id": "undertext",
+                        "label": "Undertext"
+                      }
+                    },
+                    {
+                      "const": {
+                        "id": "guest",
+                        "label": "Guest Content"
+                      }
+                    }
+                  ]
+                },
+                "locus": {
+                  "type": "string",
+                  "minLength": 1,
+                  "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+                }
+              },
+              "required": [
+                "id",
+                "label",
+                "type"
+              ],
+              "unevaluatedProperties": false
+            },
+            "minItems": 1,
+            "unevaluatedItems": false
+          },
+          "para": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "title": "Paracontent",
+              "description": "An item of paracontent related to a manuscript object, codicological unit, or textual artifact",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "unevaluatedProperties": false
+                },
+                "locus": {
+                  "type": "string",
+                  "minLength": 1,
+                  "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+                },
+                "lang": {
+                  "type": "array",
+                  "items": {
+                    "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "label"
+                    ],
+                    "unevaluatedProperties": false
+                  },
+                  "minItems": 1,
+                  "unevaluatedItems": false
+                },
+                "script": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "writing_system": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "label",
+                      "writing_system"
+                    ],
+                    "unevaluatedProperties": false
+                  },
+                  "minItems": 1,
+                  "unevaluatedItems": false
+                },
+                "label": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "as_written": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
+                "translation": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "unevaluatedItems": false
+                },
+                "assoc_name": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "title": "Associated Name",
+                    "description": "A person, group, or organization entity connected with an object via a given role",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A unique Archival Resource Key (ARK)",
+                        "type": "string",
+                        "pattern": "^ark:/21198/([a-z]|[0-9])+"
+                      },
+                      "as_written": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1
+                      },
+                      "role": {
+                        "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "label": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label"
+                        ],
+                        "unevaluatedProperties": false
+                      },
+                      "note": {
+                        "type": [
+                          "array",
+                          "null"
+                        ],
+                        "items": {
+                          "type": "string"
+                        },
+                        "unevaluatedItems": false
+                      }
+                    },
+                    "required": [
+                      "role"
+                    ],
+                    "unevaluatedProperties": false
+                  },
+                  "unevaluatedItems": false
+                },
+                "assoc_place": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "title": "Associated Place",
+                    "description": "A place entity connected with an object via a given role",
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "A unique Archival Resource Key (ARK)",
+                        "type": "string",
+                        "pattern": "^ark:/21198/([a-z]|[0-9])+"
+                      },
+                      "as_written": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1
+                      },
+                      "event": {
+                        "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "label": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label"
+                        ],
+                        "unevaluatedProperties": false
+                      },
+                      "note": {
+                        "type": [
+                          "array",
+                          "null"
+                        ],
+                        "items": {
+                          "type": "string"
+                        },
+                        "unevaluatedItems": false
+                      }
+                    },
+                    "required": [
+                      "event"
+                    ],
+                    "unevaluatedProperties": false
+                  },
+                  "unevaluatedItems": false
+                },
+                "assoc_date": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "title": "Associated Date",
+                    "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
+                    "type": "object",
+                    "allOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "iso": {
+                            "type": "object",
+                            "properties": {
+                              "not_before": {
+                                "type": "string",
+                                "format": "date",
+                                "minLength": 3
+                              },
+                              "not_after": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "date",
+                                "minLength": 3
+                              }
+                            },
+                            "required": [
+                              "not_before"
+                            ],
+                            "unevaluatedProperties": false
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "iso"
+                        ]
+                      }
+                    ],
+                    "properties": {
+                      "type": {
+                        "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "label": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "label"
+                        ],
+                        "unevaluatedProperties": false
+                      },
+                      "as_written": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "minLength": 1
+                      },
+                      "note": {
+                        "type": [
+                          "array",
+                          "null"
+                        ],
+                        "items": {
+                          "type": "string"
+                        },
+                        "unevaluatedItems": false
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "unevaluatedProperties": false
+                  },
+                  "unevaluatedItems": false
+                },
+                "note": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "unevaluatedItems": false
+                }
+              },
+              "required": [
+                "type",
+                "locus",
+                "lang"
+              ],
+              "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+          },
+          "note": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "title": "Note",
+              "description": "A prose note of a specified type",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "unevaluatedProperties": false
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "type",
+                "value"
+              ],
+              "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+          },
+          "related_mss": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "title": "Related Manuscripts",
+              "description": "A set of manuscripts that share a relation to the object context in which they are declared",
+              "type": "object",
+              "properties": {
+                "type": {
+                  "anyOf": [
+                    {
+                      "const": {
+                        "id": "filiation",
+                        "label": "Filiation"
+                      }
+                    },
+                    {
+                      "const": {
+                        "id": "disjecta",
+                        "label": "Disjecta Membra"
+                      }
+                    },
+                    {
+                      "const": {
+                        "id": "reconstructed-from",
+                        "label": "Reconstructed From"
+                      }
+                    }
+                  ],
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "unevaluatedProperties": false
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "note": {
+                  "type": [
+                    "array",
+                    "null"
+                  ],
+                  "items": {
+                    "type": "string"
+                  },
+                  "unevaluatedItems": false
+                },
+                "mss": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "id": {
+                        "description": "A unique Archival Resource Key (ARK)",
+                        "type": "string",
+                        "pattern": "^ark:/21198/([a-z]|[0-9])+"
+                      },
+                      "url": {
+                        "type": [
+                          "string",
+                          "null"
+                        ],
+                        "format": "uri",
+                        "minLength": 1
+                      }
+                    },
+                    "$comment": "Possible x-or logic for id and url",
+                    "required": [
+                      "label"
+                    ],
+                    "unevaluatedProperties": false
+                  },
+                  "minItems": 1,
+                  "unevaluatedItems": false
+                }
+              },
+              "required": [
+                "label",
+                "type",
+                "mss"
+              ],
+              "unevaluatedProperties": false
+            },
+            "unevaluatedItems": false
+          }
+        },
+        "required": [
+          "label",
+          "support",
+          "layer"
+        ]
       },
+      "minItems": 1,
+      "unevaluatedItems": false
+    },
+    "layer": {
+      "type": [
+        "array"
+      ],
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "A unique Archival Resource Key (ARK)",
+            "type": "string",
+            "pattern": "^ark:/21198/([a-z]|[0-9])+"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false,
+            "anyOf": [
+              {
+                "const": {
+                  "id": "undertext",
+                  "label": "Undertext"
+                }
+              },
+              {
+                "const": {
+                  "id": "guest",
+                  "label": "Guest Content"
+                }
+              }
+            ]
+          },
+          "locus": {
+            "type": "string",
+            "minLength": 1,
+            "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "type"
+        ],
+        "unevaluatedProperties": false
+      },
+      "minItems": 1,
       "unevaluatedItems": false
     },
     "para": {
@@ -221,12 +897,23 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "enum": [
-              "endowment",
-              "rubric"
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
             ],
-            "$comment": "Initial enum for paracontent needed | Also considerations of 'para' vs 'guest' in same field?"
+            "unevaluatedProperties": false
           },
           "locus": {
             "type": "string",
@@ -235,137 +922,53 @@
           },
           "lang": {
             "type": "array",
-            "uniqueItems": true,
             "items": {
-              "description": "Names of the ancient languages used in Sinai Manuscripts Data Portal",
-              "type": "string",
-              "enum": [
-                "Arabic",
-                "Armenian",
-                "Caucasian Albanian",
-                "Church Slavonic",
-                "Coptic",
-                "CPA",
-                "Ethiopic",
-                "Georgian",
-                "Greek",
-                "Latin",
-                "Syriac",
-                "Turkish"
-              ]
+              "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "id",
+                "label"
+              ],
+              "unevaluatedProperties": false
             },
             "minItems": 1,
             "unevaluatedItems": false
           },
-          "writing": {
-            "type": [
-              "array",
-              "null"
-            ],
+          "script": {
+            "type": "array",
             "items": {
-              "title": "Writing",
-              "description": "Collected information about an instance of hand writing",
               "type": "object",
               "properties": {
-                "script": {
-                  "type": "array",
-                  "uniqueItems": true,
-                  "items": {
-                    "description": "Term list categorizing the writing system and script used in a given instance of writing",
-                    "type": "string",
-                    "enum": [
-                      "Asomtavruli",
-                      "Carolingian majuscule",
-                      "Carolingian minuscule",
-                      "Christian Palestinian Aramaic",
-                      "East Syriac",
-                      "Erkatagir",
-                      "Estrangela",
-                      "Geʽez abjad",
-                      "Geʽez abugida",
-                      "Glagolitic",
-                      "Greek majuscule",
-                      "Greek minuscule",
-                      "Khutsuri",
-                      "Kufic",
-                      "Melkite",
-                      "Minuscule bouclée",
-                      "Mkhedruli",
-                      "Naskh",
-                      "Nastaliq",
-                      "Nuskhurimt",
-                      "Perlschrift",
-                      "Serto",
-                      "Thuluth"
-                    ],
-                    "$comment": "enum not complete. Will eventually be references to script records"
-                  },
-                  "minItems": 1,
-                  "unevaluatedItems": false
-                },
-                "locus": {
+                "id": {
                   "type": "string",
-                  "minLength": 1,
-                  "$comment": "Can use format to restrain to regex for, e.g., 'ff. x-y'"
+                  "minLength": 1
                 },
-                "note": {
-                  "type": [
-                    "array",
-                    "null"
-                  ],
-                  "items": {
-                    "title": "Note",
-                    "description": "A prose note of a specified type",
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "admin",
-                          "assoc_date",
-                          "assoc_name",
-                          "assoc_place",
-                          "bib",
-                          "binding",
-                          "cataloguer",
-                          "coll",
-                          "condition",
-                          "contents",
-                          "excerpt",
-                          "foliation",
-                          "general",
-                          "layout",
-                          "ornamentation",
-                          "para",
-                          "provenance",
-                          "rel_work",
-                          "related_mss",
-                          "support",
-                          "writing"
-                        ]
-                      },
-                      "value": {
-                        "type": [
-                          "string",
-                          "null"
-                        ],
-                        "minLength": 1
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "value"
-                    ],
-                    "unevaluatedProperties": false
-                  },
-                  "unevaluatedItems": false
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "writing_system": {
+                  "type": "string"
                 }
               },
               "required": [
-                "script"
+                "id",
+                "label",
+                "writing_system"
               ],
               "unevaluatedProperties": false
             },
+            "minItems": 1,
             "unevaluatedItems": false
           },
           "label": {
@@ -388,27 +991,7 @@
               "null"
             ],
             "items": {
-              "description": "The translation of a piece of content, such as an excerpt from a text or paratext, or from a conceptual work entity.",
-              "properties": {
-                "lang": {
-                  "description": "Names of the modern languages used in Sinai Manuscripts Data Portal",
-                  "enum": [
-                    "Arabic",
-                    "English",
-                    "French",
-                    "German",
-                    "Greek"
-                  ]
-                },
-                "value": {
-                  "type": "string",
-                  "minLeng": 1
-                }
-              },
-              "required": [
-                "lang",
-                "value"
-              ]
+              "type": "string"
             },
             "unevaluatedItems": false
           },
@@ -423,10 +1006,9 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": [
-                    "integer",
-                    "null"
-                  ]
+                  "description": "A unique Archival Resource Key (ARK)",
+                  "type": "string",
+                  "pattern": "^ark:/21198/([a-z]|[0-9])+"
                 },
                 "as_written": {
                   "type": [
@@ -436,15 +1018,23 @@
                   "minLength": 1
                 },
                 "role": {
-                  "type": "string",
-                  "enum": [
-                    "author",
-                    "attributed-author",
-                    "creator",
-                    "binder",
-                    "owner",
-                    "unknown"
-                  ]
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "unevaluatedProperties": false
                 },
                 "note": {
                   "type": [
@@ -452,49 +1042,7 @@
                     "null"
                   ],
                   "items": {
-                    "title": "Note",
-                    "description": "A prose note of a specified type",
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "admin",
-                          "assoc_date",
-                          "assoc_name",
-                          "assoc_place",
-                          "bib",
-                          "binding",
-                          "cataloguer",
-                          "coll",
-                          "condition",
-                          "contents",
-                          "excerpt",
-                          "foliation",
-                          "general",
-                          "layout",
-                          "ornamentation",
-                          "para",
-                          "provenance",
-                          "rel_work",
-                          "related_mss",
-                          "support",
-                          "writing"
-                        ]
-                      },
-                      "value": {
-                        "type": [
-                          "string",
-                          "null"
-                        ],
-                        "minLength": 1
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "value"
-                    ],
-                    "unevaluatedProperties": false
+                    "type": "string"
                   },
                   "unevaluatedItems": false
                 }
@@ -517,10 +1065,9 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": [
-                    "integer",
-                    "null"
-                  ]
+                  "description": "A unique Archival Resource Key (ARK)",
+                  "type": "string",
+                  "pattern": "^ark:/21198/([a-z]|[0-9])+"
                 },
                 "as_written": {
                   "type": [
@@ -530,12 +1077,23 @@
                   "minLength": 1
                 },
                 "event": {
-                  "type": "string",
-                  "enum": [
-                    "origin",
-                    "previous_repository",
-                    "unknown"
-                  ]
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "unevaluatedProperties": false
                 },
                 "note": {
                   "type": [
@@ -543,49 +1101,7 @@
                     "null"
                   ],
                   "items": {
-                    "title": "Note",
-                    "description": "A prose note of a specified type",
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "admin",
-                          "assoc_date",
-                          "assoc_name",
-                          "assoc_place",
-                          "bib",
-                          "binding",
-                          "cataloguer",
-                          "coll",
-                          "condition",
-                          "contents",
-                          "excerpt",
-                          "foliation",
-                          "general",
-                          "layout",
-                          "ornamentation",
-                          "para",
-                          "provenance",
-                          "rel_work",
-                          "related_mss",
-                          "support",
-                          "writing"
-                        ]
-                      },
-                      "value": {
-                        "type": [
-                          "string",
-                          "null"
-                        ],
-                        "minLength": 1
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "value"
-                    ],
-                    "unevaluatedProperties": false
+                    "type": "string"
                   },
                   "unevaluatedItems": false
                 }
@@ -606,45 +1122,62 @@
               "title": "Associated Date",
               "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
               "type": "object",
-              "properties": {
-                "type": {
-                  "enum": [
-                    "creation",
-                    "binding",
-                    "origin",
-                    "purchase",
-                    "birth",
-                    "death",
-                    "floruit",
-                    "unknown"
-                  ],
-                  "$comment": "TBD full list of types"
-                },
-                "iso": {
+              "allOf": [
+                {
                   "type": "object",
                   "properties": {
-                    "not_before": {
+                    "value": {
                       "type": "string",
-                      "format": "date",
-                      "minLength": 3
+                      "minLength": 1
                     },
-                    "not_after": {
-                      "type": [
-                        "string",
-                        "null"
+                    "iso": {
+                      "type": "object",
+                      "properties": {
+                        "not_before": {
+                          "type": "string",
+                          "format": "date",
+                          "minLength": 3
+                        },
+                        "not_after": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date",
+                          "minLength": 3
+                        }
+                      },
+                      "required": [
+                        "not_before"
                       ],
-                      "format": "date",
-                      "minLength": 3
+                      "unevaluatedProperties": false
                     }
                   },
                   "required": [
-                    "not_before"
+                    "value",
+                    "iso"
+                  ]
+                }
+              ],
+              "properties": {
+                "type": {
+                  "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
                   ],
                   "unevaluatedProperties": false
-                },
-                "value": {
-                  "type": "string",
-                  "minLength": 1
                 },
                 "as_written": {
                   "type": [
@@ -659,57 +1192,13 @@
                     "null"
                   ],
                   "items": {
-                    "title": "Note",
-                    "description": "A prose note of a specified type",
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "type": "string",
-                        "enum": [
-                          "admin",
-                          "assoc_date",
-                          "assoc_name",
-                          "assoc_place",
-                          "bib",
-                          "binding",
-                          "cataloguer",
-                          "coll",
-                          "condition",
-                          "contents",
-                          "excerpt",
-                          "foliation",
-                          "general",
-                          "layout",
-                          "ornamentation",
-                          "para",
-                          "provenance",
-                          "rel_work",
-                          "related_mss",
-                          "support",
-                          "writing"
-                        ]
-                      },
-                      "value": {
-                        "type": [
-                          "string",
-                          "null"
-                        ],
-                        "minLength": 1
-                      }
-                    },
-                    "required": [
-                      "type",
-                      "value"
-                    ],
-                    "unevaluatedProperties": false
+                    "type": "string"
                   },
                   "unevaluatedItems": false
                 }
               },
               "required": [
-                "type",
-                "iso",
-                "value"
+                "type"
               ],
               "unevaluatedProperties": false
             },
@@ -721,56 +1210,15 @@
               "null"
             ],
             "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
+              "type": "string"
             },
             "unevaluatedItems": false
           }
         },
         "required": [
           "type",
-          "locus"
+          "locus",
+          "lang"
         ],
         "unevaluatedProperties": false
       },
@@ -782,53 +1230,28 @@
         "null"
       ]
     },
-    "iiif": {
+    "location": {
       "type": "array",
       "items": {
-        "title": "IIIF",
-        "description": "Information related to a IIIF manifest for a given object",
         "type": "object",
         "properties": {
-          "type": {
+          "id": {
             "type": "string",
-            "enum": [
-              "main",
-              "reordered"
-            ]
-          },
-          "manifest": {
-            "type": "string",
-            "format": "uri",
             "minLength": 1
           },
-          "text_direction": {
+          "collection": {
             "type": "string",
-            "enum": [
-              "right-to-left",
-              "top-to-bottom",
-              "bottom-to-top",
-              null
-            ]
+            "minLength": 1
           },
-          "behavior": {
+          "repo": {
             "type": "string",
-            "enum": [
-              "paged",
-              "individuals"
-            ]
-          },
-          "thumbnail": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "minLength": 1,
-            "format": "uri"
+            "minLength": 1
           }
         },
         "required": [
-          "type",
-          "manifest"
+          "id",
+          "collection",
+          "repo"
         ],
         "unevaluatedProperties": false
       },
@@ -843,45 +1266,62 @@
         "title": "Associated Date",
         "description": "A date associated with an object, either attested or inferred through indirect means (paleography, etc.)",
         "type": "object",
-        "properties": {
-          "type": {
-            "enum": [
-              "creation",
-              "binding",
-              "origin",
-              "purchase",
-              "birth",
-              "death",
-              "floruit",
-              "unknown"
-            ],
-            "$comment": "TBD full list of types"
-          },
-          "iso": {
+        "allOf": [
+          {
             "type": "object",
             "properties": {
-              "not_before": {
+              "value": {
                 "type": "string",
-                "format": "date",
-                "minLength": 3
+                "minLength": 1
               },
-              "not_after": {
-                "type": [
-                  "string",
-                  "null"
+              "iso": {
+                "type": "object",
+                "properties": {
+                  "not_before": {
+                    "type": "string",
+                    "format": "date",
+                    "minLength": 3
+                  },
+                  "not_after": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date",
+                    "minLength": 3
+                  }
+                },
+                "required": [
+                  "not_before"
                 ],
-                "format": "date",
-                "minLength": 3
+                "unevaluatedProperties": false
               }
             },
             "required": [
-              "not_before"
+              "value",
+              "iso"
+            ]
+          }
+        ],
+        "properties": {
+          "type": {
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
             ],
             "unevaluatedProperties": false
-          },
-          "value": {
-            "type": "string",
-            "minLength": 1
           },
           "as_written": {
             "type": [
@@ -896,57 +1336,131 @@
               "null"
             ],
             "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
+              "type": "string"
             },
             "unevaluatedItems": false
           }
         },
         "required": [
-          "type",
-          "iso",
-          "value"
+          "type"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "assoc_name": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "title": "Associated Name",
+        "description": "A person, group, or organization entity connected with an object via a given role",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "A unique Archival Resource Key (ARK)",
+            "type": "string",
+            "pattern": "^ark:/21198/([a-z]|[0-9])+"
+          },
+          "as_written": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "role": {
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
+          },
+          "note": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "unevaluatedItems": false
+          }
+        },
+        "required": [
+          "role"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "assoc_place": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "title": "Associated Place",
+        "description": "A place entity connected with an object via a given role",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "A unique Archival Resource Key (ARK)",
+            "type": "string",
+            "pattern": "^ark:/21198/([a-z]|[0-9])+"
+          },
+          "as_written": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1
+          },
+          "event": {
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
+          },
+          "note": {
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "unevaluatedItems": false
+          }
+        },
+        "required": [
+          "event"
         ],
         "unevaluatedProperties": false
       },
@@ -963,30 +1477,23 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "enum": [
-              "admin",
-              "assoc_date",
-              "assoc_name",
-              "assoc_place",
-              "bib",
-              "binding",
-              "cataloguer",
-              "coll",
-              "condition",
-              "contents",
-              "excerpt",
-              "foliation",
-              "general",
-              "layout",
-              "ornamentation",
-              "para",
-              "provenance",
-              "rel_work",
-              "related_mss",
-              "support",
-              "writing"
-            ]
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
           },
           "value": {
             "type": [
@@ -1015,11 +1522,43 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "enum": [
-              "filiation",
-              "disjecta"
-            ]
+            "anyOf": [
+              {
+                "const": {
+                  "id": "filiation",
+                  "label": "Filiation"
+                }
+              },
+              {
+                "const": {
+                  "id": "disjecta",
+                  "label": "Disjecta Membra"
+                }
+              },
+              {
+                "const": {
+                  "id": "reconstructed-from",
+                  "label": "Reconstructed From"
+                }
+              }
+            ],
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
           },
           "label": {
             "type": "string",
@@ -1031,49 +1570,7 @@
               "null"
             ],
             "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
+              "type": "string"
             },
             "unevaluatedItems": false
           },
@@ -1087,10 +1584,9 @@
                   "minLength": 1
                 },
                 "id": {
-                  "type": [
-                    "integer",
-                    "null"
-                  ]
+                  "description": "A unique Archival Resource Key (ARK)",
+                  "type": "string",
+                  "pattern": "^ark:/21198/([a-z]|[0-9])+"
                 },
                 "url": {
                   "type": [
@@ -1131,12 +1627,37 @@
         "type": "object",
         "properties": {
           "type": {
-            "type": "string",
-            "enum": [
-              "ms_obj",
-              "reconstruction"
+            "anyOf": [
+              {
+                "const": {
+                  "id": "manuscript",
+                  "label": "Manuscript"
+                }
+              },
+              {
+                "const": {
+                  "id": "reconstruction",
+                  "label": "Reconstruction"
+                }
+              }
             ],
-            "$comment": "Likely expand this enum?"
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
           },
           "label": {
             "type": "string",
@@ -1168,19 +1689,27 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "$comment": "Foreign key referring to the bibliographic item in the database"
+            "type": "string",
+            "format": "uuid"
           },
           "type": {
-            "type": "string",
-            "enum": [
-              "cite",
-              "edition",
-              "otherdigversion",
-              "ref",
-              "refno",
-              "translation"
-            ]
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
           },
           "range": {
             "type": [
@@ -1209,49 +1738,7 @@
               "null"
             ],
             "items": {
-              "title": "Note",
-              "description": "A prose note of a specified type",
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "admin",
-                    "assoc_date",
-                    "assoc_name",
-                    "assoc_place",
-                    "bib",
-                    "binding",
-                    "cataloguer",
-                    "coll",
-                    "condition",
-                    "contents",
-                    "excerpt",
-                    "foliation",
-                    "general",
-                    "layout",
-                    "ornamentation",
-                    "para",
-                    "provenance",
-                    "rel_work",
-                    "related_mss",
-                    "support",
-                    "writing"
-                  ]
-                },
-                "value": {
-                  "type": [
-                    "string",
-                    "null"
-                  ],
-                  "minLength": 1
-                }
-              },
-              "required": [
-                "type",
-                "value"
-              ],
-              "unevaluatedProperties": false
+              "type": "string"
             },
             "unevaluatedItems": false
           }
@@ -1263,7 +1750,10 @@
         "if": {
           "properties": {
             "type": {
-              "const": "otherdigversion"
+              "const": {
+                "id": "otherdigversion",
+                "label": "Other Digital Version"
+              }
             }
           },
           "required": [
@@ -1287,6 +1777,90 @@
       },
       "unevaluatedItems": false
     },
+    "iiif": {
+      "type": "array",
+      "items": {
+        "title": "IIIF",
+        "description": "Information related to a IIIF manifest for a given object",
+        "type": "object",
+        "properties": {
+          "type": {
+            "anyOf": [
+              {
+                "const": {
+                  "id": "main",
+                  "label": "Main"
+                }
+              },
+              {
+                "const": {
+                  "id": "reordered",
+                  "label": "Reordered"
+                }
+              }
+            ],
+            "description": "A reference to a controlled term that is stored in a database table, referenced via ID but including a human-readable label",
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "label"
+            ],
+            "unevaluatedProperties": false
+          },
+          "manifest": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1
+          },
+          "text_direction": {
+            "type": "string",
+            "enum": [
+              "right-to-left",
+              "top-to-bottom",
+              "bottom-to-top"
+            ]
+          },
+          "behavior": {
+            "type": "string",
+            "enum": [
+              "paged",
+              "individuals"
+            ]
+          },
+          "thumbnail": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "minLength": 1,
+            "format": "uri"
+          }
+        },
+        "required": [
+          "type",
+          "manifest"
+        ],
+        "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "internal": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "unevaluatedItems": false
+    },
     "cataloguer": {
       "type": [
         "array",
@@ -1295,37 +1869,102 @@
       "items": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer"
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contributor": {
+            "description": "The person responsible for the intellectual contributions made to the record via this change",
+            "type": "string",
+            "minLength": 1,
+            "$comment": "TBD: Possibly revise the format or restrict to a set of ID-like values rather than entering name forms"
+          },
+          "added-by": {
+            "description": "The user account responsible for editing the JSON record, likely supplied by the content management system",
+            "type": "string",
+            "minLength": 1,
+            "$comment": "TBD: Possibly revise the format or restrict to a set of ID-like values rather than entering name forms"
           },
           "timestamp": {
             "type": "string",
             "format": "date-time",
-            "minLength": 1,
-            "$comment": "possibly can set min-length based on ISO timestamp length?"
-          },
-          "comment": {
-            "type": [
-              "string",
-              "null"
-            ],
             "minLength": 1
           }
         },
         "required": [
-          "id",
+          "message",
+          "added_by",
           "timestamp"
         ],
         "unevaluatedProperties": false
+      },
+      "unevaluatedItems": false
+    },
+    "reconstructed_from": {
+      "type": "array",
+      "items": {
+        "description": "A unique Archival Resource Key (ARK)",
+        "type": "string",
+        "pattern": "^ark:/21198/([a-z]|[0-9])+"
       },
       "unevaluatedItems": false
     }
   },
   "required": [
     "ark",
+    "reconstruction",
     "type",
-    "idno",
-    "cod_units"
+    "shelfmark",
+    "extent",
+    "part",
+    "location"
   ],
-  "unevaluatedProperties": false
+  "unevaluatedProperties": false,
+  "if": {
+    "properties": {
+      "reconstruction": {
+        "const": true
+      }
+    },
+    "required": [
+      "reconstruction"
+    ]
+  },
+  "then": {
+    "properties": {
+      "type": {
+        "anyOf": [
+          {
+            "const": {
+              "id": "rebind",
+              "label": "Digital Rebinding"
+            }
+          },
+          {
+            "const": {
+              "id": "uto",
+              "label": "Undertext Object"
+            }
+          }
+        ]
+      }
+    },
+    "required": [
+      "reconstructed_from"
+    ]
+  },
+  "else": {
+    "properties": {
+      "type": {
+        "anyOf": [
+          {
+            "const": {
+              "id": "manuscript",
+              "label": "Manuscript"
+            }
+          }
+        ]
+      }
+    }
+  }
 }
