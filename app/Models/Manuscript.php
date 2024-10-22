@@ -27,6 +27,28 @@ class Manuscript extends Model
         'identifier',
         'json',
     ];
+	
+	protected $appends = ['related_agents'];
+	
+	/**
+	 * Accessor to include related agents when the model is serialized.
+	 *
+	 * @return array
+	 */
+	public function getRelatedAgentsAttribute(): array
+	{
+		return $this->getRelatedEntities(
+			'assoc_name',
+			Agent::class,
+			null,
+			function ($agent, $item) {
+				return [
+					'id' => $agent->id,
+					'pref_name' => $agent->pref_name,
+					'rel' => $item['rel'] ?? null,
+				];
+			})->toArray();
+	}
 
     /**
      * Note: The order of the values must align with the order of the fields in the $fillable array.
