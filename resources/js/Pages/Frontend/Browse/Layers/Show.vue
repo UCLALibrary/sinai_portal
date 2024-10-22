@@ -24,27 +24,86 @@
           {{ layerJson.extent }}
         </p>
 
-        <h3>Writing and hands</h3>
+        <template v-if="layerJson.writing && layerJson.writing.length > 0">
+          <h3>Writing and Hands</h3>
+          <div v-for="(writing, writingIndex) in layerJson.writing" :key="writingIndex" class="mb-4">
+            <p>
+              {{ writing.locus }}: {{ writing.script.map(script => script.label).join(', ') }}
+            </p>
+            <p v-if="writing.note && writing.note.length > 0">
+              {{ writing.note.join(', ') }}
+            </p>
+          </div>
+        </template>
 
-        <p v-for="(writing, index) in layerJson.writing" :key="index">
-          <div><span v-if="writing.locus">{{ writing.locus }}: </span>{{ writing.script.map(script => script.label).join(', ') }}</div>
-          <div v-if="writing.note && writing.note.length > 0">{{ writing.note.join(', ') }}</div>
-        </p>
+        <template v-if="layerJson.ink && layerJson.ink.length > 0">
+          <h3>Ink</h3>
+          <div v-for="(ink, index) in layerJson.ink" :key="index" class="mb-4">
+            <p>
+              {{ ink.locus }}: {{ ink.color.join(', ') }}
+            </p>
+            <template v-if="ink.note && ink.note.length > 0">
+              <p v-for="(note, index) in ink.note" :key="index">
+                {{ note }}
+              </p>
+            </template>
+          </div>
+        </template>
 
+        <template v-if="layerJson.layout && layerJson.layout.length > 0">
+          <h3>Page layout</h3>
+          <div v-for="(layout, index) in layerJson.layout" :key="index" class="mb-4">
+            <p>
+              {{ layout.locus }}, {{ layout.lines }} lines, {{ layout.columns }} columns
+            </p>
+            <p v-if="layout.dim">
+              {{ layout.dim }}
+            </p>
+            <template v-if="layout.note && layout.note.length > 0">
+              <p v-for="(note, index) in layout.note" :key="index">
+                {{ note }}
+              </p>
+            </template>
+          </div>
+        </template>
 
-        <h3>Foliation note</h3>
+        <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'foliation').length > 0">
+          <h3>Foliation Note:</h3>
+          <p v-for="(note, index) in layerJson.note.filter(note => note.type.id === 'foliation')" :key="index">
+            {{ note.value }}
+          </p>
+        </template>
 
-        <p v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'foliation').length > 0">
-          <span v-for="(foliation, index) in layerJson.note.filter(note => note.type.id === 'foliation')" :key="index">
-            {{ foliation.value }}
-          </span>
-        </p>
-        
-        <p v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'condition').length > 0">
-          <span v-for="(condition, index) in layerJson.note.filter(note => note.type.id === 'condition')" :key="index">
-            {{ condition.value }}
-          </span>
-        </p>
+        <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
+          <h3>Ornamentation</h3>
+          <ul>
+            <li v-for="(ornamentNote, index) in layerJson.note.filter(note => note.type.id === 'ornamentation')" :key="index">
+              {{ ornamentNote.value }}
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="layerJson.note && (layerJson.note.filter(note => note.type.id === 'condition').length > 0 || layerJson.note.filter(note => note.type.id === 'general').length > 0)">
+          <h3>Notes</h3>
+
+          <template v-if="layerJson.note.filter(note => note.type.id === 'condition').length > 0">
+            <strong>Condition</strong>
+            <ul>
+              <li v-for="(conditionNote, index) in layerJson.note.filter(note => note.type.id === 'condition')" :key="index">
+                {{ conditionNote.value }}
+              </li>
+            </ul>
+          </template>
+
+          <template v-if="layerJson.note.filter(note => note.type.id === 'general').length > 0">
+            <strong>General</strong>
+            <ul>
+              <li v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
+                {{ generalNote.value }}
+              </li>
+            </ul>
+          </template>
+        </template>
 
         <h3>Preferred Citation</h3>
         <p>
@@ -55,6 +114,15 @@
       </section>
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+
+        <template v-if="layerJson.text_unit && layerJson.text_unit.length > 0">
+          <h3>Text units</h3>
+          <ul>
+            <li v-for="textUnit in layerJson.text_unit" :key="index">
+              {{ textUnit.label }}
+            </li>
+          </ul>
+        </template>
           
         <h3>Downloads</h3>
         <p>
