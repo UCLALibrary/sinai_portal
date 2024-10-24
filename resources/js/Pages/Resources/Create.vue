@@ -11,10 +11,10 @@
         </div>
 
         <FileUploadForm
-          v-if="routes.upload"
+          v-if="$page.props.routes.upload && $page.props.routes.upload.store"
           label="Select a JSON file"
           :multiple="false"
-          :endpoint="route(routes.upload.store, routes.upload.resourceType)"
+          :endpoint="route($page.props.routes.upload.store, $page.props.resourceName)"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
@@ -46,13 +46,12 @@
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
-    routes: { type: Object, required: true },
   })
 
   const emitter = useEmitter()
 
   const onUploadSuccess = (payload) => {
-    router.visit(route(props.routes.edit, payload.resourceId), {
+    router.visit(route($page.props.routes.edit, { resourceName: $page.props.resourceName, resourceId: payload.resourceId }), {
       onSuccess: () => {
         // display alert that the resource has been saved
         emitter.emit('show-dismissable-alert', {
@@ -65,10 +64,10 @@
   }
 
   const onSave = (payload) => {
-    axios.post(route(props.routes.store), {
+    axios.post(route($page.props.routes.store), {
       json: payload.data,
     }).then(() => {
-      router.visit(route(props.routes.index))
+      router.visit(route($page.props.routes.index))
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
@@ -80,6 +79,6 @@
   }
 
   const onCancel = () => {
-    router.visit(route(props.routes.index))
+    router.visit(route($page.props.routes.index))
   }
 </script>

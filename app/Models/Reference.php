@@ -43,6 +43,21 @@ class Reference extends Model
         ]);
     }
 
+    public static $config = [
+        'disable_file_uploads' => true,
+        'index' => [
+            'columns' => [
+                'id' => 'Id',
+                'short_title' => 'Short Title',
+                'formatted_citation' => 'Formatted Citation',
+                'zotero_uri' => 'Zotero URI',
+                'date' => 'Date',
+                'creator' => 'Creator',
+                'category' => 'Category',
+            ],
+        ],
+    ];
+
     public static function booted() {
         static::creating(function ($model) {
             if(!isset($model->id)) {

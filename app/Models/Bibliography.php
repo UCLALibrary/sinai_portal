@@ -34,6 +34,16 @@ class Bibliography extends Model
             $json,
         ]);
     }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'type' => 'Type',
+                'alt_shelf' => 'Alternative Shelfmark',
+                'range' => 'Range',
+            ],
+        ],
+    ];
 }
 
 /*

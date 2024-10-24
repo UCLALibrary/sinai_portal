@@ -49,37 +49,37 @@ const logout = () => {
 
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('manuscripts.index')" :active="route().current('manuscripts.*')">
+                                <NavLink :href="route('resources.index', 'manuscripts')" :active="route().current('resources.*') && route().params.resourceName === 'manuscripts'">
                                     Manuscripts
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('codicological-units.index')" :active="route().current('codicological-units.*')">
-                                    Codicological Units
+                                <NavLink :href="route('resources.index', 'layers')" :active="route().current('resources.*') && route().params.resourceName === 'layers'">
+                                    Layers
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('content-units.index')" :active="route().current('content-units.*')">
+                                <NavLink :href="route('resources.index', 'contents')" :active="route().current('resources.*') && route().params.resourceName === 'contents'">
                                     Content Units
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('works.index')" :active="route().current('works.*')">
+                                <NavLink :href="route('resources.index', 'works')" :active="route().current('resources.*') && route().params.resourceName === 'works'">
                                     Works
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('agents.index')" :active="route().current('agents.*')">
+                                <NavLink :href="route('resources.index', 'agents')" :active="route().current('resources.*') && route().params.resourceName === 'agents'">
                                     Agents
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('places.index')" :active="route().current('places.*')">
+                                <NavLink :href="route('resources.index', 'places')" :active="route().current('resources.*') && route().params.resourceName === 'places'">
                                     Places
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('bibliography.index')" :active="route().current('bibliography.*')">
+                                <NavLink :href="route('resources.index', 'bibliography')" :active="route().current('resources.*') && route().params.resourceName === 'bibliography'">
                                     Bibliography
                                 </NavLink>
                             </div>
@@ -94,16 +94,16 @@ const logout = () => {
                                         </button>
                                     </template>
                                     <template #content>
-                                        <DropdownLink :href="route('languages.index')" :active="route().current('languages.*')">
+                                        <DropdownLink :href="route('resources.index', 'languages')" :active="route().current('resources.*') && route().params.resourceName === 'languages'">
                                             Languages
                                         </DropdownLink>
-                                        <DropdownLink :href="route('references.index')" :active="route().current('references.*')">
+                                        <DropdownLink :href="route('resources.index', 'references')" :active="route().current('resources.*') && route().params.resourceName === 'references'">
                                             References
                                         </DropdownLink>
-                                        <DropdownLink :href="route('features.index')" :active="route().current('features.*')">
+                                        <DropdownLink :href="route('resources.index', 'features')" :active="route().current('resources.*') && route().params.resourceName === 'features'">
                                           Features
                                         </DropdownLink>
-                                        <DropdownLink :href="route('locations.index')" :active="route().current('locations.*')">
+                                        <DropdownLink :href="route('resources.index', 'locations')" :active="route().current('resources.*') && route().params.resourceName === 'locations'">
                                           Locations
                                         </DropdownLink>
                                     </template>
@@ -202,59 +202,59 @@ const logout = () => {
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('manuscripts.index')" :active="route().current('manuscripts.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'manuscripts')" :active="route().current('resources.*') && route().params.resourceName === 'manuscripts'">
                             Manuscripts
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('codicological-units.index')" :active="route().current('codicological-units.*')">
-                            Codicological Units
+                        <ResponsiveNavLink :href="route('resources.index', 'layers')" :active="route().current('resources.*') && route().params.resourceName === 'layers'">
+                            Layers
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('content-units.index')" :active="route().current('content-units.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'contents')" :active="route().current('resources.*') && route().params.resourceName === 'contents'">
                             Content Units
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('works.index')" :active="route().current('works.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'works')" :active="route().current('resources.*') && route().params.resourceName === 'works'">
                             Works
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('agents.index')" :active="route().current('agents.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'agents')" :active="route().current('resources.*') && route().params.resourceName === 'agents'">
                             Agents
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('places.index')" :active="route().current('places.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'places')" :active="route().current('resources.*') && route().params.resourceName === 'places'">
                             Places
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('bibliography.index')" :active="route().current('bibliography.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'bibliography')" :active="route().current('resources.*') && route().params.resourceName === 'bibliography'">
                             Bibliography
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('languages.index')" :active="route().current('languages.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'languages')" :active="route().current('resources.*') && route().params.resourceName === 'languages'">
                             Languages
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('references.index')" :active="route().current('references.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'references')" :active="route().current('resources.*') && route().params.resourceName === 'references'">
                             References
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('features.index')" :active="route().current('features.*')">
+                        <ResponsiveNavLink :href="route('resources.index', 'features')" :active="route().current('resources.*') && route().params.resourceName === 'features'">
                             Features
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
-                      <ResponsiveNavLink :href="route('locations.index')" :active="route().current('locations.*')">
-                        Locations
-                      </ResponsiveNavLink>
+                        <ResponsiveNavLink :href="route('resources.index', 'locations')" :active="route().current('resources.*') && route().params.resourceName === 'locations'">
+                            Locations
+                        </ResponsiveNavLink>
                     </div>
 
                     <!-- Responsive Settings Options -->

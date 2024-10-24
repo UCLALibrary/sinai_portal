@@ -11,7 +11,7 @@
           <div class="sm:ml-16 sm:mt-0 sm:flex-none">
             <button
               type="button"
-              @click="router.visit(route(routes.create))"
+              @click="router.visit(route($page.props.routes.create, $page.props.resourceName))"
               class="block rounded-md bg-sinai-red px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-sinai-red focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sinai-red">
               Create
             </button>
@@ -19,25 +19,24 @@
         </div>
 
         <FileUploadForm
-          v-if="routes.upload"
+          v-if="!config.disable_file_uploads && $page.props.routes.upload && $page.props.routes.upload.batch"
           label="Select one or more JSON files"
           hint="Note: The uploaded files will overwrite any existing data. Any file with an ark that doesn't match an existing record will create a new record."
           :multiple="true"
-          :endpoint="route(routes.upload.batch, routes.upload.resourceType)"
+          :endpoint="route($page.props.routes.upload.batch, $page.props.resourceName)"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
 
         <ResourceListTable
           :resources="resources.data"
-          :columns="columns"
+          :columns="config.index.columns"
           :pagination="{
             from: resources.from ?? 0,
             to: resources.to ?? 0,
             total: resources.total,
             links: resources.links
           }"
-          :routes="routes"
           class="px-4 sm:px-6 lg:px-8 my-8"
         />
       </div>
@@ -55,8 +54,7 @@
   defineProps({
     title: { type: String, required: true },
     resources: { type: Object, required: false, default: () => {} },
-    columns: { type: Object, required: true },
-    routes: { type: Object, required: true },
+    config: { type: Object, required: false, default: null },
   })
   
   const emitter = useEmitter()

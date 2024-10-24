@@ -52,6 +52,8 @@ class FeaturesController extends Controller
      */
     public function edit(Feature $feature)
     {
+        // DISCUSS: shouldn't this be in the model?
+
         // Fetch the feature with related formContexts, but only retrieve IDs for formContexts
         $feature = Feature::with('formContexts:id')->find($feature->id)->toArray();
         $feature['form_contexts'] = array_column($feature['form_contexts'], 'id');

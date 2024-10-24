@@ -49,6 +49,16 @@ class Agent extends Model
         ]);
     }
 
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'id' => 'Id',
+                'type' => 'Type',
+                'pref_name' => 'Preferred Name',
+            ],
+        ],
+    ];
+
     /**
      * The attributes that should be appended to the model.
      *

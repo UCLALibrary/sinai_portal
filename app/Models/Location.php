@@ -47,6 +47,19 @@ class Location extends Model
             $data['url'],
         ]);
     }
+
+    public static $config = [
+        'disable_file_uploads' => true,
+        'index' => [
+            'columns' => [
+                'id' => 'ID',
+                'collection' => 'Collection',
+                'repository' => 'Repository',
+                'note' => 'Note',
+                'country' => 'Country',
+            ],
+        ],
+    ];
 }
 
 Location::initialize('location');

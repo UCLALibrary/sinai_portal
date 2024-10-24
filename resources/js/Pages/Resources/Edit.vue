@@ -11,11 +11,11 @@
         </div>
 
         <FileUploadForm
-          v-if="routes.upload"
+          v-if="$page.props.routes.upload && $page.props.routes.upload.update"
           label="Select a JSON file"
           :multiple="false"
           hint="Note: The uploaded file will overwrite the existing data"
-          :endpoint="route(routes.upload.update, { resourceType: routes.upload.resourceType, resourceId: resource.id })"
+          :endpoint="route($page.props.routes.upload.update, { resourceName: $page.props.resourceName, resourceId: resource.id })"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
@@ -48,7 +48,6 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     resource: { type: Object, required: true },
-    routes: { type: Object, required: true },
   })
 
   const emitter = useEmitter()

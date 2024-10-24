@@ -40,6 +40,15 @@ class Layer extends Model
         ]);
     }
 
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'ark' => 'ARK',
+                'identifier' => 'Identifier',
+            ],
+        ],
+    ];
+
     /**
      * Get the indexable data array for the model.
      *
@@ -118,4 +127,4 @@ class Layer extends Model
 /*
  * Execute the static initializer to load the schemas for JSON Forms.
  */
-Manuscript::initialize('ms-obj');
+Layer::initialize('layer');

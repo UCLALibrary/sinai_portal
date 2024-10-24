@@ -40,6 +40,18 @@ class Feature extends Model
         ]);
     }
 
+    public static $config = [
+        'disable_file_uploads' => true,
+        'index' => [
+            'columns' => [
+                'label' => 'Label',
+                'corresp_note' => 'Note',
+                'summary' => 'Summary',
+                'scope' => 'Scope',
+            ],
+        ],
+    ];
+
     public static function booted() {
         static::creating(function ($model) {
             if(!isset($model->id)) {

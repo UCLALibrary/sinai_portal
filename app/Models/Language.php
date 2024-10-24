@@ -45,6 +45,22 @@ class Language extends Model
             $data['regions'],
         ]);
     }
+
+    public static $config = [
+        'disable_file_uploads' => true,
+        'index' => [
+            'columns' => [
+                'id' => 'Id',
+                'label' => 'Label',
+                'iso' => 'ISO',
+                'glottolog' => 'Glottolog',
+                'writing_systems' => 'Writing Systems',
+                'other_names' => 'Other names',
+                'when_in_use' => 'When in use',
+                'regions' => 'Regions',
+            ],
+        ],
+    ];
 }
 
 /*

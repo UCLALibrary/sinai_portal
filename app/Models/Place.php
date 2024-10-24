@@ -34,6 +34,15 @@ class Place extends Model
             $json,
         ]);
     }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'type' => 'Type',
+                'pref_name' => 'Preferred Name',
+            ],
+        ],
+    ];
 }
 
 /*

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 // use Exception;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 // use Swaggest\JsonSchema\Schema;
 
 class JsonFileUploadRequest extends FormRequest
@@ -57,8 +58,10 @@ class JsonFileUploadRequest extends FormRequest
                     return;
                 }
 
+                // get the model class using the singular version of the resource name
+                $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($this->route('resourceName')));
+
                 // ensure the resource has a valid json schema
-                $modelClass = '\\App\\Models\\' . ucfirst($this->route('resourceType'));
                 if (!class_exists($modelClass)) {
                     $validator->errors()->add('files', 'Invalid resource type.');
                     return;
@@ -81,13 +84,10 @@ class JsonFileUploadRequest extends FormRequest
                 // decode the json file
                 $data = json_decode($file->get(), true);
 
-                // get the model class for the resource type
-                $model = '\\App\\Models\\' . ucfirst($this->route('resourceType'));
-
                 // on update, ensure the ark in the json file matches the ark of the resource
                 $resourceId = $this->route('resourceId');
                 if ($resourceId) {
-                    $resource = $model::find($resourceId);
+                    $resource = $modelClass::find($resourceId);
                     if ($data['ark'] !== $resource->ark) {
                         $validator->errors()->add('ark', 'The "ark" in the JSON file must match the "ark" of this record.');
                         return;
@@ -95,7 +95,7 @@ class JsonFileUploadRequest extends FormRequest
                 }
                 // on store, ensure the ark in the json file is not used by an existing resource
                 else {
-                    if ($model::where('ark', $data['ark'])->exists()) {
+                    if ($modelClass::where('ark', $data['ark'])->exists()) {
                         $validator->errors()->add('ark', 'A record with this "ark" already exists.');
                         return;
                     }

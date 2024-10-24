@@ -1,22 +1,12 @@
 <?php
 
-use App\Http\Controllers\Cms\AgentsController;
-use App\Http\Controllers\Cms\BibliographyController;
-use App\Http\Controllers\Cms\ContentsController;
-use App\Http\Controllers\Cms\FeaturesController;
-use App\Http\Controllers\Cms\LanguagesController;
-use App\Http\Controllers\Cms\LocationsController;
-use App\Http\Controllers\Cms\ManuscriptsController;
-use App\Http\Controllers\Cms\PartsController;
-use App\Http\Controllers\Cms\PlacesController;
-use App\Http\Controllers\Cms\ReferencesController;
+use App\Http\Controllers\Cms\ResourcesController;
 use App\Http\Controllers\Cms\UsersController;
-use App\Http\Controllers\Cms\WorksController;
-use App\Http\Controllers\Frontend\AgentsController as FrontendAgentsController;
-use App\Http\Controllers\Frontend\LayersController as FrontendLayersController;
-use App\Http\Controllers\Frontend\PlacesController as FrontendPlacesController;
-use App\Http\Controllers\Frontend\ManuscriptsController as FrontendManuscriptsController;
-use App\Http\Controllers\Frontend\WorksController as FrontendWorksController;
+use App\Http\Controllers\Frontend\AgentsController;
+use App\Http\Controllers\Frontend\LayersController;
+use App\Http\Controllers\Frontend\PlacesController;
+use App\Http\Controllers\Frontend\ManuscriptsController;
+use App\Http\Controllers\Frontend\WorksController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,11 +15,11 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
-Route::resource('/agents', FrontendAgentsController::class)->only(['index', 'show'])->names('frontend.agents');
-Route::resource('/places', FrontendPlacesController::class)->only(['index', 'show'])->names('frontend.places');
-Route::resource('/works', FrontendWorksController::class)->only(['index', 'show'])->names('frontend.works');
-Route::resource('/manuscripts', FrontendManuscriptsController::class)->only(['index', 'show'])->names('frontend.manuscripts');
-Route::resource('/layers', FrontendLayersController::class)->only(['index', 'show'])->names('frontend.layers');
+Route::resource('/agents', AgentsController::class)->only(['index', 'show'])->names('frontend.agents');
+Route::resource('/places', PlacesController::class)->only(['index', 'show'])->names('frontend.places');
+Route::resource('/works', WorksController::class)->only(['index', 'show'])->names('frontend.works');
+Route::resource('/manuscripts', ManuscriptsController::class)->only(['index', 'show'])->names('frontend.manuscripts');
+Route::resource('/layers', LayersController::class)->only(['index', 'show'])->names('frontend.layers');
 // Route::resource('/about', FrontendAboutController::class)->only(['index', 'show'])->names('frontend.about');
 
 Route::get('/about', function () {
@@ -46,36 +36,11 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     // users
     Route::resource('users', UsersController::class);
 
-    // manuscripts
-    Route::resource('manuscripts', ManuscriptsController::class)->only('index', 'create', 'edit');
-
-    // parts
-    Route::resource('codicological-units', PartsController::class)->only('index', 'create', 'edit');
-
-    // contents
-    Route::resource('content-units', ContentsController::class)->only('index', 'create', 'edit');
-
-    // works
-    Route::resource('works', WorksController::class)->only('index', 'create', 'edit');
-
-    // agents
-    Route::resource('agents', AgentsController::class)->only('index', 'create', 'edit');
-
-    // places
-    Route::resource('places', PlacesController::class)->only('index', 'create', 'edit');
-
-    // bibliography
-    Route::resource('bibliography', BibliographyController::class)->only('index', 'create', 'edit');
-
-    // languages
-    Route::resource('languages', LanguagesController::class)->only('index', 'create', 'edit');
-
-    // references
-    Route::resource('references', ReferencesController::class)->only('index', 'create', 'edit');
-
-    // features
-    Route::resource('features', FeaturesController::class)->only('index', 'create', 'edit');
-
-	// features
-	Route::resource('locations', LocationsController::class)->only('index', 'create', 'edit');
+    // manuscripts | layers | parts | contents | works | agents | places | bibliography | languages | references | features | locations
+    Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations');
+    Route::group(['prefix' => '{resourceName}'], function () {
+        Route::get('/', [ResourcesController::class, 'index'])->name('resources.index');
+        Route::get('/create', [ResourcesController::class, 'create'])->name('resources.create');
+        Route::get('/{resourceId}/edit', [ResourcesController::class, 'edit'])->name('resources.edit');
+    });
 });

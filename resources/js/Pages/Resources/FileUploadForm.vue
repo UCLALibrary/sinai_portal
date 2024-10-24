@@ -32,7 +32,6 @@
 </template>
 
 <script setup>
-  import { defineEmits } from 'vue'
   import { useForm } from '@inertiajs/vue3'
 
   const props = defineProps({

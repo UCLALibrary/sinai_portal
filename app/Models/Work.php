@@ -40,6 +40,15 @@ class Work extends Model
         ]);
     }
 
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'ark' => 'ARK',
+                'pref_title' => 'Preferred Title',
+            ],
+        ],
+    ];
+
     /**
      * The attributes that should be appended to the model.
      *

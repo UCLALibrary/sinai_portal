@@ -32,6 +32,14 @@ class Content extends Model
             $json,
         ]);
     }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'ark' => 'ARK',
+            ],
+        ],
+    ];
 }
 
 /*

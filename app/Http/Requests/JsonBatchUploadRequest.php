@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 // use Exception;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 // use Swaggest\JsonSchema\Schema;
 
 class JsonBatchUploadRequest extends FormRequest
@@ -60,8 +61,10 @@ class JsonBatchUploadRequest extends FormRequest
                         return;
                     }
 
+                    // get the model class using the singular version of the resource name
+                    $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($this->route('resourceName')));
+
                     // ensure the resource has a valid json schema
-                    $modelClass = '\\App\\Models\\' . ucfirst($this->route('resourceType'));
                     if (!class_exists($modelClass)) {
                         $validator->errors()->add('files', 'Invalid resource type.');
                         return;
