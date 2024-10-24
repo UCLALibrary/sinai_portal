@@ -45,4 +45,4 @@ class Content extends Model
 /*
  * Execute the static initializer to load the schemas for JSON Forms.
  */
-Content::initialize('content_unit');
+Content::initialize('text_unit');
