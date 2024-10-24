@@ -49,10 +49,8 @@ class LayersSeeder extends Seeder
                 continue;
             }
             
-            $arkSegments = explode('/', $ark);
-
             DB::table('layers')->insert([
-                'id' => end($arkSegments), // use the last part of the ARK as the id
+                'id' => basename($ark),  // use the trailing ark segment as the id
                 'ark' => $ark,
                 'identifier' => $identifier,
                 'json' => $jsonContent,

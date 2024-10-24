@@ -53,10 +53,8 @@ class ManuscriptsSeeder extends Seeder
                 continue;
             }
             
-            $arkSegments = explode('/', $ark);
-
             DB::table('manuscripts')->insert([
-                'id' => end($arkSegments), // use the last part of the ARK as the id
+                'id' => basename($ark),  // use the trailing ark segment as the id
                 'ark' => $ark,
                 'type' => $type,
                 'identifier' => $identifier,
