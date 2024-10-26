@@ -13,7 +13,7 @@
                     scope="col"
                     :class="{
                       'py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6': index === 0,
-                      'px-3 py-3.5 text-left text-sm font-semibold text-gray-900': index !== 0
+                      'px-3 py-3.5 text-left text-sm font-semibold text-gray-900 whitespace-nowrap': index !== 0
                     }">
                     {{ fieldName }}
                   </th>
@@ -32,7 +32,7 @@
                   <td
                     v-for="([key, label], index) in Object.entries(columns)"
                     :key="index"
-                    class="whitespace-nowrap text-sm text-gray-900 p-0"
+                    class="min-w-36 text-sm text-gray-900 p-0"
                     :class="{ 'font-medium': index === 0 }">
                     <Link :href="route($page.props.routes.edit, { resourceName: $page.props.resourceName, resourceId: resource.id })" tabindex="-1" class="block py-4"
                       :class="{
