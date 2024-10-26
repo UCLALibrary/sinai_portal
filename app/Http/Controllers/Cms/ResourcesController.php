@@ -50,7 +50,7 @@ class ResourcesController extends Controller
             'title' => 'Edit ' . $resourceType,
             'schema' => json_decode($modelClass::$schema),
             'uischema' => json_decode($modelClass::$uiSchema),
-            'data' => json_decode($resource->json),
+            'data' => json_decode($resource->json) ?? $resource,
             'resource' => $resource,
         ]);
     }
