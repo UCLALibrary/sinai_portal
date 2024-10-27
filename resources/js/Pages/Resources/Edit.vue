@@ -36,7 +36,7 @@
 
 <script setup>
   import { defineAsyncComponent } from 'vue'
-  import { router } from '@inertiajs/vue3'
+  import { router, usePage } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
@@ -48,9 +48,12 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     resource: { type: Object, required: true },
+    resourceName: { type: String, required: true },
   })
 
   const emitter = useEmitter()
+
+  const page = usePage();
 
   const onUploadSuccess = (payload) => {
     router.visit(window.location.href, {
@@ -66,7 +69,7 @@
   }
 
   const onSave = (payload) => {
-    axios.put(route(props.routes.update, props.resource.id), {
+    axios.put(route(page.props.routes.update, { resourceName: props.resourceName, resourceId: props.resource.id }), {
       json: payload.data,
     }).then(() => {
       if (payload.continueEditing) {
@@ -77,13 +80,13 @@
           timeout: 2000,
         })
       } else {
-        router.visit(route(props.routes.index))
+        router.visit(route(page.props.routes.index, props.resourceName))
       }
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
         type: 'error',
-        message: 'Error saving. Please check your form for errors.',
+        message: error,
         timeout: 2000,
       })
     })

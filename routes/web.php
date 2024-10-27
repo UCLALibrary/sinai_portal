@@ -37,7 +37,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     Route::resource('users', UsersController::class);
 
     // manuscripts | layers | parts | contents | works | agents | places | bibliography | languages | references | features | locations
-    Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations');
+    Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts');
     Route::group(['prefix' => '{resourceName}'], function () {
         Route::get('/', [ResourcesController::class, 'index'])->name('resources.index');
         Route::get('/create', [ResourcesController::class, 'create'])->name('resources.create');

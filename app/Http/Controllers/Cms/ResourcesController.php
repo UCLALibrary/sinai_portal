@@ -52,6 +52,7 @@ class ResourcesController extends Controller
             'uischema' => json_decode($modelClass::$uiSchema),
             'data' => json_decode($resource->json) ?? $resource,
             'resource' => $resource,
+            'resourceName' => $resourceName,
         ]);
     }
 }

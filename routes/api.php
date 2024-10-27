@@ -18,15 +18,15 @@ Route::apiResource('form-contexts', FormContextsController::class, ['as' => 'api
 // roles
 Route::apiResource('roles', RolesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
-// manuscripts | layers | parts | contents | works | agents | places | bibliography | languages | references | features | locations
-Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations');
+// manuscripts | layers | parts | contents | works | agents | places | bibliography | languages | references | features | locations | scripts
+Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts');
 
 // resources
 Route::group(['prefix' => '{resourceName}'], function () {
     Route::get('/', [ResourcesController::class, 'index'])->name('api.resources.index');
     Route::post('/', [ResourcesController::class, 'store'])->name('api.resources.store');
-    Route::put('/create', [ResourcesController::class, 'update'])->name('api.resources.update');
-    Route::delete('/{resourceId}/edit', [ResourcesController::class, 'destroy'])->name('api.resources.destroy');
+    Route::put('/{resourceId}', [ResourcesController::class, 'update'])->name('api.resources.update');
+    Route::delete('/{resourceId}', [ResourcesController::class, 'destroy'])->name('api.resources.destroy');
 });
 
 // files

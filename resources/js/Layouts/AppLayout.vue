@@ -106,6 +106,9 @@ const logout = () => {
                                         <DropdownLink :href="route('resources.index', 'locations')" :active="route().current('resources.*') && route().params.resourceName === 'locations'">
                                           Locations
                                         </DropdownLink>
+                                         <DropdownLink :href="route('resources.index', 'scripts')" :active="route().current('resources.*') && route().params.resourceName === 'scripts'">
+                                          Scripts
+                                        </DropdownLink>
                                     </template>
                                 </Dropdown>
                             </div>
