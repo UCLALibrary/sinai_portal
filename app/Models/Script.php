@@ -60,4 +60,4 @@ class Script extends Model
 /*
  * Execute the static initializer to load the schemas for JSON Forms.
  */
-Language::initialize('language');
+Script::initialize('script');
