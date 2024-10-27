@@ -197,6 +197,36 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
                         </svg>
                     </a>
                 </p>
+
+                  <p class="mt-2 text-sm">
+                    <a href="/cms/features" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Features
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
+                            <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </p>
+
+                  <p class="mt-2 text-sm">
+                    <a href="/cms/locations" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Locations
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
+                            <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </p>
+
+                  <p class="mt-2 text-sm">
+                    <a href="/cms/scripts" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Scripts
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
+                            <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </p>
             </div>
         </div>
     </div>
