@@ -11,10 +11,10 @@
         </div>
 
         <FileUploadForm
-          v-if="$page.props.routes.upload && $page.props.routes.upload.store"
+          v-if="page.props.routes.upload && page.props.routes.upload.store"
           label="Select a JSON file"
           :multiple="false"
-          :endpoint="route($page.props.routes.upload.store, $page.props.resourceName)"
+          :endpoint="route(page.props.routes.upload.store, page.props.resourceName)"
           @on-success="onUploadSuccess"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
@@ -35,7 +35,7 @@
 
 <script setup>
   import { defineAsyncComponent } from 'vue'
-  import { router } from '@inertiajs/vue3'
+  import { router, usePage } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
@@ -46,12 +46,15 @@
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
+    resourceName: { type: String, required: true },
   })
 
   const emitter = useEmitter()
 
+  const page = usePage();
+
   const onUploadSuccess = (payload) => {
-    router.visit(route($page.props.routes.edit, { resourceName: $page.props.resourceName, resourceId: payload.resourceId }), {
+    router.visit(route(page.props.routes.edit, { resourceName: page.props.resourceName, resourceId: payload.resourceId }), {
       onSuccess: () => {
         // display alert that the resource has been saved
         emitter.emit('show-dismissable-alert', {
@@ -64,7 +67,7 @@
   }
 
   const onSave = (payload) => {
-    axios.post(route($page.props.routes.store), {
+    axios.post(route(page.props.routes.store, page.props.resourceName), {
       json: payload.data,
     }).then(() => {
       router.visit(route($page.props.routes.index))
