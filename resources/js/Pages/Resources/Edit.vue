@@ -11,11 +11,11 @@
         </div>
 
         <FileUploadForm
-          v-if="$page.props.routes.upload && $page.props.routes.upload.update"
+          v-if="pageProps.routes.upload && pageProps.routes.upload.update"
           label="Select a JSON file"
           :multiple="false"
           hint="Note: The uploaded file will overwrite the existing data"
-          :endpoint="route($page.props.routes.upload.update, { resourceName: $page.props.resourceName, resourceId: resource.id })"
+          :endpoint="route(pageProps.routes.upload.update, { resourceName: pageProps.resourceName, resourceId: resource.id })"
           @on-success="onUploadSuccess"
           @on-error="onUploadError"
           class="px-4 sm:px-6 lg:px-8 py-4"
@@ -37,7 +37,7 @@
 
 <script setup>
   import { defineAsyncComponent } from 'vue'
-  import { router, usePage } from '@inertiajs/vue3'
+  import { usePage, router } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
@@ -49,12 +49,11 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     resource: { type: Object, required: true },
-    resourceName: { type: String, required: true },
   })
 
-  const emitter = useEmitter()
+  const { props: pageProps } = usePage()
 
-  const page = usePage();
+  const emitter = useEmitter()
 
   const onUploadSuccess = (payload) => {
     router.visit(window.location.href, {
@@ -78,7 +77,7 @@
   }
 
   const onSave = (payload) => {
-    axios.put(route(page.props.routes.update, { resourceName: props.resourceName, resourceId: props.resource.id }), {
+    axios.put(route(pageProps.routes.update, { resourceName: pageProps.resourceName, resourceId: props.resource.id }), {
       json: payload.data,
     }).then(() => {
       if (payload.continueEditing) {
@@ -89,7 +88,7 @@
           timeout: 2000,
         })
       } else {
-        router.visit(route(page.props.routes.index, props.resourceName))
+        router.visit(route(pageProps.routes.index, pageProps.resourceName))
       }
     }).catch(error => {
       // display alert that there was an error saving the resource
