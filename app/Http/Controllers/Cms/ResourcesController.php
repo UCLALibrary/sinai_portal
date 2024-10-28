@@ -44,7 +44,7 @@ class ResourcesController extends Controller
     {
         $resourceType = ucfirst(Str::singular($resourceName));
         $modelClass = '\\App\\Models\\' . $resourceType;
-        $resource = $modelClass::find($resourceId);
+        $resource = $modelClass::findOrFail($resourceId);
 
         return Inertia::render('Resources/Edit', [
             'title' => 'Edit ' . $resourceType,
