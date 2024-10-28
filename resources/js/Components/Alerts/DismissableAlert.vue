@@ -22,13 +22,15 @@
   const alertData = ref(null)
 
   emitter.on('show-dismissable-alert', (payload) => {
-    showAlert.value = true
-    alertData.value = payload
-    if (payload && payload.hasOwnProperty('timeout')) {
-      setTimeout(() => {
-        showAlert.value = false
-        alertData.value = null
-      }, payload.timeout)
+    if (payload.type) {
+      showAlert.value = true
+      alertData.value = payload
+      if (payload && payload.hasOwnProperty('timeout')) {
+        setTimeout(() => {
+          showAlert.value = false
+          alertData.value = null
+        }, payload.timeout)
+      }
     }
   })
 </script>
