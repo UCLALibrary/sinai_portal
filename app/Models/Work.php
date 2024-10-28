@@ -22,8 +22,31 @@ class Work extends Model
      */
     protected $fillable = [
         'id',
+        'ark',
         'pref_title',
         'json',
+    ];
+
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        return array_combine($this->fillable, [
+            basename($data['ark']),  // use the trailing ark segment as the id
+            $data['ark'],
+            $data['pref_title'],
+            $json,
+        ]);
+    }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'ark' => 'ARK',
+                'pref_title' => 'Preferred Title',
+            ],
+        ],
     ];
 
     /**

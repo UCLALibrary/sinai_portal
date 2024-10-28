@@ -29,6 +29,38 @@ class Language extends Model
         'regions',
     ];
 
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data)
+    {
+        return array_combine($this->fillable, [
+            $data['id'],
+            $data['label'],
+            $data['iso'] ?? null,
+            $data['glottolog'] ?? null,
+            $data['writing_systems'] ?? null,
+            $data['other_names'] ?? null,
+            $data['when_in_use'] ?? null,
+            $data['regions'] ?? null,
+        ]);
+    }
+
+    public static $config = [
+        'disable_file_uploads' => true,
+        'index' => [
+            'columns' => [
+                'id' => 'Id',
+                'label' => 'Label',
+                'iso' => 'ISO',
+                'glottolog' => 'Glottolog',
+                'writing_systems' => 'Writing Systems',
+                'other_names' => 'Other names',
+                'when_in_use' => 'When in use',
+                'regions' => 'Regions',
+            ],
+        ],
+    ];
 }
 
 /*

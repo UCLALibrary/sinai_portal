@@ -8,7 +8,7 @@ use Illuminate\Foundation\Queue\Queueable;
 
 class UpdateJsonFieldsJob implements ShouldQueue
 {
-    use Queueable;
+  use Queueable;
 
 	protected $targetKey;
 	protected $targetId;

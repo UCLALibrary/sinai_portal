@@ -36,7 +36,24 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'appUrl' => config('app.url'),
+            'resourceName' => $request->route('resourceName'),
+            'routes' => [
+                'index' => 'resources.index',
+                'create' => 'resources.create',
+                'store' => 'api.resources.store',
+                'edit' => 'resources.edit',
+                'update' => 'api.resources.update',
+                'upload' => [
+                    'store' => 'api.files.upload.store',
+                    'update' => 'api.files.upload.update',
+                    'batch' => 'api.files.upload.batch',
+                ],
+            ],
+            'flash' => [
+                'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
+            ],
         ]);
     }
 }

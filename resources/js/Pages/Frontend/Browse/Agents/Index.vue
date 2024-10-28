@@ -53,19 +53,14 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRefinementList
-                  :show-more-limit="maxFacetValuesToShow"
+                  :limit="maxFacetValuesToShow"
                   attribute="type"
-                  :show-more="true"
                   @change="onFilter('type', $event.target.value)"
-                  class="py-4">
+                  class="max-h-48 overflow-y-scroll my-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
                     </div>
-                  </template>
-
-                  <template v-slot:showMoreLabel="{ isShowingMore }">
-                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
                   </template>
                 </AisRefinementList>
               </AisDynamicWidgets>
@@ -76,19 +71,14 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRefinementList
-                  :show-more-limit="maxFacetValuesToShow"
+                  :limit="maxFacetValuesToShow"
                   attribute="gender"
-                  :show-more="true"
                   @change="onFilter('gender', $event.target.value)"
-                  class="py-4">
+                  class="max-h-48 overflow-y-scroll my-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
                     </div>
-                  </template>
-
-                  <template v-slot:showMoreLabel="{ isShowingMore }">
-                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
                   </template>
                 </AisRefinementList>
               </AisDynamicWidgets>
@@ -161,7 +151,7 @@
   import useFacetFilters from '@/composables/search/useFacetFilters'
   const { filters, onFilter, onClearFilters } = useFacetFilters()
 
-  const maxFacetValuesToShow = 200
+  const maxFacetValuesToShow = 100
 
   const initialUiState = ref(null)
 

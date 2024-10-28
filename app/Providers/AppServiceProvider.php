@@ -6,7 +6,6 @@ namespace App\Providers;
 use App\Models\Location;
 use App\Observers\LocationObserver;
 use Illuminate\Support\Facades\Gate;
-use Inertia\Inertia;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,8 +26,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole('admin') ? true : null;
         });
-        Inertia::share('appUrl', config('app.url'));
 
-		Location::observe(LocationObserver::class);
+        Location::observe(LocationObserver::class);
     }
 }

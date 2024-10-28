@@ -45,10 +45,9 @@ class AgentsSeeder extends Seeder
                 continue;
             }
 
-            $arkSegments = explode('/', $ark);
-
             DB::table('agents')->insert([
-                'id' => end($arkSegments), // use the last part of the ARK as the id
+                'id' => basename($ark),  // use the trailing ark segment as the id
+                'ark' => $ark,
                 'type' => $type,
                 'pref_name' => $pref_name,
                 'json' => $jsonContent,

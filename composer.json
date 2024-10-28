@@ -13,6 +13,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "spatie/laravel-permission": "^6.9",
+        "swaggest/json-schema": "^0.12.42",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

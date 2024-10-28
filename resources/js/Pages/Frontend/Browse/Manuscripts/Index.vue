@@ -53,19 +53,14 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRefinementList
-                  :show-more-limit="maxFacetValuesToShow"
+                  :limit="maxFacetValuesToShow"
                   attribute="type"
-                  :show-more="true"
                   @change="onFilter('type', $event.target.value)"
-                  class="py-4">
+                  class="max-h-48 overflow-y-scroll my-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
                     </div>
-                  </template>
-
-                  <template v-slot:showMoreLabel="{ isShowingMore }">
-                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
                   </template>
                 </AisRefinementList>
               </AisDynamicWidgets>
@@ -76,19 +71,14 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRefinementList
-                  :show-more-limit="maxFacetValuesToShow"
+                  :limit="maxFacetValuesToShow"
                   attribute="support"
-                  :show-more="true"
                   @change="onFilter('support', $event.target.value)"
-                  class="py-4">
+                  class="max-h-48 overflow-y-scroll my-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
                     </div>
-                  </template>
-
-                  <template v-slot:showMoreLabel="{ isShowingMore }">
-                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
                   </template>
                 </AisRefinementList>
               </AisDynamicWidgets>
@@ -99,42 +89,68 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRefinementList
-                  :show-more-limit="maxFacetValuesToShow"
+                  :limit="maxFacetValuesToShow"
                   attribute="state"
-                  :show-more="true"
                   @change="onFilter('state', $event.target.value)"
-                  class="py-4">
+                  class="max-h-48 overflow-y-scroll my-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
                     </div>
-                  </template>
-
-                  <template v-slot:showMoreLabel="{ isShowingMore }">
-                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
                   </template>
                 </AisRefinementList>
               </AisDynamicWidgets>
             </template>
           </AccordionCard>
 
-           <AccordionCard title="Features" class="accordion-item">
+          <AccordionCard title="Features" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRefinementList
-                  :show-more-limit="maxFacetValuesToShow"
+                  :limit="maxFacetValuesToShow"
                   attribute="features"
-                  :show-more="true"
                   @change="onFilter('features', $event.target.value)"
-                  class="py-4">
+                  class="max-h-48 overflow-y-scroll my-4">
                   <template v-slot="{ items }">
                     <div v-if="!items.length">
                       No results found
                     </div>
                   </template>
+                </AisRefinementList>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
 
-                  <template v-slot:showMoreLabel="{ isShowingMore }">
-                    {{ !isShowingMore ? 'Show more' : 'Show less' }}
+          <AccordionCard title="Location" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRefinementList
+                  :limit="maxFacetValuesToShow"
+                  attribute="repository"
+                  @change="onFilter('repository', $event.target.value)"
+                  class="max-h-48 overflow-y-scroll my-4">
+                  <template v-slot="{ items }">
+                    <div v-if="!items.length">
+                      No results found
+                    </div>
+                  </template>
+                </AisRefinementList>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
+
+          <AccordionCard title="Collection" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRefinementList
+                  :limit="maxFacetValuesToShow"
+                  attribute="collection"
+                  @change="onFilter('collection', $event.target.value)"
+                  class="max-h-48 overflow-y-scroll my-4">
+                  <template v-slot="{ items }">
+                    <div v-if="!items.length">
+                      No results found
+                    </div>
                   </template>
                 </AisRefinementList>
               </AisDynamicWidgets>
@@ -207,7 +223,7 @@
 
   const { filters, onFilter, onClearFilters } = useFacetFilters()
   
-  const maxFacetValuesToShow = 200
+  const maxFacetValuesToShow = 100
 
   const initialUiState = ref(null)
 

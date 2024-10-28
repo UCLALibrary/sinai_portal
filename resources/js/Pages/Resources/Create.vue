@@ -1,5 +1,5 @@
 <template>
-  <AppLayout title="Add Resource">
+  <AppLayout :title="title">
     <div class="lg:py-12">
       <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-8 sm:flex sm:items-center px-4 sm:px-6 lg:px-8">
@@ -10,6 +10,16 @@
           </div>
         </div>
 
+        <FileUploadForm
+          v-if="pageProps.routes.upload && pageProps.routes.upload.store"
+          label="Select a JSON file"
+          :multiple="false"
+          :endpoint="route(pageProps.routes.upload.store, pageProps.resourceName)"
+          @on-success="onUploadSuccess"
+          @on-error="onUploadError"
+          class="px-4 sm:px-6 lg:px-8 py-4"
+        />
+
         <ResourceForm
           :schema="schema"
           :uischema="uischema"
@@ -17,7 +27,7 @@
           mode="create"
           @on-save="onSave"
           @on-cancel="onCancel"
-          class="px-4 sm:px-6 lg:px-8 mb-16"
+          class="px-4 sm:px-6 lg:px-8 my-8"
         />
       </div>
     </div>
@@ -26,8 +36,10 @@
 
 <script setup>
   import { defineAsyncComponent } from 'vue'
+  import { usePage, router } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
+  import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
   const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
 
   const props = defineProps({
@@ -35,28 +47,50 @@
     schema: { type: Object, required: true },
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
-    saveEndpoint: { type: String, required: true },
-    redirectUrl: { type: String, required: true },
+    resourceName: { type: String, required: true },
   })
+
+  const { props: pageProps } = usePage()
 
   const emitter = useEmitter()
 
+  const onUploadSuccess = (payload) => {
+    router.visit(route(pageProps.routes.edit, { resourceName: pageProps.resourceName, resourceId: payload.resourceId }), {
+      onSuccess: () => {
+        // display alert that the resource has been saved
+        emitter.emit('show-dismissable-alert', {
+          type: payload.status,
+          message: payload.message,
+          timeout: 4000,
+        })
+      },
+    })
+  }
+
+  const onUploadError = (payload) => {
+    // display alert that there was an error saving the resource
+    emitter.emit('show-dismissable-alert', {
+      type: payload.status,
+      message: payload.message,
+    })
+  }
+
   const onSave = (payload) => {
-    axios.post(props.saveEndpoint, {
+    axios.post(route(pageProps.routes.store, pageProps.resourceName), {
       json: payload.data,
     }).then(() => {
-      window.location.href = props.redirectUrl
+      router.visit(route(pageProps.routes.index, pageProps.resourceName))
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
         type: 'error',
-        message: 'Error saving. Please check your form for errors.',
+        message: error,
         timeout: 2000,
       })
     })
   }
 
   const onCancel = () => {
-    window.location.href = props.redirectUrl
+    router.visit(route(pageProps.routes.index, pageProps.resourceName))
   }
 </script>

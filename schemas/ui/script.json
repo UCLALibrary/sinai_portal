@@ -1,0 +1,34 @@
+{
+  "type": "VerticalLayout",
+  "elements": [
+    {
+      "type": "Group",
+      "elements": [
+        {
+          "type": "Control",
+          "scope": "#/properties/id"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/label"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/writing_system"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/when_in_use"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/region"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/notes"
+        }
+      ]
+    }
+  ]
+}

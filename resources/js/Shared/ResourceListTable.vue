@@ -13,7 +13,7 @@
                     scope="col"
                     :class="{
                       'py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6': index === 0,
-                      'px-3 py-3.5 text-left text-sm font-semibold text-gray-900': index !== 0
+                      'px-3 py-3.5 text-left text-sm font-semibold text-gray-900 whitespace-nowrap': index !== 0
                     }">
                     {{ fieldName }}
                   </th>
@@ -32,9 +32,9 @@
                   <td
                     v-for="([key, label], index) in Object.entries(columns)"
                     :key="index"
-                    class="whitespace-nowrap text-sm text-gray-900 p-0"
+                    class="min-w-36 text-sm text-gray-900 p-0"
                     :class="{ 'font-medium': index === 0 }">
-                    <Link :href="`/cms/${resourceName}/${resource.id}/edit`" tabindex="-1" class="block py-4"
+                    <Link :href="route($page.props.routes.edit, { resourceName: $page.props.resourceName, resourceId: resource.id })" tabindex="-1" class="block py-4"
                       :class="{
                         'pl-4 pr-3 sm:pl-6': index === 0,
                         'px-3': index !== 0
@@ -43,7 +43,7 @@
                     </Link>
                   </td>
                   <td class="w-px relative whitespace-nowrap text-right text-sm font-medium p-0">
-                    <Link :href="`/cms/${resourceName}/${resource.id}/edit`" tabindex="-1" class="block py-4 pl-3 pr-4 sm:pr-6">
+                    <Link :href="route($page.props.routes.edit, { resourceName: $page.props.resourceName, resourceId: resource.id })" tabindex="-1" class="block py-4 pl-3 pr-4 sm:pr-6">
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="block w-6 h-6 fill-gray-400">
                         <polygon points="12.95 10.707 13.657 10 8 4.343 6.586 5.757 10.828 10 6.586 14.243 8 15.657 12.95 10.707" />
                       </svg>
@@ -76,7 +76,6 @@
   import Pagination from '@/Shared/Pagination.vue'
 
   defineProps({
-    resourceName: { type: String, required: true },
     resources: { type: Array, required: false, default: () => [] },
     columns: { type: Object, required: false, default: () => [] },
     pagination: { type: Object, required: false, default: () => {} },

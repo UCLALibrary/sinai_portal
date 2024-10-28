@@ -29,9 +29,34 @@ class Agent extends Model
      */
     protected $fillable = [
         'id',
+        'ark',
         'type',
         'pref_name',
         'json',
+    ];
+
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        return array_combine($this->fillable, [
+            basename($data['ark']),  // use the trailing ark segment as the id
+            $data['ark'],
+            $data['type']['label'],
+            $data['pref_name'],
+            $json,
+        ]);
+    }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'id' => 'Id',
+                'type' => 'Type',
+                'pref_name' => 'Preferred Name',
+            ],
+        ],
     ];
 
     /**

@@ -21,11 +21,57 @@ class Manuscript extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'ark',
-        'identifier',
         'type',
+        'identifier',
         'json',
     ];
+
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        return array_combine($this->fillable, [
+            basename($data['ark']),  // use the trailing ark segment as the id
+            $data['ark'],
+            $data['type']['label'],
+            $data['shelfmark'],
+            $json,
+        ]);
+    }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'ark' => 'ARK',
+                'identifier' => 'Identifier',
+            ],
+        ],
+    ];
+
+    protected $appends = ['related_agents'];
+    
+    /**
+     * Accessor to include related agents when the model is serialized.
+     *
+     * @return array
+     */
+    public function getRelatedAgentsAttribute(): array
+    {
+        return $this->getRelatedEntities(
+            'assoc_name',
+            Agent::class,
+            null,
+            function ($agent, $item) {
+                return [
+                    'id' => $agent->id,
+                    'pref_name' => $agent->pref_name,
+                    'rel' => $item['rel'] ?? null,
+                ];
+            })->toArray();
+    }
 
     /**
      * Get the indexable data array for the model.
@@ -60,7 +106,16 @@ class Manuscript extends Model
             }
         }
         
-        // TODO: location (repository, collection)
+        // location (repository, collection)
+        $array['repository'] = [];
+        $array['collection'] = [];
+        if (isset($data['location'])) {
+            foreach($data['location'] as $location) {
+                $array['repository'] = isset($location['repository']) ? $location['repository'] : null;
+                $array['collection'] = isset($location['collection']) ? $location['collection'] : null;
+            }
+        }
+        
 
         /*
          * Apply default transformations if desired.

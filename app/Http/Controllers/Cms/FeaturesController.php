@@ -8,6 +8,14 @@ use Inertia\Inertia;
 
 class FeaturesController extends Controller
 {
+    protected $routes = [
+        'index' => 'features.index',
+        'create' => 'features.create',
+        'store' => 'api.features.store',
+        'edit' => 'features.edit',
+        'update' => 'api.features.update',
+    ];
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +23,6 @@ class FeaturesController extends Controller
     {
         return Inertia::render('Resources/Index', [
             'title' => 'Features',
-            'resourceName' => 'features',
             'resources' => Feature::paginate(20),
             'columns' => [
                 'label' => 'Label',
@@ -23,7 +30,7 @@ class FeaturesController extends Controller
                 'summary' => 'Summary',
                 'scope' => 'Scope'
             ],
-            'createEndpoint' => route('features.create'),
+            'routes' => $this->routes,
         ]);
     }
 
@@ -33,11 +40,10 @@ class FeaturesController extends Controller
     public function create()
     {
         return Inertia::render('Resources/Create', [
-            'title' => 'Features > Add Feature',
+            'title' => 'Create Feature',
             'schema' => json_decode(Feature::$schema),
             'uischema' => json_decode(Feature::$uiSchema),
-            'saveEndpoint' => route('api.features.store'),
-            'redirectUrl' => route('features.index'),
+            'routes' => $this->routes,
         ]);
     }
 
@@ -46,17 +52,19 @@ class FeaturesController extends Controller
      */
     public function edit(Feature $feature)
     {
+        // DISCUSS: shouldn't this be in the model?
+
         // Fetch the feature with related formContexts, but only retrieve IDs for formContexts
         $feature = Feature::with('formContexts:id')->find($feature->id)->toArray();
         $feature['form_contexts'] = array_column($feature['form_contexts'], 'id');
 
         return Inertia::render('Resources/Edit', [
-            'title' => 'Features > Edit Feature',
+            'title' => 'Edit Feature',
             'schema' => json_decode(Feature::$schema),
             'uischema' => json_decode(Feature::$uiSchema),
             'data' => $feature,
-            'saveEndpoint' => route('api.features.update', $feature['id']),
-            'redirectUrl' => route('features.index'),
+            'resource' => $feature,
+            'routes' => $this->routes,
         ]);
     }
 }

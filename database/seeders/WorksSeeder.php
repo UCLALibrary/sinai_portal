@@ -45,10 +45,9 @@ class WorksSeeder extends Seeder
                 continue;
             }
 
-            $arkSegments = explode('/', $ark);
-
             DB::table('works')->insert([
-                'id' => end($arkSegments), // use the last part of the ARK as the id
+                'id' => basename($ark),  // use the trailing ark segment as the id
+                'ark' => $ark,
                 'pref_title' => $pref_title,
                 'json' => $jsonContent,
                 'created_at' => now(),

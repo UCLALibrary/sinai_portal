@@ -16,9 +16,47 @@ class Part extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'ark',
         'identifier',
         'json',
+    ];
+
+    /**
+     * Note: The order of the values must align with the order of the fields in the $fillable array.
+     */
+    public function getFillableFields($data, $json)
+    {
+        $identifier = '';
+        if (isset($jsonData['idno']) && is_array($jsonData['idno'])) {
+            foreach ($jsonData['idno'] as $idno) {
+                $label = $idno['type'] === 'shelfmark'
+                    ? 'Shelfmark'
+                    : ($idno['type'] === 'part_no'
+                        ? 'Part'
+                        : ($idno['type'] === 'uto_mark'
+                            ? 'UTO Mark'
+                            : ''));
+                $identifier = $label . ': ' . $idno['value'];
+                break;
+            }
+        }
+
+        return array_combine($this->fillable, [
+            basename($data['ark']),  // use the trailing ark segment as the id
+            $data['ark'],
+            $identifier,
+            $json,
+        ]);
+    }
+
+    public static $config = [
+        'index' => [
+            'columns' => [
+                'ark' => 'ARK',
+                'identifier' => 'Identifier',
+            ],
+        ],
     ];
 }
 

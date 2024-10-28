@@ -1,0 +1,43 @@
+{
+  "title": "Script",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "writing_system": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1
+    },
+    "when_in_use": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "region": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "label"
+  ],
+  "unevaluatedProperties": false
+}
