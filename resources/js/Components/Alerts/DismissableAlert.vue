@@ -1,11 +1,12 @@
 <template>
   <VFadeTransition>
     <VAlert
-      v-if="alert !== null"
-      :type="alert.type"
+      v-if="alertData"
+      v-model="showAlert"
+      :type="alertData.type"
       dismissible
       closable>
-      <div v-html="alert.message"></div>
+      <div v-html="alertData.message"></div>
     </VAlert>
   </VFadeTransition>
 </template>
@@ -16,13 +17,17 @@
 
   const emitter = useEmitter()
 
-  const alert = ref(null)
+  const showAlert = ref(false)
+
+  const alertData = ref(null)
 
   emitter.on('show-dismissable-alert', (payload) => {
-    alert.value = payload
+    showAlert.value = true
+    alertData.value = payload
     if (payload && payload.hasOwnProperty('timeout')) {
       setTimeout(() => {
-        alert.value = null
+        showAlert.value = false
+        alertData.value = null
       }, payload.timeout)
     }
   })
