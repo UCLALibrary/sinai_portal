@@ -79,18 +79,18 @@
     axios.post(route(pageProps.routes.store, pageProps.resourceName), {
       json: payload.data,
     }).then(() => {
-      router.visit(route(pageProps.routes.index))
+      router.visit(route(pageProps.routes.index, pageProps.resourceName))
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
         type: 'error',
-        message: 'Error saving. Please check your form for errors.',
+        message: error,
         timeout: 2000,
       })
     })
   }
 
   const onCancel = () => {
-    router.visit(route(pageProps.routes.index))
+    router.visit(route(pageProps.routes.index, pageProps.resourceName))
   }
 </script>
