@@ -2,10 +2,8 @@
 
 namespace App\Http\Requests;
 
-// use Exception;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
-// use Swaggest\JsonSchema\Schema;
 
 class JsonBatchUploadRequest extends FormRequest
 {
@@ -52,15 +50,6 @@ class JsonBatchUploadRequest extends FormRequest
                         return;
                     }
     
-                    // decode the json file
-                    $json = json_decode($file->get());
-    
-                    // ensure the json is valid
-                    if (json_last_error() !== JSON_ERROR_NONE) {
-                        $validator->errors()->add('files', 'The file must contain valid JSON.');
-                        return;
-                    }
-
                     // get the model class using the singular version of the resource name
                     $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($this->route('resourceName')));
 
@@ -73,16 +62,6 @@ class JsonBatchUploadRequest extends FormRequest
                         $validator->errors()->add('files', 'JSON schema is not defined.');
                         return;
                     }
-
-                    // TODO: uncomment this when the json files for each resource type aligns with their corresponding json schema
-                    // ensure the json validates against json schema
-                    // try {
-                    //     Schema::import(json_decode($modelClass::$schema))->in($json);
-                    // }
-                    // catch (Exception $e) {
-                    //     $validator->errors()->add('files', 'JSON schema validation error: ' . $e->getMessage());
-                    //     return;
-                    // }
                 }
             }
         });

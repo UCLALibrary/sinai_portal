@@ -2,7 +2,7 @@
   <v-form class="flex space-x-4" @submit.prevent="onUpload">
     <div class="flex flex-col w-full">
       <v-file-input
-        @change="form.clearErrors()"
+        @change="form.errors ? form.clearErrors() : () => {}"
         v-model="form.files"
         :label="label"
         :hint="hint"
@@ -16,7 +16,9 @@
       <div v-if="form.errors && Object.keys(form.errors).length > 0" class="mx-12 text-red" :class="{ 'mt-4': hint }">
         <ul>
           <li v-for="(errors, key) in form.errors" :key="key">
-            {{ errors[0] }}
+            <div v-for="error in errors" :key="error">
+              {{ error }}
+            </div>
           </li>
         </ul>
       </div>
@@ -63,7 +65,7 @@
       })
       .catch(error => {
         form.errors = error.response.data.errors
-        emit('on-error', error.response.data.errors)
+        emit('on-error', error.response.data)
       })
   }
 </script>

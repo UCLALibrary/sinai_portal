@@ -25,6 +25,7 @@
           :multiple="true"
           :endpoint="route($page.props.routes.upload.batch, $page.props.resourceName)"
           @on-success="onUploadSuccess"
+          @on-error="onUploadError"
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
 
@@ -71,4 +72,11 @@
     })
   }
 
+  const onUploadError = (payload) => {
+    // display alert that there was an error saving the resource
+    emitter.emit('show-dismissable-alert', {
+      type: payload.status,
+      message: payload.message,
+    })
+  }
 </script>

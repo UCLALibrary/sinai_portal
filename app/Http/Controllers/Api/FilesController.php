@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use Exception;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JsonBatchUploadRequest;
 use App\Http\Requests\JsonFileUploadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Swaggest\JsonSchema\Schema;
 
 class FilesController extends Controller
 {
@@ -17,13 +19,16 @@ class FilesController extends Controller
     {
         try {
             $file = $request->file('files');
-
-            // decode the json file
             $json = $file->get();
-            $data = json_decode($json, true);
 
             // get the model class using the singular version of the resource name
             $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+
+            // validate the json against json schema
+            Schema::import(json_decode($modelClass::$schema))->in(json_decode($json));
+
+            // decode the json file
+            $data = json_decode($json, true);
 
             // populate the fillable fields for the resource
             $instance = new $modelClass();
@@ -36,13 +41,13 @@ class FilesController extends Controller
                 'status' => $resource ? 'success' : 'error',
                 'message' => $resource ? 'The JSON file has been successfully uploaded.' : 'Error uploading the JSON file.',
                 'resourceId' => basename($data['ark']),
-            ]);
+            ], $resource ? 200 : 400);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'The uploaded JSON files are incompatible with the ' . Str::singular($resourceName) . ' JSON schema.<br><br>' . $e->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
@@ -53,16 +58,19 @@ class FilesController extends Controller
     {
         try {
             $file = $request->file('files');
-
-            // decode the json file
             $json = $file->get();
-            $data = json_decode($json, true);
 
             // get the model class using the singular version of the resource name
             $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
 
+            // validate the json against json schema
+            Schema::import(json_decode($modelClass::$schema))->in(json_decode($json));
+
             // get the resource with the given id
             $resource = $modelClass::find($resourceId);
+
+            // decode the json file
+            $data = json_decode($json, true);
 
             // populate the fillable fields for the resource
             $fields = $resource->getFillableFields($data, $json);
@@ -73,13 +81,13 @@ class FilesController extends Controller
             return response()->json([
                 'status' => $status ? 'success' : 'error',
                 'message' => $status ? 'The JSON file has been successfully uploaded.' : 'Error uploading the JSON file.',
-            ]);
+            ], $status ? 200 : 400);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'The uploaded JSON files are incompatible with the ' . Str::singular($resourceName) . ' JSON schema.<br><br>' . $e->getMessage(),
-            ]);
+            ], 400);
         }
     }
 
@@ -90,13 +98,17 @@ class FilesController extends Controller
 
             $files = $request->file('files');
             foreach ($files as $file) {
-                // decode the json file
                 $json = $file->get();
-                $data = json_decode($json, true);
 
                 // get the model class using the singular version of the resource name
                 $resourceType = ucfirst(Str::singular($resourceName));
                 $modelClass = '\\App\\Models\\' . $resourceType;
+
+                // validate the json against json schema
+                Schema::import(json_decode($modelClass::$schema))->in(json_decode($json));
+
+                // decode the json file
+                $data = json_decode($json, true);
 
                 // populate the fillable fields for the resource
                 $instance = new $modelClass();
@@ -124,13 +136,13 @@ class FilesController extends Controller
             return response()->json([
                 'status' => count($messages) > 0 ? 'success' : 'error',
                 'message' => count($messages) > 0 ? implode('<br>', $messages) : 'Error uploading JSON file(s).',
-            ]);
+            ], count($messages) > 0 ? 200 : 400);
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'The uploaded JSON files are incompatible with the ' . Str::singular($resourceName) . ' JSON schema.<br><br>' . $e->getMessage(),
-            ]);
+            ], 400);
         }
     }
 }
