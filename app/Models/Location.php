@@ -39,12 +39,12 @@ class Location extends Model
             $data['id'],
             $data['collection'],
             $data['repository'],
-            $data['note'],
-            $data['country'],
-            $data['address'],
-            $data['contact_info'],
-            $data['coordinates'],
-            $data['url'],
+            $data['note'] ?? null,
+            $data['country'] ?? null,
+            $data['address'] ?? null,
+            $data['contact_info'] ?? null,
+            $data['coordinates'] ?? null,
+            $data['url'] ?? null,
         ]);
     }
 

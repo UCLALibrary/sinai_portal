@@ -37,12 +37,12 @@ class Language extends Model
         return array_combine($this->fillable, [
             $data['id'],
             $data['label'],
-            $data['iso'],
-            $data['glottolog'],
-            $data['writing_systems'],
-            $data['other_names'],
-            $data['when_in_use'],
-            $data['regions'],
+            $data['iso'] ?? null,
+            $data['glottolog'] ?? null,
+            $data['writing_systems'] ?? null,
+            $data['other_names'] ?? null,
+            $data['when_in_use'] ?? null,
+            $data['regions'] ?? null,
         ]);
     }
 

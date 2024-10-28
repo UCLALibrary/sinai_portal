@@ -36,10 +36,10 @@ class Reference extends Model
         return array_combine($this->fillable, [
             $data['short_title'],
             $data['formatted_citation'],
-            $data['zotero_uri'],
-            $data['date'],
-            $data['creator'],
-            $data['category'],
+            $data['zotero_uri'] ?? null,
+            $data['date'] ?? null,
+            $data['creator'] ?? null,
+            $data['category'] ?? null,
         ]);
     }
 

@@ -34,9 +34,9 @@ class Feature extends Model
     {
         return array_combine($this->fillable, [
             $data['label'],
-            $data['corresp_note'],
-            $data['summary'],
-            $data['scope'],
+            $data['corresp_note'] ?? null,
+            $data['summary'] ?? null,
+            $data['scope'] ?? null,
         ]);
     }
 

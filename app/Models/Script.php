@@ -35,10 +35,10 @@ class Script extends Model
         return array_combine($this->fillable, [
             $data['id'],
             $data['label'],
-            $data['writing_system'],
-            $data['when_in_use'],
-            $data['region'],
-            $data['notes'],
+            $data['writing_system'] ?? null,
+            $data['when_in_use'] ?? null,
+            $data['region'] ?? null,
+            $data['notes'] ?? null,
         ]);
     }
 
