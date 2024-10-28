@@ -17,7 +17,7 @@ class ResourcesController extends Controller
 
         return Inertia::render('Resources/Index', [
             'title' => ucfirst($resourceName),
-            'resources' => $modelClass::paginate(20),
+            'resources' => $modelClass::orderBy('updated_at', 'desc')->paginate(20),
             'config' => $modelClass::$config,
         ]);
     }
