@@ -13,7 +13,8 @@
             "script": [
                 {
                     "id": "syr-und",
-                    "label": "Undetermined Syriac script"
+                    "label": "Undetermined Syriac script",
+                    "writing_system": "Syriac"
                 }
             ]
         }

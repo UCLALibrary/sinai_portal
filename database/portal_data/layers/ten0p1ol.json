@@ -14,7 +14,8 @@
             "script": [
                 { 
                     "id": "kufic", 
-                    "label": "Kufic" 
+                    "label": "Kufic" ,
+                    "writing_system": "Arabic"
                 } 
             ], 
             "locus": "ff. 128-143" 

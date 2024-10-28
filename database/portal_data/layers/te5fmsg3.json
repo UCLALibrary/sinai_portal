@@ -13,7 +13,8 @@
             "script": [
                 {
                     "id": "ara-und",
-                    "label": "Undetermined Arabic script"
+                    "label": "Undetermined Arabic script",
+                    "writing_system": "Arabic"
                 }
             ]
         }

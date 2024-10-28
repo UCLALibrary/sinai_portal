@@ -14,7 +14,8 @@
             "script": [
                 { 
                     "id": "estrangela", 
-                    "label": "Estrangela" 
+                    "label": "Estrangela" ,
+                    "writing_system": "Syriac"
                 } 
             ], 
             "locus": "ff. 55v-144v", 

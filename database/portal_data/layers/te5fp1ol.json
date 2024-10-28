@@ -9,21 +9,35 @@
     "locus": "ff. 3r-54v", 
     "summary": "13th c., Melkite Syriac Synaxarion", 
     "extent": "51 ff.", 
-    "writing": [ 
+    "writing": [
         { 
-            "script": [ 
+            "script": [
                 { 
                     "id": "melkite", 
-                    "label": "Melkite" 
+                    "label": "Melkite" ,
+                    "writing_system": "Syriac"
                 } 
             ], 
             "locus": "ff. 3r-54v", 
             "note": [ 
                 "Melkite with Estrangela aleph" 
             ] 
-        } 
+        } ,
+        {
+            "script": [
+                {
+                    "id": "estrangela",
+                    "label": "Estrangela",
+                    "writing_system": "Syriac"
+                }
+            ],
+            "locus": "ff. 45r-54v",
+            "note": [
+                "Melkite gives way to Estrangela-style script in the final folios"
+            ]
+        }
     ], 
-    "ink": [ 
+    "ink": [
         { 
             "locus": "ff. 3r-54v", 
             "color": [ 
@@ -32,9 +46,18 @@
             "note": [ 
                 "Rubrication of titles in red ink" 
             ] 
-        } 
+        } ,
+        {
+            "locus": "ff. 45v-54v",
+            "color": [
+                "black"
+            ],
+            "note": [
+                "Rubrication throughout"
+            ]
+        }
     ], 
-    "layout": [ 
+    "layout": [
         { 
             "locus": "ff. 3r-54v", 
             "columns": "1", 
@@ -43,29 +66,38 @@
             "note": [ 
                 "Possible pricking still visible in outer margins throughout" 
             ] 
-        } 
+        } ,
+        {
+            "locus": "ff. 36v-54v",
+            "columns": "2",
+            "lines": "15-17",
+            "dim": "Writing area: 200 x 130 mm",
+            "note": [
+                "Number of lines fluctuates consistently"
+            ]
+        }
     ], 
-    "text_unit": [ 
+    "text_unit": [
         { 
             "id": "ark:/21198/te5fp1olt1", 
             "label": "Primary Text Unit 1", 
             "locus": "ff. 3r-54v" 
         } 
     ], 
-    "para": [ 
+    "para": [
         { 
             "type": { 
                 "id": "colophon", 
                 "label": "Colophon" 
             }, 
             "locus": "f. 54v", 
-            "lang": [ 
+            "lang": [
                 { 
                     "id": "class1252", 
                     "label": "Syriac" 
                 } 
             ], 
-            "script": [ 
+            "script": [
                 { 
                     "id": "melkite", 
                     "label": "Melkite" 
@@ -76,7 +108,7 @@
             "translation": [ 
                 "The end of this holy book by the hands of a weak, sinful, and straying from the commands of his Lord and his God, John bar Theodore, from the town protected by God, Sayidnaya from lower Damascus, from Mt. Hermon (Jebel Sanir) and from the region of Halbun (حلبون), at about 9:00am (the third hour), Wednesday, on the 28th of Ilul (September); the year 6,104 since our father Adam. His book for his humble self at the holy monastery of Mt. Sinai and he entreats and beseeches to all who would pray it or read it or encounter it and find in it error or defect or loss (sic), let him forgive and pray on account of the sinner and poor writing, that all creation is lacking; my brothers and my fathers pray for the writing of the sinner for to our Lord Jesus Christ be the glory and the worship forever, Amen." 
             ], 
-            "assoc_name": [ 
+            "assoc_name": [
                 { 
                     "id": "ark:/21198/tev887", 
                     "as_written": "ܝܘܚܢܢ ܒܪܝ ܬܐܘܕܘܪܘܣ", 
@@ -89,7 +121,7 @@
                     ] 
                 } 
             ], 
-            "assoc_place": [ 
+            "assoc_place": [
                 { 
                     "id": "ark:/21198/tesinai", 
                     "as_written": "ܕܝܪܐ ܩܕܝܫܐ ܕܛܘܪ ܣܢܐ", 
@@ -102,7 +134,7 @@
                     ] 
                 } 
             ], 
-            "assoc_date": [ 
+            "assoc_date": [
                 { 
                     "type": { 
                         "id": "origin", 
@@ -125,7 +157,7 @@
             ] 
         } 
     ], 
-    "assoc_date": [ 
+    "assoc_date": [
         { 
             "type": { 
                 "id": "origin", 
@@ -142,7 +174,7 @@
             } 
         } 
     ], 
-    "assoc_name": [ 
+    "assoc_name": [
         { 
             "id": "ark:/21198/tev887", 
             "as_written": "ܝܘܚܢܢ ܒܪܝ ܬܐܘܕܘܪܘܣ", 
@@ -155,7 +187,7 @@
             ] 
         } 
     ], 
-    "assoc_place": [ 
+    "assoc_place": [
         { 
             "id": "ark:/21198/tesinai", 
             "as_written": "ܕܝܪܐ ܩܕܝܫܐ ܕܛܘܪ ܣܢܐ", 
@@ -168,7 +200,7 @@
             ] 
         } 
     ], 
-    "features": [ 
+    "features": [
         { 
             "id": "colophon", 
             "label": "Colophon" 
@@ -178,14 +210,14 @@
             "label": "Dated" 
         } 
     ], 
-    "related_mss": [ 
+    "related_mss": [
         { 
             "type": { 
                 "id": "filiation", 
                 "label": "Filiation" 
             }, 
             "label": "Copied from Syriac 10", 
-            "mss": [ 
+            "mss": [
                 { 
                     "label": "Sinai Syriac 10", 
                     "id": "ark:/21198/z1p57n0b" 
@@ -196,7 +228,7 @@
             ] 
         } 
     ], 
-    "note": [ 
+    "note": [
         { 
             "type": { 
                 "id": "ornamentation", 
@@ -212,7 +244,7 @@
             "value": "Several damaged folios were repaired and reinforced more recently" 
         } 
     ], 
-    "bib": [ 
+    "bib": [
         { 
             "id": "deb668b6-feec-4828-8749-a97441881226", 
             "type": { 

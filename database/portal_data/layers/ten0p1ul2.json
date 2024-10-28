@@ -14,7 +14,8 @@
             "script": [
                 { 
                     "id": "greek-maj", 
-                    "label": "Greek majuscule" 
+                    "label": "Greek majuscule" ,
+                    "writing_system": "Greek"
                 } 
             ], 
             "locus": "ff. 131-132, 138, 140-142" ,

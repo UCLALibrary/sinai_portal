@@ -11,7 +11,8 @@
             "script": [
                 {
                     "id": "naskh",
-                    "label": "Naskh"
+                    "label": "Naskh",
+                    "writing_system": "Arabic"
                 }
             ]
         }
