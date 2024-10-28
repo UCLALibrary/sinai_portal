@@ -5,7 +5,6 @@ namespace App\Observers;
 use App\Helpers\JsonUpdaterHelper;
 use App\Jobs\UpdateJsonFieldsJob;
 use App\Models\Location;
-use App\Models\Manuscript;
 
 class LocationObserver
 {

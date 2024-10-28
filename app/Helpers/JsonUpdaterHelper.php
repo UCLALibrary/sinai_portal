@@ -8,11 +8,11 @@ class JsonUpdaterHelper
 	private $modelsToUpdate = [
 		'App\Models\Manuscript' => 'json',
 		'App\Models\Bibliography' => 'json',
+		'App\Models\Layer' => 'json',
 	];
 
 	public function updateJsonFields(string $targetKey, string $targetId, array $fieldsToUpdate)
 	{
-
 		foreach ($this->modelsToUpdate as $modelClass => $jsonField) {
 
 			//ToDo: Search for records with jsonb_path_exists() and only retrieve records containing the key `$targetKey`

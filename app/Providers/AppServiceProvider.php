@@ -4,7 +4,9 @@ namespace App\Providers;
 
 
 use App\Models\Location;
+use App\Models\Script;
 use App\Observers\LocationObserver;
+use App\Observers\ScriptObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Location::observe(LocationObserver::class);
+        Script::observe(ScriptObserver::class);
     }
 }
