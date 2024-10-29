@@ -75,6 +75,17 @@ class User extends Authenticatable
 	{
 		return implode(', ', $this->roles->pluck('name')->toArray());
 	}
+
+    public static $config = [
+        'disable_file_uploads' => true,
+        'index' => [
+            'columns' => [
+                'name' => 'Name',
+                'email' => 'Email',
+                'role_names' => 'Roles',
+            ],
+        ],
+    ];
 }
 
 /*

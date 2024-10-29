@@ -34,12 +34,14 @@ class UsersController extends Controller
 
         return Inertia::render('Resources/Index', [
             'title' => 'Users',
+            'resourceName' => 'users',
             'resources' => User::paginate(20),
             'columns' => [
                 'name' => 'Name',
                 'email' => 'E-mail',
                 'role_names' => 'Role'
             ],
+            'config' => User::$config,
             'routes' => $this->routes,
         ]);
     }
@@ -53,8 +55,10 @@ class UsersController extends Controller
 
         return Inertia::render('Resources/Create', [
             'title' => 'Users > Add User',
+            'resourceName' => 'users',
             'schema' => json_decode(User::$createSchema),
             'uischema' => json_decode(User::$createUiSchema),
+            'config' => User::$config,
             'routes' => $this->routes,
         ]);
     }
@@ -76,6 +80,11 @@ class UsersController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
+        $role = Role::findById($data['role'], 'web');
+        if($role) {
+            $user->syncRoles($role);
+        }
+
         return $user
             ? response()->json(['message' => 'User created successfully'])
             : response()->json(['error' => 'Error creating user']);
@@ -84,8 +93,9 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(string $resourceId)
     {
+        $user = User::findOrFail($resourceId);
         $this->authorize('update', $user);
 
         return Inertia::render('Resources/Edit', [
@@ -98,6 +108,7 @@ class UsersController extends Controller
                 'role' => $user->roles()->first()->id ?? null
             ],
             'resource' => $user,
+            'config' => User::$config,
             'routes' => $this->routes,
         ]);
     }
@@ -105,9 +116,10 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user): JsonResponse
+    public function update(UserUpdateRequest $request, string $resourceId): JsonResponse
     {
-
+        
+        $user = User::findOrFail($resourceId);
         $this->authorize('update', $user);
 
         // extract and validate metadata from the json field

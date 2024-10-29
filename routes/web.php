@@ -34,9 +34,14 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     })->name('cms');
 
     // users
-    Route::resource('users', UsersController::class);
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', [UsersController::class, 'index'])->name('users.index');
+        Route::get('/create', [UsersController::class, 'create'])->name('users.create');
+        Route::post('/', [UsersController::class, 'store'])->name('users.store');
+        Route::get('/{resourceId}/edit', [UsersController::class, 'edit'])->name('users.edit');
+        Route::put('/{resourceId}', [UsersController::class, 'update'])->name('users.update');
+    });
 
-    // manuscripts | layers | parts | contents | works | agents | places | bibliography | languages | references | features | locations
     Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts');
     Route::group(['prefix' => '{resourceName}'], function () {
         Route::get('/', [ResourcesController::class, 'index'])->name('resources.index');

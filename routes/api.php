@@ -16,9 +16,8 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('form-contexts', FormContextsController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
 
 // roles
-Route::apiResource('roles', RolesController::class, ['as' => 'api'])->only('store', 'update', 'destroy');
+Route::apiResource('roles', RolesController::class, ['as' => 'api'])->only('store', 'update', 'destroy', 'index');
 
-// manuscripts | layers | parts | contents | works | agents | places | bibliography | languages | references | features | locations | scripts
 Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts');
 
 // resources
