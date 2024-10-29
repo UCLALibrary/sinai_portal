@@ -35,7 +35,7 @@ class UsersController extends Controller
         return Inertia::render('Resources/Index', [
             'title' => 'Users',
             'resourceName' => 'users',
-            'resources' => User::paginate(20),
+            'resources' => User::orderBy('name', 'asc')->paginate(20),
             'columns' => [
                 'name' => 'Name',
                 'email' => 'E-mail',
