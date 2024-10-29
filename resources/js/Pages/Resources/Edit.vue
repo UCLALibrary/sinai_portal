@@ -11,7 +11,7 @@
         </div>
 
         <FileUploadForm
-          v-if="pageProps.routes.upload && pageProps.routes.upload.update"
+          v-if="!config.disable_file_uploads && pageProps.routes.upload && pageProps.routes.upload.update"
           label="Select a JSON file"
           :multiple="false"
           hint="Note: The uploaded file will overwrite the existing data"
@@ -49,6 +49,7 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     resource: { type: Object, required: true },
+    config: { type: Object, required: false, default: null },
   })
 
   const { props: pageProps } = usePage()

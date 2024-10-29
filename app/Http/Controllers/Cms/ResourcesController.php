@@ -32,8 +32,9 @@ class ResourcesController extends Controller
 
         return Inertia::render('Resources/Create', [
             'title' => 'Create ' . $resourceType,
-            'schema' => json_decode($modelClass::$schema),
-            'uischema' => json_decode($modelClass::$uiSchema),
+            'schema' => json_decode($modelClass::$createSchema ?? $modelClass::$schema),
+            'uischema' => json_decode($modelClass::$createUiSchema ?? $modelClass::$uiSchema),
+            'config' => $modelClass::$config,
         ]);
     }
 
@@ -48,10 +49,11 @@ class ResourcesController extends Controller
 
         return Inertia::render('Resources/Edit', [
             'title' => 'Edit ' . $resourceType,
-            'schema' => json_decode($modelClass::$schema),
-            'uischema' => json_decode($modelClass::$uiSchema),
+            'schema' => json_decode($modelClass::$editSchema ?? $modelClass::$schema),
+            'uischema' => json_decode($modelClass::$editUiSchema ?? $modelClass::$uiSchema),
             'data' => json_decode($resource->json) ?? $resource,
             'resource' => $resource,
+            'config' => $modelClass::$config,
         ]);
     }
 }

@@ -11,7 +11,7 @@
         </div>
 
         <FileUploadForm
-          v-if="pageProps.routes.upload && pageProps.routes.upload.store"
+          v-if="!config.disable_file_uploads && pageProps.routes.upload && pageProps.routes.upload.store"
           label="Select a JSON file"
           :multiple="false"
           :endpoint="route(pageProps.routes.upload.store, pageProps.resourceName)"
@@ -48,6 +48,7 @@
     uischema: { type: Object, required: true },
     data: { type: Object, required: false, default: () => {} },
     resourceName: { type: String, required: true },
+    config: { type: Object, required: false, default: null },
   })
 
   const { props: pageProps } = usePage()
