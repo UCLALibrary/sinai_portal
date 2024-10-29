@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Head, Link, router } from '@inertiajs/vue3';
+import { Head, Link, router, usePage } from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -22,6 +22,8 @@ const switchToTeam = (team) => {
         preserveState: false,
     });
 };
+
+const { props: pageProps } = usePage()
 
 const logout = () => {
     router.post(route('logout'));
@@ -116,7 +118,7 @@ const logout = () => {
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
 
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" v-if="can('read user')">
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex" v-if="pageProps.roles.permissions.includes('read user')">
                                 <NavLink :href="route('users.index')" :active="route().current('users.*')">
                                     Users
                                 </NavLink>

@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'appUrl' => config('app.url'),
+            'roles' => auth()->check() ? auth()->user()->getRolesPermissions() : 0,
             'resourceName' => $request->route('resourceName'),
             'routes' => [
                 'index' => 'resources.index',

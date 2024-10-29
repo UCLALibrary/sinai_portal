@@ -4,11 +4,11 @@ namespace App\Traits;
 
 trait RolesPermissionsVue
 {
-    public function getRolesPermissionsAsJson()
+    public function getRolesPermissions()
     {
-        return json_encode([
+        return [
             'roles'       => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name'),
-        ]);
+        ];
     }
 }
