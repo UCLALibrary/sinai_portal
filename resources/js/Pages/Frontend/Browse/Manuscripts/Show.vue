@@ -4,38 +4,50 @@
       <section class="w-full lg:w-3/4 lg:pr-16">
         <h2>
           {{ manuscript.identifier }}
+          <template v-if="manuscriptJson.reconstruction !== null && manuscriptJson.reconstruction === true">
+            <template v-if="manuscriptJson.type && manuscriptJson.type.label !== ''">
+              ({{ manuscriptJson.type.label }})
+            </template>
+          </template>
         </h2>
 
-        <p class="pb-8">
+        <p class="mb-8">
           {{ manuscriptJson.summary }}
         </p>
 
-        <p v-if="manuscriptJson.ark && manuscriptJson.ark !== ''">
-          <span class="label">ARK</span>
-          {{ manuscriptJson.ark }}
-        </p>
+        <div v-if="manuscriptJson.ark && manuscriptJson.ark !== ''" class="item-container">
+          <span class="item-label">Ark</span>
+          <p class="item-value">
+            {{ manuscriptJson.ark }}
+          </p>
+        </div>
 
-        <p v-if="manuscriptJson.location && manuscriptJson.location.length > 0">
-          <span class="label">Location</span>
-          <span v-for="(location, index) in manuscriptJson.location" :key="index">
-              <span v-if="index > 0" class="block"></span>
-              <span v-if="index > 0" class="label"></span> {{ location.repository }}, {{ location.collection }}
+        <div v-if="manuscriptJson.location && manuscriptJson.location.length > 0" class="item-container">
+          <span class="item-label">Location</span>
+          <p class="item-value">
+            <span v-for="(location, index) in manuscriptJson.location" :key="index" class="d-block">
+              {{ location.repository }}, {{ location.collection }}
             </span>
-        </p>
+          </p>
+        </div>
 
-        <p v-if="[manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').length">
-          <span class="label">Extent</span>
-          {{ [manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').join(', ') }}
-        </p>
+        <div v-if="[manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').length" class="item-container">
+          <span class="item-label">Extent</span>
+          <p class="item-value">
+            {{ [manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').join(', ') }}
+          </p>
+        </div>
 
-        <p v-if="manuscriptJson.state && manuscriptJson.state.label !== ''">
-          <span class="label">State</span>
-          {{ manuscriptJson.state.label }}
-        </p>
+        <div v-if="manuscriptJson.state && manuscriptJson.state.label !== ''" class="item-container">
+          <span class="item-label">State</span>
+          <p class="item-value">
+            {{ manuscriptJson.state.label }}
+          </p>
+        </div>
 
-        <div v-if="manuscriptJson.fol && manuscriptJson.fol !== ''" class="flex flex-col md:flex-row items-start">
-          <span class="label">Foliation</span>
-          <p class="flex-1">
+        <div v-if="manuscriptJson.fol && manuscriptJson.fol !== ''" class="item-container">
+          <span class="item-label">Foliation</span>
+          <p class="item-value">
             <span class="d-block">{{ manuscriptJson.fol }}</span>
             <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'foliation').length > 0">
               <span class="d-block" v-for="(foliation, index) in manuscriptJson.note.filter(note => note.type.id === 'foliation')" :key="index">
@@ -45,9 +57,9 @@
           </p>
         </div>
 
-        <div v-if="manuscriptJson.coll && manuscriptJson.coll !== ''" class="flex flex-col md:flex-row items-start">
-          <span class="label">Collation</span>
-          <p class="flex-1">
+        <div v-if="manuscriptJson.coll && manuscriptJson.coll !== ''" class="item-container">
+          <span class="item-label">Collation</span>
+          <p class="item-value">
             <span class="d-block">{{ manuscriptJson.coll }}</span>
             <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'collation').length > 0">
               <span class="d-block" v-for="(collation, index) in manuscriptJson.note.filter(note => note.type.id === 'collation')" :key="index">
@@ -62,7 +74,7 @@
 
           <template v-for="(part, index) in manuscriptJson.part" :key="index">
             <div class="mb-12">
-              <p>
+              <p class="mb-0">
                 <strong>{{ part.label }}</strong>, {{ part.locus }}
               </p>
 
@@ -72,9 +84,9 @@
 
               <template v-if="part.support && part.support.length > 0">
 
-                <div class="flex flex-col md:flex-row items-start">
-                  <span class="label">Support</span>
-                  <p class="flex-1">
+                <div class="item-container">
+                  <span class="item-label">Support</span>
+                  <p class="item-value">
                     <span class="d-block">{{ part.support.map(support => support.label).join(', ') }}</span>
                     <span class="d-block" v-if="part.note && part.note.filter(note => note.type.id === 'support').length > 0">
                       {{ part.note.filter(note => note.type.id === 'support').map(note => note.value).join(', ') }}
@@ -84,30 +96,30 @@
 
               </template>
 
-              <div class="flex flex-col md:flex-row items-start">
-                <span class="label">Extent</span>
+              <div class="item-container">
+                <span class="item-label">Extent</span>
                 <p class="d-block">{{ part.extent }}, {{ part.dim }}</p>
               </div>
 
-              <div v-if="part.note && part.note.filter(note => note.type.id === 'foliation').length > 0" class="flex flex-col md:flex-row items-start">
-                <span class="label">Foliation</span>
-                <p class="flex-1">
+              <div v-if="part.note && part.note.filter(note => note.type.id === 'foliation').length > 0" class="item-container">
+                <span class="item-label">Foliation</span>
+                <p class="item-value">
                   {{ part.note.filter(note => note.type.id === 'foliation').map(note => note.value).join(', ') }}
                 </p>
               </div>
 
-              <div v-if="part.note && part.note.filter(note => note.type.id === 'collation').length > 0" class="flex flex-col md:flex-row items-start">
-                <span class="label">Collation</span>
-                <p class="flex-1">
+              <div v-if="part.note && part.note.filter(note => note.type.id === 'collation').length > 0" class="item-container">
+                <span class="item-label">Collation</span>
+                <p class="item-value">
                   {{ part.note.filter(note => note.type.id === 'collation').map(note => note.value).join(', ') }}
                 </p>
               </div>
 
               <div v-if="part.layer && part.layer.length > 0">
 
-                <div class="flex flex-col md:flex-row items-start">
-                  <span class="label">Contents</span>
-                  <p class="flex-1">
+                <div class="item-container">
+                  <span class="item-label">Contents</span>
+                  <p class="item-value">
                     <span v-for="(layer, index) in part.layer.filter(layer => layer.type.id === 'overtext')" :key="index" class="d-block">
                     {{ layer.label }}, {{ layer.locus }}
                   </span>
@@ -116,41 +128,44 @@
 
               </div>
 
-              <div v-if="part.related_mss && part.related_mss.length > 0">
-                <p v-for="(relatedMss, index) in part.related_mss" :key="index">
-                  {{ relatedMss.label }} ({{ relatedMss.type.label }})
-                  <ul>
-                    <li v-for="(mss, mssIndex) in relatedMss.mss" :key="mssIndex">
-                      <a :href="mss.url" target="_blank">{{ mss.label }}</a>
-                    </li>
-                  </ul>
-                  <template v-if="relatedMss.note && relatedMss.note.length > 0">
-                    {{ relatedMss.note.join(", ") }}
-                  </template>
-                </p>
-              </div>
+              <template v-if="part.related_mss && part.related_mss.length > 0">
+                <div v-for="(relatedMss, index) in part.related_mss" :key="index" class="item-container">
+                  <span class="item-label">Related Manuscripts</span>
+                  <div class="item-value">
+                    <p>{{ relatedMss.label }} ({{ relatedMss.type.label }})</p>
+                    <ul>
+                      <li v-for="(mss, mssIndex) in relatedMss.mss" :key="mssIndex">
+                        <a :href="mss.url" target="_blank">{{ mss.label }}</a>
+                      </li>
+                    </ul>
+                    <template v-if="relatedMss.note && relatedMss.note.length > 0">
+                      {{ relatedMss.note.join(", ") }}
+                    </template>
+                  </div>
+                </div>
+              </template>
 
             </div>
           </template>
+        </template>
 
-          <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
-            <h3>MS Section</h3>
+        <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
+          <h3>MS Section</h3>
 
-            <div v-if="manuscriptJson.layer.filter(layer => layer.type.id === 'uto').length > 0">
-              <h4>Undertext Objects:</h4>
-              <p v-for="(layer, index) in manuscriptJson.layer.filter(layer => layer.type.id === 'uto')" :key="index">
-                {{ layer.label }}, {{ layer.locus }}
-              </p>
-            </div>
+          <div v-if="manuscriptJson.layer.filter(layer => layer.type.id === 'uto').length > 0">
+            <h4>Undertext Objects</h4>
+            <p v-for="(layer, index) in manuscriptJson.layer.filter(layer => layer.type.id === 'uto')" :key="index">
+              {{ layer.label }}, {{ layer.locus }}
+            </p>
+          </div>
 
-            <div v-if="manuscriptJson.layer.filter(layer => layer.type.id === 'guest').length > 0">
-              <h4>Guest Content</h4>
-              <p v-for="(layer, index) in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')" :key="index">
-                {{ layer.label }}, {{ layer.locus }}
-              </p>
-            </div>
+          <div v-if="manuscriptJson.layer.filter(layer => layer.type.id === 'guest').length > 0">
+            <h4>Guest Content</h4>
+            <p v-for="(layer, index) in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')" :key="index">
+              {{ layer.label }}, {{ layer.locus }}
+            </p>
+          </div>
 
-          </template>
         </template>
 
         <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
@@ -273,7 +288,7 @@
 
         <h3>Notes</h3>
         <p v-if="manuscriptJson.has_bind !== null">
-          <span class="label">Binding present:</span>
+          <span class="item-label">Binding present:</span>
           {{ manuscriptJson.has_bind ? 'Yes' : 'No' }}
         </p>
 
@@ -441,11 +456,19 @@
     @apply xl:text-lg
   }
 
-  .label {
-    @apply block md:inline-block text-sm uppercase font-medium w-56
-  }
-
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg
+  }
+
+  .item-container {
+    @apply flex flex-col md:flex-row
+  }
+
+  .item-label {
+    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
+  }
+
+  .item-value {
+    @apply flex-1
   }
 </style>
