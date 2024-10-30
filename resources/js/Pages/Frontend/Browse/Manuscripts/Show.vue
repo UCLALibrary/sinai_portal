@@ -187,78 +187,132 @@
           </template>
         </template>
 
-        <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
+        <template v-if="hasParaGuestContent">
           <h3>Para/Guest Content</h3>
 
-          <template v-for="(part) in manuscriptJson.part">
-
-            <p><strong>{{ part.label }}</strong></p>
-
-            <template v-if="part.para && part.para.length > 0" class="ml-4">
-              <template v-for="(para) in part.para">
-
+          <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
+            <template v-for="(part, index) in manuscriptJson.part" :key="index">
+              <div v-if="part.para && part.para.length > 0" class="mb-12">
                 <p>
-                  {{ para.locus }}, {{ para.label }} ({{ para.type.label }})
+                  <strong>{{ part.label }}</strong>
                 </p>
 
-                <p v-if="para.lang && para.lang.length > 0">
-                  {{ para.lang.map(lang => lang.label).join(', ') }}
-                </p>
+                <template v-for="(para, paraIndex) in part.para" :key="paraIndex">
+                  <p>
+                    <strong>{{ para.locus }}, {{ para.label }} ({{ para.type.label }})</strong>
+                  </p>
+                  <p v-if="para.lang && para.lang.length > 0">
+                    {{ para.lang.map(lang => lang.label).join(', ') }}
+                  </p>
+                  <p v-if="para.script && para.script.length > 0">
+                    {{ para.script.map(script => script.label).join(', ') }}
+                  </p>
+                  <p v-if="para.as_written">
+                    {{ para.as_written }}
+                  </p>
+                  <p v-if="para.translation && para.translation.length > 0">
+                    {{ para.translation.join('; ') }}
+                  </p>
 
-                <p v-if="para.script && para.script.length > 0">
-                  {{ para.script.map(script => script.label).join(', ') }}
-                </p>
+                  <div v-if="para.assoc_name && para.assoc_name.length > 0">
+                    <strong>Associated Name(s):</strong>
+                    <ul>
+                      <li v-for="(name, nameIndex) in para.assoc_name" :key="nameIndex">
+                        {{ name.role.label }}: [{{ name.as_written }}]
+                        <span v-if="name.note && name.note.length > 0">
+                          {{ name.note.join('; ') }}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
 
-                <p v-if="para.as_written">
-                  {{ para.as_written }}
-                </p>
+                  <div v-if="para.assoc_place && para.assoc_place.length > 0">
+                    <strong>Associated Place(s):</strong>
+                    <ul>
+                      <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
+                        {{ place.event.label }}: [{{ place.as_written }}]
+                        <span v-if="place.note && place.note.length > 0">
+                          {{ place.note.join('; ') }}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
 
-                <p v-if="para.translation && para.translation.length > 0">
-                  {{ para.translation.join('; ') }}
-                </p>
+                  <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mb-2">
+                    <strong>Associated Date(s):</strong>
+                    <ul>
+                      <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
+                        {{ date.type.label }}: [{{ date.as_written }}] - Value: {{ date.value }}
+                        <span v-if="date.note && date.note.length > 0">
+                          {{ date.note.join('; ') }}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
 
-                <div v-if="para.assoc_name && para.assoc_name.length > 0">
-                  <strong>Associated Name(s):</strong>
-                  <ul>
-                    <li v-for="(name) in para.assoc_name">
-                      {{ name.role.label }}: [{{ name.as_written }}]
-                      <span v-if="name.note && name.note.length > 0">
-                        {{ name.note.join('; ') }}
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div v-if="para.assoc_place && para.assoc_place.length > 0">
-                  <strong>Associated Place(s):</strong>
-                  <ul>
-                    <li v-for="(place) in para.assoc_place">
-                      {{ place.event.label }}: [{{ place.as_written }}]
-                      <span v-if="place.note && place.note.length > 0">
-                        {{ place.note.join('; ') }}
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mb-2">
-                  <strong>Associated Date(s):</strong>
-                  <ul>
-                    <li v-for="(date) in para.assoc_date">
-                      {{ date.type.label }}: [{{ date.as_written }}] - Value: {{ date.value }}
-                      <span v-if="date.note && date.note.length > 0">
-                        {{ date.note.join('; ') }}
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                <p v-if="para.note && para.note.length > 0" class="mt-2">
-                  {{ para.note.join('; ') }}
-                </p>
-
+                  <p v-if="para.note && para.note.length > 0" class="mt-2">
+                    {{ para.note.join('; ') }}
+                  </p>
                 </template>
+              </div>
+            </template>
+          </template>
+
+          <template v-if="manuscriptJson.para && manuscriptJson.para.length > 0">
+            <div v-for="(para, paraIndex) in manuscriptJson.para" :key="paraIndex" class="mb-12">
+              <p>
+                <strong>{{ para.locus }}, {{ para.label }}, {{ para.type.label }}</strong>
+              </p>
+              <p v-if="para.lang && para.lang.length > 0">
+                {{ para.lang.map(lang => lang.label).join(', ') }}
+              </p>
+              <p v-if="para.as_written">
+                {{ para.as_written }}
+              </p>
+              <p v-if="para.translation && para.translation.length > 0">
+                {{ para.translation.join('; ') }}
+              </p>
+
+              <template v-if="para.assoc_name && para.assoc_name.length > 0">
+                <strong>Associated Name(s):</strong>
+                <ul>
+                  <li v-for="(name, nameIndex) in para.assoc_name" :key="nameIndex">
+                    {{ name.role.label }}: [{{ name.as_written }}]
+                    <span v-if="name.note && name.note.length > 0">
+              {{ name.note.join('; ') }}
+            </span>
+                  </li>
+                </ul>
               </template>
+
+              <div v-if="para.assoc_place && para.assoc_place.length > 0" class="mt-2">
+                <strong>Associated Place(s):</strong>
+                <ul>
+                  <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
+                    {{ place.event.label }}: [{{ place.as_written }}]
+                    <span v-if="place.note && place.note.length > 0">
+              {{ place.note.join('; ') }}
+            </span>
+                  </li>
+                </ul>
+              </div>
+
+              <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mt-2">
+                <strong>Associated Date(s):</strong>
+                <ul>
+                  <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
+                    {{ date.type.label }}: [{{ date.as_written }}] - Value: {{ date.value }}
+                    <span v-if="date.note && date.note.length > 0">
+              {{ date.note.join('; ') }}
+            </span>
+                  </li>
+                </ul>
+              </div>
+
+              <p v-if="para.note && para.note.length > 0" class="mt-2">
+                {{ para.note.join('; ') }}
+              </p>
+            </div>
           </template>
         </template>
 
@@ -452,6 +506,12 @@
     const hasPartGuest = manuscriptJson.value.part && manuscriptJson.value.part.some(part => part.layer && part.layer.some(layer => layer.type.id === 'guest'));
 
     return hasLayerGuest || hasPartGuest;
+  });
+
+  const hasParaGuestContent = computed(() => {
+    const hasPartPara = manuscriptJson.value.part && manuscriptJson.value.part.some(part => part.para && part.para.length > 0);
+    const hasGlobalPara = manuscriptJson.value.para && manuscriptJson.value.para.length > 0;
+    return hasPartPara || hasGlobalPara;
   });
 
 
