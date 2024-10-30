@@ -25,7 +25,7 @@
         <div v-if="manuscriptJson.location && manuscriptJson.location.length > 0" class="item-container">
           <span class="item-label">Location</span>
           <p class="item-value">
-            <span v-for="(location, index) in manuscriptJson.location" :key="index" class="d-block">
+            <span v-for="(location) in manuscriptJson.location" class="d-block">
               {{ location.repository }}, {{ location.collection }}
             </span>
           </p>
@@ -50,7 +50,7 @@
           <p class="item-value">
             <span class="d-block">{{ manuscriptJson.fol }}</span>
             <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'foliation').length > 0">
-              <span class="d-block" v-for="(foliation, index) in manuscriptJson.note.filter(note => note.type.id === 'foliation')" :key="index">
+              <span class="d-block" v-for="(foliation) in manuscriptJson.note.filter(note => note.type.id === 'foliation')">
                 {{ foliation.value }}
               </span>
             </template>
@@ -62,7 +62,7 @@
           <p class="item-value">
             <span class="d-block">{{ manuscriptJson.coll }}</span>
             <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'collation').length > 0">
-              <span class="d-block" v-for="(collation, index) in manuscriptJson.note.filter(note => note.type.id === 'collation')" :key="index">
+              <span class="d-block" v-for="(collation) in manuscriptJson.note.filter(note => note.type.id === 'collation')">
                 {{ collation.value }}
               </span>
             </template>
@@ -72,7 +72,7 @@
         <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
           <h3>Parts</h3>
 
-          <template v-for="(part, index) in manuscriptJson.part" :key="index">
+          <template v-for="(part) in manuscriptJson.part">
             <div class="mb-12">
               <p class="mb-0">
                 <strong>{{ part.label }}</strong>, {{ part.locus }}
@@ -120,7 +120,7 @@
                 <div class="item-container">
                   <span class="item-label">Contents</span>
                   <p class="item-value">
-                    <span v-for="(layer, index) in part.layer.filter(layer => layer.type.id === 'overtext')" :key="index" class="d-block">
+                    <span v-for="(layer) in part.layer.filter(layer => layer.type.id === 'overtext')" class="d-block">
                     {{ layer.label }}, {{ layer.locus }}
                   </span>
                   </p>
@@ -129,12 +129,12 @@
               </div>
 
               <template v-if="part.related_mss && part.related_mss.length > 0">
-                <div v-for="(relatedMss, index) in part.related_mss" :key="index" class="item-container">
+                <div v-for="(relatedMss) in part.related_mss" class="item-container">
                   <span class="item-label">Related Manuscripts</span>
                   <div class="item-value">
                     <p>{{ relatedMss.label }} ({{ relatedMss.type.label }})</p>
                     <ul>
-                      <li v-for="(mss, mssIndex) in relatedMss.mss" :key="mssIndex">
+                      <li v-for="(mss) in relatedMss.mss">
                         <a :href="mss.url" target="_blank">{{ mss.label }}</a>
                       </li>
                     </ul>
@@ -152,31 +152,50 @@
         <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
           <h3>MS Section</h3>
 
-          <div v-if="manuscriptJson.layer.filter(layer => layer.type.id === 'uto').length > 0">
+          <template v-if="hasUndertextObjects">
             <h4>Undertext Objects</h4>
-            <p v-for="(layer, index) in manuscriptJson.layer.filter(layer => layer.type.id === 'uto')" :key="index">
+
+            <template v-for="(part) in manuscriptJson.part">
+              <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'uto').length > 0">
+                <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'uto')">
+                  {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
+                </p>
+              </template>
+            </template>
+
+            <p v-for="(layer) in manuscriptJson.layer.filter(layer => layer.type.id === 'uto')">
               {{ layer.label }}, {{ layer.locus }}
             </p>
-          </div>
 
-          <div v-if="manuscriptJson.layer.filter(layer => layer.type.id === 'guest').length > 0">
+          </template>
+
+          <template v-if="hasGuestContent">
             <h4>Guest Content</h4>
-            <p v-for="(layer, index) in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')" :key="index">
+
+            <template v-for="part in manuscriptJson.part">
+              <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'guest').length > 0">
+                <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'guest')">
+                  {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
+                </p>
+              </template>
+            </template>
+
+            <p v-for="layer in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')">
               {{ layer.label }}, {{ layer.locus }}
             </p>
-          </div>
 
+          </template>
         </template>
 
         <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
           <h3>Para/Guest Content</h3>
 
-          <template v-for="(part, index) in manuscriptJson.part" :key="index">
+          <template v-for="(part) in manuscriptJson.part">
 
             <p><strong>{{ part.label }}</strong></p>
 
             <template v-if="part.para && part.para.length > 0" class="ml-4">
-              <template v-for="(para, index) in part.para" :key="index">
+              <template v-for="(para) in part.para">
 
                 <p>
                   {{ para.locus }}, {{ para.label }} ({{ para.type.label }})
@@ -201,7 +220,7 @@
                 <div v-if="para.assoc_name && para.assoc_name.length > 0">
                   <strong>Associated Name(s):</strong>
                   <ul>
-                    <li v-for="(name, index) in para.assoc_name" :key="index">
+                    <li v-for="(name) in para.assoc_name">
                       {{ name.role.label }}: [{{ name.as_written }}]
                       <span v-if="name.note && name.note.length > 0">
                         {{ name.note.join('; ') }}
@@ -213,7 +232,7 @@
                 <div v-if="para.assoc_place && para.assoc_place.length > 0">
                   <strong>Associated Place(s):</strong>
                   <ul>
-                    <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
+                    <li v-for="(place) in para.assoc_place">
                       {{ place.event.label }}: [{{ place.as_written }}]
                       <span v-if="place.note && place.note.length > 0">
                         {{ place.note.join('; ') }}
@@ -225,7 +244,7 @@
                 <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mb-2">
                   <strong>Associated Date(s):</strong>
                   <ul>
-                    <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
+                    <li v-for="(date) in para.assoc_date">
                       {{ date.type.label }}: [{{ date.as_written }}] - Value: {{ date.value }}
                       <span v-if="date.note && date.note.length > 0">
                         {{ date.note.join('; ') }}
@@ -246,7 +265,7 @@
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
           <h3>Ornamentation</h3>
           <ul>
-            <li v-for="(ornamentNote, index) in manuscriptJson.note.filter(note => note.type.id === 'ornamentation')" :key="index">
+            <li v-for="(ornamentNote) in manuscriptJson.note.filter(note => note.type.id === 'ornamentation')">
               {{ ornamentNote.value }}
             </li>
           </ul>
@@ -255,7 +274,7 @@
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'ornament').length > 0">
           <h3>Ornamentation</h3>
           <ul>
-            <li v-for="(ornamentNote, index) in manuscriptJson.note.filter(note => note.type.id === 'ornament')" :key="index">
+            <li v-for="(ornamentNote) in manuscriptJson.note.filter(note => note.type.id === 'ornament')">
               {{ ornamentNote.value }}
             </li>
           </ul>
@@ -321,7 +340,7 @@
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'general').length > 0">
           <h4>Other notes</h4>
           <ul>
-            <li v-for="(generalNote, index) in manuscriptJson.note.filter(note => note.type.id === 'general')" :key="index">
+            <li v-for="(generalNote) in manuscriptJson.note.filter(note => note.type.id === 'general')">
               {{ generalNote .value }}
             </li>
           </ul>
@@ -352,7 +371,7 @@
         <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
           <h3>Inscribed Layers</h3>
           <ul>
-            <li v-for="(layer, index) in manuscriptJson.layer" :key="index">
+            <li v-for="(layer) in manuscriptJson.layer">
               {{ layer.label }} ({{ layer.type.label }})
             </li>
           </ul>
@@ -421,6 +440,21 @@
   onBeforeUnmount(() => {
     URL.revokeObjectURL(downloadUrl.value);
   });
+
+  const hasUndertextObjects = computed(() => {
+    const hasLayerUndertext = manuscriptJson.value.layer && manuscriptJson.value.layer.some(layer => layer.type.id === 'uto');
+    const hasPartUndertext = manuscriptJson.value.part && manuscriptJson.value.part.some(part => part.layer && part.layer.some(layer => layer.type.id === 'uto'));
+    return hasLayerUndertext || hasPartUndertext;
+  });
+
+  const hasGuestContent = computed(() => {
+    const hasLayerGuest = manuscriptJson.value.layer && manuscriptJson.value.layer.some(layer => layer.type.id === 'guest');
+    const hasPartGuest = manuscriptJson.value.part && manuscriptJson.value.part.some(part => part.layer && part.layer.some(layer => layer.type.id === 'guest'));
+
+    return hasLayerGuest || hasPartGuest;
+  });
+
+
 </script>
 
 <style lang="postcss" scoped>
