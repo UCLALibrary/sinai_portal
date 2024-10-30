@@ -28,6 +28,8 @@ class RolesPermissionsSeeder extends Seeder
 		$readRecord = Permission::findOrCreate('read record');
 		$updateRecord = Permission::findOrCreate('update record');
 		$deleteRecord = Permission::findOrCreate('delete record');
+	    
+	    $viewCms = Permission::findOrCreate('view cms');
 
 		$editor->givePermissionTo($createRecord)
 			->givePermissionTo($readRecord)
@@ -41,7 +43,8 @@ class RolesPermissionsSeeder extends Seeder
 			->givePermissionTo($createUser)
 			->givePermissionTo($readUser)
 			->givePermissionTo($updateUser)
-			->givePermissionTo($deleteUser);
+			->givePermissionTo($deleteUser)
+	        ->givePermissionTo($viewCms);
 
 
 		$rafaelSchwemmer = User::where('email', 'rafael.schwemmer@textandbytes.com')->first();

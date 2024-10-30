@@ -27,7 +27,7 @@ Route::get('/about', function () {
 })->name('frontend.about');
 
 // cms
-Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstream.auth_session'), 'verified']], function () {
+Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstream.auth_session'), 'verified', 'can:view cms']], function () {
     // dashboard
     Route::get('/', function () {
         return Inertia::render('Dashboard');

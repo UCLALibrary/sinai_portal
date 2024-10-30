@@ -6,11 +6,20 @@
                 <div class="flex justify-end">
                     <nav class="service flex gap-4 py-2">
                         <Link
-                            v-if="$page.props.auth.user"
+                            v-if="$page.props.auth.user && pageProps.roles.permissions.includes('view cms')"
                             :href="route('cms')"
                             title="Log in">
                             Dashboard
                         </Link>
+
+                      <Link
+                          v-if="$page.props.auth.user"
+                          :href="route('logout')"
+                          method="post"
+                          class="uppercase"
+                      >
+                        Log Out
+                      </Link>
 
                     <template v-if="!$page.props.auth.user">
                         <Link
@@ -93,7 +102,8 @@
 </template>
 
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
+import {Head, Link, usePage} from '@inertiajs/vue3';
+import DropdownLink from "@/Components/DropdownLink.vue";
 
 defineProps({
     title: {
@@ -102,6 +112,8 @@ defineProps({
         default: 'Sinai Manuscripts Data Portal',
     },
 });
+
+const { props: pageProps } = usePage()
 </script>
 
 <style lang="postcss" scoped>
