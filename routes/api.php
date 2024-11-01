@@ -28,14 +28,6 @@ Route::group(['prefix' => '{resourceName}'], function () {
     Route::delete('/{resourceId}', [ResourcesController::class, 'destroy'])->name('api.resources.destroy');
 });
 
-// files
-Route::group(['prefix' => 'files/{resourceName}'], function () {
-    // upload
-    Route::post('upload', [FilesController::class, 'storeOnUpload'])->name('api.files.upload.store');
-    Route::post('upload/batch', [FilesController::class, 'batchUpload'])->name('api.files.upload.batch');
-    Route::post('upload/{resourceId}', [FilesController::class, 'updateOnUpload'])->name('api.files.upload.update');
-});
-
 // forms
 Route::get('forms/codicological-units/{codicological_unit?}', [FormsController::class, 'codUnit'])->name('api.forms.codicological-units');
 Route::get('forms/assoc_name', [FormsController::class, 'createAssocName'])->name('api.forms.assoc_name');

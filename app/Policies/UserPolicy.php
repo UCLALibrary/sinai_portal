@@ -9,6 +9,13 @@ use Illuminate\Auth\Access\Response;
 class UserPolicy
 {
     use HandlesAuthorization;
+    /**
+     * Determine whether the user can upload records.
+     */
+    public function uploadRecord(User $user): bool
+    {
+        return $user->can('upload record');
+    }
 
     /**
      * Determine whether the user can view any models.

@@ -11,7 +11,10 @@
         </div>
 
         <FileUploadForm
-          v-if="!config.disable_file_uploads && pageProps.routes.upload && pageProps.routes.upload.update"
+          v-if="!config.disable_file_uploads 
+                && pageProps.routes.upload 
+                && pageProps.routes.upload.update
+                && pageProps.roles.permissions.includes('upload record')"
           label="Select a JSON file"
           :multiple="false"
           hint="Note: The uploaded file will overwrite the existing data"

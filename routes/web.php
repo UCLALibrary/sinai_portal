@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\Cms\ResourcesController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\FilesController;
 use App\Http\Controllers\Cms\UsersController;
+use App\Http\Controllers\Cms\ResourcesController;
+use App\Http\Controllers\Frontend\WorksController;
 use App\Http\Controllers\Frontend\AgentsController;
 use App\Http\Controllers\Frontend\LayersController;
 use App\Http\Controllers\Frontend\PlacesController;
 use App\Http\Controllers\Frontend\ManuscriptsController;
-use App\Http\Controllers\Frontend\WorksController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 // frontend
 Route::get('/', function () {
@@ -48,4 +49,13 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
         Route::get('/create', [ResourcesController::class, 'create'])->name('resources.create');
         Route::get('/{resourceId}/edit', [ResourcesController::class, 'edit'])->name('resources.edit');
     });
+
+    // files
+    Route::group(['prefix' => 'files/{resourceName}'], function () {
+        // upload
+        Route::post('upload', [FilesController::class, 'storeOnUpload'])->name('api.files.upload.store');
+        Route::post('upload/batch', [FilesController::class, 'batchUpload'])->name('api.files.upload.batch');
+        Route::post('upload/{resourceId}', [FilesController::class, 'updateOnUpload'])->name('api.files.upload.update');
+    });
+
 });

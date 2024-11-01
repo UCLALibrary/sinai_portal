@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Foundation\Http\FormRequest;
 
 class JsonBatchUploadRequest extends FormRequest
 {
@@ -12,7 +13,7 @@ class JsonBatchUploadRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('uploadRecord', User::class);
     }
 
     /**

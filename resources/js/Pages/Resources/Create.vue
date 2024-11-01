@@ -11,7 +11,10 @@
         </div>
 
         <FileUploadForm
-          v-if="!config.disable_file_uploads && pageProps.routes.upload && pageProps.routes.upload.store"
+          v-if="!config.disable_file_uploads 
+                && pageProps.routes.upload 
+                && pageProps.routes.upload.store
+                && pageProps.roles.permissions.includes('upload record')"
           label="Select a JSON file"
           :multiple="false"
           :endpoint="route(pageProps.routes.upload.store, pageProps.resourceName)"

@@ -19,7 +19,10 @@
         </div>
 
         <FileUploadForm
-          v-if="!config.disable_file_uploads && $page.props.routes.upload && $page.props.routes.upload.batch"
+          v-if="!config.disable_file_uploads 
+                && $page.props.routes.upload 
+                && $page.props.routes.upload.batch
+                && pageProps.roles.permissions.includes('upload record')"
           label="Select one or more JSON files"
           hint="Note: The uploaded files will overwrite any existing data. Any file with an ark that doesn't match an existing record will create a new record."
           :multiple="true"
@@ -46,7 +49,7 @@
 </template>
 
 <script setup>
-  import { router } from '@inertiajs/vue3'
+  import { router, usePage } from '@inertiajs/vue3'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
   import ResourceListTable from '@/Shared/ResourceListTable.vue'
@@ -59,6 +62,8 @@
   })
   
   const emitter = useEmitter()
+
+  const { props: pageProps } = usePage()
 
   const onUploadSuccess = (payload) => {
     router.visit(window.location.href, {
