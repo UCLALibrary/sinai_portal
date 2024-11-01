@@ -36,6 +36,7 @@ class Bibliography extends Model
     }
 
     public static $config = [
+        'disable_file_uploads' => true,
         'index' => [
             'columns' => [
                 'type' => 'Type',
