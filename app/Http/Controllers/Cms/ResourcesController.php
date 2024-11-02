@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Cms;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 
@@ -11,15 +13,20 @@ class ResourcesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(string $resourceName)
+    public function index(Request $request, string $resourceName)
     {
         $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+
+        if (!$request->inertia() && $request->expectsJson()) {
+            // return json response if request is not an Inertia request
+            return $modelClass::all();
+        }
 
         return Inertia::render('Resources/Index', [
             'title' => ucfirst($resourceName),
             'resources' => $modelClass::orderBy('updated_at', 'desc')->paginate(20),
             'config' => $modelClass::$config,
-        ]);
+        ]);   
     }
 
     /**
@@ -39,6 +46,25 @@ class ResourcesController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request, string $resourceName)
+    {
+        return DB::transaction(function () use ($request, $resourceName) {
+            // get the model class using the singular version of the resource name
+            $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+
+            // populate the fillable fields for the resource
+            $fields = (new $modelClass)->getFillableFields($request->json, json_encode($request->json));
+
+            // create the resource
+            $resource = $modelClass::create($fields);
+
+            return $resource;
+        });
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $resourceName, string $resourceId)
@@ -55,5 +81,52 @@ class ResourcesController extends Controller
             'resource' => $resource,
             'config' => $modelClass::$config,
         ]);
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $resourceName, string $resourceId)
+    {
+        return DB::transaction(function () use ($request, $resourceName, $resourceId) {
+            // get the model class using the singular version of the resource name
+            $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+
+            // get the resource with the given id
+            $resource = $modelClass::find($resourceId);
+
+            // populate the fillable fields for the resource
+            $fields = $resource->getFillableFields($request->json, json_encode($request->json));
+
+            // update the resource
+            $resource->update($fields);
+ 
+            return $resource;
+        });
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $resourceName, string $resourceId): JsonResponse
+    {
+        return DB::transaction(function () use ($resourceName, $resourceId) {
+            // TODO: do we want to allow deletion or just soft delete?
+
+            $resourceType = Str::singular($resourceName);
+
+            // get the model class using the singular version of the resource name
+            $modelClass = '\\App\\Models\\' . ucfirst($resourceType);
+
+            // get the resource with the given id
+            $resource = $modelClass::find($resourceId);
+
+            $response = $resource->delete();
+    
+            return $response
+                ? response()->json(['message' => ucfirst($resourceType) . ' deleted successfully'])
+                : response()->json(['error' => 'Error deleting ' . $resourceType]);
+        });
     }
 }

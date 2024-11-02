@@ -43,11 +43,15 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
         Route::put('/{resourceId}', [UsersController::class, 'update'])->name('users.update');
     });
 
+    // resources
     Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts');
     Route::group(['prefix' => '{resourceName}'], function () {
         Route::get('/', [ResourcesController::class, 'index'])->name('resources.index');
         Route::get('/create', [ResourcesController::class, 'create'])->name('resources.create');
+        Route::post('/', [ResourcesController::class, 'store'])->name('resources.store');
         Route::get('/{resourceId}/edit', [ResourcesController::class, 'edit'])->name('resources.edit');
+        Route::put('/{resourceId}', [ResourcesController::class, 'update'])->name('resources.update');
+        Route::delete('/{resourceId}', [ResourcesController::class, 'destroy'])->name('resources.destroy');
     });
 
     // files
