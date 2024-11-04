@@ -42,13 +42,13 @@ class HandleInertiaRequests extends Middleware
             'routes' => [
                 'index' => 'resources.index',
                 'create' => 'resources.create',
-                'store' => 'api.resources.store',
+                'store' => 'resources.store',
                 'edit' => 'resources.edit',
-                'update' => 'api.resources.update',
+                'update' => 'resources.update',
                 'upload' => [
-                    'store' => 'api.files.upload.store',
-                    'update' => 'api.files.upload.update',
-                    'batch' => 'api.files.upload.batch',
+                    'store' => 'files.upload.store',
+                    'update' => 'files.upload.update',
+                    'batch' => 'files.upload.batch',
                 ],
             ],
             'flash' => [

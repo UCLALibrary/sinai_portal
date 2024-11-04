@@ -2,7 +2,7 @@
 
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\FilesController;
+use App\Http\Controllers\Cms\FilesController;
 use App\Http\Controllers\Cms\UsersController;
 use App\Http\Controllers\Cms\ResourcesController;
 use App\Http\Controllers\Frontend\WorksController;
@@ -57,9 +57,8 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     // files
     Route::group(['prefix' => 'files/{resourceName}'], function () {
         // upload
-        Route::post('upload', [FilesController::class, 'storeOnUpload'])->name('api.files.upload.store');
-        Route::post('upload/batch', [FilesController::class, 'batchUpload'])->name('api.files.upload.batch');
-        Route::post('upload/{resourceId}', [FilesController::class, 'updateOnUpload'])->name('api.files.upload.update');
+        Route::post('upload', [FilesController::class, 'storeOnUpload'])->name('files.upload.store');
+        Route::post('upload/batch', [FilesController::class, 'batchUpload'])->name('files.upload.batch');
+        Route::post('upload/{resourceId}', [FilesController::class, 'updateOnUpload'])->name('files.upload.update');
     });
-
 });
