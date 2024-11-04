@@ -8,7 +8,8 @@ use App\Http\Requests\JsonBatchUploadRequest;
 use App\Http\Requests\JsonFileUploadRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
-use Swaggest\JsonSchema\Schema;
+use Opis\JsonSchema\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
 
 class FilesController extends Controller
 {
@@ -24,9 +25,15 @@ class FilesController extends Controller
             // get the model class using the singular version of the resource name
             $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
 
-            // validate the json against json schema
-            Schema::import(json_decode($modelClass::$schema))->in(json_decode($json));
-
+            // validate the json data against the json schema
+            $result = (new Validator())->validate(json_decode($json), json_decode($modelClass::$schema));
+            if (!$result->isValid()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'The uploaded JSON files are incompatible with the ' . Str::singular($resourceName) . ' JSON schema.<br><br>' . implode('<br>', (new ErrorFormatter())->formatFlat($result->error())),
+                ], 400);
+            }
+    
             // decode the json file
             $data = json_decode($json, true);
 
@@ -63,8 +70,14 @@ class FilesController extends Controller
             // get the model class using the singular version of the resource name
             $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
 
-            // validate the json against json schema
-            Schema::import(json_decode($modelClass::$schema))->in(json_decode($json));
+            // validate the json data against the json schema
+            $result = (new Validator())->validate(json_decode($json), json_decode($modelClass::$schema));
+            if (!$result->isValid()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'The uploaded JSON files are incompatible with the ' . Str::singular($resourceName) . ' JSON schema.<br><br>' . implode('<br>', (new ErrorFormatter())->formatFlat($result->error())),
+                ], 400);
+            }
 
             // get the resource with the given id
             $resource = $modelClass::find($resourceId);
@@ -104,8 +117,14 @@ class FilesController extends Controller
                 $resourceType = ucfirst(Str::singular($resourceName));
                 $modelClass = '\\App\\Models\\' . $resourceType;
 
-                // validate the json against json schema
-                Schema::import(json_decode($modelClass::$schema))->in(json_decode($json));
+                // validate the json data against the json schema
+                $result = (new Validator())->validate(json_decode($json), json_decode($modelClass::$schema));
+                if (!$result->isValid()) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'The uploaded JSON files are incompatible with the ' . Str::singular($resourceName) . ' JSON schema.<br><br>' . implode('<br>', (new ErrorFormatter())->formatFlat($result->error())),
+                    ], 400);
+                }
 
                 // decode the json file
                 $data = json_decode($json, true);
