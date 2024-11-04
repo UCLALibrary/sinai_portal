@@ -11,7 +11,7 @@
           </template>
         </h2>
 
-        <p class="mb-8">
+        <p class="mb-8 italic">
           {{ manuscriptJson.summary }}
         </p>
 
@@ -34,7 +34,7 @@
         <div v-if="[manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').length" class="item-container">
           <span class="item-label">Extent</span>
           <p class="item-value">
-            {{ [manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').join(', ') }}
+            {{ [manuscriptJson.extent, manuscriptJson.dim, manuscriptJson.weight].filter(val => val && val !== '').join(' | ') }}
           </p>
         </div>
 
@@ -78,7 +78,7 @@
                 <strong>{{ part.label }}</strong>, {{ part.locus }}
               </p>
 
-              <p>
+              <p class="italic">
                 {{ part.summary }}
               </p>
 
@@ -98,7 +98,7 @@
 
               <div class="item-container">
                 <span class="item-label">Extent</span>
-                <p class="d-block">{{ part.extent }}, {{ part.dim }}</p>
+                <p class="d-block">{{ part.extent }} | {{ part.dim }}</p>
               </div>
 
               <div v-if="part.note && part.note.filter(note => note.type.id === 'foliation').length > 0" class="item-container">
@@ -360,12 +360,10 @@
         </template>
 
         <h3>Notes</h3>
-        <p v-if="manuscriptJson.has_bind !== null">
-          <span class="item-label">Binding present:</span>
-          {{ manuscriptJson.has_bind ? 'Yes' : 'No' }}
-        </p>
-
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
+          <p>
+            <strong>Binding:</strong>
+          </p>
           <ul>
             <li v-for="(bindingNote) in manuscriptJson.note.filter(note => note.type.id === 'binding')">
               {{ bindingNote.value }}
@@ -374,7 +372,9 @@
         </template>
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'provenance').length > 0">
-          <h4>Provenance</h4>
+          <p>
+            <strong>Provenance:</strong>
+          </p>
           <ul>
             <li v-for="(provenanceNote) in manuscriptJson.note.filter(note => note.type.id === 'provenance')">
               {{ provenanceNote.value }}
@@ -383,7 +383,9 @@
         </template>
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'condition').length > 0">
-          <h4>Condition</h4>
+          <p>
+            <strong>Condition:</strong>
+          </p>
           <ul>
             <li v-for="(conditionNote) in manuscriptJson.note.filter(note => note.type.id === 'condition')">
               {{ conditionNote.value }}
@@ -392,7 +394,9 @@
         </template>
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'general').length > 0">
-          <h4>Other notes</h4>
+          <p>
+            <strong>Other notes:</strong>
+          </p>
           <ul>
             <li v-for="(generalNote) in manuscriptJson.note.filter(note => note.type.id === 'general')">
               {{ generalNote .value }}
@@ -400,17 +404,19 @@
           </ul>
         </template>
 
-        <h3>Bibliography</h3>
+        <h3>Resources</h3>
 
-        <template v-if="manuscriptJson.viscodex">
-          <h4>Viscodex</h4>
-          <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
-            {{ viscodex.label }} ({{ viscodex.type.label }}) [<a href="{{ viscodex.url }}">{{ viscodex.url }}</a>].
-          </p>
-          <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
-            {{ viscodex.label }} ({{ viscodex.type.label }}) [<a href="{{ viscodex.url }}">{{ viscodex.url }}</a>].
-          </p>
-        </template>
+        <div v-if="manuscriptJson.viscodex" class="item-container">
+          <span class="item-label">Viscodex</span>
+          <div class="item-value">
+            <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
+              <a href="{{ viscodex.url }}">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+            </p>
+            <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
+              <a href="{{ viscodex.url }}">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+            </p>
+          </div>
+        </div>
 
         <h3>Preferred Citation</h3>
         <p>
@@ -552,6 +558,10 @@
 
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg
+  }
+
+  .sidebar ul li {
+    @apply list-none ml-0
   }
 
   .item-container {
