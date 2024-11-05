@@ -428,10 +428,10 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
-        <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
+        <template v-if="allInscribedLayers.length > 0">
           <h3>Inscribed Layers</h3>
           <ul>
-            <li v-for="(layer) in manuscriptJson.layer">
+            <li v-for="layer in allInscribedLayers">
               {{ layer.label }} ({{ layer.type.label }})
             </li>
           </ul>
@@ -520,7 +520,19 @@
     return hasPartPara || hasGlobalPara;
   });
 
+  const allInscribedLayers = computed(() => {
+    const rootLayers = manuscriptJson.value.layer || [];
+    const partLayers = manuscriptJson.value.part
+        ? manuscriptJson.value.part.flatMap(part => part.layer || [])
+        : [];
 
+    const combinedLayers = [...rootLayers, ...partLayers];
+    return combinedLayers.sort((a, b) => {
+      const order = { overtext: 1, undertext: 2, guest: 3 };
+      return (order[a.type.id] || 4) - (order[b.type.id] || 4);
+    });
+  });
+  
 </script>
 
 <style lang="postcss" scoped>
