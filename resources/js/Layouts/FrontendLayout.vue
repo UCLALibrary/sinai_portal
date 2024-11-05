@@ -39,7 +39,7 @@
                 <div class="flex flex-col lg:flex-row items-center gap-y-6 pb-6 justify-between">
                     <Link
                         :href="route('home')"
-                        class="logo flex w-full">
+                        class="logo flex">
                         <img src="/sinai-logo.svg" alt="logo" class="mr-4">Sinai Manuscripts Data Portal
                     </Link>
 
@@ -69,6 +69,11 @@
                                 :href="route('frontend.layers.index')"
                                 :class="{ 'active': route().current('frontend.layers.index') || route().current('frontend.layers.show') }">
                                 Layers
+                            </Link>
+                            <Link
+                                :href="route('frontend.textunits.index')"
+                                :class="{ 'active': route().current('frontend.textunits.index') || route().current('frontend.textunits.show') }">
+                              Text Units
                             </Link>
                             <Link
                                 :href="route('frontend.about')"

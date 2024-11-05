@@ -1,5 +1,6 @@
 <?php
-
+	
+use App\Http\Controllers\Frontend\TextUnitsController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Cms\FilesController;
@@ -21,6 +22,7 @@ Route::resource('/places', PlacesController::class)->only(['index', 'show'])->na
 Route::resource('/works', WorksController::class)->only(['index', 'show'])->names('frontend.works');
 Route::resource('/manuscripts', ManuscriptsController::class)->only(['index', 'show'])->names('frontend.manuscripts');
 Route::resource('/layers', LayersController::class)->only(['index', 'show'])->names('frontend.layers');
+Route::resource('/textunits', TextUnitsController::class)->only(['index', 'show'])->names('frontend.textunits');
 // Route::resource('/about', FrontendAboutController::class)->only(['index', 'show'])->names('frontend.about');
 
 Route::get('/about', function () {
@@ -44,7 +46,7 @@ Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstr
     });
 
     // resources
-    Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts');
+    Route::pattern('resourceName', 'manuscripts|layers|contents|works|agents|places|bibliography|languages|references|features|locations|scripts|textunits');
     Route::group(['prefix' => '{resourceName}'], function () {
         Route::get('/', [ResourcesController::class, 'index'])->name('resources.index');
         Route::get('/create', [ResourcesController::class, 'create'])->name('resources.create');

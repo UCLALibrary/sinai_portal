@@ -10,11 +10,11 @@
         },
         {
           "type": "Control",
-          "scope": "#/properties/cod_units"
+          "scope": "#/properties/reconstruction"
         },
         {
           "type": "Control",
-          "scope": "#/properties/type"
+          "scope": "#/properties/label"
         },
         {
           "type": "Control",
@@ -51,6 +51,10 @@
         {
           "type": "Control",
           "scope": "#/properties/cataloguer"
+        },
+        {
+          "type": "Control",
+          "scope": "#/properties/parent"
         }
       ]
     }

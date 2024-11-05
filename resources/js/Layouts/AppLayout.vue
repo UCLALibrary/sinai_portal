@@ -61,6 +61,11 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('resources.index', 'textunits')" :active="route().current('resources.*') && route().params.resourceName === 'textunits'">
+                                    Text Units
+                                </NavLink>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('resources.index', 'contents')" :active="route().current('resources.*') && route().params.resourceName === 'contents'">
                                     Content Units
                                 </NavLink>
@@ -214,6 +219,11 @@ const logout = () => {
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('resources.index', 'layers')" :active="route().current('resources.*') && route().params.resourceName === 'layers'">
                             Layers
+                        </ResponsiveNavLink>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <ResponsiveNavLink :href="route('resources.index', 'textunits')" :active="route().current('resources.*') && route().params.resourceName === 'textunits'">
+                            Text Units
                         </ResponsiveNavLink>
                     </div>
                     <div class="pt-2 pb-3 space-y-1">
