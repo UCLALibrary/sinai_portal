@@ -73,7 +73,7 @@
           <h3>Parts</h3>
 
           <template v-for="(part) in manuscriptJson.part">
-            <div class="mb-12">
+            <div class="mb-8">
               <p class="mb-0">
                 <strong>{{ part.label }}</strong>, {{ part.locus }}
               </p>
@@ -192,7 +192,7 @@
 
           <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
             <template v-for="(part, index) in manuscriptJson.part" :key="index">
-              <div v-if="part.para && part.para.length > 0" class="mb-12">
+              <div v-if="part.para && part.para.length > 0" class="mb-8">
                 <p>
                   <strong>{{ part.label }}</strong>
                 </p>
@@ -259,7 +259,7 @@
           </template>
 
           <template v-if="manuscriptJson.para && manuscriptJson.para.length > 0">
-            <div v-for="(para, paraIndex) in manuscriptJson.para" :key="paraIndex" class="mb-12">
+            <div v-for="(para, paraIndex) in manuscriptJson.para" :key="paraIndex" class="mb-8">
               <p>
                 <strong>{{ para.locus }}, {{ para.label }}, {{ para.type.label }}</strong>
               </p>
@@ -334,29 +334,25 @@
           </ul>
         </template>
 
-        <template v-if="manuscriptJson.related_mss">
+        <template v-if="allRelatedMss.length > 0">
           <h3>Related Manuscripts</h3>
-          <template v-for="relatedMss in manuscriptJson.related_mss">
-            <p>{{ relatedMss.label }} ({{ relatedMss.type.label }})</p>
-            <p v-for="relatedMssNote in relatedMss.note">
-              {{ relatedMssNote }}
-            </p>
-          </template>
-        </template>
-
-        <template v-for="partItem in manuscriptJson.part.filter(part => part.related_mss && part.related_mss.length > 0)">
-          <template v-for="relatedMss in partItem.related_mss.filter(mss => mss.mss && mss.mss.length > 0)">
-            <template v-for="mssItem in relatedMss.mss">
+            <div v-for="relatedMss in allRelatedMss" :key="relatedMss.label" class="mb-8">
               <p>
-                <a v-if="mssItem.url" :href="mssItem.url" target="_blank">{{ mssItem.label }}</a>
+                <strong>
+                  {{ relatedMss.label }} ({{ relatedMss.type.label }})
+                </strong>
               </p>
-            </template>
-            <template v-for="relatedMssNote in relatedMss.note">
-              <p>
-                {{ relatedMssNote }}
+              <ul class="indent">
+                <li v-for="ms in relatedMss.mss">
+                  <a :href="getRelatedMsLink(ms).url" :target="getRelatedMsLink(ms).isExternal ? '_blank' : '_self'">
+                    {{ ms.label }}
+                  </a>
+                </li>
+              </ul>
+              <p v-if="relatedMss.note && relatedMss.note.length > 0" class="indent">
+                {{ relatedMss.note.join(", ") }}
               </p>
-            </template>
-          </template>
+            </div>
         </template>
 
         <h3>Notes</h3>
@@ -432,7 +428,9 @@
           <h3>Inscribed Layers</h3>
           <ul>
             <li v-for="layer in allInscribedLayers">
-              {{ layer.label }} ({{ layer.type.label }})
+              <Link :href="route('frontend.layers.show', { layer: layer.id.split('/').pop() })">
+                {{ layer.label }} ({{ layer.type.label }})
+              </Link>
             </li>
           </ul>
         </template>
@@ -532,7 +530,33 @@
       return (order[a.type.id] || 4) - (order[b.type.id] || 4);
     });
   });
-  
+
+  const allRelatedMss = computed(() => {
+    const partRelatedMss = manuscriptJson.value.part
+        ? manuscriptJson.value.part.flatMap(part => part.related_mss || [])
+        : [];
+    const rootRelatedMss = manuscriptJson.value.related_mss || [];
+
+    return [...partRelatedMss, ...rootRelatedMss];
+  });
+
+  const getRelatedMsLink = (ms) => {
+    let url;
+    let isExternal = false;
+
+    if (ms.url) {
+      url = ms.url;
+      isExternal = true;
+    } else if (ms.id) {
+      const arkId = ms.id.split('/').pop();
+      url = `/manuscripts/${arkId}`;
+    } else {
+      url = '#';
+    }
+
+    return { url, isExternal };
+  };
+
 </script>
 
 <style lang="postcss" scoped>
@@ -569,11 +593,7 @@
   }
 
   ul li {
-    @apply my-2 list-disc ml-4 text-base xl:text-lg
-  }
-
-  .sidebar ul li {
-    @apply list-none ml-0
+    @apply my-2 text-base xl:text-lg
   }
 
   .item-container {
@@ -586,5 +606,9 @@
 
   .item-value {
     @apply flex-1
+  }
+
+  .indent {
+    @apply md:ml-4
   }
 </style>
