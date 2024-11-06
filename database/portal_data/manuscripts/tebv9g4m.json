@@ -39,8 +39,8 @@
     "location": [
         {
             "id": "sinai-nf",
-            "repository": "St. Catherine's Monastery of the Sinai",
-            "collection": "New Finds"
+            "collection": "New Finds",
+            "repo": "St. Catherine's Monastery of the Sinai"
         }
     ],
     "bib": [

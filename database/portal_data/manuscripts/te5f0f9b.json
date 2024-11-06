@@ -132,7 +132,8 @@
                     "script": [
                         { 
                             "id": "greek-min", 
-                            "label": "Greek minuscule" 
+                            "label": "Greek minuscule" ,
+                            "writing_system": "Greek"
                         } 
                     ], 
                     "label": "Greek inscription", 
@@ -291,7 +292,8 @@
             "script": [
                 { 
                     "id": "naskh", 
-                    "label": "Naskh" 
+                    "label": "Naskh" ,
+                    "writing_system": "Arabic"
                 } 
             ], 
             "label": "Anonymous theological text", 
@@ -318,7 +320,8 @@
             "script": [
                 { 
                     "id": "melkite", 
-                    "label": "Melkite" 
+                    "label": "Melkite" ,
+                    "writing_system": "Syriac"
                 } 
             ], 
             "label": "Unidentified Melkite text", 
@@ -388,10 +391,10 @@
     ], 
     "has_bind": true, 
     "location": [
-        {
-            "id": "sinai-oc",
-            "repository": "St. Catherine's Monastery of the Sinai",
-            "collection": "Old Collection"
+        { 
+            "id": "sinai-oc", 
+            "collection": "Old Collection" ,
+            "repo": "St. Catherine's Monastery of the Sinai"
         } 
     ], 
     "assoc_date": [
