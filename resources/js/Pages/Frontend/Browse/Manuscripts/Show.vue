@@ -269,9 +269,11 @@
               <p v-if="para.as_written" class="indent">
                 Transcription: {{ para.as_written }}
               </p>
-              <p v-if="para.translation && para.translation.length > 0" class="indent">
-                Translation: {{ para.translation.join('; ') }}
-              </p>
+              <template v-if="para.translation && para.translation.length > 0">
+                <p v-for="translation in para.translation" class="indent">
+                  Translation: {{ translation }}
+                </p>
+              </template>
 
               <p class="indent">
                 <strong>Associated Names, Places, Dates</strong>
@@ -402,6 +404,41 @@
         </template>
 
         <h3>Resources</h3>
+        <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
+          <span class="item-label">References</span>
+          <div class="item-value">
+            <template v-for="reference in manuscript.related_references">
+              <p>
+                {{ reference.short_title }}, {{ reference.range }}. Reference mark: bib.alt_shelf
+              </p>
+              <p v-for="note in reference.note">
+                {{ note }}
+              </p>
+            </template>
+          </div>
+        </div>
+
+        <div v-if="manuscript.related_bibliographies && manuscript.related_bibliographies.length > 0" class="item-container">
+          <span class="item-label">Bibliography</span>
+          <div class="item-value">
+            <template v-for="bibliography in manuscript.related_bibliographies">
+              <p>
+                {{ bibliography.formatted_citation }}
+              </p>
+            </template>
+          </div>
+        </div>
+
+        <div v-if="manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0" class="item-container">
+          <span class="item-label">Other Digital Versions</span>
+          <div class="item-value">
+            <template v-for="digVersion in manuscript.related_digital_versions">
+              <p>
+                {{ digVersion.short_title }}
+              </p>
+            </template>
+          </div>
+        </div>
 
         <div v-if="manuscriptJson.viscodex" class="item-container">
           <span class="item-label">Viscodex</span>

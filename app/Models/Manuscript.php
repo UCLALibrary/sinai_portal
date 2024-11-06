@@ -51,7 +51,7 @@ class Manuscript extends Model
         ],
     ];
 
-    protected $appends = ['related_agents'];
+    protected $appends = ['related_agents', 'related_references', 'related_bibliographies', 'related_digital_versions'];
     
     /**
      * Accessor to include related agents when the model is serialized.
@@ -72,6 +72,66 @@ class Manuscript extends Model
                 ];
             })->toArray();
     }
+	
+	public function getRelatedReferencesAttribute(): array
+	{
+		return $this->getRelatedEntities(
+			'bib',
+			Reference::class,
+			function ($item) {
+				return isset($item['type']['id']) && $item['type']['id'] === 'ref';
+			},
+			function ($bibItem, $item) {
+				return [
+					'id' => $bibItem->id,
+					'short_title' => $bibItem->short_title,
+					'formatted_citation' => $bibItem->formatted_citation,
+					'range' => $item['range'] ?? null,
+					'note' => $item['note'] ?? [],
+				];
+			}
+		)->toArray();
+	}
+	
+	public function getRelatedBibliographiesAttribute(): array
+	{
+		return $this->getRelatedEntities(
+			'bib',
+			Reference::class,
+			function ($item) {
+				return isset($item['type']['id']) && $item['type']['id'] === 'cite';
+			},
+			function ($bibItem, $item) {
+				return [
+					'id' => $bibItem->id,
+					'short_title' => $bibItem->short_title,
+					'formatted_citation' => $bibItem->formatted_citation,
+					'range' => $item['range'] ?? null,
+					'note' => $item['note'] ?? [],
+				];
+			}
+		)->toArray();
+	}
+	
+	public function getRelatedDigitalVersionsAttribute(): array
+	{
+		return $this->getRelatedEntities(
+			'bib',
+			Reference::class,
+			function ($item) {
+				return isset($item['type']['id']) && $item['type']['id'] === 'otherdigversion';
+			},
+			function ($bibItem, $item) {
+				return [
+					'id' => $bibItem->id,
+					'short_title' => $bibItem->short_title,
+					'formatted_citation' => $bibItem->formatted_citation,
+					'range' => $item['range'] ?? null,
+					'note' => $item['note'] ?? [],
+				];
+			}
+		)->toArray();
+	}
 
     /**
      * Get the indexable data array for the model.
