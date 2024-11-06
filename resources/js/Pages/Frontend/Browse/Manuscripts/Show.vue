@@ -188,35 +188,31 @@
         </template>
 
         <template v-if="hasParaGuestContent">
-          <h3>Para/Guest Content</h3>
+          <h3>Paracontent</h3>
 
           <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
-            <template v-for="(part, index) in manuscriptJson.part" :key="index">
-              <div v-if="part.para && part.para.length > 0" class="mb-8">
-                <p>
-                  <strong>{{ part.label }}</strong>
-                </p>
-
-                <template v-for="(para, paraIndex) in part.para" :key="paraIndex">
+            <template v-for="part in manuscriptJson.part">
+              <template v-if="part.para && part.para.length > 0">
+                <div v-for="para in part.para" class="mb-8">
                   <p>
-                    <strong>{{ para.locus }}, {{ para.label }} ({{ para.type.label }})</strong>
+                    <strong>{{ part.label }}, {{ para.locus }}, {{ para.label }} ({{ para.type.label }})</strong>
                   </p>
-                  <p v-if="para.lang && para.lang.length > 0">
-                    {{ para.lang.map(lang => lang.label).join(', ') }}
+                  <p v-if="para.lang && para.lang.length > 0" class="indent">
+                    Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
                   </p>
-                  <p v-if="para.script && para.script.length > 0">
-                    {{ para.script.map(script => script.label).join(', ') }}
+                  <p v-if="para.as_written" class="indent">
+                    Transcription: {{ para.as_written }}
                   </p>
-                  <p v-if="para.as_written">
-                    {{ para.as_written }}
+                  <p v-if="para.translation && para.translation.length > 0" class="indent">
+                    Translation: {{ para.translation.join('; ') }}
                   </p>
-                  <p v-if="para.translation && para.translation.length > 0">
-                    {{ para.translation.join('; ') }}
+
+                  <p class="indent">
+                    <strong>Associated Names, Places, Dates</strong>
                   </p>
 
                   <div v-if="para.assoc_name && para.assoc_name.length > 0">
-                    <strong>Associated Name(s):</strong>
-                    <ul>
+                    <ul class="indent">
                       <li v-for="(name, nameIndex) in para.assoc_name" :key="nameIndex">
                         {{ name.role.label }}: [{{ name.as_written }}]
                         <span v-if="name.note && name.note.length > 0">
@@ -227,8 +223,7 @@
                   </div>
 
                   <div v-if="para.assoc_place && para.assoc_place.length > 0">
-                    <strong>Associated Place(s):</strong>
-                    <ul>
+                    <ul class="indent">
                       <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
                         {{ place.event.label }}: [{{ place.as_written }}]
                         <span v-if="place.note && place.note.length > 0">
@@ -238,9 +233,8 @@
                     </ul>
                   </div>
 
-                  <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mb-2">
-                    <strong>Associated Date(s):</strong>
-                    <ul>
+                  <div v-if="para.assoc_date && para.assoc_date.length > 0">
+                    <ul class="indent">
                       <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
                         {{ date.type.label }}: [{{ date.as_written }}] - Value: {{ date.value }}
                         <span v-if="date.note && date.note.length > 0">
@@ -250,66 +244,73 @@
                     </ul>
                   </div>
 
-                  <p v-if="para.note && para.note.length > 0" class="mt-2">
-                    {{ para.note.join('; ') }}
-                  </p>
-                </template>
-              </div>
+                  <template v-if="para.note && para.note.length > 0" class="indent">
+                    <p class="indent">
+                      <strong>Notes</strong>
+                    </p>
+
+                    <p class="indent">
+                      {{ para.note.join('; ') }}
+                    </p>
+                  </template>
+                </div>
+              </template>
             </template>
           </template>
 
           <template v-if="manuscriptJson.para && manuscriptJson.para.length > 0">
-            <div v-for="(para, paraIndex) in manuscriptJson.para" :key="paraIndex" class="mb-8">
+            <div v-for="para in manuscriptJson.para" class="mb-8">
               <p>
                 <strong>{{ para.locus }}, {{ para.label }}, {{ para.type.label }}</strong>
               </p>
-              <p v-if="para.lang && para.lang.length > 0">
-                {{ para.lang.map(lang => lang.label).join(', ') }}
+              <p v-if="para.lang && para.lang.length > 0" class="indent">
+                Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
               </p>
-              <p v-if="para.as_written">
-                {{ para.as_written }}
+              <p v-if="para.as_written" class="indent">
+                Transcription: {{ para.as_written }}
               </p>
-              <p v-if="para.translation && para.translation.length > 0">
-                {{ para.translation.join('; ') }}
+              <p v-if="para.translation && para.translation.length > 0" class="indent">
+                Translation: {{ para.translation.join('; ') }}
+              </p>
+
+              <p class="indent">
+                <strong>Associated Names, Places, Dates</strong>
               </p>
 
               <template v-if="para.assoc_name && para.assoc_name.length > 0">
-                <strong>Associated Name(s):</strong>
-                <ul>
+                <ul class="indent">
                   <li v-for="(name, nameIndex) in para.assoc_name" :key="nameIndex">
                     {{ name.role.label }}: [{{ name.as_written }}]
                     <span v-if="name.note && name.note.length > 0">
-              {{ name.note.join('; ') }}
-            </span>
+                      {{ name.note.join('; ') }}
+                    </span>
                   </li>
                 </ul>
               </template>
 
               <div v-if="para.assoc_place && para.assoc_place.length > 0" class="mt-2">
-                <strong>Associated Place(s):</strong>
-                <ul>
+                <ul class="indent">
                   <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
                     {{ place.event.label }}: [{{ place.as_written }}]
                     <span v-if="place.note && place.note.length > 0">
-              {{ place.note.join('; ') }}
-            </span>
+                      {{ place.note.join('; ') }}
+                    </span>
                   </li>
                 </ul>
               </div>
 
               <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mt-2">
-                <strong>Associated Date(s):</strong>
-                <ul>
+                <ul class="indent">
                   <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
                     {{ date.type.label }}: [{{ date.as_written }}] - Value: {{ date.value }}
                     <span v-if="date.note && date.note.length > 0">
-              {{ date.note.join('; ') }}
-            </span>
+                      {{ date.note.join('; ') }}
+                    </span>
                   </li>
                 </ul>
               </div>
 
-              <p v-if="para.note && para.note.length > 0" class="mt-2">
+              <p v-if="para.note && para.note.length > 0" class="indent">
                 {{ para.note.join('; ') }}
               </p>
             </div>
