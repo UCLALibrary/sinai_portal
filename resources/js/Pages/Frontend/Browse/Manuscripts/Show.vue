@@ -401,8 +401,8 @@
           </ul>
         </template>
 
+        <h3>Resources</h3>
         <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
-          <h3>Resources</h3>
           <span class="item-label">References</span>
           <div class="item-value">
             <template v-for="reference in manuscript.related_references">
