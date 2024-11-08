@@ -17,7 +17,7 @@ class TextUnitsController extends Controller
             'title' => 'Text Units',
             'appId' => env('ALGOLIA_APP_ID'),
             'apiKey' => env('ALGOLIA_SECRET'),
-            'indexName' => env('SCOUT_PREFIX') . 'textunits',
+            'indexName' => env('SCOUT_PREFIX') . 'text_units',
             'searchQuery' => request('q') ?? '',
         ]);
     }
