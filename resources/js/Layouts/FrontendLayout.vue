@@ -16,7 +16,8 @@
                           v-if="$page.props.auth.user"
                           :href="route('logout')"
                           method="post"
-                          class="uppercase"
+                          class="font-dosis font-medium uppercase"
+                          as="button"
                       >
                         Log Out
                       </Link>
