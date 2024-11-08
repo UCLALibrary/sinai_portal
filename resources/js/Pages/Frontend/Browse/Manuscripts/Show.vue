@@ -150,8 +150,6 @@
         </template>
 
         <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
-          <h3>MS Section</h3>
-
           <template v-if="hasUndertextObjects">
             <h4>Undertext Objects</h4>
 
@@ -358,8 +356,8 @@
             </div>
         </template>
 
-        <h3>Notes</h3>
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
+          <h3>Notes</h3>
           <p>
             <strong>Binding:</strong>
           </p>
@@ -403,13 +401,13 @@
           </ul>
         </template>
 
-        <h3>Resources</h3>
         <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
+          <h3>Resources</h3>
           <span class="item-label">References</span>
           <div class="item-value">
             <template v-for="reference in manuscript.related_references">
               <p>
-                {{ reference.short_title }}, {{ reference.range }}. Reference mark: bib.alt_shelf
+                {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
               </p>
               <p v-for="note in reference.note">
                 {{ note }}
@@ -423,7 +421,13 @@
           <div class="item-value">
             <template v-for="bibliography in manuscript.related_bibliographies">
               <p>
-                {{ bibliography.formatted_citation }}
+                <a v-if="bibliography.url" :href="bibliography.url" target="_blank">
+                  {{ bibliography.formatted_citation }}
+                </a>
+                <span v-else>
+                  {{ bibliography.formatted_citation }}
+                </span>
+                <span v-if="bibliography.range">. {{ bibliography.range }}</span>
               </p>
             </template>
           </div>
@@ -434,7 +438,13 @@
           <div class="item-value">
             <template v-for="digVersion in manuscript.related_digital_versions">
               <p>
-                {{ digVersion.short_title }}
+                <a v-if="digVersion.url" :href="digVersion.url" target="_blank">
+                  {{ digVersion.short_title }}
+                </a>
+                <span v-else>
+                  {{ digVersion.short_title }}
+                </span>
+                <span v-if="digVersion.alt_shelf">. {{ digVersion.alt_shelf }}</span>
               </p>
             </template>
           </div>
@@ -444,10 +454,10 @@
           <span class="item-label">Viscodex</span>
           <div class="item-value">
             <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
-              <a href="{{ viscodex.url }}">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+              <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
             </p>
             <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
-              <a href="{{ viscodex.url }}">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+              <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
             </p>
           </div>
         </div>

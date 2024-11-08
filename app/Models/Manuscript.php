@@ -86,6 +86,7 @@ class Manuscript extends Model
 					'id' => $bibItem->id,
 					'short_title' => $bibItem->short_title,
 					'formatted_citation' => $bibItem->formatted_citation,
+					'alt_shelf' => $item['alt_shelf'] ?? null,
 					'range' => $item['range'] ?? null,
 					'note' => $item['note'] ?? [],
 				];
@@ -107,6 +108,7 @@ class Manuscript extends Model
 					'short_title' => $bibItem->short_title,
 					'formatted_citation' => $bibItem->formatted_citation,
 					'range' => $item['range'] ?? null,
+					'url' => $item['url'] ?? null,
 					'note' => $item['note'] ?? [],
 				];
 			}
@@ -127,6 +129,7 @@ class Manuscript extends Model
 					'short_title' => $bibItem->short_title,
 					'formatted_citation' => $bibItem->formatted_citation,
 					'range' => $item['range'] ?? null,
+					'url' => $item['url'] ?? null,
 					'note' => $item['note'] ?? [],
 				];
 			}
