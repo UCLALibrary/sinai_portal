@@ -51,7 +51,7 @@ class Manuscript extends Model
         ],
     ];
 
-    protected $appends = ['related_agents', 'related_references', 'related_bibliographies', 'related_digital_versions'];
+    protected $appends = ['related_agents', /*'related_places',*/ 'related_overtext_layers', 'related_references', 'related_bibliographies', 'related_digital_versions'];
     
     /**
      * Accessor to include related agents when the model is serialized.
@@ -67,11 +67,47 @@ class Manuscript extends Model
             function ($agent, $item) {
                 return [
                     'id' => $agent->id,
+                    'as_written' => $item['as_written'] ?? null,
                     'pref_name' => $agent->pref_name,
                     'rel' => $item['rel'] ?? null,
+	                'role' => $item['role'] ?? null,
+	                'note' => $item['note'] ?? [],
                 ];
             })->toArray();
     }
+	
+	public function getRelatedOvertextLayersAttribute(): array
+	{
+		return $this->getRelatedEntities(
+			'layer',
+			Layer::class,
+			function ($item) {
+				return isset($item['type']['id']) && $item['type']['id'] === 'overtext';
+			},
+			function ($layer, $item) {
+				return [
+					'id' => $layer->id,
+					'json' => json_decode($layer->json)
+				];
+		})->toArray();
+	}
+	
+	public function getRelatedPlacesAttribute(): array
+	{
+		return $this->getRelatedEntities(
+			'assoc_place',
+			Place::class,
+			null,
+			function ($place, $item) {
+				return [
+					'id' => $place->id,
+					'as_written' => $item['as_written'] ?? null,
+					'pref_name' => $place->pref_name,
+					'event' => $item['note'],
+					'note' => $item['note'] ?? [],
+				];
+			})->toArray();
+	}
 	
 	public function getRelatedReferencesAttribute(): array
 	{

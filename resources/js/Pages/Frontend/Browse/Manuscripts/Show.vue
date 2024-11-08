@@ -69,6 +69,32 @@
           </p>
         </div>
 
+        <div v-if="manuscriptJson.coll && manuscriptJson.coll !== ''" class="item-container">
+          <span class="item-label">Collation</span>
+          <p class="item-value">
+            <span class="d-block">{{ manuscriptJson.coll }}</span>
+            <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'collation').length > 0">
+              <span class="d-block" v-for="(collation) in manuscriptJson.note.filter(note => note.type.id === 'collation')">
+                {{ collation.value }}
+              </span>
+            </template>
+          </p>
+        </div>
+
+        <div v-if="manuscript.related_overtext_layers && manuscript.related_overtext_layers.length > 0" class="item-container">
+          <span class="item-label">Primary languages</span>
+          <p class="item-value">
+            {{ primaryLanguage }}
+          </p>
+        </div>
+
+        <div v-if="manuscript.related_overtext_layers && manuscript.related_overtext_layers.length > 0" class="item-container">
+          <span class="item-label">Scripts</span>
+          <p class="item-value">
+            {{ scriptLabels }}
+          </p>
+        </div>
+
         <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
           <h3>Parts</h3>
 
@@ -127,23 +153,6 @@
                 </div>
 
               </div>
-
-              <template v-if="part.related_mss && part.related_mss.length > 0">
-                <div v-for="(relatedMss) in part.related_mss" class="item-container">
-                  <span class="item-label">Related Manuscripts</span>
-                  <div class="item-value">
-                    <p>{{ relatedMss.label }} ({{ relatedMss.type.label }})</p>
-                    <ul>
-                      <li v-for="(mss) in relatedMss.mss">
-                        <a :href="mss.url" target="_blank">{{ mss.label }}</a>
-                      </li>
-                    </ul>
-                    <template v-if="relatedMss.note && relatedMss.note.length > 0">
-                      {{ relatedMss.note.join(", ") }}
-                    </template>
-                  </div>
-                </div>
-              </template>
 
             </div>
           </template>
@@ -359,7 +368,7 @@
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
           <h3>Notes</h3>
           <p>
-            <strong>Binding:</strong>
+            <strong>Binding</strong>
           </p>
           <ul>
             <li v-for="(bindingNote) in manuscriptJson.note.filter(note => note.type.id === 'binding')">
@@ -400,6 +409,38 @@
             </li>
           </ul>
         </template>
+
+
+        <p class="mt-8">
+          <strong>Associated Names, Places, Dates</strong>
+        </p>
+
+        <div v-for="relatedAgent in manuscript.related_agents" class="mb-8">
+          <p>
+            {{ relatedAgent.role.label }}: {{ relatedAgent.as_written || relatedAgent.pref_name }}
+          </p>
+          <p v-if="relatedAgent.note && relatedAgent.note.length > 0" class="indent">
+            {{ relatedAgent.note.join(", ") }}
+          </p>
+        </div>
+
+        <div v-for="relatedPlace in manuscript.related_places" class="mb-8">
+          <p>
+            {{ relatedPlace.event.label }}: {{ relatedPlace.as_written || relatedPlace.pref_name }}
+          </p>
+          <p v-if="relatedPlace.note && relatedPlace.note.length > 0" class="indent">
+            {{ relatedPlace.note.join(", ") }}
+          </p>
+        </div>
+
+        <div v-for="relatedDate in manuscriptJson.assoc_date" class="mb-8">
+          <p>
+            {{ relatedDate.type.label }}: {{ relatedDate.as_written || relatedDate.value }}
+          </p>
+          <p v-if="relatedDate.note && relatedDate.note.length > 0" class="indent">
+            {{ relatedDate.note.join(", ") }}
+          </p>
+        </div>
 
         <h3>Resources</h3>
         <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
@@ -545,6 +586,18 @@
   // Clean up the object URL when the component is destroyed
   onBeforeUnmount(() => {
     URL.revokeObjectURL(downloadUrl.value);
+  });
+
+  const primaryLanguage = computed(() => {
+    return props.manuscript.related_overtext_layers
+        .flatMap(layer => layer.json.text_unit.map(textUnit => textUnit.label))
+        .join(', ');
+  });
+
+  const scriptLabels = computed(() => {
+    return props.manuscript.related_overtext_layers
+        .flatMap(layer => layer.json.writing.flatMap(writing => writing.script.map(script => script.label)))
+        .join(', ');
   });
 
   const hasUndertextObjects = computed(() => {
