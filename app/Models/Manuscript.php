@@ -51,7 +51,14 @@ class Manuscript extends Model
         ],
     ];
 
-    protected $appends = ['related_agents', /*'related_places',*/ 'related_overtext_layers', 'related_references', 'related_bibliographies', 'related_digital_versions'];
+    protected $appends = [
+		'related_agents',
+	    /*'related_places',*/
+	    'related_overtext_layers',
+	    'related_references',
+	    'related_bibliographies',
+	    'related_digital_versions'
+    ];
     
     /**
      * Accessor to include related agents when the model is serialized.
