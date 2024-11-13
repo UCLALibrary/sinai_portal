@@ -77,18 +77,6 @@
           </p>
         </div>
 
-        <div v-if="manuscriptJson.coll && manuscriptJson.coll !== ''" class="item-container">
-          <span class="item-label">Collation</span>
-          <p class="item-value">
-            <span class="d-block">{{ manuscriptJson.coll }}</span>
-            <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'collation').length > 0">
-              <span class="d-block" v-for="(collation) in manuscriptJson.note.filter(note => note.type.id === 'collation')">
-                {{ collation.value }}
-              </span>
-            </template>
-          </p>
-        </div>
-
         <div v-if="manuscript.related_overtext_layers && manuscript.related_overtext_layers.length > 0" class="item-container">
           <span class="item-label">Primary languages</span>
           <p class="item-value">
