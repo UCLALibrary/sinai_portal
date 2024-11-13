@@ -18,7 +18,7 @@ trait HasRelatedEntities
      *
      * @return array
      */
-    protected function getJsonData(): array
+    public function getJsonData(): array
     {
         if ($this->jsonData === null) {
             $this->jsonData = json_decode($this->json, true) ?? [];
