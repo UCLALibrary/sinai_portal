@@ -91,7 +91,7 @@
         <div class="hidden lg:grid lg:grid-cols-4 p-2 gap-x-1 font-bold border-b">
           <h3>Name</h3>
           <h3>Gender</h3>
-          <h3>Date</h3>
+          <h3>Dates</h3>
           <h3>ARK</h3>
         </div>
         <InfiniteHits>
