@@ -53,10 +53,29 @@ class Layer extends Model
      * Relationships
      */
 
-     public function manuscript()
-     {
-         return $this->belongsTo(Manuscript::class);
-     }
+    protected $with = ['layerTextUnits', 'textUnits'];
+
+    public function manuscript()
+    {
+        return $this->belongsTo(Manuscript::class);
+    }
+
+    public function layerTextUnits()
+    {
+        return $this->hasMany(LayerTextUnit::class);
+    }
+
+    public function textUnits()
+    {
+        return $this->hasManyThrough(
+            TextUnit::class,         // the target model you want to access
+            LayerTextUnit::class,    // the intermediate model
+            'layer_id',              // foreign key on the LayerTextUnit table
+            'id',                    // foreign key on the TextUnit table
+            'id',                    // local key on the ManuscriptPart table
+            'text_unit_id'           // local key on the LayerTextUnit table
+        );
+    }
 
     /**
      * Get the indexable data array for the model.

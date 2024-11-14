@@ -40,7 +40,21 @@ class TextUnit extends Model
             ],
         ],
     ];
-    
+
+    /**
+     * Relationships
+     */
+
+    public function layer()
+    {
+        return $this->belongsTo(Layer::class);
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
