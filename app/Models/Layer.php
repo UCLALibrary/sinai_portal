@@ -50,6 +50,15 @@ class Layer extends Model
     ];
 
     /**
+     * Relationships
+     */
+
+     public function manuscript()
+     {
+         return $this->belongsTo(Manuscript::class);
+     }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array

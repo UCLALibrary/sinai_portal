@@ -51,6 +51,33 @@ class Manuscript extends Model
         ],
     ];
 
+    /**
+     * Relationships
+     */
+
+    protected $with = ['manuscriptLayers', 'layers'];
+
+    public function manuscriptLayers()
+    {
+        return $this->hasMany(ManuscriptLayer::class);
+    }
+
+    public function layers()
+    {
+        return $this->hasManyThrough(
+            Layer::class,              // the target model you want to access
+            ManuscriptLayer::class,    // the intermediate model
+            'manuscript_id',           // foreign key on the ManuscriptLayer table
+            'id',                      // foreign key on the Layer table
+            'id',                      // local key on the Manuscript table
+            'layer_id'                 // local key on the ManuscriptLayer table
+        );
+    }
+
+    /**
+     * Attributes
+     */
+    
     protected $appends = [
 		'related_agents',
 	    /*'related_places',*/
