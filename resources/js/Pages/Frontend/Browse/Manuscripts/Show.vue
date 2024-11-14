@@ -338,15 +338,6 @@
           </ul>
         </template>
 
-        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'ornament').length > 0">
-          <h3>Ornamentation</h3>
-          <ul>
-            <li v-for="(ornamentNote) in manuscriptJson.note.filter(note => note.type.id === 'ornament')">
-              {{ ornamentNote.value }}
-            </li>
-          </ul>
-        </template>
-
         <template v-if="allRelatedMss.length > 0">
           <h3>Related Manuscripts</h3>
             <div v-for="relatedMss in allRelatedMss" :key="relatedMss.label" class="mb-8">
