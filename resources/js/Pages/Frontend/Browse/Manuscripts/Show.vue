@@ -526,6 +526,15 @@
           </ul>
         </template>
 
+        <template v-if="textUnits.length">
+          <h3>Text Units</h3>
+          <ul>
+            <li v-for="textUnit in textUnits" :key="textUnit.id">
+              {{ textUnit.label }}
+            </li>
+          </ul>
+        </template>
+
         <template v-if="manuscript.related_agents && manuscript.related_agents.length > 0">
           <h3>Names</h3>
           <ul>
@@ -684,6 +693,11 @@
     return hasReferences || hasBibliographies || hasRelatedDigitalVersions || hasViscodex;
   });
 
+  const textUnits = computed(() => {
+    return props.manuscript.layers.reduce((textUnits, layer) => {
+      return textUnits.concat(layer.text_units || []);
+    }, []);
+  })
 </script>
 
 <style lang="postcss" scoped>
