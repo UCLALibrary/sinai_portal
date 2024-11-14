@@ -11,8 +11,12 @@
           </template>
         </h2>
 
-        <p class="mb-8 italic">
+        <p class="italic">
           {{ manuscriptJson.summary }}
+        </p>
+
+        <p class="mb-8">
+          {{ manuscript.assoc_dates_from_layers.join('; ') }}
         </p>
 
         <div v-if="manuscriptJson.ark && manuscriptJson.ark !== ''" class="item-container">
@@ -329,15 +333,6 @@
           <h3>Ornamentation</h3>
           <ul>
             <li v-for="(ornamentNote) in manuscriptJson.note.filter(note => note.type.id === 'ornamentation')">
-              {{ ornamentNote.value }}
-            </li>
-          </ul>
-        </template>
-
-        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'ornament').length > 0">
-          <h3>Ornamentation</h3>
-          <ul>
-            <li v-for="(ornamentNote) in manuscriptJson.note.filter(note => note.type.id === 'ornament')">
               {{ ornamentNote.value }}
             </li>
           </ul>
