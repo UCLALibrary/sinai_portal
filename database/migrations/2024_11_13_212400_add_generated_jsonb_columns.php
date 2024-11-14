@@ -20,7 +20,8 @@ return new class extends Migration
             'manuscripts',
             'parts',
             'places',
-            'works'
+            'works',
+            'text_units',
         ];
 
         foreach ($tables as $table) {
@@ -41,7 +42,8 @@ return new class extends Migration
             'manuscripts',
             'parts',
             'places',
-            'works'
+            'works',
+            'text_units',
         ];
 
         foreach ($tables as $table) {
