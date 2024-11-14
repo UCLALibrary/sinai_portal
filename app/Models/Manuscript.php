@@ -55,7 +55,12 @@ class Manuscript extends Model
      * Relationships
      */
 
-    protected $with = ['manuscriptLayers', 'layers'];
+    protected $with = ['parts', 'manuscriptLayers', 'layers'];
+
+    public function parts()
+    {
+        return $this->hasMany(ManuscriptPart::class);
+    }
 
     public function manuscriptLayers()
     {
