@@ -22,14 +22,13 @@ class PlacesSeeder extends Seeder
         foreach ($places as $jsonData) {
             // extract and flatten fields from the JSON representation of the metadata to create the record
             $place = Place::create([
+				'id' => 'tejerus',
+				'ark' => 'ark:/21198/tejerus',
                 'type' => $jsonData['type'],
                 'pref_name' => $jsonData['pref_name'],
                 'json' => '{}'
             ]);
-
-            // include the primary key in the JSON representation of the metadata
-            $jsonData['id'] = $place->id;
-
+			
             // update the record with the json field
             $place->json = json_encode($jsonData);
             $place->save();
@@ -40,6 +39,7 @@ class PlacesSeeder extends Seeder
     {
         return [
             [
+	            'ark' => 'ark:/21198/tejerus',
                 'type' => 'mountain',
                 'pref_name' => 'Mount Sinai',
                 'alt_name' => [
