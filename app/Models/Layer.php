@@ -72,7 +72,7 @@ class Layer extends Model
             LayerTextUnit::class,    // the intermediate model
             'layer_id',              // foreign key on the LayerTextUnit table
             'id',                    // foreign key on the TextUnit table
-            'id',                    // local key on the ManuscriptPart table
+            'id',                    // local key on the Layer table
             'text_unit_id'           // local key on the LayerTextUnit table
         );
     }
