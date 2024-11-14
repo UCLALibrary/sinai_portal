@@ -50,6 +50,15 @@ class Work extends Model
     ];
 
     /**
+     * Relationships
+     */
+
+    public function textUnit()
+    {
+        return $this->belongsTo(TextUnit::class);
+    }
+
+    /**
      * The attributes that should be appended to the model.
      *
      * @var array

@@ -45,9 +45,28 @@ class TextUnit extends Model
      * Relationships
      */
 
+    protected $with = ['textUnitWorks', 'works'];
+
     public function layer()
     {
         return $this->belongsTo(Layer::class);
+    }
+
+    public function textUnitWorks()
+    {
+        return $this->hasMany(TextUnitWork::class);
+    }
+
+    public function works()
+    {
+        return $this->hasManyThrough(
+            Work::class,            // the target model you want to access
+            TextUnitWork::class,    // the intermediate model
+            'text_unit_id',         // foreign key on the TextUnitWork table
+            'id',                   // foreign key on the Work table
+            'id',                   // local key on the TextUnit table
+            'work_id'               // local key on the TextUnitWork table
+        );
     }
 
     /**
