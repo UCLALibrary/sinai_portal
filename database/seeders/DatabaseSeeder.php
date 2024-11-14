@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
 		$this->call(LocationsSeeder::class);
 		$this->call(LayersSeeder::class);
 		$this->call(ScriptsSeeder::class);
+		$this->call(TextUnitsSeeder::class);
     }
 }
