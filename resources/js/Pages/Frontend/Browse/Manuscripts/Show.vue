@@ -526,11 +526,20 @@
           </ul>
         </template>
 
-        <template v-if="textUnits.length">
+        <template v-if="textUnits.length > 0">
           <h3>Text Units</h3>
           <ul>
             <li v-for="textUnit in textUnits" :key="textUnit.id">
               {{ textUnit.label }}
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="works.length > 0">
+          <h3>Works</h3>
+          <ul>
+            <li v-for="work in works" :key="work.id">
+              {{ work.alt_title }}
             </li>
           </ul>
         </template>
@@ -694,8 +703,14 @@
   });
 
   const textUnits = computed(() => {
-    return props.manuscript.layers.reduce((textUnits, layer) => {
-      return textUnits.concat(layer.text_units || []);
+    return props.manuscript.layers.reduce((items, layer) => {
+      return items.concat(layer.text_units || []);
+    }, []);
+  })
+
+  const works = computed(() => {
+    return textUnits.value.reduce((items, textUnit) => {
+      return items.concat(textUnit.works || []);
     }, []);
   })
 </script>
