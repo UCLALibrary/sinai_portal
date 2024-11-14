@@ -6,6 +6,7 @@ use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 class Manuscript extends Model
@@ -55,6 +56,7 @@ class Manuscript extends Model
 		'related_agents',
 	    /*'related_places',*/
 	    'related_overtext_layers',
+	    'assoc_dates_from_layers',
 	    'related_references',
 	    'related_bibliographies',
 	    'related_digital_versions'
@@ -98,6 +100,28 @@ class Manuscript extends Model
 				];
 		})->toArray();
 	}
+	
+	public function getAssocDatesFromLayersAttribute(): array
+	{
+		$query = "
+	        SELECT DISTINCT jsonb_path_query(jsonb, :jsonPath) AS assoc_date_value
+	        FROM layers
+	        WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
+        ";
+		
+		$bindings = [
+            'jsonPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
+	        'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
+			'vars' => json_encode(['manuscript_ark' => $this->ark]),
+		];
+		
+        $dates = DB::select($query, $bindings);
+		
+		return array_map(function ($row) {
+			return json_decode($row->assoc_date_value);
+		}, $dates);
+	}
+	
 	
 	public function getRelatedPlacesAttribute(): array
 	{

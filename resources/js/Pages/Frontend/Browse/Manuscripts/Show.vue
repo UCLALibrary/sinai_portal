@@ -11,8 +11,12 @@
           </template>
         </h2>
 
-        <p class="mb-8 italic">
+        <p class="italic">
           {{ manuscriptJson.summary }}
+        </p>
+
+        <p class="mb-8">
+          {{ manuscript.assoc_dates_from_layers.join('; ') }}
         </p>
 
         <div v-if="manuscriptJson.ark && manuscriptJson.ark !== ''" class="item-container">
