@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Traits\JsonSchemas;
 use App\Traits\HasRelatedEntities;
+use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 class Agent extends Model
@@ -138,6 +139,67 @@ class Agent extends Model
 
         return collect([]);
     }
+   
+    public function getRoles()
+    {
+        $roles = collect()
+            ->merge($this->getWorkCreatorRoles())
+            ->merge($this->getWorkRelAgentRoles())
+            ->merge($this->getLayerAssocNameRoles())
+            ->merge($this->getManuscriptAssocNameRoles())
+            ->unique()
+            ->values()
+            ->all();
+
+        return $roles;
+    }
+
+    protected function getWorkCreatorRoles()
+    {
+        return $this->getRolesByJsonPath(Work::class, '$.**.creator[*] ? (@.id == $agent_id).role.label');
+    }
+
+    protected function getWorkRelAgentRoles()
+    {
+        return $this->getRolesByJsonPath(Work::class, '$.**.rel_agent[*] ? (@.id == $agent_id).rel[*].label');
+    }
+
+    protected function getLayerAssocNameRoles()
+    {
+        return $this->getRolesByJsonPath(Layer::class, '$.**.assoc_name[*] ? (@.id == $agent_id).role.label');
+    }
+
+    protected function getManuscriptAssocNameRoles()
+    {
+        return $this->getRolesByJsonPath(Manuscript::class, '$.**.assoc_name[*] ? (@.id == $agent_id).role.label');
+    }
+
+    protected function getRolesByJsonPath($modelClass, $jsonPath)
+    {
+        $agentArk = $this->ark;
+        $tableName = (new $modelClass)->getTable();
+
+        $query = "
+            SELECT DISTINCT role_label.value AS role
+            FROM {$tableName},
+            LATERAL jsonb_path_query({$tableName}.jsonb, :jsonPath, :vars) AS role_label(value)
+            WHERE jsonb_path_exists({$tableName}.jsonb, :existsJsonPath, :vars)
+        ";
+
+        $bindings = [
+            'jsonPath' => $jsonPath,
+            'existsJsonPath' => $jsonPath, // Use the same path for existence check
+            'vars' => json_encode(['agent_id' => $agentArk]),
+        ];
+
+        $roles = DB::select($query, $bindings);
+
+        $rolesArray = array_map(function($row) {
+            return json_decode($row->role, true);
+        }, $roles);
+
+        return collect($rolesArray)->flatten()->unique()->values()->all();
+    }
     
     /**
      * Get the indexable data array for the model.
@@ -194,6 +256,9 @@ class Agent extends Model
             $array['floruit_not_after'] ?? null
         ], fn($value) => $value !== null);
         $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
+
+        // roles
+        $array['roles'] = $this->getRoles();
 
         /*
          * Apply default transformations if desired.
