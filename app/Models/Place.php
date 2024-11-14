@@ -21,6 +21,9 @@ class Place extends Model
         'pref_name',
         'json',
     ];
+	
+	protected $keyType = 'string';
+	public $incrementing = false;
 
     /**
      * Note: The order of the values must align with the order of the fields in the $fillable array.
