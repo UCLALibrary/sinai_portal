@@ -77,6 +77,15 @@ class Layer extends Model
         );
     }
 
+    public function assocNames()
+    {
+        return $this->hasMany(
+            AssocName::class,
+            'parent_id',    // foreign key on the AssocName table
+            'id'            // local key on the Layer table
+        );
+    }
+
     /**
      * Get the indexable data array for the model.
      *

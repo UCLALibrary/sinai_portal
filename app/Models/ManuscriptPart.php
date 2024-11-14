@@ -28,7 +28,11 @@ class ManuscriptPart extends Model
 
     public function partLayers()
     {
-        return $this->hasMany(PartLayer::class, 'manuscript_id', 'manuscript_id');
+        return $this->hasMany(
+            PartLayer::class,
+            'manuscript_id',    // foreign key on the PartLayer table
+            'manuscript_id'     // local key on the ManuscriptPart table
+        );
     }
 
     public function layers()

@@ -56,7 +56,7 @@ class Manuscript extends Model
      * Relationships
      */
 
-    protected $with = ['parts', 'manuscriptLayers', 'layers'];
+    protected $with = ['parts', 'manuscriptLayers', 'layers', 'assocNames'];
 
     public function parts()
     {
@@ -77,6 +77,15 @@ class Manuscript extends Model
             'id',                      // foreign key on the Layer table
             'id',                      // local key on the Manuscript table
             'layer_id'                 // local key on the ManuscriptLayer table
+        );
+    }
+
+    public function assocNames()
+    {
+        return $this->hasMany(
+            AssocName::class,
+            'parent_id',    // foreign key on the AssocName table
+            'id'            // local key on the Manuscript table
         );
     }
 
