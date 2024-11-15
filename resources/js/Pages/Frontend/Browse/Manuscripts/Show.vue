@@ -16,7 +16,7 @@
         </p>
 
         <p class="mb-8">
-          {{ manuscript.assoc_dates_from_layers.join('; ') }}
+          {{ manuscript.assoc_dates_overview.join('; ') }}
         </p>
 
         <div v-if="manuscriptJson.ark && manuscriptJson.ark !== ''" class="item-container">
@@ -141,13 +141,27 @@
               </div>
 
               <div v-if="part.layer && part.layer.length > 0">
-
                 <div class="item-container">
                   <span class="item-label">Contents</span>
                   <p class="item-value">
-                    <span v-for="(layer) in part.layer.filter(layer => layer.type.id === 'overtext')" class="d-block">
-                    {{ layer.label }}, {{ layer.locus }}
-                  </span>
+                    <template v-for="(layer) in part.layer.filter(layer => layer.type.id === 'overtext')" class="d-block">
+                      <span class="d-block">
+                      {{ layer.label }}; {{ layer.locus }}
+                      </span>
+
+                      <span class="d-block">
+                        <template v-for="(date, index) in manuscript.assoc_dates_from_layers" :key="index">
+                          <template v-if="date.id === layer.id.split('/').pop()" class="d-block">
+                            {{ date.assoc_date_value }}.
+                          </template>
+                        </template>
+                        <template v-for="(place, index) in manuscript.assoc_places_from_layers" :key="index">
+                          <template v-if="place.id === layer.id.split('/').pop()" class="d-block">
+                            {{ place.assoc_place_value }}.
+                          </template>
+                        </template>
+                      </span>
+                    </template>
                   </p>
                 </div>
 
@@ -404,7 +418,7 @@
           </ul>
         </template>
 
-        <template v-if="hasAssocNamesPlacesDates">
+        <template v-if="manuscript.related_agents || manuscript.related_places || manuscriptJson.assoc_date">
           <p class="mt-8">
             <strong>Associated Names, Places, Dates</strong>
           </p>
@@ -437,68 +451,66 @@
           </div>
         </template>
 
-        <template v-if="hasResources">
-          <h3>Resources</h3>
-          <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
-            <span class="item-label">References</span>
-            <div class="item-value">
-              <template v-for="reference in manuscript.related_references">
-                <p>
-                  {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
-                </p>
-                <p v-for="note in reference.note">
-                  {{ note }}
-                </p>
-              </template>
-            </div>
+        <h3>Resources</h3>
+        <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
+          <span class="item-label">References</span>
+          <div class="item-value">
+            <template v-for="reference in manuscript.related_references">
+              <p>
+                {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
+              </p>
+              <p v-for="note in reference.note">
+                {{ note }}
+              </p>
+            </template>
           </div>
+        </div>
 
-          <div v-if="manuscript.related_bibliographies && manuscript.related_bibliographies.length > 0" class="item-container">
-            <span class="item-label">Bibliography</span>
-            <div class="item-value">
-              <template v-for="bibliography in manuscript.related_bibliographies">
-                <p>
-                  <a v-if="bibliography.url" :href="bibliography.url" target="_blank">
-                    {{ bibliography.formatted_citation }}
-                  </a>
-                  <span v-else>
+        <div v-if="manuscript.related_bibliographies && manuscript.related_bibliographies.length > 0" class="item-container">
+          <span class="item-label">Bibliography</span>
+          <div class="item-value">
+            <template v-for="bibliography in manuscript.related_bibliographies">
+              <p>
+                <a v-if="bibliography.url" :href="bibliography.url" target="_blank">
                   {{ bibliography.formatted_citation }}
-                </span>
-                  <span v-if="bibliography.range">. {{ bibliography.range }}</span>
-                </p>
-              </template>
-            </div>
+                </a>
+                <span v-else>
+                {{ bibliography.formatted_citation }}
+              </span>
+                <span v-if="bibliography.range">. {{ bibliography.range }}</span>
+              </p>
+            </template>
           </div>
+        </div>
 
-          <div v-if="manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0" class="item-container">
-            <span class="item-label">Other Digital Versions</span>
-            <div class="item-value">
-              <template v-for="digVersion in manuscript.related_digital_versions">
-                <p>
-                  <a v-if="digVersion.url" :href="digVersion.url" target="_blank">
-                    {{ digVersion.short_title }}
-                  </a>
-                  <span v-else>
+        <div v-if="manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0" class="item-container">
+          <span class="item-label">Other Digital Versions</span>
+          <div class="item-value">
+            <template v-for="digVersion in manuscript.related_digital_versions">
+              <p>
+                <a v-if="digVersion.url" :href="digVersion.url" target="_blank">
                   {{ digVersion.short_title }}
-                </span>
-                  <span v-if="digVersion.alt_shelf">. {{ digVersion.alt_shelf }}</span>
-                </p>
-              </template>
-            </div>
+                </a>
+                <span v-else>
+                {{ digVersion.short_title }}
+              </span>
+                <span v-if="digVersion.alt_shelf">. {{ digVersion.alt_shelf }}</span>
+              </p>
+            </template>
           </div>
+        </div>
 
-          <div v-if="manuscriptJson.viscodex && manuscriptJson.viscodex.length > 0" class="item-container">
-            <span class="item-label">Viscodex</span>
-            <div class="item-value">
-              <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
-                <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
-              </p>
-              <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
-                <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
-              </p>
-            </div>
+        <div v-if="manuscriptJson.viscodex && manuscriptJson.viscodex.length > 0" class="item-container">
+          <span class="item-label">Viscodex</span>
+          <div class="item-value">
+            <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
+              <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+            </p>
+            <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
+              <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+            </p>
           </div>
-        </template>
+        </div>
 
         <h3>Preferred Citation</h3>
         <p>
@@ -663,13 +675,6 @@
 
     return { url, isExternal };
   };
-
-  const hasAssocNamesPlacesDates = computed(() => {
-    const hasNames = props.manuscript.related_agents && props.manuscript.related_agents.length > 0;
-    const hasPlaces = props.manuscript.related_places && props.manuscript.related_places.length > 0;
-    const hasDates = manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0;
-    return hasNames || hasPlaces || hasDates;
-  });
 
   const hasResources = computed(() => {
     const hasReferences = props.manuscript.related_references && props.manuscript.related_references.length > 0;

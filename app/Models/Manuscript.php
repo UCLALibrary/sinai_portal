@@ -56,7 +56,9 @@ class Manuscript extends Model
 		'related_agents',
 	    /*'related_places',*/
 	    'related_overtext_layers',
+	    'assoc_dates_overview',
 	    'assoc_dates_from_layers',
+	    'assoc_places_from_layers',
 	    'related_references',
 	    'related_bibliographies',
 	    'related_digital_versions'
@@ -101,7 +103,7 @@ class Manuscript extends Model
 		})->toArray();
 	}
 	
-	public function getAssocDatesFromLayersAttribute(): array
+	public function getAssocDatesOverviewAttribute(): array
 	{
 		$query = "
 	        SELECT DISTINCT jsonb_path_query(jsonb, :jsonPath) AS assoc_date_value
@@ -119,6 +121,54 @@ class Manuscript extends Model
 		
 		return array_map(function ($row) {
 			return json_decode($row->assoc_date_value);
+		}, $dates);
+	}
+	
+	public function getAssocDatesFromLayersAttribute(): array
+	{
+		$query = "
+	        SELECT DISTINCT id, jsonb_path_query(jsonb, :jsonPath) AS assoc_date_value
+	        FROM layers
+	        WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
+        ";
+		
+		$bindings = [
+			'jsonPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
+			'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
+			'vars' => json_encode(['manuscript_ark' => $this->ark]),
+		];
+		
+		$dates = DB::select($query, $bindings);
+		
+		return array_map(function ($row) {
+			return [
+				'id' => $row->id,
+				'assoc_date_value' => json_decode($row->assoc_date_value)
+			];
+		}, $dates);
+	}
+	
+	public function getAssocPlacesFromLayersAttribute(): array
+	{
+		$query = "
+	        SELECT DISTINCT id, jsonb_path_query(jsonb, :jsonPath) AS assoc_place_as_written
+	        FROM layers
+	        WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
+        ";
+		
+		$bindings = [
+			'jsonPath' => '$.**.assoc_place[*] ? (@.event.id == "origin").as_written',
+			'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
+			'vars' => json_encode(['manuscript_ark' => $this->ark]),
+		];
+		
+		$dates = DB::select($query, $bindings);
+		
+		return array_map(function ($row) {
+			return [
+				'id' => $row->id,
+				'assoc_place_value' => json_decode($row->assoc_place_as_written)
+			];
 		}, $dates);
 	}
 	
