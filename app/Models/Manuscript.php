@@ -72,7 +72,7 @@ class Manuscript extends Model
      */
     public function getRelatedAgentsAttribute(): array
     {
-        return $this->getRelatedEntities(
+        $relatedAgents = $this->getRelatedEntities(
             'assoc_name',
             Agent::class,
             null,
@@ -82,10 +82,14 @@ class Manuscript extends Model
                     'as_written' => $item['as_written'] ?? null,
                     'pref_name' => $agent->pref_name,
                     'rel' => $item['rel'] ?? null,
-	                'role' => $item['role'] ?? null,
-	                'note' => $item['note'] ?? [],
+                    'role' => $item['role'] ?? null,
+                    'note' => $item['note'] ?? [],
                 ];
             })->toArray();
+
+        $relatedCreators = $this->getConnectedAgentCreatorNames();
+
+        return array_merge($relatedAgents, $relatedCreators);
     }
 	
 	public function getRelatedOvertextLayersAttribute(): array
@@ -274,6 +278,54 @@ class Manuscript extends Model
 		return $textUnits->unique('label')->pluck('label')->toArray();
 	}
 
+    public function getConnectedAgentCreatorNames()
+    {
+        $manuscriptArk = $this->ark;
+
+        $query = "
+            WITH manuscript_layers AS (
+                SELECT DISTINCT jsonb_array_elements(part -> 'layer') ->> 'id' AS layer_ark
+                FROM manuscripts
+                CROSS JOIN jsonb_array_elements(jsonb -> 'part') AS part
+                WHERE jsonb ->> 'ark' = :manuscriptArk
+            ),
+            layer_text_units AS (
+                SELECT DISTINCT jsonb_array_elements(layer.jsonb -> 'text_unit') ->> 'id' AS text_unit_ark
+                FROM layers AS layer
+                JOIN manuscript_layers ON layer.jsonb ->> 'ark' = manuscript_layers.layer_ark
+            ),
+            text_unit_works AS (
+                SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
+                FROM text_units AS tu
+                JOIN layer_text_units ON tu.jsonb ->> 'ark' = layer_text_units.text_unit_ark
+            ),
+            work_agents AS (
+                SELECT DISTINCT jsonb_array_elements(work.jsonb -> 'creator') ->> 'id' AS agent_ark
+                FROM works AS work
+                JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
+            )
+            SELECT DISTINCT agent.jsonb ->> 'ark' AS id, agent.jsonb ->> 'pref_name' AS pref_name
+            FROM agents AS agent
+            JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
+        ";
+
+        $bindings = [
+            'manuscriptArk' => $manuscriptArk,
+        ];
+
+        $results = DB::select($query, $bindings);
+        return array_map(function ($row) {
+            return [
+                'id' => $row->id,
+                'pref_name' => $row->pref_name,
+                'role' => [
+                    'id' => 'creator',
+                    'label' => 'Creator'
+                ],
+            ];
+        }, $results);
+    }
+
     /**
      * Get the indexable data array for the model.
      *
@@ -316,7 +368,9 @@ class Manuscript extends Model
                 $array['collection'] = isset($location['collection']) ? $location['collection'] : null;
             }
         }
-        
+
+        // get all creators attached to this manuscript
+        $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
 
         /*
          * Apply default transformations if desired.
