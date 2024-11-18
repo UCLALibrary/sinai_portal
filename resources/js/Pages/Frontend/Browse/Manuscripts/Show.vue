@@ -533,6 +533,15 @@
           </ul>
         </template>
 
+        <template v-if="manuscript.related_text_units && manuscript.related_text_units.length > 0">
+          <h3>Text Units</h3>
+          <ul>
+            <li v-for="textUnit in manuscript.related_text_units">
+              {{ textUnit }}
+            </li>
+          </ul>
+        </template>
+
         <template v-if="manuscript.related_agents && manuscript.related_agents.length > 0">
           <h3>Names</h3>
           <ul>

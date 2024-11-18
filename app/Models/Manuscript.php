@@ -61,7 +61,8 @@ class Manuscript extends Model
 	    'assoc_places_from_layers',
 	    'related_references',
 	    'related_bibliographies',
-	    'related_digital_versions'
+	    'related_digital_versions',
+	    'related_text_units'
     ];
     
     /**
@@ -172,7 +173,6 @@ class Manuscript extends Model
 		}, $dates);
 	}
 	
-	
 	public function getRelatedPlacesAttribute(): array
 	{
 		return $this->getRelatedEntities(
@@ -251,6 +251,27 @@ class Manuscript extends Model
 				];
 			}
 		)->toArray();
+	}
+	
+	public function getRelatedTextUnitsAttribute(): array
+	{
+		$jsonData = $this->getJsonData();
+		$layersJson = $jsonData['layer'] ?? [];
+		$layerArks = array_column($layersJson, 'id');
+		
+		$layers = Layer::whereIn('ark', $layerArks)->get();
+		
+		$textUnitsArk = [];
+		foreach ($layers as $layer) {
+			$layerJson = json_decode($layer->jsonb, true);
+			
+			foreach($layerJson['text_unit'] as $textUnit) {
+				$textUnitsArk[] = $textUnit['id'];
+			}
+		}
+		
+		$textUnits = TextUnit::whereIn('ark', $textUnitsArk)->get();
+		return $textUnits->unique('label')->pluck('label')->toArray();
 	}
 
     /**
