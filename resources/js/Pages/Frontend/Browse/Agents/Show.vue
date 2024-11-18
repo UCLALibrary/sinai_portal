@@ -55,6 +55,13 @@
           </ul>
         </template>
 
+        <template v-if="agent.assoc_names && agent.assoc_names.length > 0">
+          <h3>Attested Names</h3>
+          <ul v-for="assoc_name in agent.assoc_names" :key="assoc_name.id">
+            <li>{{ assoc_name.as_written }}</li>
+          </ul>
+        </template>
+
         <template v-if="agentJson.note && agentJson.note.value !== ''">
           <h3>Notes</h3>
           <ul v-for="currentNote in agentJson.note" :key="currentNote">
