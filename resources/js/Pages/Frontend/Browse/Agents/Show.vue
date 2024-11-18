@@ -112,7 +112,7 @@
               <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
                 {{ relatedAgent.pref_name }}
               </Link>
-              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.label }})</span>
+              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.map(rel => rel.label).join('; ') }})</span>
             </li>
           </ul>
         </template>
