@@ -65,7 +65,46 @@ class Agent extends Model
      *
      * @var array
      */
-    protected $appends = ['related_works', 'related_agents', 'citations'];
+    protected $appends = ['roles', 'assoc_names', 'related_works', 'related_agents', 'citations'];
+
+    /**
+     * Accessor to include roles when the model is serialized.
+     *
+     * @return array
+     */
+    public function getRolesAttribute()
+    {
+        $roles = collect()
+            ->merge($this->getWorkCreatorRoles())
+            ->merge($this->getWorkRelAgentRoles())
+            ->merge($this->getLayerAssocNameRoles())
+            ->merge($this->getManuscriptAssocNameRoles())
+            ->unique()
+            ->values()
+            ->all();
+
+        return $roles;
+    }
+
+    /**
+     * Accessor to include assoc names when the model is serialized.
+     *
+     * @return array
+     */
+    public function getAssocNamesAttribute()
+    {
+        $names = array_merge(
+            $this->getAssocNamesByJsonPath(Manuscript::class, '$.**.assoc_name[*] ? (@.id == $agent_id)'),
+            $this->getAssocNamesByJsonPath(Layer::class, '$.**.assoc_name[*] ? (@.id == $agent_id)')
+        );
+
+        $uniqueNames = [];
+        foreach ($names as $name) {
+            $uniqueNames[$name['id']] = $name;
+        }
+        
+        return $names;
+    }
 
     /**
      * Accessor to include related works when the model is serialized.
@@ -140,20 +179,6 @@ class Agent extends Model
         return collect([]);
     }
    
-    public function getRoles()
-    {
-        $roles = collect()
-            ->merge($this->getWorkCreatorRoles())
-            ->merge($this->getWorkRelAgentRoles())
-            ->merge($this->getLayerAssocNameRoles())
-            ->merge($this->getManuscriptAssocNameRoles())
-            ->unique()
-            ->values()
-            ->all();
-
-        return $roles;
-    }
-
     protected function getWorkCreatorRoles()
     {
         return $this->getRolesByJsonPath(Work::class, '$.**.creator[*] ? (@.id == $agent_id).role.label');
@@ -200,7 +225,35 @@ class Agent extends Model
 
         return collect($rolesArray)->flatten()->unique()->values()->all();
     }
-    
+
+    protected function getAssocNamesByJsonPath($modelClass, $jsonPath)
+    {
+        $agentArk = $this->ark;
+        $tableName = (new $modelClass)->getTable();
+
+        $query = "
+            SELECT DISTINCT assoc_name
+            FROM {$tableName},
+            LATERAL jsonb_path_query({$tableName}.jsonb, :jsonPath, :vars) AS assoc_name
+            WHERE jsonb_path_exists({$tableName}.jsonb, :existsJsonPath, :vars)
+        ";
+
+        $bindings = [
+            'jsonPath' => $jsonPath,
+            'existsJsonPath' => $jsonPath, // Use the same path for existence check
+            'vars' => json_encode(['agent_id' => $agentArk]),
+        ];
+
+        // decode the JSON string for each assoc name to return an array of assoc names
+        $assocNamesJson = DB::select($query, $bindings);
+
+        $assocNames = array_map(function($row) {
+            return json_decode($row->assoc_name, true);
+        }, $assocNamesJson);
+
+        return $assocNames;
+    }
+
     /**
      * Get the indexable data array for the model.
      *
@@ -258,7 +311,7 @@ class Agent extends Model
         $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
 
         // roles
-        $array['roles'] = $this->getRoles();
+        $array['roles'] = $this->getRolesAttribute();
 
         /*
          * Apply default transformations if desired.

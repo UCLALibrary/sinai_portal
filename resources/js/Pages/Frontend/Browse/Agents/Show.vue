@@ -48,10 +48,22 @@
           {{ agentJson.gender.label }}
         </p>
 
+        <p v-if="agent.roles && agent.roles.length > 0">
+          <span class="label">Roles</span>
+          {{ agent.roles.join(', ') }}
+        </p>
+
         <template v-if="agentJson.alt_name && agentJson.alt_name.length > 0">
           <h3>Name Variants</h3>
           <ul v-for="alt_name in agentJson.alt_name" :key="alt_name">
             <li>{{ alt_name }}</li>
+          </ul>
+        </template>
+
+        <template v-if="agent.assoc_names && agent.assoc_names.length > 0">
+          <h3>Attested Names</h3>
+          <ul v-for="assoc_name in agent.assoc_names" :key="assoc_name.id">
+            <li>{{ assoc_name.as_written }}</li>
           </ul>
         </template>
 
@@ -104,7 +116,7 @@
               <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
                 {{ relatedAgent.pref_name }}
               </Link>
-              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.label }})</span>
+              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.map(rel => rel.label).join('; ') }})</span>
             </li>
           </ul>
         </template>
