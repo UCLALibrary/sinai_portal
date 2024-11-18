@@ -48,6 +48,11 @@
           {{ agentJson.gender.label }}
         </p>
 
+        <p v-if="agent.roles && agent.roles.length > 0">
+          <span class="label">Roles</span>
+          {{ agent.roles.join(', ') }}
+        </p>
+
         <template v-if="agentJson.alt_name && agentJson.alt_name.length > 0">
           <h3>Name Variants</h3>
           <ul v-for="alt_name in agentJson.alt_name" :key="alt_name">

@@ -65,7 +65,26 @@ class Agent extends Model
      *
      * @var array
      */
-    protected $appends = ['assoc_names', 'related_works', 'related_agents', 'citations'];
+    protected $appends = ['roles', 'assoc_names', 'related_works', 'related_agents', 'citations'];
+
+    /**
+     * Accessor to include roles when the model is serialized.
+     *
+     * @return array
+     */
+    public function getRolesAttribute()
+    {
+        $roles = collect()
+            ->merge($this->getWorkCreatorRoles())
+            ->merge($this->getWorkRelAgentRoles())
+            ->merge($this->getLayerAssocNameRoles())
+            ->merge($this->getManuscriptAssocNameRoles())
+            ->unique()
+            ->values()
+            ->all();
+
+        return $roles;
+    }
 
     /**
      * Accessor to include assoc names when the model is serialized.
@@ -160,20 +179,6 @@ class Agent extends Model
         return collect([]);
     }
    
-    public function getRoles()
-    {
-        $roles = collect()
-            ->merge($this->getWorkCreatorRoles())
-            ->merge($this->getWorkRelAgentRoles())
-            ->merge($this->getLayerAssocNameRoles())
-            ->merge($this->getManuscriptAssocNameRoles())
-            ->unique()
-            ->values()
-            ->all();
-
-        return $roles;
-    }
-
     protected function getWorkCreatorRoles()
     {
         return $this->getRolesByJsonPath(Work::class, '$.**.creator[*] ? (@.id == $agent_id).role.label');
@@ -306,7 +311,7 @@ class Agent extends Model
         $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
 
         // roles
-        $array['roles'] = $this->getRoles();
+        $array['roles'] = $this->getRolesAttribute();
 
         /*
          * Apply default transformations if desired.
