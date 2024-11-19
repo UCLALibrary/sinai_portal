@@ -72,6 +72,7 @@ class Manuscript extends Model
      */
     public function getRelatedAgentsAttribute(): array
     {
+        $relatedCreators = $this->getConnectedAgentCreatorNames();
         $relatedAgents = $this->getRelatedEntities(
             'assoc_name',
             Agent::class,
@@ -87,9 +88,8 @@ class Manuscript extends Model
                 ];
             })->toArray();
 
-        $relatedCreators = $this->getConnectedAgentCreatorNames();
 
-        return array_merge($relatedAgents, $relatedCreators);
+        return array_merge($relatedCreators, $relatedAgents);
     }
 	
 	public function getRelatedOvertextLayersAttribute(): array
