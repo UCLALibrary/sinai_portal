@@ -299,11 +299,15 @@ class Manuscript extends Model
                 FROM text_units AS tu
                 JOIN layer_text_units ON tu.jsonb ->> 'ark' = layer_text_units.text_unit_ark
             ),
-            work_agents AS (
-                SELECT DISTINCT jsonb_array_elements(work.jsonb -> 'creator') ->> 'id' AS agent_ark
-                FROM works AS work
-                JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
-            )
+						work_agents AS (
+								SELECT DISTINCT
+										creator_elem ->> 'id' AS agent_ark,
+										creator_elem -> 'role' ->> 'id' AS role_id,
+										creator_elem -> 'role' ->> 'label' AS role_label
+								FROM works AS work
+								JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
+								JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem ON TRUE
+						)
             SELECT DISTINCT id, agent.jsonb ->> 'pref_name' AS pref_name
             FROM agents AS agent
             JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
@@ -315,14 +319,14 @@ class Manuscript extends Model
 
         $results = DB::select($query, $bindings);
         return array_map(function ($row) {
-            return [
-                'id' => $row->id,
-                'pref_name' => $row->pref_name,
-                'role' => [
-                    'id' => 'creator',
-                    'label' => 'Creator'
-                ],
-            ];
+          return [
+            'id' => $row->id,
+            'pref_name' => $row->pref_name,
+            'role' => [
+              'id' => $row->role_id,
+              'label' => $row->role_label
+            ],
+          ];
         }, $results);
     }
 
