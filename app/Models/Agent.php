@@ -113,18 +113,58 @@ class Agent extends Model
      */
     public function getRelatedWorksAttribute(): array
     {
-        return $this->getRelatedEntities(
-            'rel_work',
-            Work::class,
-            null,
-            function ($work, $item) {
-                return [
-                    'id' => $work->id,
-                    'pref_title' => $work->pref_title,
-                    'rel' => $item['rel'] ?? null,
-                ];
-            }
-        )->toArray();
+        $agentArk = $this->ark;
+
+        $query = "
+            WITH matching_creators AS (
+                SELECT
+                    work.id,
+                    work.jsonb ->> 'pref_title' AS pref_title,
+                    work.jsonb ->> 'ark' AS work_ark,
+                    creator_elem ->> 'id' AS agent_ark,
+                    creator_elem ->> 'role' AS role_label
+                FROM works AS work
+                JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem
+                    ON TRUE
+                WHERE creator_elem ->> 'id' = ?
+            ),
+            matching_rel_agents AS (
+                SELECT
+                    work.id,
+                    work.jsonb ->> 'pref_title' AS pref_title,
+                    work.jsonb ->> 'ark' AS work_ark,
+                    rel_agent_elem ->> 'id' AS agent_ark,
+                    rel_agent_elem ->> 'rel' AS role_label
+                FROM works AS work
+                JOIN LATERAL jsonb_array_elements(work.jsonb -> 'rel_agent') AS rel_agent_elem
+                    ON TRUE
+                WHERE rel_agent_elem ->> 'id' = ?
+            )
+            SELECT id, pref_title, work_ark, role_label
+            FROM matching_creators
+            UNION ALL
+            SELECT id, pref_title, work_ark, role_label
+            FROM matching_rel_agents;
+        ";
+
+        $bindings = [
+            $agentArk, // for the first '?'
+            $agentArk, // for the second '?'
+        ];
+
+        $results = DB::select($query, $bindings);
+
+        $worksWithRoles = array_map(function ($row) {
+            return [
+                'id' => $row->id,
+                'pref_title' => $row->pref_title,
+                'work_ark' => $row->work_ark,
+                'roles' => json_decode($row->role_label, true),
+            ];
+        }, $results);
+
+        return $worksWithRoles;
+
     }
 
     /**
@@ -142,7 +182,9 @@ class Agent extends Model
             return [
                 'id' => $agent->id,
                 'pref_name' => $agent->pref_name,
-                'rel' => $item['rel'] ?? null,
+                'rel' => [
+                    $item['rel'] ?? null
+                ],
             ];
         })->toArray();
     }

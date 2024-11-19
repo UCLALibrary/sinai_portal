@@ -92,7 +92,8 @@
       </section>
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
-
+        
+        <h3>Related Records</h3>
         <Link :href="`${route('frontend.manuscripts.index')}?filters=${encodeURIComponent(JSON.stringify(['names:' + agent.pref_name]))}`">
           Related Manuscripts
         </Link>
@@ -104,7 +105,7 @@
               <Link :href="route('frontend.works.show', relatedWork.id)">
                 {{ relatedWork.pref_title }}
               </Link>
-              <span class="ml-1" v-if="relatedWork.rel">({{ relatedWork.rel.label }})</span>
+              <span class="ml-1" v-if="relatedWork.roles && relatedWork.roles.length > 0">({{ relatedWork.roles.map(role => role.label).join('; ') }})</span>
             </li>
           </ul>
         </template>
