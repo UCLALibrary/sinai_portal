@@ -304,7 +304,7 @@ class Manuscript extends Model
                 FROM works AS work
                 JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
             )
-            SELECT DISTINCT agent.jsonb ->> 'ark' AS id, agent.jsonb ->> 'pref_name' AS pref_name
+            SELECT DISTINCT id, agent.jsonb ->> 'pref_name' AS pref_name
             FROM agents AS agent
             JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
         ";
