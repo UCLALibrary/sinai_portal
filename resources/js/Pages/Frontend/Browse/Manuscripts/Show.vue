@@ -425,7 +425,7 @@
 
           <div v-for="relatedAgent in manuscript.related_agents" class="mb-8">
             <p>
-              {{ relatedAgent.role.label }}: {{ relatedAgent.as_written || relatedAgent.pref_name }}
+              <template v-if="relatedAgent.role.label">{{ relatedAgent.role.label }}: </template>{{ relatedAgent.as_written || relatedAgent.pref_name }}
             </p>
             <p v-if="relatedAgent.note && relatedAgent.note.length > 0" class="indent">
               {{ relatedAgent.note.join(", ") }}

@@ -323,8 +323,8 @@ class Manuscript extends Model
             'id' => $row->id,
             'pref_name' => $row->pref_name,
             'role' => [
-              'id' => $row->role_id,
-              'label' => $row->role_label
+              'id' => $row->role_id ?? null,
+              'label' => $row->role_label ?? null
             ],
           ];
         }, $results);
