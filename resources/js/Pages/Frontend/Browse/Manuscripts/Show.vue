@@ -558,7 +558,9 @@
           <h3>Keywords</h3>
           <ul>
             <li v-for="keyword in manuscriptJson.features" :key="keyword.id">
-              {{ keyword.label }}
+              <Link :href="`${route('frontend.manuscripts.index')}?filters=${encodeURIComponent(JSON.stringify(['features:' + keyword.label]))}`">
+                {{ keyword.label }}
+              </Link>
             </li>
           </ul>
         </template>
