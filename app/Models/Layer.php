@@ -75,7 +75,22 @@ class Layer extends Model
                 $array['dates'][] = isset($date['type']['id']) && $date['type']['id'] === 'origin'
                     ? ($date['value'] ?? null)
                     : null;
+
+                $notBeforeValues = [];
+                $notAfterValues = [];
+                if (isset($date['type']['id']) && $date['type']['id'] === 'origin') {
+                    $notBeforeValues[] = $date['iso']['not_before'] ?? null;
+                    $notAfterValues[] = $date['iso']['not_after'] ?? null;
+                }
             }
+
+            // minimum date from the 'not_before' field from layers of type 'origin'
+            $values = array_filter($notBeforeValues, fn($value) => $value !== null);
+            $array['date_min'] = $values ? min(array_map('intval', $values)) : null;
+    
+            // maximum date from the 'not_after' field from layers of type 'origin'
+            $values = array_filter($notAfterValues, fn($value) => $value !== null);
+            $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
         }
 
         // script
