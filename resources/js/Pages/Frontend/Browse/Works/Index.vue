@@ -1,24 +1,24 @@
 <template>
   <FrontendLayout :title="title">
     <AisInstantSearch
-      v-if="initialUiState"
+      v-if="initialUiState && minMaxRangeValues"
       :index-name="indexName"
       :search-client="searchClient"
       :initial-ui-state="initialUiState"
       :future="{ preserveSharedStateOnUnmount: true }">
-
       <div class="facet-sidebar">
         <div class="flex justify-between">
           <span class="font-dosis text-lg font-medium uppercase">
             Search Works
           </span>
+
           <AisClearRefinements>
-            <template v-slot="{ canRefine, refine, createURL }">
+            <template v-slot="{ refine, createURL }">
               <a
-                v-if="canRefine"
+                v-show="isAnyFilterApplied"
                 :href="createURL()"
                 class="w-auto"
-                @click.prevent="onClearFilters(refine)">
+                @click.prevent="onClearRefinements(refine)">
                 <span class="clear-filter">
                   Clear Filters
                   <button type="button">
@@ -49,6 +49,30 @@
         <img src="/img/algolia-logo-black.svg" alt="Algolia" class="w-14 opacity-60 self-end -mt-2">
 
         <div class="accordion-items">
+          <AccordionCard title="Dates" :toggleable="false" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRangeInput
+                  v-if="rangeFilters"
+                  attribute="date_min"
+                  :min="minMaxRangeValues.date[0]"
+                  :max="minMaxRangeValues.date[1]"
+                  class="px-3 pt-10">
+                  <template v-slot="{ currentRefinement, range, refine }">
+                    <VRangeSlider
+                      :min="minMaxRangeValues.date[0]"
+                      :max="minMaxRangeValues.date[1]"
+                      v-model="rangeFilters.date"
+                      @end="onRangeFilter('date', $event[0], $event[1])"
+                      step="1"
+                      thumb-label="always">
+                    </VRangeSlider>
+                  </template>
+                </AisRangeInput>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
+
           <AccordionCard title="Original Language" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
@@ -104,8 +128,10 @@
         </div>
       </div>
 
+      <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
+
       <div class="main-container">
-         <div class="hidden lg:grid lg:grid-cols-5 gap-x-1 p-2 font-bold border-b">
+        <div class="hidden lg:grid lg:grid-cols-5 gap-x-1 p-2 font-bold border-b">
           <h3>Title</h3>
           <h3>Language</h3>
           <h3>Genre</h3>
@@ -135,16 +161,19 @@
 </template>
 
 <script setup>
-  import { ref, onBeforeMount } from 'vue'
+  import { ref, computed, onBeforeMount } from 'vue'
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
   import WorkResult from '@/Shared/Search/WorkResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
-  import { AisInstantSearch,
+  import {
+    AisInstantSearch,
+    AisConfigure,
     AisStateResults,
     AisSearchBox,
     AisDynamicWidgets,
     AisRefinementList,
+    AisRangeInput,
     AisClearRefinements
   } from 'vue-instantsearch/vue3/es'
   import InfiniteHits from '@/Shared/Search/InfiniteHits.vue'
@@ -164,14 +193,23 @@
   const { query, onKeyup, onReset } = useSearchBox(props.searchQuery)
 
   import useFacetFilters from '@/composables/search/useFacetFilters'
-
   const { filters, onFilter, onClearFilters } = useFacetFilters()
-  
+
   const maxFacetValuesToShow = 100
 
   const initialUiState = ref(null)
 
-  onBeforeMount(async () => {
+  import useDateRangeFilter from '@/composables/search/useDateRangeFilter'
+  const {
+    minMaxRangeValues,
+    rangeFilters,
+    onRangeFilter,
+    onClearRangeFilters,
+    dateRangeFilterQuery,
+    isDateRangeFilterApplied,
+  } = useDateRangeFilter(searchClient.initIndex(props.indexName))
+
+  onBeforeMount(() => {
     // initialize the state of the user interface
     initialUiState.value = {
       [props.indexName]: {
@@ -180,6 +218,18 @@
       }
     }
   })
+
+  const isAnyFilterApplied = computed(() => {
+    const anyFacetFiltersApplied = Object.keys(filters.value).some(
+      key => filters.value[key].length > 0
+    )
+    return anyFacetFiltersApplied || isDateRangeFilterApplied.value
+  })
+
+  const onClearRefinements = (refine) => {
+    onClearFilters(refine)
+    onClearRangeFilters()
+  }
 </script>
 
 <style lang="postcss">
@@ -255,6 +305,7 @@
   .facet-sidebar .accordion-items {
     @apply flex flex-col gap-y-2 overflow-y-scroll pr-4 -mr-4
   }
+
   .facet-sidebar .accordion-item {
     @apply border-t border-black border-dotted pt-2
   }
