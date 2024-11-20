@@ -171,44 +171,47 @@
           </template>
         </template>
 
-        <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
-          <template v-if="hasUndertextObjects">
-            <p>
-              <strong>Undertext Objects</strong>
-            </p>
+        
+        <template v-if="hasUndertextObjects">
+          <p>
+            <strong>Undertext Objects</strong>
+          </p>
 
+          <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
             <template v-for="(part) in manuscriptJson.part">
-              <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'uto').length > 0">
-                <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'uto')">
+              <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'undertext').length > 0">
+                <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'undertext')">
                   {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
                 </p>
               </template>
             </template>
-
-            <p v-for="(layer) in manuscriptJson.layer.filter(layer => layer.type.id === 'uto')">
-              {{ layer.label }}, {{ layer.locus }}
-            </p>
-
           </template>
 
-          <template v-if="hasGuestContent">
-            <p>
-              <strong>Guest Content</strong>
+          <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
+            <p v-for="(layer) in manuscriptJson.layer.filter(layer => layer.type.id === 'undertext')">
+              {{ layer.label }}, {{ layer.locus }}
             </p>
+          </template>
 
-            <template v-for="part in manuscriptJson.part">
-              <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'guest').length > 0">
-                <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'guest')">
-                  {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
-                </p>
-              </template>
+        </template>
+
+        <template v-if="hasGuestContent">
+          <p>
+            <strong>Guest Content</strong>
+          </p>
+
+          <template v-for="part in manuscriptJson.part">
+            <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'guest').length > 0">
+              <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'guest')">
+                {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
+              </p>
             </template>
-
-            <p v-for="layer in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')">
-              {{ layer.label }}, {{ layer.locus }}
-            </p>
-
           </template>
+
+          <p v-for="layer in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')">
+            {{ layer.label }}, {{ layer.locus }}
+          </p>
+
         </template>
 
         <template v-if="hasParaGuestContent">
@@ -652,8 +655,8 @@
   });
 
   const hasUndertextObjects = computed(() => {
-    const hasLayerUndertext = manuscriptJson.value.layer && manuscriptJson.value.layer.some(layer => layer.type.id === 'uto');
-    const hasPartUndertext = manuscriptJson.value.part && manuscriptJson.value.part.some(part => part.layer && part.layer.some(layer => layer.type.id === 'uto'));
+    const hasLayerUndertext = manuscriptJson.value.layer && manuscriptJson.value.layer.some(layer => layer.type.id === 'undertext');
+    const hasPartUndertext = manuscriptJson.value.part && manuscriptJson.value.part.some(part => part.layer && part.layer.some(layer => layer.type.id === 'undertext'));
     return hasLayerUndertext || hasPartUndertext;
   });
 
