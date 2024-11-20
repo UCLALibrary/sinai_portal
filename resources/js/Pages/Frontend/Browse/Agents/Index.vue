@@ -323,6 +323,7 @@
   .clear-filter {
     @apply inline-flex items-center gap-x-1 rounded-full bg-white px-2 py-1 text-sm font-sans text-black shadow-lg hover:bg-sinai-light-blue
   }
+
   .clear-filter button {
     @apply relative -mr-1 h-5 w-5
   }
