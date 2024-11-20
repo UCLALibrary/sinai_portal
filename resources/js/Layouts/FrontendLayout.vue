@@ -40,7 +40,7 @@
                 <div class="main flex flex-col lg:flex-row items-center gap-y-6 pb-6 justify-between">
                     <Link
                         :href="route('home')"
-                        class="logo flex">
+                        class="logo flex md:w-full sm:justify-center lg:justify-start">
                         <img src="/sinai-logo.svg" alt="logo" class="mr-4">Sinai Manuscripts Data Portal
                     </Link>
 
