@@ -563,6 +563,19 @@
           </ul>
         </template>
 
+        <template v-if="partRelatedMss.length > 0">
+          <h3>Related Manuscripts</h3>
+          <ul>
+            <template v-for="relatedMss in partRelatedMss" :key="relatedMss.label">
+              <li v-for="ms in relatedMss.mss">
+                <a :href="getRelatedMsLink(ms).url" :target="getRelatedMsLink(ms).isExternal ? '_blank' : '_self'">
+                  {{ ms.label }} ({{ relatedMss.type.label }})
+                </a>
+              </li>
+            </template>
+          </ul>
+        </template>
+
         <template v-if="manuscriptJson.features && manuscriptJson.features.length > 0">
           <h3>Keywords</h3>
           <ul>
@@ -670,13 +683,17 @@
     });
   });
 
-  const allRelatedMss = computed(() => {
-    const partRelatedMss = manuscriptJson.value.part
+  const getPartRelatedMss = () => {
+    return manuscriptJson.value.part
         ? manuscriptJson.value.part.flatMap(part => part.related_mss || [])
         : [];
-    const rootRelatedMss = manuscriptJson.value.related_mss || [];
+  };
 
-    return [...partRelatedMss, ...rootRelatedMss];
+  const partRelatedMss = computed(() => getPartRelatedMss());
+
+  const allRelatedMss = computed(() => {
+    const rootRelatedMss = manuscriptJson.value.related_mss || [];
+    return [...getPartRelatedMss(), ...rootRelatedMss];
   });
 
   const getRelatedMsLink = (ms) => {
