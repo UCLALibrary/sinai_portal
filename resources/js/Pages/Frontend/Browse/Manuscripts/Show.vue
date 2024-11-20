@@ -336,9 +336,16 @@
                 </ul>
               </div>
 
-              <p v-if="para.note && para.note.length > 0" class="indent">
-                {{ para.note.join('; ') }}
-              </p>
+              <template v-if="para.note && para.note.length > 0">
+                <p class="indent">
+                  <strong>
+                    Notes
+                  </strong>
+                </p>
+                <p class="indent">
+                  {{ para.note.join('; ') }}
+                </p>
+              </template>
             </div>
           </template>
         </template>
