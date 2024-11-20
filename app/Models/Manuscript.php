@@ -59,6 +59,8 @@ class Manuscript extends Model
         'assoc_dates_overview',
         'assoc_dates_from_layers',
         'assoc_places_from_layers',
+        'parts',
+        'para',
         'related_references',
         'related_bibliographies',
         'related_digital_versions',
@@ -175,6 +177,79 @@ class Manuscript extends Model
                 'assoc_place_value' => json_decode($row->assoc_place_as_written)
             ];
         }, $dates);
+    }
+    
+    public function getPartsAttribute(): array
+    {
+        $jsonData = $this->getJsonData();
+        $parts = $jsonData['part'] ?? [];
+        
+        foreach ($parts as &$part) {
+            if (isset($part['para'])) {
+                foreach ($part['para'] as &$para) {
+                    
+                    if (isset($para['assoc_name'])) {
+                        foreach ($para['assoc_name'] as &$assocName) {
+                            $agent = Agent::where('ark', $assocName['id'])->first();
+                            
+                            if ($agent) {
+                                $assocName['pref_name'] = $agent->pref_name;
+                            }
+                        }
+                        unset($assocName);
+                    }
+                    
+                    if (isset($para['assoc_place'])) {
+                        foreach ($para['assoc_place'] as &$assocPlace) {
+                            $place = Place::where('ark', $assocPlace['id'])->first();
+                            
+                            if ($place) {
+                                $assocPlace['pref_name'] = $place->pref_name;
+                            }
+                        }
+                        unset($assocPlace);
+                    }
+                }
+                unset($para);
+            }
+        }
+        unset($part);
+        
+        return $parts;
+    }
+    
+    public function getParaAttribute(): array
+    {
+        $jsonData = $this->getJsonData();
+        $paracontent = $jsonData['para'] ?? [];
+        
+        foreach ($paracontent as &$para) {
+            
+            if (isset($para['assoc_name'])) {
+                foreach ($para['assoc_name'] as &$assocName) {
+                    $agent = Agent::where('ark', $assocName['id'])->first();
+                    
+                    if ($agent) {
+                        $assocName['pref_name'] = $agent->pref_name;
+                    }
+                }
+                unset($assocName);
+            }
+            
+            if (isset($para['assoc_place'])) {
+                foreach ($para['assoc_place'] as &$assocPlace) {
+                    $place = Place::where('ark', $assocPlace['id'])->first();
+                    
+                    if ($place) {
+                        $assocPlace['pref_name'] = $place->pref_name;
+                    }
+                }
+                unset($assocPlace);
+            }
+        }
+        unset($para);
+        
+        return $paracontent;
     }
     
     public function getRelatedPlacesAttribute(): array
