@@ -59,6 +59,8 @@ class Manuscript extends Model
         'assoc_dates_overview',
         'assoc_dates_from_layers',
         'assoc_places_from_layers',
+        'lang_from_parts_layers_text_units',
+        'lang_from_layers_text_units',
         'parts',
         'para',
         'related_references',
@@ -177,6 +179,87 @@ class Manuscript extends Model
                 'assoc_place_value' => json_decode($row->assoc_place_as_written)
             ];
         }, $dates);
+    }
+    
+    public function getLangFromPartsLayersTextUnitsAttribute(): array
+    {
+        $jsonData = $this->getJsonData();
+        $layersJson = $jsonData['part'] ?? [];
+        
+        $layerArks = [];
+        foreach ($layersJson as $part) {
+            if (isset($part['layer'])) {
+                foreach ($part['layer'] as $layer) {
+                    $layerArks[] = $layer['id'];
+                }
+            }
+        }
+        
+        $layers = Layer::whereIn('ark', $layerArks)->get();
+        $languages = [];
+        
+        foreach ($layers as $layer) {
+            $layerJson = json_decode($layer->jsonb, true);
+            if (isset($layerJson['text_unit'])) {
+                
+                foreach ($layerJson['text_unit'] as $textUnit) {
+                    $textUnitModel = TextUnit::where('ark', $textUnit['id'])->first();
+                    
+                    if ($textUnitModel) {
+                        $textUnitJson = json_decode($textUnitModel->jsonb, true);
+                        
+                        if (isset($textUnitJson['lang'])) {
+                            
+                            foreach ($textUnitJson['lang'] as $lang) {
+                                $languages[] = [
+                                    'layer_id' => $layer->id,
+                                    'lang_label' => $lang['label']
+                                ];
+                            }
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        return $languages;
+    }
+    
+    public function getLangFromLayersTextUnitsAttribute(): array
+    {
+    $jsonData = $this->getJsonData();
+    $layersJson = $jsonData['layer'] ?? [];
+    
+    $layerArks = array_column($layersJson, 'id');
+    
+    $layers = Layer::whereIn('ark', $layerArks)->get();
+    $languages = [];
+    
+    foreach ($layers as $layer) {
+        $layerJson = json_decode($layer->jsonb, true);
+        if (isset($layerJson['text_unit'])) {
+            foreach ($layerJson['text_unit'] as $textUnit) {
+                $textUnitModel = TextUnit::where('ark', $textUnit['id'])->first();
+                if ($textUnitModel) {
+                    $textUnitJson = json_decode($textUnitModel->jsonb, true);
+                    if (isset($textUnitJson['lang'])) {
+                        foreach ($textUnitJson['lang'] as $lang) {
+                            $languages[] = [
+                                'layer_id' => $layerJson['ark'],
+                                'lang_label' => $lang['label']
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return $languages;
     }
     
     public function getPartsAttribute(): array

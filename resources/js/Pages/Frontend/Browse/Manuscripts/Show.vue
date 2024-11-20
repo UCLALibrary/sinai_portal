@@ -160,6 +160,11 @@
                             {{ place.assoc_place_value }}.
                           </template>
                         </template>
+                         <template v-for="(lang, index) in manuscript.lang_from_parts_layers_text_units" :key="index">
+                          <template v-if="lang.layer_id === layer.id.split('/').pop()" class="d-block">
+                            {{ lang.lang_label }}.
+                          </template>
+                        </template>
                       </span>
                     </template>
                   </p>
