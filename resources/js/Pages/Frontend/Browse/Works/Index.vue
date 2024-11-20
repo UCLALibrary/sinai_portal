@@ -240,12 +240,15 @@
   .facet-sidebar {
     @apply flex flex-col gap-y-4 lg:sticky lg:h-screen top-0 p-4 lg:w-1/3 2xl:w-1/4 bg-sinai-gray
   }
+
   .main-container {
     @apply w-full
   }
+
   .filter-bar {
     @apply lg:sticky top-0 z-10 pt-5 pb-1 lg:pr-10 flex justify-between items-center bg-gradient-to-t from-transparent to-gray-300
   }
+
   .ais-InstantSearch {
     @apply flex flex-col lg:flex-row gap-x-4 mb-4 w-full
   }
@@ -258,7 +261,9 @@
   input[type="search"]::-webkit-search-decoration,
   input[type="search"]::-webkit-search-cancel-button,
   input[type="search"]::-webkit-search-results-button,
-  input[type="search"]::-webkit-search-results-decoration { display: none; }
+  input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+  }
 
   /* the root element of the widget */
   .ais-SearchBox {}
@@ -373,8 +378,7 @@
    * Hits
    */
 
-  .ais-Hits {
-  }
+  .ais-Hits {}
 
   .ais-Hits-list {
     @apply divide-y divide-black divide-dotted w-full
