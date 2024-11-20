@@ -130,31 +130,39 @@ class Manuscript extends Model
             return json_decode($row->assoc_date_value);
         }, $dates);
     }
-    
+
     public function getAssocDatesFromLayersAttribute(): array
     {
         $query = "
-        SELECT DISTINCT id, jsonb_path_query(jsonb, :jsonPath) AS assoc_date_value
-        FROM layers
-        WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
-    ";
-        
+            SELECT DISTINCT 
+                id,
+                jsonb_path_query(jsonb, :assocDateValuePath) AS assoc_date_value,
+                jsonb_path_query(jsonb, :assocDateNotBeforePath) AS not_before,
+                jsonb_path_query(jsonb, :assocDateNotAfterPath) AS not_after
+            FROM layers
+            WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
+        ";
+
         $bindings = [
-            'jsonPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
+            'assocDateValuePath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
+            'assocDateNotBeforePath' => '$.**.assoc_date[*] ? (@.type.id == "origin").iso.not_before',
+            'assocDateNotAfterPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").iso.not_after',
             'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
             'vars' => json_encode(['manuscript_ark' => $this->ark]),
         ];
-        
+
         $dates = DB::select($query, $bindings);
-        
+
         return array_map(function ($row) {
             return [
                 'id' => $row->id,
-                'assoc_date_value' => json_decode($row->assoc_date_value)
+                'assoc_date_value' => json_decode($row->assoc_date_value),
+                'not_before' => json_decode($row->not_before),
+                'not_after' => json_decode($row->not_after),
             ];
         }, $dates);
     }
-    
+
     public function getAssocPlacesFromLayersAttribute(): array
     {
         $query = "
@@ -450,7 +458,17 @@ class Manuscript extends Model
         
         // get all creators attached to this manuscript
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
-        
+
+        // minimum date from the 'not_before' field from layers of type 'origin'
+        $notBeforeValues = array_filter(array_column($this->getAssocDatesFromLayersAttribute(), 'not_before'));
+        $values = array_filter($notBeforeValues, fn($value) => $value !== null);
+        $array['date_min'] = $values ? min(array_map('intval', $values)) : null;
+
+        // maximum date from the 'not_after' field from layers of type 'origin'
+        $notAfterValues = array_filter(array_column($this->getAssocDatesFromLayersAttribute(), 'not_after'));
+        $values = array_filter($notAfterValues, fn($value) => $value !== null);
+        $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
+
         /*
          * Apply default transformations if desired.
          *
