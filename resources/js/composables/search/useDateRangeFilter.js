@@ -19,10 +19,10 @@ export default function useDateRangeFilter(index) {
     let dateMin = Number.MAX_SAFE_INTEGER
     let dateMax = Number.MIN_SAFE_INTEGER
     for (const hit of results.hits) {
-      if (hit.date_min < dateMin) {
+      if (hit.date_min && hit.date_min < dateMin) {
         dateMin = hit.date_min
       }
-      if (hit.date_max > dateMax) {
+      if (hit.date_max && hit.date_max > dateMax) {
         dateMax = hit.date_max
       }
     }
