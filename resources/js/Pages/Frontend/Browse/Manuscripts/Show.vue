@@ -544,7 +544,9 @@
           <h3>Text Units</h3>
           <ul>
             <li v-for="textUnit in manuscript.related_text_units">
-              {{ textUnit }}
+              <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
+                {{ textUnit.label }}
+              </Link>
             </li>
           </ul>
         </template>

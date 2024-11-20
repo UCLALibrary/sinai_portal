@@ -350,7 +350,7 @@ class Manuscript extends Model
         }
         
         $textUnits = TextUnit::whereIn('ark', $textUnitsArk)->get();
-        return $textUnits->unique('label')->pluck('label')->toArray();
+        return $textUnits->toArray();
     }
     
     public function getConnectedAgentCreatorNames()
