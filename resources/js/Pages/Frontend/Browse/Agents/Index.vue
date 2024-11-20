@@ -1,7 +1,7 @@
 <template>
   <FrontendLayout :title="title">
     <AisInstantSearch
-      v-if="initialUiState"
+      v-if="initialUiState && minMaxRangeValues"
       :index-name="indexName"
       :search-client="searchClient"
       :initial-ui-state="initialUiState"
@@ -199,34 +199,17 @@
 
   const initialUiState = ref(null)
 
-  const getMinMaxDateRangeValues = async () => {
-    const index = searchClient.initIndex(props.indexName)
-    const results = await index.search('', {
-      hitsPerPage: 2000,
-      attributesToRetrieve: ['date_min', 'date_max'],
-    })
+  import useDateRangeFilter from '@/composables/search/useDateRangeFilter'
+  const {
+    minMaxRangeValues,
+    rangeFilters,
+    onRangeFilter,
+    onClearRangeFilters,
+    dateRangeFilterQuery,
+    isDateRangeFilterApplied,
+  } = useDateRangeFilter(searchClient.initIndex(props.indexName))
 
-    // set the min and max date range values
-    let dateMin = 0
-    let dateMax = 0
-    for (const hit of results.hits) {
-      if (hit.date_min < dateMin) {
-        dateMin = hit.date_min
-      }
-      if (hit.date_max > dateMax) {
-        dateMax = hit.date_max
-      }
-    }
-
-    return {
-      date: [dateMin, dateMax]
-    }
-  }
-
-  import useRangeFilters from '@/composables/search/useRangeFilters'
-  const { minMaxRangeValues, rangeFilters, onRangeFilter, onClearRangeFilters } = useRangeFilters(getMinMaxDateRangeValues)
-
-  onBeforeMount(async () => {
+  onBeforeMount(() => {
     // initialize the state of the user interface
     initialUiState.value = {
       [props.indexName]: {
@@ -234,37 +217,6 @@
         refinementList: filters.value,
       }
     }
-  })
-
-  const dateRangeFilterQuery = computed(() => {
-    if (rangeFilters.value && minMaxRangeValues.value) {
-      const minSelected = rangeFilters.value.date[0]
-      const maxSelected = rangeFilters.value.date[1]
-      const minDefault = minMaxRangeValues.value.date[0]
-      const maxDefault = minMaxRangeValues.value.date[1]
-
-      if (minSelected === minDefault && maxSelected === maxDefault) {
-        return null
-      } else {
-        const min = minSelected || minDefault
-        const max = maxSelected || maxDefault
-        return `(date_max >= ${min} AND date_min <= ${max})`
-      }
-    }
-    return null
-  })
-
-  const isDateRangeFilterApplied = computed(() => {
-    if (!rangeFilters.value || !minMaxRangeValues.value) {
-      return false
-    }
-
-    const minSelected = rangeFilters.value.date[0]
-    const maxSelected = rangeFilters.value.date[1]
-    const minDefault = minMaxRangeValues.value.date[0]
-    const maxDefault = minMaxRangeValues.value.date[1]
-
-    return minSelected !== minDefault || maxSelected !== maxDefault
   })
 
   const isAnyFilterApplied = computed(() => {

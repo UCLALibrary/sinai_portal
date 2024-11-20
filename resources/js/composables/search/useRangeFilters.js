@@ -1,7 +1,7 @@
 import { ref, computed, onBeforeMount } from 'vue'
 import useUrlQueryParams from '@/composables/useUrlQueryParams'
 
-export default function useRangeFilters(init) {
+export default function useRangeFilters(minMaxValues = null) {
   const { setUrlQueryParameter, deleteUrlQueryParameter } = useUrlQueryParams()
 
   const filterQueryParamKey = 'ranges'
@@ -19,9 +19,9 @@ export default function useRangeFilters(init) {
       : new URL(window.location.href).searchParams.get(filterQueryParamKey)
   })
 
-  onBeforeMount(async () => {
+  onBeforeMount(() => {
     // initialize the min and max range values for each category
-    minMaxRangeValues.value = await init()
+    minMaxRangeValues.value = minMaxValues
 
     // transform the filter query parameters into an object
     const filterQueryParams = JSON.parse(filterQueryParamString.value)
