@@ -105,16 +105,14 @@
           "properties": {
             "not_before": {
               "type": "string",
-              "format": "date",
-              "minLength": 3
+              "minLength": 4
             },
             "not_after": {
               "type": [
                 "string",
                 "null"
               ],
-              "format": "date",
-              "minLength": 3
+              "minLength": 4
             }
           },
           "required": [
@@ -141,16 +139,14 @@
           "properties": {
             "not_before": {
               "type": "string",
-              "format": "date",
-              "minLength": 3
+              "minLength": 4
             },
             "not_after": {
               "type": [
                 "string",
                 "null"
               ],
-              "format": "date",
-              "minLength": 3
+              "minLength": 4
             }
           },
           "required": [
@@ -177,16 +173,14 @@
           "properties": {
             "not_before": {
               "type": "string",
-              "format": "date",
-              "minLength": 3
+              "minLength": 4
             },
             "not_after": {
               "type": [
                 "string",
                 "null"
               ],
-              "format": "date",
-              "minLength": 3
+              "minLength": 4
             }
           },
           "required": [
