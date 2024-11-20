@@ -6,6 +6,48 @@
           {{ textUnit.label }}
         </h2>
 
+        <p class="italic mb-8">
+          {{ textUnitJson.summary }}
+        </p>
+
+        <div v-if="textUnitJson.ark && textUnitJson.ark !== ''" class="item-container">
+          <span class="item-label">Ark</span>
+          <p class="item-value">
+            {{ textUnitJson.ark }}
+          </p>
+        </div>
+
+        <div v-if="textUnitJson.lang && textUnitJson.lang.length > 0" class="item-container">
+          <span class="item-label">Languages</span>
+          <p class="item-value">
+            {{ textUnitJson.lang.map(lang => lang.label).join('; ') }}
+          </p>
+        </div>
+
+        <template v-if="textUnitJson.note && textUnitJson.note.filter(n => n.type.id === 'contents').length > 0">
+          <p>
+            <strong>Content Notes</strong>
+          </p>
+          <p v-for="note in textUnitJson.note.filter(n => n.type.id === 'contents')" :key="note.type.id">
+            {{ note.value }}
+          </p>
+        </template>
+
+        <template v-if="textUnitJson.note && textUnitJson.note.filter(n => n.type.id === 'general').length > 0">
+          <p>
+            <strong>General Notes</strong>
+          </p>
+          <p v-for="note in textUnitJson.note.filter(n => n.type.id === 'general')" :key="note.type.id">
+            {{ note.value }}
+          </p>
+        </template>
+
+        <h3>Preferred Citation</h3>
+        <p>
+          "{{ textUnitJson.label }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
+          {{ $page.props.appUrl }}/textunits/{{ textUnit.id }}
+        </p>
+
       </section>
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
@@ -94,5 +136,17 @@
 
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg
+  }
+
+  .item-container {
+    @apply flex flex-col md:flex-row
+  }
+
+  .item-label {
+    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
+  }
+
+  .item-value {
+    @apply flex-1
   }
 </style>

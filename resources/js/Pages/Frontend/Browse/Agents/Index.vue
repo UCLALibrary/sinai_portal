@@ -1,7 +1,7 @@
 <template>
   <FrontendLayout :title="title">
     <AisInstantSearch
-      v-if="initialUiState"
+      v-if="initialUiState && minMaxRangeValues"
       :index-name="indexName"
       :search-client="searchClient"
       :initial-ui-state="initialUiState"
@@ -13,9 +13,9 @@
           </span>
 
           <AisClearRefinements>
-            <template v-slot="{ canRefine, refine, createURL }">
+            <template v-slot="{ refine, createURL }">
               <a
-                v-if="canRefine"
+                v-show="isAnyFilterApplied"
                 :href="createURL()"
                 class="w-auto"
                 @click.prevent="onClearRefinements(refine)">
@@ -102,8 +102,34 @@
               </AisDynamicWidgets>
             </template>
           </AccordionCard>
+
+          <AccordionCard title="Dates" :toggleable="false" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRangeInput
+                  v-if="rangeFilters"
+                  attribute="date_min"
+                  :min="minMaxRangeValues.date[0]"
+                  :max="minMaxRangeValues.date[1]"
+                  class="px-3 pt-10">
+                  <template v-slot="{ currentRefinement, range, refine }">
+                    <VRangeSlider
+                      :min="minMaxRangeValues.date[0]"
+                      :max="minMaxRangeValues.date[1]"
+                      v-model="rangeFilters.date"
+                      @end="onRangeFilter('date', $event[0], $event[1])"
+                      step="1"
+                      thumb-label="always">
+                    </VRangeSlider>
+                  </template>
+                </AisRangeInput>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
         </div>
       </div>
+
+      <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
         <div class="hidden lg:grid lg:grid-cols-4 p-2 gap-x-1 font-bold border-b">
@@ -140,7 +166,8 @@
   import AgentResult from '@/Shared/Search/AgentResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
-  import { AisInstantSearch,
+  import {
+    AisInstantSearch,
     AisConfigure,
     AisStateResults,
     AisSearchBox,
@@ -172,34 +199,17 @@
 
   const initialUiState = ref(null)
 
-  const getMinMaxDateRangeValues = async () => {
-    const index = searchClient.initIndex(props.indexName)
-    const results = await index.search('', {
-      hitsPerPage: 2000,
-      attributesToRetrieve: ['date_min', 'date_max'],
-    })
+  import useDateRangeFilter from '@/composables/search/useDateRangeFilter'
+  const {
+    minMaxRangeValues,
+    rangeFilters,
+    onRangeFilter,
+    onClearRangeFilters,
+    dateRangeFilterQuery,
+    isDateRangeFilterApplied,
+  } = useDateRangeFilter(searchClient.initIndex(props.indexName))
 
-    // set the min and max date range values
-    let dateMin = 0
-    let dateMax = 0
-    for (const hit of results.hits) {
-      if (hit.date_min < dateMin) {
-        dateMin = hit.date_min
-      }
-      if (hit.date_max > dateMax) {
-        dateMax = hit.date_max
-      }
-    }
-
-    return {
-      date: [dateMin, dateMax]
-    }
-  }
-
-  import useRangeFilters from '@/composables/search/useRangeFilters'
-  const { minMaxRangeValues, rangeFilters, onRangeFilter, onClearRangeFilters } = useRangeFilters(getMinMaxDateRangeValues)
-
-  onBeforeMount(async () => {
+  onBeforeMount(() => {
     // initialize the state of the user interface
     initialUiState.value = {
       [props.indexName]: {
@@ -209,16 +219,16 @@
     }
   })
 
-  const dateRangeFilterQuery = computed(() => {
-    if (rangeFilters.value) {
-      const min = rangeFilters.value.date[0] || minMaxRangeValues.value.date[0]
-      const max = rangeFilters.value.date[1] || minMaxRangeValues.value.date[1]
-      return `(date_max >= ${min} AND date_min <= ${max})`
-    }
+  const isAnyFilterApplied = computed(() => {
+    const anyFacetFiltersApplied = Object.keys(filters.value).some(
+      key => filters.value[key].length > 0
+    )
+    return anyFacetFiltersApplied || isDateRangeFilterApplied.value
   })
 
   const onClearRefinements = (refine) => {
     onClearFilters(refine)
+    onClearRangeFilters()
   }
 </script>
 

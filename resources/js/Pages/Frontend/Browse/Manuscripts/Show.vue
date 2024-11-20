@@ -100,7 +100,7 @@
           <template v-for="(part) in manuscriptJson.part">
             <div class="mb-8">
               <p class="mb-0">
-                <strong>{{ part.label }}</strong>, {{ part.locus }}
+                <strong>{{ part.label }}</strong><template v-if="part.locus">, {{ part.locus }}</template>
               </p>
 
               <p class="italic">
@@ -146,7 +146,7 @@
                   <p class="item-value">
                     <template v-for="(layer) in part.layer.filter(layer => layer.type.id === 'overtext')" class="d-block">
                       <span class="d-block">
-                      {{ layer.label }}; {{ layer.locus }}
+                        {{ layer.label }}<template v-if="layer.locus">; {{ layer.locus }}</template>
                       </span>
 
                       <span class="d-block">
@@ -214,8 +214,8 @@
         <template v-if="hasParaGuestContent">
           <h3>Paracontent</h3>
 
-          <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
-            <template v-for="part in manuscriptJson.part">
+          <template v-if="manuscript.parts && manuscript.parts.length > 0">
+            <template v-for="part in manuscript.parts">
               <template v-if="part.para && part.para.length > 0">
                 <div v-for="para in part.para" class="mb-8">
                   <p>
@@ -231,14 +231,14 @@
                     Translation: {{ para.translation.join('; ') }}
                   </p>
 
-                  <p class="indent">
+                  <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent">
                     <strong>Associated Names, Places, Dates</strong>
                   </p>
 
                   <div v-if="para.assoc_name && para.assoc_name.length > 0">
                     <ul class="indent">
                       <li v-for="name in para.assoc_name">
-                        {{ name.role.label }}: [{{ name.as_written || name.pref_name }}]
+                        {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
                         <span v-if="name.note && name.note.length > 0" class="indent">
                           {{ name.note.join('; ') }}
                         </span>
@@ -249,7 +249,7 @@
                   <div v-if="para.assoc_place && para.assoc_place.length > 0">
                     <ul class="indent">
                       <li v-for="place in para.assoc_place">
-                        {{ place.event.label }}: [{{ place.as_written || place.pref_name }}]
+                        {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
                         <span v-if="place.note && place.note.length > 0" class="indent">
                           {{ place.note.join('; ') }}
                         </span>
@@ -260,7 +260,7 @@
                   <div v-if="para.assoc_date && para.assoc_date.length > 0">
                     <ul class="indent">
                       <li v-for="date in para.assoc_date">
-                        {{ date.type.label }}: [{{ date.as_written || date.value }}]
+                        {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
                         <span v-if="date.note && date.note.length > 0" class="indent">
                           {{ date.note.join('; ') }}
                         </span>
@@ -282,8 +282,8 @@
             </template>
           </template>
 
-          <template v-if="manuscriptJson.para && manuscriptJson.para.length > 0">
-            <div v-for="para in manuscriptJson.para" class="mb-8">
+          <template v-if="manuscript.para && manuscript.para.length > 0">
+            <div v-for="para in manuscript.para" class="mb-8">
               <p>
                 <strong>{{ para.locus }}, {{ para.label }}, {{ para.type.label }}</strong>
               </p>
@@ -299,14 +299,14 @@
                 </p>
               </template>
 
-              <p class="indent">
+              <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent">
                 <strong>Associated Names, Places, Dates</strong>
               </p>
 
               <template v-if="para.assoc_name && para.assoc_name.length > 0">
                 <ul class="indent">
                   <li v-for="name in para.assoc_name">
-                    {{ name.role.label }}: [{{ name.as_written || name.pref_name }}]
+                    {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
                     <span v-if="name.note && name.note.length > 0" class="indent">
                       {{ name.note.join('; ') }}
                     </span>
@@ -317,7 +317,7 @@
               <div v-if="para.assoc_place && para.assoc_place.length > 0" class="mt-2">
                 <ul class="indent">
                   <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
-                    {{ place.event.label }}: [{{ place.as_written || place.pref_name }}]
+                    {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
                     <span v-if="place.note && place.note.length > 0" class="indent">
                       {{ place.note.join('; ') }}
                     </span>
@@ -328,7 +328,7 @@
               <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mt-2">
                 <ul class="indent">
                   <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
-                    {{ date.type.label }}: [{{ date.as_written || date.value }}]
+                    {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
                     <span v-if="date.note && date.note.length > 0" class="indent">
                       {{ date.note.join('; ') }}
                     </span>
@@ -336,9 +336,16 @@
                 </ul>
               </div>
 
-              <p v-if="para.note && para.note.length > 0" class="indent">
-                {{ para.note.join('; ') }}
-              </p>
+              <template v-if="para.note && para.note.length > 0">
+                <p class="indent">
+                  <strong>
+                    Notes
+                  </strong>
+                </p>
+                <p class="indent">
+                  {{ para.note.join('; ') }}
+                </p>
+              </template>
             </div>
           </template>
         </template>
@@ -418,14 +425,14 @@
           </ul>
         </template>
 
-        <template v-if="manuscript.related_agents || manuscript.related_places || manuscriptJson.assoc_date">
+        <template v-if="(manuscript.related_agents && manuscript.related_agents.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
           <p class="mt-8">
             <strong>Associated Names, Places, Dates</strong>
           </p>
 
           <div v-for="relatedAgent in manuscript.related_agents" class="mb-8">
             <p>
-              {{ relatedAgent.role.label }}: {{ relatedAgent.as_written || relatedAgent.pref_name }}
+              <template v-if="relatedAgent.role.label">{{ relatedAgent.role.label }}: </template>{{ [relatedAgent.as_written, relatedAgent.pref_name].filter(Boolean).join(' | ') }}
             </p>
             <p v-if="relatedAgent.note && relatedAgent.note.length > 0" class="indent">
               {{ relatedAgent.note.join(", ") }}
@@ -434,7 +441,7 @@
 
           <div v-for="relatedPlace in manuscript.related_places" class="mb-8">
             <p>
-              {{ relatedPlace.event.label }}: {{ relatedPlace.as_written || relatedPlace.pref_name }}
+              {{ relatedPlace.event.label }}: {{ [relatedPlace.as_written, relatedPlace.pref_name].filter(Boolean).join(' | ') }}
             </p>
             <p v-if="relatedPlace.note && relatedPlace.note.length > 0" class="indent">
               {{ relatedPlace.note.join(", ") }}
@@ -443,7 +450,7 @@
 
           <div v-for="relatedDate in manuscriptJson.assoc_date" class="mb-8">
             <p>
-              {{ relatedDate.type.label }}: {{ relatedDate.as_written || relatedDate.value }}
+              {{ relatedDate.type.label }}: {{ [relatedDate.as_written, relatedDate.value].filter(Boolean).join(' | ') }}
             </p>
             <p v-if="relatedDate.note && relatedDate.note.length > 0" class="indent">
               {{ relatedDate.note.join(", ") }}
@@ -537,7 +544,9 @@
           <h3>Text Units</h3>
           <ul>
             <li v-for="textUnit in manuscript.related_text_units">
-              {{ textUnit }}
+              <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
+                {{ textUnit.label }}
+              </Link>
             </li>
           </ul>
         </template>
@@ -551,6 +560,19 @@
               </Link>
               <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.label }})</span>
             </li>
+          </ul>
+        </template>
+
+        <template v-if="partRelatedMss.length > 0">
+          <h3>Related Manuscripts</h3>
+          <ul>
+            <template v-for="relatedMss in partRelatedMss" :key="relatedMss.label">
+              <li v-for="ms in relatedMss.mss">
+                <a :href="getRelatedMsLink(ms).url" :target="getRelatedMsLink(ms).isExternal ? '_blank' : '_self'">
+                  {{ ms.label }} ({{ relatedMss.type.label }})
+                </a>
+              </li>
+            </template>
           </ul>
         </template>
 
@@ -661,13 +683,17 @@
     });
   });
 
-  const allRelatedMss = computed(() => {
-    const partRelatedMss = manuscriptJson.value.part
+  const getPartRelatedMss = () => {
+    return manuscriptJson.value.part
         ? manuscriptJson.value.part.flatMap(part => part.related_mss || [])
         : [];
-    const rootRelatedMss = manuscriptJson.value.related_mss || [];
+  };
 
-    return [...partRelatedMss, ...rootRelatedMss];
+  const partRelatedMss = computed(() => getPartRelatedMss());
+
+  const allRelatedMss = computed(() => {
+    const rootRelatedMss = manuscriptJson.value.related_mss || [];
+    return [...getPartRelatedMss(), ...rootRelatedMss];
   });
 
   const getRelatedMsLink = (ms) => {
