@@ -255,8 +255,14 @@ class Work extends Model
         // creation date
         if (!empty($data['creation'])) {
             $array['creation_value'] = isset($data['creation']['value']) ? $data['creation']['value'] : null;
+
+            // minimum date from 'creation.iso.not_before' fields
             $array['not_before'] = isset($data['creation']['iso']['not_before']) ? $data['creation']['iso']['not_before'] : null;
+            $array['date_min'] = !empty($data['creation']['iso']['not_before']) ? intval($data['creation']['iso']['not_before']) : null;
+
+            // maximum date from 'creation.iso.not_after' fields
             $array['not_after'] = isset($data['creation']['iso']['not_after']) ? $data['creation']['iso']['not_after'] : null;
+            $array['date_max'] = !empty($data['creation']['iso']['not_after']) ? intval($data['creation']['iso']['not_after']) : null;
         }
 
         /*
