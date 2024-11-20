@@ -100,7 +100,7 @@
           <template v-for="(part) in manuscriptJson.part">
             <div class="mb-8">
               <p class="mb-0">
-                <strong>{{ part.label }}</strong>, {{ part.locus }}
+                <strong>{{ part.label }}</strong><template v-if="part.locus">, {{ part.locus }}</template>
               </p>
 
               <p class="italic">
@@ -146,7 +146,7 @@
                   <p class="item-value">
                     <template v-for="(layer) in part.layer.filter(layer => layer.type.id === 'overtext')" class="d-block">
                       <span class="d-block">
-                      {{ layer.label }}; {{ layer.locus }}
+                        {{ layer.label }}<template v-if="layer.locus">; {{ layer.locus }}</template>
                       </span>
 
                       <span class="d-block">
@@ -425,7 +425,7 @@
           </ul>
         </template>
 
-        <template v-if="manuscript.related_agents || manuscript.related_places || manuscriptJson.assoc_date">
+        <template v-if="(manuscript.related_agents && manuscript.related_agents.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
           <p class="mt-8">
             <strong>Associated Names, Places, Dates</strong>
           </p>
