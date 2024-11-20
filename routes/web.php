@@ -29,6 +29,11 @@ Route::get('/about', function () {
     return Inertia::render('About');
 })->name('frontend.about');
 
+Route::get('/datamodel', function () {
+    return Inertia::render('Datamodel');
+})->name('frontend.datamodel');
+
+
 // cms
 Route::group(['prefix' => 'cms', 'middleware' => ['auth:sanctum', config('jetstream.auth_session'), 'verified', 'can:view cms']], function () {
     // dashboard
