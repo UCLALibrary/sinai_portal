@@ -542,6 +542,9 @@ class Manuscript extends Model
         // get all creators attached to this manuscript
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
 
+        // get dates attached to this manuscript for display in list view
+        $array['dates'] = $this->assoc_dates_overview;
+
         // minimum date from the 'not_before' field from layers of type 'origin'
         $notBeforeValues = array_filter(array_column($this->getAssocDatesFromLayersAttribute(), 'not_before'));
         $values = array_filter($notBeforeValues, fn($value) => $value !== null);
