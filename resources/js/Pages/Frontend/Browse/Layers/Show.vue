@@ -106,6 +106,61 @@
           </div>
         </template>
 
+        <template v-if="layer.colophons && layer.colophons.length > 0">
+          <h3>Colophon<template v-if="layer.colophons.length > 1">s</template></h3>
+          <template v-for="para in layer.colophons">
+            <p>
+              <strong>{{ para.locus }}, {{ para.label }}</strong>
+            </p>
+            <div class="indent">
+              <p>
+                Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
+              </p>
+              <p>
+                Transcription: {{ para.as_written }}
+              </p>
+              <p>
+                Translation: {{ para.translation.join('; ') }}
+              </p>
+              <p>
+                <strong>Associated Names, Places, Dates</strong>
+              </p>
+              <template v-for="name in para.assoc_name">
+                <p>
+                  {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
+                </p>
+                <p v-if="name.note && name.note.length > 0" class="indent">
+                  {{ name.note.join('; ') }}
+                </p>
+              </template>
+              <template v-for="place in para.assoc_place">
+                <p>
+                  {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
+                </p>
+                <p v-if="place.note && place.note.length > 0" class="indent">
+                  {{ place.note.join('; ') }}
+                </p>
+              </template>
+              <template v-for="date in para.assoc_date">
+                <p>
+                  {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
+                </p>
+                <p v-if="date.note && date.note.length > 0" class="indent">
+                  {{ date.note.join('; ') }}
+                </p>
+              </template>
+              <template v-if="para.note && para.note.length > 0">
+                <p>
+                  <strong>Notes</strong>
+                </p>
+                <p class="indent">
+                  {{ para.note.join('; ') }}
+                </p>
+              </template>
+
+            </div>
+          </template>
+        </template>
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
           <h3>Ornamentation</h3>
@@ -253,5 +308,9 @@
 
   .item-value {
     @apply flex-1
+  }
+
+  .indent {
+    @apply md:ml-4 block
   }
 </style>
