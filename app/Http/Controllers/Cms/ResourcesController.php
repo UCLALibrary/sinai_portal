@@ -74,8 +74,19 @@ class ResourcesController extends Controller
         $modelClass = '\\App\\Models\\' . $resourceType;
         $resource = $modelClass::findOrFail($resourceId);
 
+        $label = $resource->identifier  // manuscripts | layers
+            ?? $resource->label         // text units | languages | scripts
+            ?? $resource->pref_title    // works
+            ?? $resource->pref_name     // agents | places
+            ?? $resource->alt_shelf     // bibliography
+            ?? $resource->short_title;  // references
+            
+        if (!$label && $resource->collection && $resource->repository) {
+            $label = $resource->collection . ', ' . $resource->repository;  // locations
+        }
+
         return Inertia::render('Resources/Edit', [
-            'title' => 'Edit ' . $resourceType,
+            'title' => 'Edit ' . $resourceType . ($label ? ': ' . $label : ''),
             'schema' => json_decode($modelClass::$editSchema ?? $modelClass::$schema),
             'uischema' => json_decode($modelClass::$editUiSchema ?? $modelClass::$uiSchema),
             'data' => json_decode($resource->json) ?? $resource,
