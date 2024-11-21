@@ -2,31 +2,50 @@
   <FrontendLayout :title="title">
     <div class="flex flex-col lg:flex-row gap-y-8 bg-white p-4 xl:p-8">
       <section class="w-full lg:w-3/4 lg:pr-16">
-        <h2>
-          {{ layer.identifier }}
-        </h2>
 
-        <h3>{{ layerJson.state.label }} from {{ source }}</h3>
+        <div class="pb-8">
+          <h2>
+            {{ layer.identifier }}
+          </h2>
 
-        <p class="pb-8">
-          {{ layerJson.summary }}
-        </p>
+          <p>
+            <strong>{{ layerJson.state.label }} from {{ source }}, {{ layerJson.locus }}</strong>
+          </p>
+
+          <p class="italic">
+            {{ layerJson.summary }}
+          </p>
+
+          <p v-if="layerJson.assoc_date && layerJson.assoc_date.some(date => date.type?.id === 'origin')">
+            {{ layerJson.assoc_date.filter(date => date.type?.id === 'origin').map(date => date.value).join('; ') }}
+          </p>
+        </div>
 
         <h3>Layer Overview</h3>
 
-        <p v-if="layerJson.ark && layerJson.ark !== ''">
-          <span class="label">ARK</span>
-          {{ layerJson.ark }}
-        </p>
+        <div v-if="layerJson.ark && layerJson.ark !== ''" class="item-container">
+          <span class="item-label">ARK</span>
+          <p class="item-value">
+            {{ layerJson.ark }}
+          </p>
+        </div>
 
-        <p v-if="layerJson.extent">
-          <span class="label">Extent</span>
-          {{ layerJson.extent }}
-        </p>
+        <div v-if="layerJson.extent && layerJson.extent !== ''" class="item-container">
+          <span class="item-label">Extent</span>
+          <p class="item-value">
+            {{ layerJson.extent }}
+          </p>
+        </div>
+
+        <div class="item-container">
+          <span class="item-label">Primary Languages</span>
+          <p class="item-value">
+          </p>
+        </div>
 
         <template v-if="layerJson.writing && layerJson.writing.length > 0">
           <h3>Writing and Hands</h3>
-          <div v-for="(writing, writingIndex) in layerJson.writing" :key="writingIndex" class="mb-4">
+          <div v-for="(writing, writingIndex) in layerJson.writing" :key="writingIndex" class="mb-8">
             <p>
               {{ writing.locus }}: {{ writing.script.map(script => script.label).join(', ') }}
             </p>
@@ -38,9 +57,9 @@
 
         <template v-if="layerJson.ink && layerJson.ink.length > 0">
           <h3>Ink</h3>
-          <div v-for="(ink, index) in layerJson.ink" :key="index" class="mb-4">
+          <div v-for="(ink, index) in layerJson.ink" :key="index" class="mb-8">
             <p>
-              {{ ink.locus }}: {{ ink.color.join(', ') }}
+              {{ ink.locus }}<template v-if="ink.color && ink.color.length > 0">: {{ ink.color.join(', ') }}</template>
             </p>
             <template v-if="ink.note && ink.note.length > 0">
               <p v-for="(note, index) in ink.note" :key="index">
@@ -52,7 +71,7 @@
 
         <template v-if="layerJson.layout && layerJson.layout.length > 0">
           <h3>Page layout</h3>
-          <div v-for="(layout, index) in layerJson.layout" :key="index" class="mb-4">
+          <div v-for="(layout, index) in layerJson.layout" :key="index" class="mb-8">
             <p>
               {{ layout.locus }}, {{ layout.lines }} lines, {{ layout.columns }} columns
             </p>
@@ -68,11 +87,25 @@
         </template>
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'foliation').length > 0">
-          <h3>Foliation Note:</h3>
+          <h3>Foliation Note</h3>
           <p v-for="(note, index) in layerJson.note.filter(note => note.type.id === 'foliation')" :key="index">
             {{ note.value }}
           </p>
         </template>
+
+        <h3>Contents</h3>
+        <template v-for="textUnit in layer.text_units">
+          <p>
+            <strong>{{ textUnit.label }}; {{ textUnit.locus }}</strong>
+          </p>
+          <div class="item-container">
+            <span class="item-label">Languages</span>
+            <p class="item-value">
+              {{ textUnit.lang.map(lang => lang.label).join('; ') }}
+            </p>
+          </div>
+        </template>
+
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
           <h3>Ornamentation</h3>
@@ -118,12 +151,12 @@
         <template v-if="layerJson.text_unit && layerJson.text_unit.length > 0">
           <h3>Text units</h3>
           <ul>
-            <li v-for="textUnit in layerJson.text_unit" :key="index">
+            <li v-for="textUnit in layerJson.text_unit" >
               {{ textUnit.label }}
             </li>
           </ul>
         </template>
-          
+
         <h3>Downloads</h3>
         <p>
           <a :href="downloadUrl" class="button" :download="fileName">&darr; JSON</a>
@@ -177,7 +210,7 @@
   h3 {
     @apply uppercase tracking-wider font-medium text-base border-b border-gray-300 py-2 mt-8 mb-2
   }
-  
+
   section.sidebar h3:first-of-type {
     @apply mt-0
   }
@@ -208,5 +241,17 @@
 
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg
+  }
+
+  .item-container {
+    @apply flex flex-col md:flex-row
+  }
+
+  .item-label {
+    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
+  }
+
+  .item-value {
+    @apply flex-1
   }
 </style>

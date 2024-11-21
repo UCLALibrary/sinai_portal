@@ -6,6 +6,7 @@ use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 class Layer extends Model
@@ -48,6 +49,35 @@ class Layer extends Model
             ],
         ],
     ];
+
+    protected $appends = [
+        'text_units'
+    ];
+
+    public function getTextUnitsAttribute(): array
+    {
+        $textUnitsQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query(jsonb, '$.text_unit[*]') AS text_unit")
+            ->where('id', $this->id)
+            ->get();
+        
+        return $textUnitsQuery->map(function ($textUnit) {
+            $textUnitData = json_decode($textUnit->text_unit, true);
+            $textUnitObject = TextUnit::where('ark', $textUnitData['id'])->first();
+            
+            if ($textUnitObject) {
+                $textUnitJson = json_decode($textUnitObject->json, true);
+                
+                return [
+                    'label' => $textUnitData['label'],
+                    'locus' => $textUnitData['locus'],
+                    'lang' => $textUnitJson['lang'] ?? [],
+                ];
+            }
+            
+            return null;
+        })->filter()->values()->toArray();
+    }
 
     /**
      * Get the indexable data array for the model.
@@ -111,7 +141,7 @@ class Layer extends Model
 
         /*
          * Apply default transformations if desired.
-         * 
+         *
          * https://www.algolia.com/doc/framework-integration/laravel/indexing/configure-searchable-data/?client=php#transformers
          */
         // $array = $this->transform($array);
