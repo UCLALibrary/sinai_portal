@@ -66,11 +66,6 @@ const logout = () => {
                                 </NavLink>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('resources.index', 'contents')" :active="route().current('resources.*') && route().params.resourceName === 'contents'">
-                                    Content Units
-                                </NavLink>
-                            </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('resources.index', 'works')" :active="route().current('resources.*') && route().params.resourceName === 'works'">
                                     Works
                                 </NavLink>

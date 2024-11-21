@@ -64,17 +64,17 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
             <div>
                 <div class="flex items-center">
                     <h2 class="text-xl font-semibold text-gray-900">
-                        <a href="'/cms/content-units">Content Units</a>
+                        <a href="'/cms/textunits">Text Units</a>
                     </h2>
                 </div>
 
                 <p class="mt-2 text-gray-500 text-sm leading-relaxed">
-                    Manage Content Units that can be attached to other records in the database.
+                    Manage Text Units that can be attached to other records in the database.
                 </p>
 
                 <p class="mt-2 text-sm">
-                    <a href="/cms/content-units" class="inline-flex items-center font-semibold text-sinai-red">
-                        Manage Content Units
+                    <a href="/cms/textunits" class="inline-flex items-center font-semibold text-sinai-red">
+                        Manage Text Units
 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
                             <path fill-rule="evenodd" d="M5 10a.75.75 0 01.75-.75h6.638L10.23 7.29a.75.75 0 111.04-1.08l3.5 3.25a.75.75 0 010 1.08l-3.5 3.25a.75.75 0 11-1.04-1.08l2.158-1.96H5.75A.75.75 0 015 10z" clip-rule="evenodd" />
