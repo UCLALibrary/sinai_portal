@@ -24,6 +24,11 @@
           class="px-4 sm:px-6 lg:px-8 py-4"
         />
 
+        <pre v-if="resource.json">
+          {{ resource.json }}
+        </pre>
+
+        <!--
         <ResourceForm
           :schema="schema"
           :uischema="uischema"
@@ -33,18 +38,19 @@
           @on-cancel="onCancel"
           class="px-4 sm:px-6 lg:px-8 my-8"
         />
+        -->
       </div>
     </div>
   </AppLayout>
 </template>
 
 <script setup>
-  import { defineAsyncComponent } from 'vue'
+  // import { defineAsyncComponent } from 'vue'
   import { usePage, router } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
-  const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
+  // const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -80,6 +86,7 @@
     })
   }
 
+  /*
   const onSave = (payload) => {
     axios.put(route(pageProps.routes.update, { resourceName: pageProps.resourceName, resourceId: props.resource.id }), {
       json: payload.data,
@@ -107,4 +114,11 @@
   const onCancel = () => {
     router.visit(route(props.routes.index))
   }
+  */
 </script>
+
+<style lang="postcss" scoped>
+  pre {
+    @apply bg-white border border-gray-300 my-8 px-4 pt-6 overflow-auto text-wrap
+  }
+</style>
