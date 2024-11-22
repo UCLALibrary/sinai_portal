@@ -52,7 +52,8 @@ class Layer extends Model
 
     protected $appends = [
         'text_units',
-        'colophons'
+        'colophons',
+        'para_except_colophons'
     ];
 
     public function getTextUnitsAttribute(): array
@@ -160,6 +161,8 @@ class Layer extends Model
         $query = '$.para[*]';
         if ($type !== null) {
             $query .= " ? (@.type.id == \"$type\")";
+        } else {
+            $query .= " ? (!(@.type.id == \"colophon\"))";
         }
         
         $parasQuery = DB::table('layers')
@@ -191,6 +194,11 @@ class Layer extends Model
     public function getColophonsAttribute(): array
     {
         return $this->getParaByType('colophon');
+    }
+    
+    public function getParaExceptColophonsAttribute(): array
+    {
+        return $this->getParaByType();
     }
 
     /**
