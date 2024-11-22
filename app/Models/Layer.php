@@ -170,6 +170,14 @@ class Layer extends Model
             }
         }
 
+        // writing system
+        $array['script'] = [];
+        foreach($data['writing'] as $writing) {
+            foreach($writing['script'] as $script) {
+                $array['writing_system'][] = isset($script['writing_system']) ? $script['writing_system'] : null;
+            }
+        }
+
         // features
         $array['features'] = [];
         if (isset($data['features'])) {
