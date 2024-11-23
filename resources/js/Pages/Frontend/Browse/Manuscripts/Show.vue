@@ -377,7 +377,7 @@
               </p>
               <ul class="indent">
                 <li v-for="ms in relatedMss.mss">
-                  <a :href="getRelatedMsLink(ms).url" :target="getRelatedMsLink(ms).isExternal ? '_blank' : '_self'">
+                  <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
                     {{ ms.label }}
                   </a>
                 </li>
@@ -576,7 +576,7 @@
           <ul>
             <template v-for="relatedMss in partRelatedMss" :key="relatedMss.label">
               <li v-for="ms in relatedMss.mss">
-                <a :href="getRelatedMsLink(ms).url" :target="getRelatedMsLink(ms).isExternal ? '_blank' : '_self'">
+                <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
                   {{ ms.label }} ({{ relatedMss.type.label }})
                 </a>
               </li>
@@ -609,6 +609,7 @@
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
   import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
+  import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -703,23 +704,6 @@
     const rootRelatedMss = manuscriptJson.value.related_mss || [];
     return [...getPartRelatedMss(), ...rootRelatedMss];
   });
-
-  const getRelatedMsLink = (ms) => {
-    let url;
-    let isExternal = false;
-
-    if (ms.url) {
-      url = ms.url;
-      isExternal = true;
-    } else if (ms.id) {
-      const arkId = ms.id.split('/').pop();
-      url = `/manuscripts/${arkId}`;
-    } else {
-      url = '#';
-    }
-
-    return { url, isExternal };
-  };
 
   const hasResources = computed(() => {
     const hasReferences = props.manuscript.related_references && props.manuscript.related_references.length > 0;

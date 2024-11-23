@@ -53,9 +53,15 @@ class Layer extends Model
     protected $appends = [
         'text_units',
         'colophons',
-        'para_except_colophons'
+        'para_except_colophons',
+        'related_manuscripts',
+        'associated_names_from_root',
+        'associated_places_from_root',
+        'associated_dates_from_root',
+        'references',
+        'bibliographies',
     ];
-
+    
     public function getTextUnitsAttribute(): array
     {
         $textUnitsQuery = DB::table('layers')
@@ -200,7 +206,115 @@ class Layer extends Model
     {
         return $this->getParaByType();
     }
-
+    
+    public function getRelatedManuscriptsAttribute(): array
+    {
+        $relatedManuscripts = DB::table('layers')
+            ->selectRaw("jsonb_path_query(jsonb, '$.related_mss[*]') AS related_ms")
+            ->where('id', $this->id)
+            ->get();
+        
+        return $relatedManuscripts->map(function ($relatedMs) {
+            return json_decode($relatedMs->related_ms, true); // Decode the entire JSON node
+        })->toArray();
+    }
+    
+    public function getAssociatedNamesFromRootAttribute(): array
+    {
+        $associatedNames = DB::table('layers')
+            ->selectRaw("jsonb_path_query(jsonb, '$.assoc_name[*]') AS assoc_name")
+            ->where('id', $this->id)
+            ->get();
+        
+        return $associatedNames->map(function ($assocName) {
+            $assocNameData = json_decode($assocName->assoc_name, true);
+            
+            if (isset($assocNameData['id'])) {
+                $agent = Agent::where('ark', $assocNameData['id'])->first();
+                $assocNameData['pref_name'] = $agent ? $agent->pref_name : null;
+            } else {
+                $assocNameData['pref_name'] = null;
+            }
+            
+            return $assocNameData;
+        })->toArray();
+    }
+    
+    public function getAssociatedPlacesFromRootAttribute(): array
+    {
+        $associatedPlacesQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query(jsonb, '$.assoc_place[*]') AS assoc_place")
+            ->where('id', $this->id)
+            ->get();
+        
+        return $associatedPlacesQuery->map(function ($assocPlace) {
+            $assocPlaceData = json_decode($assocPlace->assoc_place, true);
+            
+            if (isset($assocPlaceData['id'])) {
+                $place = Place::where('ark', $assocPlaceData['id'])->first();
+                $assocPlaceData['pref_name'] = $place ? $place->pref_name : null;
+            } else {
+                $assocPlaceData['pref_name'] = null;
+            }
+            
+            return $assocPlaceData;
+        })->toArray();
+    }
+    
+    public function getAssociatedDatesFromRootAttribute(): array
+    {
+        $associatedDatesQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query(jsonb, '$.assoc_date[*]') AS assoc_date")
+            ->where('id', $this->id)
+            ->get();
+        
+        return $associatedDatesQuery->map(function ($assocName) {
+            $assocDateData = json_decode($assocName->assoc_date, true);
+            return $assocDateData;
+        })->toArray();
+    }
+    
+    private function getReferencesByType(string $type): array
+    {
+        $query = '$.bib[*] ? (@.type.id == "' . $type . '")';
+        
+        $referencesQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query(jsonb, ?) AS reference", [$query])
+            ->where('id', $this->id)
+            ->get();
+        
+        return $referencesQuery->map(function ($reference) {
+            $referenceData = json_decode($reference->reference, true);
+            
+            if (isset($referenceData['id'])) {
+                $ref = Reference::where('id', $referenceData['id'])->first();
+                if ($ref) {
+                    $referenceData['short_title'] = $ref->short_title;
+                    $referenceData['formatted_citation'] = $ref->formatted_citation;
+                }
+            }
+            
+            $referenceData['alt_shelf'] = $referenceData['alt_shelf'] ?? null;
+            $referenceData['range'] = $referenceData['range'] ?? null;
+            $referenceData['url'] = $referenceData['url'] ?? null;
+            $referenceData['note'] = $referenceData['note'] ?? [];
+            
+            return $referenceData;
+        })->toArray();
+    }
+    
+    public function getReferencesAttribute(): array
+    {
+        return $this->getReferencesByType('ref');
+    }
+    
+    public function getBibliographiesAttribute(): array
+    {
+        return $this->getReferencesByType('cite');
+    }
+    
+    
+    
     /**
      * Get the indexable data array for the model.
      *

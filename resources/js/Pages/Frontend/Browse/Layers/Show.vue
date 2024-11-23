@@ -218,33 +218,124 @@
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
           <h3>Ornamentation</h3>
-          <ul>
-            <li v-for="(ornamentNote, index) in layerJson.note.filter(note => note.type.id === 'ornamentation')" :key="index">
-              {{ ornamentNote.value }}
-            </li>
-          </ul>
+          <p v-for="(ornamentNote, index) in layerJson.note.filter(note => note.type.id === 'ornamentation')" :key="index">
+            {{ ornamentNote.value }}
+          </p>
+        </template>
+
+        <template v-if="layer.related_manuscripts && layer.related_manuscripts.length > 0">
+          <h3>Related Manuscripts</h3>
+          <div v-for="relatedMs in layer.related_manuscripts" class="mb-8">
+            <p>
+              <strong>
+                {{ relatedMs.label }} ({{ relatedMs.type.label }})
+              </strong>
+            </p>
+            <ul class="indent">
+              <li v-for="ms in relatedMs.mss">
+                <template v-if="getManuscriptLink(ms).hasLink">
+                  <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
+                    {{ ms.label }}
+                  </a>
+                </template>
+                <template v-else>
+                  {{ ms.label }}
+                </template>
+              </li>
+            </ul>
+            <p v-if="relatedMs.note && relatedMs.note.length > 0" class="indent">
+              {{ relatedMs.note.join(", ") }}
+            </p>
+          </div>
         </template>
 
         <template v-if="layerJson.note && (layerJson.note.filter(note => note.type.id === 'condition').length > 0 || layerJson.note.filter(note => note.type.id === 'general').length > 0)">
           <h3>Notes</h3>
 
           <template v-if="layerJson.note.filter(note => note.type.id === 'condition').length > 0">
-            <strong>Condition</strong>
-            <ul>
-              <li v-for="(conditionNote, index) in layerJson.note.filter(note => note.type.id === 'condition')" :key="index">
-                {{ conditionNote.value }}
-              </li>
-            </ul>
+            <p>
+              <strong>Condition</strong>
+            </p>
+            <p v-for="(conditionNote, index) in layerJson.note.filter(note => note.type.id === 'condition')" :key="index">
+              {{ conditionNote.value }}
+            </p>
           </template>
 
           <template v-if="layerJson.note.filter(note => note.type.id === 'general').length > 0">
-            <strong>General</strong>
-            <ul>
-              <li v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
-                {{ generalNote.value }}
-              </li>
-            </ul>
+            <p>
+              <strong>General</strong>
+            </p>
+            <p v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
+              {{ generalNote.value }}
+            </p>
           </template>
+        </template>
+
+        <template v-if="(layer.associated_names_from_root && layer.associated_names_from_root.length > 0)">
+          <p class="mt-8">
+            <strong>Associated Names, Places, Dates</strong>
+          </p>
+
+          <div v-for="name in layer.associated_names_from_root" class="mb-8">
+            <p>
+              <template v-if="name.role.label">{{ name.role.label }}: </template>{{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
+            </p>
+            <p v-if="name.note && name.note.length > 0" class="indent">
+              {{ name.note.join(", ") }}
+            </p>
+          </div>
+
+          <div v-for="place in layer.associated_places_from_root" class="mb-8">
+            <p>
+              {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
+            </p>
+            <p v-if="place.note && place.note.length > 0" class="indent">
+              {{ place.note.join(", ") }}
+            </p>
+          </div>
+
+          <div v-for="date in layer.associated_dates_from_root" class="mb-8">
+            <p>
+              {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
+            </p>
+            <p v-if="date.note && date.note.length > 0" class="indent">
+              {{ date.note.join(", ") }}
+            </p>
+          </div>
+        </template>
+
+        <template v-if="(layer.references && layer.references.length > 0) || (layer.bibliographies && layer.bibliographies.length > 0)">
+          <h3>Resources</h3>
+          <div v-if="layer.references && layer.references.length > 0" class="item-container">
+            <span class="item-label">References</span>
+            <div class="item-value">
+              <template v-for="reference in layer.references">
+                <p>
+                  {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
+                </p>
+                <p v-for="note in reference.note">
+                  {{ note }}
+                </p>
+              </template>
+            </div>
+          </div>
+
+          <div v-if="layer.bibliographies && layer.bibliographies.length > 0" class="item-container">
+            <span class="item-label">Bibliography</span>
+            <div class="item-value">
+              <template v-for="bibliography in layer.bibliographies">
+                <p>
+                  <a v-if="bibliography.url" :href="bibliography.url" target="_blank">
+                    {{ bibliography.formatted_citation }}
+                  </a>
+                  <span v-else>
+                {{ bibliography.formatted_citation }}
+              </span>
+                  <span v-if="bibliography.range">. {{ bibliography.range }}</span>
+                </p>
+              </template>
+            </div>
+          </div>
         </template>
 
         <h3>Preferred Citation</h3>
@@ -280,6 +371,7 @@
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
   import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
+  import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -328,10 +420,6 @@
     @apply mb-2 max-w-2xl xl:max-w-4xl
   }
 
-  .separator {
-    @apply border-b border-gray-300 my-8
-  }
-
   a {
     @apply text-black border-black border-b border-dotted hover:border-solid
   }
@@ -344,12 +432,8 @@
     @apply xl:text-lg
   }
 
-  .label {
-    @apply block md:inline-block text-sm uppercase font-medium w-56
-  }
-
   ul li {
-    @apply my-2 list-disc ml-4 text-base xl:text-lg
+    @apply my-2 text-base xl:text-lg
   }
 
   .item-container {
