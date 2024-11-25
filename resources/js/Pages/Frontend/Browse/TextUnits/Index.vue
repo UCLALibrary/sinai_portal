@@ -72,6 +72,24 @@
               </AisDynamicWidgets>
             </template>
           </AccordionCard>
+
+          <AccordionCard title="Names" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRefinementList
+                  :limit="maxFacetValuesToShow"
+                  attribute="names"
+                  @change="onFilter('names', $event.target.value)"
+                  class="max-h-48 overflow-y-scroll my-4">
+                  <template v-slot="{ items }">
+                    <div v-if="!items.length">
+                      No results found
+                    </div>
+                  </template>
+                </AisRefinementList>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
         </div>
       </div>
 
@@ -116,7 +134,7 @@
     AisStateResults,
     AisSearchBox,
     AisDynamicWidgets,
-    // AisRefinementList,
+    AisRefinementList,
     AisRangeInput,
     AisClearRefinements,
   } from 'vue-instantsearch/vue3/es'
@@ -137,7 +155,7 @@
   const { query, onKeyup, onReset } = useSearchBox(props.searchQuery)
 
   import useFacetFilters from '@/composables/search/useFacetFilters'
-  const { filters, /* onFilter, */ onClearFilters } = useFacetFilters()
+  const { filters, onFilter, onClearFilters } = useFacetFilters()
 
   const maxFacetValuesToShow = 100
 
@@ -158,7 +176,7 @@
     initialUiState.value = {
       [props.indexName]: {
         query: query.value,
-        // refinementList: filters.value,
+        refinementList: filters.value,
       }
     }
   })

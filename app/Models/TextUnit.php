@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use App\Traits\HasRelatedEntities;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TextUnit extends Model
 {
@@ -41,6 +42,73 @@ class TextUnit extends Model
             ],
         ],
     ];
+
+    /**
+     * Accessor to include related agents when the model is serialized.
+     *
+     * @return array
+     */
+    public function getRelatedAgentsAttribute(): array
+    {
+        $relatedCreators = $this->getConnectedAgentCreatorNames();
+        $relatedAgents = $this->getRelatedEntities(
+            'assoc_name',
+            Agent::class,
+            null,
+            function ($agent, $item) {
+                return [
+                    'id' => $agent->id,
+                    'as_written' => $item['as_written'] ?? null,
+                    'pref_name' => $agent->pref_name,
+                    'rel' => $item['rel'] ?? null,
+                    'role' => $item['role'] ?? null,
+                    'note' => $item['note'] ?? [],
+                ];
+            })->toArray();
+        
+        return array_merge($relatedCreators, $relatedAgents);
+    }
+
+    public function getConnectedAgentCreatorNames()
+    {
+        $query = "
+            WITH text_unit_works AS (
+                SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
+                FROM text_units AS tu
+                WHERE tu.jsonb ->> 'ark' = ?
+            ),
+            work_agents AS (
+                SELECT DISTINCT
+                    creator_elem ->> 'id' AS agent_ark,
+                    creator_elem -> 'role' ->> 'id' AS role_id,
+                    creator_elem -> 'role' ->> 'label' AS role_label
+                FROM works AS work
+                JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
+                JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem ON TRUE
+            )
+            SELECT DISTINCT agent.id, agent.jsonb ->> 'pref_name' AS pref_name,
+                work_agents.role_id, work_agents.role_label
+            FROM agents AS agent
+            JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
+        ";
+
+        $bindings = [
+            $this->ark,
+        ];
+
+        $results = DB::select($query, $bindings);
+
+        return array_map(function ($row) {
+            return [
+                'id' => $row->id,
+                'pref_name' => $row->pref_name,
+                'role' => [
+                    'id' => $row->role_id ?? null,
+                    'label' => $row->role_label ?? null,
+                ],
+            ];
+        }, $results);
+    }
 
     /**
      * Get the parent layers.
@@ -86,6 +154,9 @@ class TextUnit extends Model
                 $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
             }
         }
+
+        // get all creators attached to this layer
+        $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
 
         /*
          * Apply default transformations if desired.
