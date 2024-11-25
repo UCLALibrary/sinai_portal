@@ -71,7 +71,6 @@
     title: { type: String, required: true },
     last_modified: { type: String, required: true },
     textUnit: { type: Object, required: true },
-    source: { type: String, required: true },
   })
 
   const textUnitJson = computed(() => {
