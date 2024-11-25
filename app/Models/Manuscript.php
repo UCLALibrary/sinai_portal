@@ -53,8 +53,11 @@ class Manuscript extends Model
     ];
     
     protected $appends = [
-        'related_agents',
-        /*'related_places',*/
+        'assoc_names',
+        // 'assoc_names_from_root',
+        'assoc_names_from_para',
+        'assoc_names_from_parts_para',
+        // 'related_places',
         'related_overtext_layers',
         'assoc_dates_overview',
         'assoc_dates_from_layers',
@@ -69,31 +72,110 @@ class Manuscript extends Model
         'related_text_units'
     ];
     
+
     /**
-     * Accessor to include related agents when the model is serialized.
+     * Returns top-level "assoc_name" objects, "assoc_name" objects from the top-level "para" 
+     * objects, and "assoc_name" objects from the "para" objects nested within "part" objects.
      *
      * @return array
      */
-    public function getRelatedAgentsAttribute(): array
+    public function getAssocNamesAttribute(): array
     {
-        $relatedCreators = $this->getConnectedAgentCreatorNames();
-        $relatedAgents = $this->getRelatedEntities(
-            'assoc_name',
-            Agent::class,
-            null,
-            function ($agent, $item) {
-                return [
-                    'id' => $agent->id,
-                    'as_written' => $item['as_written'] ?? null,
-                    'pref_name' => $agent->pref_name,
-                    'rel' => $item['rel'] ?? null,
-                    'role' => $item['role'] ?? null,
-                    'note' => $item['note'] ?? [],
-                ];
-            })->toArray();
+        $names = array_merge(
+            $this->getAssocNamesFromRootAttribute(),
+            $this->getAssocNamesFromPartsParaAttribute(),
+            $this->getAssocNamesFromParaAttribute(),
+        );
+        return $names;
+    }
+
+    /**
+     * Returns top-level "assoc_name" objects.
+     *
+     * @return array
+     */
+    public function getAssocNamesFromRootAttribute(): array
+    {
+        $query = "
+            SELECT
+                substring(agents.ark from '[^/]+$') AS id,
+                agents.jsonb->>'pref_name' AS pref_name,
+                assoc_name_elem->'role'->>'label' AS role_label
+            FROM
+                manuscripts
+                CROSS JOIN LATERAL jsonb_array_elements(jsonb->'assoc_name') AS assoc_name_elem
+                JOIN agents ON assoc_name_elem->>'id' = agents.ark
+            WHERE
+                assoc_name_elem IS NOT NULL
+            AND manuscripts.ark = :manuscript_ark;
+        ";
         
+        $bindings = [
+            'manuscript_ark' => $this->ark,
+        ];
+
+        return DB::select($query, $bindings);
+    }
+
+    /**
+     * Returns the "assoc_name" objects from the top-level "para" objects.
+     *
+     * @return array
+     */
+    public function getAssocNamesFromParaAttribute(): array
+    {
+        $query = "
+            SELECT
+                substring(agents.ark from '[^/]+$') AS id,
+                agents.jsonb->>'pref_name' AS pref_name,
+                assoc_name_elem->'role'->>'label' AS role_label,
+                assoc_name_elem->>'as_written' AS as_written,
+                assoc_name_elem->'note' AS note
+            FROM
+                manuscripts
+                CROSS JOIN LATERAL jsonb_array_elements(jsonb->'para') AS para_elem
+                LEFT JOIN LATERAL jsonb_array_elements(para_elem->'assoc_name') AS assoc_name_elem ON TRUE
+                JOIN agents ON assoc_name_elem->>'id' = agents.ark
+            WHERE
+                assoc_name_elem IS NOT NULL
+            AND manuscripts.ark = :manuscript_ark;
+        ";
         
-        return array_merge($relatedCreators, $relatedAgents);
+        $bindings = [
+            'manuscript_ark' => $this->ark,
+        ];
+
+        return DB::select($query, $bindings);
+    }
+
+    /**
+     * Returns the "assoc_name" objects from the "para" objects nested within "part" objects.
+     *
+     * @return array
+     */
+    public function getAssocNamesFromPartsParaAttribute(): array
+    {
+        $query = "
+            SELECT
+                substring(agents.ark from '[^/]+$') AS id,
+                agents.jsonb->>'pref_name' AS pref_name,
+                assoc_name_elem->'role'->>'label' AS role_label
+            FROM
+                manuscripts
+                CROSS JOIN LATERAL jsonb_array_elements(jsonb->'part') AS part_elem
+                LEFT JOIN LATERAL jsonb_array_elements(part_elem->'para') AS para_elem ON TRUE
+                LEFT JOIN LATERAL jsonb_array_elements(para_elem->'assoc_name') AS assoc_name_elem ON TRUE
+                JOIN agents ON assoc_name_elem->>'id' = agents.ark
+            WHERE
+                assoc_name_elem IS NOT NULL
+            AND manuscripts.ark = :manuscript_ark;
+        ";
+        
+        $bindings = [
+            'manuscript_ark' => $this->ark,
+        ];
+
+        return DB::select($query, $bindings);
     }
     
     public function getRelatedOvertextLayersAttribute(): array
@@ -444,58 +526,6 @@ class Manuscript extends Model
         return $textUnits->toArray();
     }
     
-    public function getConnectedAgentCreatorNames()
-    {
-        $manuscriptArk = $this->ark;
-        
-        $query = "
-        WITH manuscript_layers AS (
-            SELECT DISTINCT jsonb_array_elements(part -> 'layer') ->> 'id' AS layer_ark
-            FROM manuscripts
-            CROSS JOIN jsonb_array_elements(jsonb -> 'part') AS part
-            WHERE jsonb ->> 'ark' = :manuscriptArk
-        ),
-        layer_text_units AS (
-            SELECT DISTINCT jsonb_array_elements(layer.jsonb -> 'text_unit') ->> 'id' AS text_unit_ark
-            FROM layers AS layer
-            JOIN manuscript_layers ON layer.jsonb ->> 'ark' = manuscript_layers.layer_ark
-        ),
-        text_unit_works AS (
-            SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
-            FROM text_units AS tu
-            JOIN layer_text_units ON tu.jsonb ->> 'ark' = layer_text_units.text_unit_ark
-        ),
-					work_agents AS (
-							SELECT DISTINCT
-									creator_elem ->> 'id' AS agent_ark,
-									creator_elem -> 'role' ->> 'id' AS role_id,
-									creator_elem -> 'role' ->> 'label' AS role_label
-							FROM works AS work
-							JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
-							JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem ON TRUE
-					)
-        SELECT DISTINCT id, agent.jsonb ->> 'pref_name' AS pref_name
-        FROM agents AS agent
-        JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
-    ";
-        
-        $bindings = [
-            'manuscriptArk' => $manuscriptArk,
-        ];
-        
-        $results = DB::select($query, $bindings);
-        return array_map(function ($row) {
-            return [
-                'id' => $row->id,
-                'pref_name' => $row->pref_name,
-                'role' => [
-                    'id' => $row->role_id ?? null,
-                    'label' => $row->role_label ?? null
-                ],
-            ];
-        }, $results);
-    }
-    
     /**
      * Get the indexable data array for the model.
      *
@@ -539,8 +569,8 @@ class Manuscript extends Model
             }
         }
         
-        // get all creators attached to this manuscript
-        $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
+        // get all the associated names
+        $array['names'] = collect($this->getAssocNamesAttribute())->pluck('pref_name');
 
         // get dates attached to this manuscript for display in list view
         $array['dates'] = $this->assoc_dates_overview;

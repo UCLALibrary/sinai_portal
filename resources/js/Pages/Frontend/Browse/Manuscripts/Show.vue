@@ -433,17 +433,17 @@
           </ul>
         </template>
 
-        <template v-if="(manuscript.related_agents && manuscript.related_agents.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
+        <template v-if="(manuscript.assoc_names_from_para && manuscript.assoc_names_from_para.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
           <p class="mt-8">
             <strong>Associated Names, Places, Dates</strong>
           </p>
 
-          <div v-for="relatedAgent in manuscript.related_agents" class="mb-8">
+          <div v-for="assocName in manuscript.assoc_names_from_para" class="mb-8">
             <p>
-              <template v-if="relatedAgent.role.label">{{ relatedAgent.role.label }}: </template>{{ [relatedAgent.as_written, relatedAgent.pref_name].filter(Boolean).join(' | ') }}
+              <template v-if="assocName.role_label">{{ assocName.role_label }}: </template>{{ [assocName.as_written, assocName.pref_name].filter(Boolean).join(' | ') }}
             </p>
-            <p v-if="relatedAgent.note && relatedAgent.note.length > 0" class="indent">
-              {{ relatedAgent.note.join(", ") }}
+            <p v-if="assocName.note" class="indent">
+              {{ JSON.parse(assocName.note).join(', ') }}
             </p>
           </div>
 
@@ -559,14 +559,14 @@
           </ul>
         </template>
 
-        <template v-if="manuscript.related_agents && manuscript.related_agents.length > 0">
+        <template v-if="manuscript.assoc_names && manuscript.assoc_names.length > 0">
           <h3>Names</h3>
           <ul>
-            <li v-for="relatedAgent in manuscript.related_agents" :key="relatedAgent.id">
-              <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
-                {{ relatedAgent.pref_name }}
+            <li v-for="assocName in manuscript.assoc_names" :key="assocName.id">
+              <Link :href="route('frontend.agents.show', { agent: assocName.id })">
+                {{ assocName.pref_name }}
               </Link>
-              <span class="ml-1" v-if="relatedAgent.rel">({{ relatedAgent.rel.label }})</span>
+              <span class="ml-1" v-if="assocName.rel">({{ assocName.rel.label }})</span>
             </li>
           </ul>
         </template>
