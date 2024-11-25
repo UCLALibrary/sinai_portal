@@ -240,7 +240,7 @@
   }
 
   a {
-    @apply text-black border-black border-b border-dotted hover:border-solid
+    @apply text-sinai-dark-blue
   }
 
   a.button {
