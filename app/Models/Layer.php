@@ -77,8 +77,8 @@ class Layer extends Model
                 $textUnitJson = json_decode($textUnitObject->json, true);
                 
                 return [
-                    'label' => $textUnitData['label'],
-                    'locus' => $textUnitData['locus'],
+                    'label' => $textUnitData['label'] ?? [],
+                    'locus' => $textUnitData['locus'] ?? [],
                     'lang' => $textUnitJson['lang'] ?? [],
                 ];
             }
