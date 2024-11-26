@@ -381,7 +381,7 @@
           </ul>
         </template>
 
-        <template v-if="layer.all_associated_places && layer.all_associated_places.length > 0">
+        <!-- <template v-if="layer.all_associated_places && layer.all_associated_places.length > 0">
           <h3>Places</h3>
           <ul>
             <li v-for="place in layer.all_associated_places">
@@ -390,7 +390,7 @@
               </Link>
             </li>
           </ul>
-        </template>
+        </template> -->
 
         <template v-if="layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0">
           <h3>Reconstructions</h3>
