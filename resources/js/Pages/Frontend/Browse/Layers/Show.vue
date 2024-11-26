@@ -392,6 +392,51 @@
           </ul>
         </template>
 
+        <template v-if="layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0">
+          <h3>Reconstructions</h3>
+          <template v-if="layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0">
+            <p>
+              <strong>Manuscripts</strong>
+            </p>
+            <ul>
+              <li v-for="manuscript in layer.reconstructed_manuscripts">
+                <Link :href="route('frontend.manuscripts.show', { manuscript: manuscript.id })">
+                  {{ manuscript.shelfmark }}
+                </Link>
+              </li>
+            </ul>
+          </template>
+        </template>
+
+        <template v-if="layer.related_manuscripts && layer.related_manuscripts.length > 0">
+          <h3>Related Manuscripts</h3>
+          <template v-for="relatedMs in layer.related_manuscripts">
+            <ul>
+              <li v-for="ms in relatedMs.mss">
+                <template v-if="getManuscriptLink(ms).hasLink">
+                  <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
+                    {{ ms.label }}
+                  </a>
+                </template>
+                <template v-else>
+                  {{ ms.label }}
+                </template>
+              </li>
+            </ul>
+          </template>
+        </template>
+
+        <template v-if="layerJson.features && layerJson.features.length > 0">
+          <h3>Keywords</h3>
+          <ul>
+            <li v-for="keyword in layerJson.features" :key="keyword.id">
+              <Link :href="`${route('frontend.layers.index')}?filters=${encodeURIComponent(JSON.stringify(['features:' + keyword.label]))}`">
+                {{ keyword.label }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
         <h3>Downloads</h3>
         <p>
           <a :href="downloadUrl" class="button" :download="fileName">&darr; JSON</a>

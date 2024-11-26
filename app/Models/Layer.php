@@ -62,7 +62,8 @@ class Layer extends Model
         'bibliographies',
         'works',
         'all_associated_names',
-        'all_associated_places'
+        'all_associated_places',
+        'reconstructed_manuscripts'
     ];
     
     public function getTextUnitsAttribute(): array
@@ -383,6 +384,25 @@ class Layer extends Model
     public function getAllAssociatedPlacesAttribute(): array
     {
         return $this->getAssociatedPlacesByQuery('$.**.assoc_place[*]');
+    }
+    
+    public function getReconstructedManuscriptsAttribute(): array
+    {
+        $manuscripts = DB::table('manuscripts')
+            ->select('id', 'ark', 'jsonb')
+            ->whereRaw("jsonb_extract_path_text(jsonb, 'reconstruction') = 'true'")
+            ->whereRaw("jsonb_path_exists(jsonb, '$.**.layer[*] ? (@.id == \"$this->ark\")')")
+            ->get();
+        
+        return $manuscripts->map(function ($manuscript) {
+            $manuscriptData = json_decode($manuscript->jsonb, true);
+            
+            return [
+                'id' => $manuscript->id,
+                'ark' => $manuscript->ark,
+                'shelfmark' => $manuscriptData['shelfmark'] ?? null,
+            ];
+        })->toArray();
     }
     
     /**
