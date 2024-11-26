@@ -47,7 +47,7 @@
           <h3>Writing and Hands</h3>
           <div v-for="(writing, writingIndex) in layerJson.writing" :key="writingIndex" class="mb-8">
             <p>
-              {{ writing.locus }}: {{ writing.script.map(script => script.label).join(', ') }}
+              <template v-if="writing.locus && writing.locus !== ''">{{ writing.locus }}: </template>{{ writing.script.map(script => script.label).join(', ') }}
             </p>
             <p v-if="writing.note && writing.note.length > 0">
               {{ writing.note.join(', ') }}
@@ -96,7 +96,7 @@
         <h3>Contents</h3>
         <template v-for="textUnit in layer.text_units">
           <p>
-            <strong>{{ textUnit.label }}; {{ textUnit.locus }}</strong>
+            <strong>{{ textUnit.label }}<template v-if="textUnit.locus && textUnit.locus !== ''">; {{ textUnit.locus }}</template></strong>
           </p>
           <div class="item-container">
             <span class="item-label">Languages</span>
@@ -348,11 +348,46 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
-        <template v-if="layerJson.text_unit && layerJson.text_unit.length > 0">
+        <template v-if="layer.text_units && layer.text_units.length > 0">
           <h3>Text units</h3>
           <ul>
-            <li v-for="textUnit in layerJson.text_unit" >
-              {{ textUnit.label }}
+            <li v-for="textUnit in layer.text_units">
+              <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
+                {{ textUnit.label }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="layer.works && layer.works.length > 0">
+          <h3>Works</h3>
+          <ul>
+            <li v-for="work in layer.works">
+              <Link :href="route('frontend.works.show', { work: work.id })">
+                {{ work.pref_title }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="layer.all_associated_names && layer.all_associated_names.length > 0">
+          <h3>Names</h3>
+          <ul>
+            <li v-for="name in layer.all_associated_names">
+              <Link :href="route('frontend.agents.show', { agent: name.id })">
+                {{ name.pref_name }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="layer.all_associated_places && layer.all_associated_places.length > 0">
+          <h3>Places</h3>
+          <ul>
+            <li v-for="place in layer.all_associated_places">
+              <Link :href="route('frontend.places.show', { place: place.id })">
+                {{ place.pref_name }}
+              </Link>
             </li>
           </ul>
         </template>

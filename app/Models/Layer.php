@@ -12,10 +12,10 @@ use Laravel\Scout\Searchable;
 class Layer extends Model
 {
     use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
-
+    
     protected $keyType = 'string';
     public $incrementing = false;
-
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -27,7 +27,7 @@ class Layer extends Model
         'identifier',
         'json',
     ];
-
+    
     /**
      * Note: The order of the values must align with the order of the fields in the $fillable array.
      */
@@ -40,7 +40,7 @@ class Layer extends Model
             $json,
         ]);
     }
-
+    
     public static $config = [
         'index' => [
             'columns' => [
@@ -49,7 +49,7 @@ class Layer extends Model
             ],
         ],
     ];
-
+    
     protected $appends = [
         'text_units',
         'colophons',
@@ -60,6 +60,9 @@ class Layer extends Model
         'associated_dates_from_root',
         'references',
         'bibliographies',
+        'works',
+        'all_associated_names',
+        'all_associated_places'
     ];
     
     public function getTextUnitsAttribute(): array
@@ -77,16 +80,19 @@ class Layer extends Model
                 $textUnitJson = json_decode($textUnitObject->json, true);
                 
                 return [
-                    'label' => $textUnitData['label'] ?? [],
-                    'locus' => $textUnitData['locus'] ?? [],
+                    'id' => $textUnitObject->id,
+                    'ark' => $textUnitJson['ark'] ?? '',
+                    'label' => $textUnitJson['label'] ?? '',
+                    'locus' => $textUnitJson['locus'] ?? '',
                     'lang' => $textUnitJson['lang'] ?? [],
+                    'work_wit' => $textUnitJson['work_wit'] ?? [],
                 ];
             }
             
             return null;
         })->filter()->values()->toArray();
     }
-
+    
     /**
      * Accessor to include related agents when the model is serialized.
      *
@@ -113,43 +119,43 @@ class Layer extends Model
         
         return array_merge($relatedCreators, $relatedAgents);
     }
-
+    
     public function getConnectedAgentCreatorNames()
     {
         $layerArk = $this->ark;
         
         $query = "
-            WITH layer_text_units AS (
-                SELECT DISTINCT jsonb_array_elements(layer.jsonb -> 'text_unit') ->> 'id' AS text_unit_ark
-                FROM layers AS layer
-                WHERE layer.jsonb ->> 'ark' = ?
-            ),
-            text_unit_works AS (
-                SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
-                FROM text_units AS tu
-                JOIN layer_text_units ON tu.jsonb ->> 'ark' = layer_text_units.text_unit_ark
-            ),
-            work_agents AS (
-                SELECT DISTINCT
-                    creator_elem ->> 'id' AS agent_ark,
-                    creator_elem -> 'role' ->> 'id' AS role_id,
-                    creator_elem -> 'role' ->> 'label' AS role_label
-                FROM works AS work
-                JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
-                JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem ON TRUE
-            )
-            SELECT DISTINCT agent.id, agent.jsonb ->> 'pref_name' AS pref_name,
-                work_agents.role_id, work_agents.role_label
-            FROM agents AS agent
-            JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
-            ";
-
+        WITH layer_text_units AS (
+            SELECT DISTINCT jsonb_array_elements(layer.jsonb -> 'text_unit') ->> 'id' AS text_unit_ark
+            FROM layers AS layer
+            WHERE layer.jsonb ->> 'ark' = ?
+        ),
+        text_unit_works AS (
+            SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
+            FROM text_units AS tu
+            JOIN layer_text_units ON tu.jsonb ->> 'ark' = layer_text_units.text_unit_ark
+        ),
+        work_agents AS (
+            SELECT DISTINCT
+                creator_elem ->> 'id' AS agent_ark,
+                creator_elem -> 'role' ->> 'id' AS role_id,
+                creator_elem -> 'role' ->> 'label' AS role_label
+            FROM works AS work
+            JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
+            JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem ON TRUE
+        )
+        SELECT DISTINCT agent.id, agent.jsonb ->> 'pref_name' AS pref_name,
+            work_agents.role_id, work_agents.role_label
+        FROM agents AS agent
+        JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
+        ";
+        
         $bindings = [
             $layerArk,
         ];
-
+        
         $results = DB::select($query, $bindings);
-
+        
         return array_map(function ($row) {
             return [
                 'id' => $row->id,
@@ -219,46 +225,70 @@ class Layer extends Model
         })->toArray();
     }
     
+    private function getAssociatedNamesByQuery(string $jsonPath): array
+    {
+        $associatedNamesQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query_array(jsonb, ?) AS assoc_names", [$jsonPath])
+            ->where('id', $this->id)
+            ->first();
+        
+        if (!$associatedNamesQuery || empty($associatedNamesQuery->assoc_names)) {
+            return [];
+        }
+        
+        $associatedNames = json_decode($associatedNamesQuery->assoc_names, true);
+        
+        $processedNames = array_map(function ($assocName) {
+            $agent = isset($assocName['id']) ? Agent::where('ark', $assocName['id'])->first() : null;
+            return [
+                'id' => $agent ? $agent->id : null,
+                'ark' => $agent ? $agent->ark : null,
+                'pref_name' => $agent ? $agent->pref_name : null,
+                'as_written' => $assocName['as_written'] ?? null,
+                'role' => $assocName['role'] ?? null,
+                'note' => $assocName['note'] ?? [],
+            ];
+        }, $associatedNames);
+        
+        return array_values(array_unique($processedNames, SORT_REGULAR));
+    }
+    
     public function getAssociatedNamesFromRootAttribute(): array
     {
-        $associatedNames = DB::table('layers')
-            ->selectRaw("jsonb_path_query(jsonb, '$.assoc_name[*]') AS assoc_name")
+        return $this->getAssociatedNamesByQuery('$.assoc_name[*]');
+    }
+    
+    private function getAssociatedPlacesByQuery(string $jsonPath): array
+    {
+        $associatedPlacesQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query_array(jsonb, ?) AS assoc_places", [$jsonPath])
             ->where('id', $this->id)
-            ->get();
+            ->first();
         
-        return $associatedNames->map(function ($assocName) {
-            $assocNameData = json_decode($assocName->assoc_name, true);
-            
-            if (isset($assocNameData['id'])) {
-                $agent = Agent::where('ark', $assocNameData['id'])->first();
-                $assocNameData['pref_name'] = $agent ? $agent->pref_name : null;
-            } else {
-                $assocNameData['pref_name'] = null;
-            }
-            
-            return $assocNameData;
-        })->toArray();
+        if (!$associatedPlacesQuery || empty($associatedPlacesQuery->assoc_places)) {
+            return [];
+        }
+        
+        $associatedPlaces = json_decode($associatedPlacesQuery->assoc_places, true);
+        
+        $processedPlaces = array_map(function ($assocPlace) {
+            $place = isset($assocPlace['id']) ? Place::where('ark', $assocPlace['id'])->first() : null;
+            return [
+                'id' => $place ? $place->id : null, // The database ID of the place
+                'ark' => $place ? $place->ark : null, // The ARK from the Place table
+                'pref_name' => $place ? $place->pref_name : null, // Preferred name from the Place table
+                'as_written' => $assocPlace['as_written'] ?? null, // As-written value
+                'event' => $assocPlace['event'] ?? null, // Event data
+                'note' => $assocPlace['note'] ?? [], // Notes
+            ];
+        }, $associatedPlaces);
+        
+        return array_values(array_unique($processedPlaces, SORT_REGULAR));
     }
     
     public function getAssociatedPlacesFromRootAttribute(): array
     {
-        $associatedPlacesQuery = DB::table('layers')
-            ->selectRaw("jsonb_path_query(jsonb, '$.assoc_place[*]') AS assoc_place")
-            ->where('id', $this->id)
-            ->get();
-        
-        return $associatedPlacesQuery->map(function ($assocPlace) {
-            $assocPlaceData = json_decode($assocPlace->assoc_place, true);
-            
-            if (isset($assocPlaceData['id'])) {
-                $place = Place::where('ark', $assocPlaceData['id'])->first();
-                $assocPlaceData['pref_name'] = $place ? $place->pref_name : null;
-            } else {
-                $assocPlaceData['pref_name'] = null;
-            }
-            
-            return $assocPlaceData;
-        })->toArray();
+        return $this->getAssociatedPlacesByQuery('$.assoc_place[*]');
     }
     
     public function getAssociatedDatesFromRootAttribute(): array
@@ -313,7 +343,47 @@ class Layer extends Model
         return $this->getReferencesByType('cite');
     }
     
+    public function getWorksAttribute(): array
+    {
+        $textUnits = $this->getTextUnitsAttribute();
+        $works = [];
+        
+        foreach ($textUnits as $textUnit) {
+            if (isset($textUnit['work_wit']) && is_array($textUnit['work_wit'])) {
+                
+                foreach ($textUnit['work_wit'] as $workWit) {
+                    if (isset($workWit['work']['id'])) {
+                        
+                        $workArk = $workWit['work']['id'];
+                        $work = Work::where('ark', $workArk)->first();
+                        
+                        if ($work) {
+                            $workJson = json_decode($work->json, true);
+                            $works[] = [
+                                'id' => $work->id,
+                                'ark' => $work->ark,
+                                'pref_title' => $workJson['pref_title'] ?? null,
+                            ];
+                        }
+                        
+                    }
+                }
+                
+            }
+        }
+        
+        return $works;
+    }
     
+    public function getAllAssociatedNamesAttribute(): array
+    {
+        return $this->getAssociatedNamesByQuery('$.**.assoc_name[*]');
+    }
+    
+    public function getAllAssociatedPlacesAttribute(): array
+    {
+        return $this->getAssociatedPlacesByQuery('$.**.assoc_place[*]');
+    }
     
     /**
      * Get the indexable data array for the model.
@@ -324,24 +394,24 @@ class Layer extends Model
     {
         $array = $this->toArray();
         $data = $this->getJsonData();
-
+        
         // Source field (only manuscripts, not other layers)
         $array['source'] = $this->getSourceIdentifiers();
-
+        
         $array['ark'] = $this->ark ?? null;
         $array['identifier'] = $this->identifier ?? null;
         $array['extent'] = $data['extent'] ?? null;
         
         $array['state'] = isset($data['state']['label']) ? $data['state']['label'] : null;
-
+        
         // associated dates
         $array['dates'] = [];
         if (isset($data['assoc_date'])) {
-            foreach($data['assoc_date'] as $date) {
+            foreach ($data['assoc_date'] as $date) {
                 $array['dates'][] = isset($date['type']['id']) && $date['type']['id'] === 'origin'
                     ? ($date['value'] ?? null)
                     : null;
-
+                
                 $notBeforeValues = [];
                 $notAfterValues = [];
                 if (isset($date['type']['id']) && $date['type']['id'] === 'origin') {
@@ -349,53 +419,53 @@ class Layer extends Model
                     $notAfterValues[] = $date['iso']['not_after'] ?? null;
                 }
             }
-
+            
             // minimum date from the 'not_before' field from layers of type 'origin'
             $values = array_filter($notBeforeValues, fn($value) => $value !== null);
             $array['date_min'] = $values ? min(array_map('intval', $values)) : null;
-    
+            
             // maximum date from the 'not_after' field from layers of type 'origin'
             $values = array_filter($notAfterValues, fn($value) => $value !== null);
             $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
         }
-
+        
         // script
         $array['script'] = [];
-        foreach($data['writing'] as $writing) {
-            foreach($writing['script'] as $script) {
+        foreach ($data['writing'] as $writing) {
+            foreach ($writing['script'] as $script) {
                 $array['script'][] = isset($script['label']) ? $script['label'] : null;
             }
         }
-
+        
         // writing system
         $array['script'] = [];
-        foreach($data['writing'] as $writing) {
-            foreach($writing['script'] as $script) {
+        foreach ($data['writing'] as $writing) {
+            foreach ($writing['script'] as $script) {
                 $array['writing_system'][] = isset($script['writing_system']) ? $script['writing_system'] : null;
             }
         }
-
+        
         // features
         $array['features'] = [];
         if (isset($data['features'])) {
-            foreach($data['features'] as $feature) {
+            foreach ($data['features'] as $feature) {
                 $array['features'][] = isset($feature['label']) ? $feature['label'] : null;
             }
         }
-
+        
         // get all creators attached to this layer
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
-
+        
         /*
          * Apply default transformations if desired.
          *
          * https://www.algolia.com/doc/framework-integration/laravel/indexing/configure-searchable-data/?client=php#transformers
          */
         // $array = $this->transform($array);
-
+        
         return $array;
     }
-
+    
     /**
      * Get the source manuscripts' identifiers.
      *
@@ -404,14 +474,14 @@ class Layer extends Model
     public function getSourceIdentifiers(): ?string
     {
         $data = $this->getJsonData();
-
+        
         if (empty($data['parent'])) {
             return null;
         }
-
+        
         $sourceManuscripts = Manuscript::whereIn('ark', $data['parent'])->get();
         $identifiers = $sourceManuscripts->pluck('identifier')->toArray();
-
+        
         return !empty($identifiers) ? implode(', ', $identifiers) : null;
     }
 }
