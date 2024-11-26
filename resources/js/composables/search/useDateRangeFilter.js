@@ -1,4 +1,4 @@
-import { computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount } from 'vue'
 import useRangeFilters from '@/composables/search/useRangeFilters'
 
 export default function useDateRangeFilter(index) {
@@ -8,6 +8,8 @@ export default function useDateRangeFilter(index) {
     onRangeFilter,
     onClearRangeFilters,
   } = useRangeFilters()
+
+  const showDateRangeFilter = ref(false)
 
   const getMinMaxDateRangeValues = async () => {
     const results = await index.search('', {
@@ -27,18 +29,24 @@ export default function useDateRangeFilter(index) {
       }
     }
 
-    return {
-      date: [dateMin, dateMax]
-    }
+    return dateMin === Number.MAX_SAFE_INTEGER || dateMax === Number.MIN_SAFE_INTEGER
+      ? null
+      : { date: [dateMin, dateMax] }
   }
 
   onBeforeMount(async () => {
-    // set the min and max date range values from the 'date_min' and 'date_max' fields in the search index
-    minMaxRangeValues.value = await getMinMaxDateRangeValues()
+    // get the min and max date range values from the 'date_min' and 'date_max' fields in the search index
+    const minMaxDates = await getMinMaxDateRangeValues()
 
-    // initialize the date range values from the search index when no date filter has already been applied
-    if (rangeFilters.value && Object.keys(rangeFilters.value).length === 0) {
-      rangeFilters.value = { ...minMaxRangeValues.value }
+    if (minMaxDates) {
+      minMaxRangeValues.value = minMaxDates
+
+      // initialize the date range values from the search index when no date filter has already been applied
+      if (rangeFilters.value && Object.keys(rangeFilters.value).length === 0) {
+        rangeFilters.value = { ...minMaxRangeValues.value }
+      }
+
+      showDateRangeFilter.value = true
     }
   })
 
@@ -74,6 +82,7 @@ export default function useDateRangeFilter(index) {
   })
 
   return {
+    showDateRangeFilter,
     minMaxRangeValues,
     rangeFilters,
     onRangeFilter,

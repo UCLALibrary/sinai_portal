@@ -1,7 +1,7 @@
 <template>
   <FrontendLayout :title="title">
     <AisInstantSearch
-      v-if="initialUiState && minMaxRangeValues"
+      v-if="initialUiState"
       :index-name="indexName"
       :search-client="searchClient"
       :initial-ui-state="initialUiState"
@@ -67,7 +67,7 @@
             </template>
           </AccordionCard>
 
-          <AccordionCard title="Dates" :toggleable="false" class="accordion-item">
+          <AccordionCard v-if="showDateRangeFilter" title="Dates" :toggleable="false" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRangeInput
@@ -274,6 +274,7 @@
 
   import useDateRangeFilter from '@/composables/search/useDateRangeFilter'
   const {
+    showDateRangeFilter,
     minMaxRangeValues,
     rangeFilters,
     onRangeFilter,
