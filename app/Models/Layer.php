@@ -101,8 +101,7 @@ class Layer extends Model
      */
     public function getRelatedAgentsAttribute(): array
     {
-        $relatedCreators = $this->getConnectedAgentCreatorNames();
-        $relatedAgents = $this->getRelatedEntities(
+        return $this->getRelatedEntities(
             'assoc_name',
             Agent::class,
             null,
@@ -116,57 +115,6 @@ class Layer extends Model
                     'note' => $item['note'] ?? [],
                 ];
             })->toArray();
-        
-        
-        return array_merge($relatedCreators, $relatedAgents);
-    }
-    
-    public function getConnectedAgentCreatorNames()
-    {
-        $layerArk = $this->ark;
-        
-        $query = "
-        WITH layer_text_units AS (
-            SELECT DISTINCT jsonb_array_elements(layer.jsonb -> 'text_unit') ->> 'id' AS text_unit_ark
-            FROM layers AS layer
-            WHERE layer.jsonb ->> 'ark' = ?
-        ),
-        text_unit_works AS (
-            SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
-            FROM text_units AS tu
-            JOIN layer_text_units ON tu.jsonb ->> 'ark' = layer_text_units.text_unit_ark
-        ),
-        work_agents AS (
-            SELECT DISTINCT
-                creator_elem ->> 'id' AS agent_ark,
-                creator_elem -> 'role' ->> 'id' AS role_id,
-                creator_elem -> 'role' ->> 'label' AS role_label
-            FROM works AS work
-            JOIN text_unit_works ON work.jsonb ->> 'ark' = text_unit_works.work_ark
-            JOIN LATERAL jsonb_array_elements(work.jsonb -> 'creator') AS creator_elem ON TRUE
-        )
-        SELECT DISTINCT agent.id, agent.jsonb ->> 'pref_name' AS pref_name,
-            work_agents.role_id, work_agents.role_label
-        FROM agents AS agent
-        JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
-        ";
-        
-        $bindings = [
-            $layerArk,
-        ];
-        
-        $results = DB::select($query, $bindings);
-        
-        return array_map(function ($row) {
-            return [
-                'id' => $row->id,
-                'pref_name' => $row->pref_name,
-                'role' => [
-                    'id' => $row->role_id ?? null,
-                    'label' => $row->role_label ?? null,
-                ],
-            ];
-        }, $results);
     }
     
     private function getParaByType(string $type = null): array
