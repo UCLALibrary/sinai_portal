@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
+use App\Traits\RelatedLayers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Laravel\Scout\Searchable;
 
 class Manuscript extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedLayers;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -507,23 +508,7 @@ class Manuscript extends Model
     
     public function getRelatedTextUnitsAttribute(): array
     {
-        $jsonData = $this->getJsonData();
-        $layersJson = $jsonData['layer'] ?? [];
-        $layerArks = array_column($layersJson, 'id');
-        
-        $layers = Layer::whereIn('ark', $layerArks)->get();
-        
-        $textUnitsArk = [];
-        foreach ($layers as $layer) {
-            $layerJson = json_decode($layer->jsonb, true);
-            
-            foreach ($layerJson['text_unit'] as $textUnit) {
-                $textUnitsArk[] = $textUnit['id'];
-            }
-        }
-        
-        $textUnits = TextUnit::whereIn('ark', $textUnitsArk)->get();
-        return $textUnits->toArray();
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, 'strict $.**.layer[*]');
     }
     
     /**

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
+use App\Traits\RelatedTextUnits;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Laravel\Scout\Searchable;
 
 class Layer extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -68,30 +69,7 @@ class Layer extends Model
     
     public function getTextUnitsAttribute(): array
     {
-        $textUnitsQuery = DB::table('layers')
-            ->selectRaw("jsonb_path_query(jsonb, '$.text_unit[*]') AS text_unit")
-            ->where('id', $this->id)
-            ->get();
-        
-        return $textUnitsQuery->map(function ($textUnit) {
-            $textUnitData = json_decode($textUnit->text_unit, true);
-            $textUnitObject = TextUnit::where('ark', $textUnitData['id'])->first();
-            
-            if ($textUnitObject) {
-                $textUnitJson = json_decode($textUnitObject->json, true);
-                
-                return [
-                    'id' => $textUnitObject->id,
-                    'ark' => $textUnitJson['ark'] ?? '',
-                    'label' => $textUnitJson['label'] ?? '',
-                    'locus' => $textUnitJson['locus'] ?? '',
-                    'lang' => $textUnitJson['lang'] ?? [],
-                    'work_wit' => $textUnitJson['work_wit'] ?? [],
-                ];
-            }
-            
-            return null;
-        })->filter()->values()->toArray();
+        return $this->getRelatedTextUnits('layers', $this->id, '$.text_unit[*]');
     }
     
     /**

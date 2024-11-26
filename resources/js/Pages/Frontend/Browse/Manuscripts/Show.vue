@@ -551,11 +551,13 @@
         <template v-if="manuscript.related_text_units && manuscript.related_text_units.length > 0">
           <h3>Text Units</h3>
           <ul>
-            <li v-for="textUnit in manuscript.related_text_units">
-              <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
-                {{ textUnit.label }}
-              </Link>
-            </li>
+            <template v-for="layer in manuscript.related_text_units">
+              <li v-for="textUnit in layer.text_units">
+                <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
+                  {{ textUnit.label }}
+                </Link>
+              </li>
+            </template>
           </ul>
         </template>
 
