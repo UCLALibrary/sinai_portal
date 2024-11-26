@@ -369,23 +369,24 @@
 
         <template v-if="allRelatedMss.length > 0">
           <h3>Related Manuscripts</h3>
-            <div v-for="relatedMss in allRelatedMss" :key="relatedMss.label" class="mb-8">
-              <p>
-                <strong>
-                  {{ relatedMss.label }} ({{ relatedMss.type.label }})
-                </strong>
-              </p>
-              <ul class="indent">
-                <li v-for="ms in relatedMss.mss">
-                  <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
-                    {{ ms.label }}
-                  </a>
-                </li>
-              </ul>
-              <p v-if="relatedMss.note && relatedMss.note.length > 0" class="indent">
-                {{ relatedMss.note.join(", ") }}
-              </p>
-            </div>
+          <div v-for="relatedMss in allRelatedMss" :key="relatedMss.label" class="mb-8">
+            <p>
+              <strong>
+                {{ relatedMss.label }} ({{ relatedMss.type.label }})
+              </strong>
+            </p>
+            <p class="indent">
+              <template v-for="(ms, index) in relatedMss.mss">
+                <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
+                  {{ ms.label }}
+                </a>
+                <span v-if="index < relatedMss.mss.length - 1"> | </span>
+              </template>
+            </p>
+            <p v-if="relatedMss.note && relatedMss.note.length > 0" class="indent">
+              {{ relatedMss.note.join(", ") }}
+            </p>
+          </div>
         </template>
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
@@ -434,9 +435,7 @@
         </template>
 
         <template v-if="(manuscript.assoc_names_from_para && manuscript.assoc_names_from_para.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
-          <p class="mt-8">
-            <strong>Associated Names, Places, Dates</strong>
-          </p>
+          <h3>Associated Names, Places, Dates</h3>
 
           <div v-for="assocName in manuscript.assoc_names_from_para" class="mb-8">
             <p>
