@@ -71,10 +71,7 @@
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
                 <AisRangeInput
-                  v-if="rangeFilters"
                   attribute="date_min"
-                  :min="minMaxRangeValues.date[0]"
-                  :max="minMaxRangeValues.date[1]"
                   class="px-3 pt-10">
                   <template v-slot="{ currentRefinement, range, refine }">
                     <VRangeSlider
