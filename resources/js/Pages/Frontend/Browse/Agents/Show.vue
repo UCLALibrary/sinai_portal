@@ -5,10 +5,11 @@
         <h2>
           {{ agent.pref_name }}
         </h2>
-        <p v-if="agentJson.description && agentJson.description !== ''" class="mb-4">
-          {{ agentJson.description }}
+
+        <p v-if="agentJson.desc && agentJson.desc !== ''" class="italic">
+          {{ agentJson.desc }}
         </p>
-        
+
         <p v-if="agent.type && agent.type !== ''">
           <span class="label">Type</span>{{ agent.type }}
         </p>
@@ -177,7 +178,7 @@
 
 <style lang="postcss" scoped>
   h2 {
-    @apply text-2xl xl:text-3xl pb-8
+    @apply text-2xl xl:text-3xl pb-2
   }
 
   h3 {
