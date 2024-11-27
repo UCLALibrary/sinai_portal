@@ -254,7 +254,7 @@
 
                   <div v-if="para.assoc_place && para.assoc_place.length > 0">
                     <ul class="indent">
-                      <li v-for="place in para.assoc_place">
+                      <li v-for="place in para.assoc_place" class="indent">
                         {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
                         <span v-if="place.note && place.note.length > 0" class="indent">
                           {{ place.note.join('; ') }}
@@ -265,7 +265,7 @@
 
                   <div v-if="para.assoc_date && para.assoc_date.length > 0">
                     <ul class="indent">
-                      <li v-for="date in para.assoc_date">
+                      <li v-for="date in para.assoc_date" class="indent">
                         {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
                         <span v-if="date.note && date.note.length > 0" class="indent">
                           {{ date.note.join('; ') }}
@@ -323,7 +323,7 @@
 
               <div v-if="para.assoc_place && para.assoc_place.length > 0" class="mt-2">
                 <ul class="indent">
-                  <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
+                  <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex" class="indent">
                     {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
                     <span v-if="place.note && place.note.length > 0" class="indent">
                       {{ place.note.join('; ') }}
@@ -334,7 +334,7 @@
 
               <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mt-2">
                 <ul class="indent">
-                  <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
+                  <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex" class="indent">
                     {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
                     <span v-if="date.note && date.note.length > 0" class="indent">
                       {{ date.note.join('; ') }}
