@@ -201,6 +201,10 @@ class TextUnit extends Model
             ? $source[0]['shelfmark'] . ($source[0]['state_label'] ? ' (' . $source[0]['state_label'] . ')' : '')
             : '';
 
+        // language
+        $data = $this->getJsonData();
+        $array['language'] = $data['lang'] ? $data['lang'][0]['label'] : '';
+
         /*
          * Apply default transformations if desired.
          *

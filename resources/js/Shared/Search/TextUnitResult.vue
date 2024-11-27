@@ -10,6 +10,7 @@
       </h3>
 
       <p>
+        {{ result.language }}
       </p>
 
       <p>
