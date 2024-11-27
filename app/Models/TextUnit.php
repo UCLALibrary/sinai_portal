@@ -192,6 +192,8 @@ class TextUnit extends Model
             }
         }
 
+        $data = $this->getJsonData();
+
         // get all creators attached to this layer
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
 
@@ -202,8 +204,8 @@ class TextUnit extends Model
             : '';
 
         // language
-        $data = $this->getJsonData();
-        $array['language'] = $data['lang'] ? $data['lang'][0]['label'] : '';
+        $languages = array_column($data['lang'], 'label');
+        $array['language'] = implode(', ', $languages);
 
         /*
          * Apply default transformations if desired.
