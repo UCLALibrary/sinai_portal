@@ -44,6 +44,43 @@ class TextUnit extends Model
     ];
 
     /**
+     * Returns the "source" for the text unit, which consists of the state label of its parent 
+     * layer and the shelfmark of its parent layer's manuscript.
+     * 
+     * @return array
+     */
+    public function getSource(): array
+    {
+        $query = "
+            SELECT
+                l.jsonb->'state'->>'label' AS state_label,
+                m.jsonb->>'shelfmark' AS shelfmark
+            FROM text_units tu
+            JOIN LATERAL
+                jsonb_array_elements_text(tu.jsonb->'parent') AS tu_parent(ark)
+                ON TRUE
+            JOIN layers l ON l.jsonb->>'ark' = tu_parent.ark
+            JOIN LATERAL
+                jsonb_array_elements_text(l.jsonb->'parent') AS l_parent(ark)
+                ON TRUE
+            JOIN manuscripts m ON m.jsonb->>'ark' = l_parent.ark
+            WHERE m.jsonb->'type'->>'id' = 'manuscript'
+            AND tu.jsonb->>'ark' = :text_unit_ark;
+        ";
+        
+        $bindings = [
+            'text_unit_ark' => $this->ark,
+        ];
+
+        $rows = DB::select($query, $bindings);
+        $results = array_map(function($item) {
+            return (array) $item;
+        }, $rows);
+
+        return $results;
+    }
+
+    /**
      * Accessor to include related agents when the model is serialized.
      *
      * @return array
@@ -157,6 +194,12 @@ class TextUnit extends Model
 
         // get all creators attached to this layer
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
+
+        // get the source (i.e. state label from the parent layer and shelfmark from the parent parent's manuscript)
+        $source = $this->getSource();
+        $array['source'] = $source
+            ? $source[0]['shelfmark'] . ($source[0]['state_label'] ? ' (' . $source[0]['state_label'] . ')' : '')
+            : '';
 
         /*
          * Apply default transformations if desired.
