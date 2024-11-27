@@ -572,13 +572,14 @@
           </ul>
         </template>
 
-        <template v-if="partRelatedMss.length > 0">
+        <template v-if="allRelatedMss.length > 0">
           <h3>Related Manuscripts</h3>
           <ul>
-            <template v-for="relatedMss in partRelatedMss" :key="relatedMss.label">
+            <template v-for="relatedMss in allRelatedMss" :key="relatedMss.label">
               <li v-for="ms in relatedMss.mss">
                 <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
                   {{ ms.label }} ({{ relatedMss.type.label }})
+                  <span v-if="getManuscriptLink(ms).isExternal" class="text-xs absolute ml-1">↗</span>
                 </a>
               </li>
             </template>
