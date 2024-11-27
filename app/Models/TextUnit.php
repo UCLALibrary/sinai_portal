@@ -207,6 +207,19 @@ class TextUnit extends Model
         $languages = array_column($data['lang'], 'label');
         $array['language'] = implode(', ', $languages);
 
+        // genre (i.e. genre of a work within a text unit's work witnesses)
+        $genres = [];
+        foreach ($data['work_wit'] as $item) {
+            if (isset($item['work']['genre']) && is_array($item['work']['genre'])) {
+                foreach ($item['work']['genre'] as $genre) {
+                    if (isset($genre['label'])) {
+                        $genres[] = $genre['label'];
+                    }
+                }
+            }
+        }
+        $array['genre'] = implode(', ', $genres);
+
         /*
          * Apply default transformations if desired.
          *

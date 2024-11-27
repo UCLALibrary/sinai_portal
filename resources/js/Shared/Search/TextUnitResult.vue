@@ -14,6 +14,7 @@
       </p>
 
       <p>
+        {{ result.genre}}
       </p>
 
       <p class="text-sm">
