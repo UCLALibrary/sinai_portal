@@ -178,9 +178,7 @@
 
         
         <template v-if="hasUndertextObjects">
-          <p>
-            <strong>Undertext Objects</strong>
-          </p>
+          <h3>Undertext Objects</h3>
 
           <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
             <template v-for="(part) in manuscriptJson.part">
@@ -201,9 +199,7 @@
         </template>
 
         <template v-if="hasGuestContent">
-          <p>
-            <strong>Guest Content</strong>
-          </p>
+          <h3>Guest Content</h3>
 
           <template v-for="part in manuscriptJson.part">
             <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'guest').length > 0">
