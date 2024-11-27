@@ -389,13 +389,20 @@
           </div>
         </template>
 
-        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
+        <template v-if="manuscriptJson.note &&
+          (manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0 ||
+          manuscriptJson.note.filter(note => note.type.id === 'provenance').length > 0 ||
+          manuscriptJson.note.filter(note => note.type.id === 'condition').length > 0 ||
+          manuscriptJson.note.filter(note => note.type.id === 'general').length > 0)">
           <h3>Notes</h3>
+        </template>
+
+        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
           <p>
             <strong>Binding</strong>
           </p>
-          <ul>
-            <li v-for="(bindingNote) in manuscriptJson.note.filter(note => note.type.id === 'binding')">
+          <ul class="bulleted">
+            <li v-for="(bindingNote) in manuscriptJson.note.filter(note => note.type.id === 'binding')" class="list-disc">
               {{ bindingNote.value }}
             </li>
           </ul>
@@ -405,7 +412,7 @@
           <p>
             <strong>Provenance</strong>
           </p>
-          <ul>
+          <ul class="bulleted">
             <li v-for="(provenanceNote) in manuscriptJson.note.filter(note => note.type.id === 'provenance')">
               {{ provenanceNote.value }}
             </li>
@@ -416,7 +423,7 @@
           <p>
             <strong>Condition</strong>
           </p>
-          <ul>
+          <ul class="bulleted">
             <li v-for="(conditionNote) in manuscriptJson.note.filter(note => note.type.id === 'condition')">
               {{ conditionNote.value }}
             </li>
@@ -427,7 +434,7 @@
           <p>
             <strong>Other notes:</strong>
           </p>
-          <ul>
+          <ul class="bulleted">
             <li v-for="(generalNote) in manuscriptJson.note.filter(note => note.type.id === 'general')">
               {{ generalNote .value }}
             </li>
@@ -752,6 +759,10 @@
 
   ul li {
     @apply my-2 text-base xl:text-lg
+  }
+
+  ul.bulleted {
+    @apply list-disc ml-4
   }
 
   .item-container {
