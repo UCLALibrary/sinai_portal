@@ -100,6 +100,16 @@
             Related Manuscripts
           </Link>
         </p>
+        <p>
+          <Link :href="`${route('frontend.layers.index')}?filters=${encodeURIComponent(JSON.stringify(['names:' + agent.pref_name]))}`">
+            Related Layers
+          </Link>
+        </p>
+         <p>
+          <Link :href="`${route('frontend.text-units.index')}?filters=${encodeURIComponent(JSON.stringify(['names:' + agent.pref_name]))}`">
+            Related Text Units
+          </Link>
+        </p>
 
         <template v-if="agent.related_works && agent.related_works.length > 0">
           <h3>Related Works</h3>
