@@ -203,9 +203,8 @@ class TextUnit extends Model
             ? $source[0]['shelfmark'] . ($source[0]['state_label'] ? ' (' . $source[0]['state_label'] . ')' : '')
             : '';
 
-        // language
-        $languages = array_column($data['lang'], 'label');
-        $array['language'] = implode(', ', $languages);
+        // languages
+        $array['languages'] = array_column($data['lang'], 'label');
 
         // genre (i.e. genre of a work within a text unit's work witnesses)
         $genres = [];

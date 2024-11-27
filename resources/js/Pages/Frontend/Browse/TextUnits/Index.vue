@@ -49,6 +49,24 @@
         <img src="/img/algolia-logo-black.svg" alt="Algolia" class="w-14 opacity-60 self-end -mt-2">
 
         <div class="accordion-items">
+          <AccordionCard title="Language" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRefinementList
+                  :limit="maxFacetValuesToShow"
+                  attribute="languages"
+                  @change="onFilter('languages', $event.target.value)"
+                  class="max-h-48 overflow-y-scroll my-4">
+                  <template v-slot="{ items }">
+                    <div v-if="!items.length">
+                      No results found
+                    </div>
+                  </template>
+                </AisRefinementList>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
+
           <AccordionCard v-if="showDateRangeFilter" title="Dates" :toggleable="false" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">

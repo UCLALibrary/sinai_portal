@@ -10,7 +10,7 @@
       </h3>
 
       <p>
-        {{ result.language }}
+        {{ result.languages.join(', ') }}
       </p>
 
       <p>
