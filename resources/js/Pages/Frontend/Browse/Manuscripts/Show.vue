@@ -235,9 +235,11 @@
                   <p v-if="para.as_written" class="indent">
                     Transcription: {{ para.as_written }}
                   </p>
-                  <p v-if="para.translation && para.translation.length > 0" class="indent">
-                    Translation: {{ para.translation.join('; ') }}
-                  </p>
+                  <template v-if="para.translation && para.translation.length > 0">
+                    <p v-for="translation in para.translation" class="indent">
+                      Translation: {{ translation }}
+                    </p>
+                  </template>
 
                   <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent">
                     <strong>Associated Names, Places, Dates</strong>
