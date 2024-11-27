@@ -182,9 +182,7 @@ class Agent extends Model
             return [
                 'id' => $agent->id,
                 'pref_name' => $agent->pref_name,
-                'rel' => [
-                    $item['rel'] ?? null
-                ],
+                'rel' => $item['rel'] ?? null,
             ];
         })->toArray();
     }
