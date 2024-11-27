@@ -178,9 +178,7 @@
 
         
         <template v-if="hasUndertextObjects">
-          <p>
-            <strong>Undertext Objects</strong>
-          </p>
+          <h3>Undertext Objects</h3>
 
           <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
             <template v-for="(part) in manuscriptJson.part">
@@ -201,9 +199,7 @@
         </template>
 
         <template v-if="hasGuestContent">
-          <p>
-            <strong>Guest Content</strong>
-          </p>
+          <h3>Guest Content</h3>
 
           <template v-for="part in manuscriptJson.part">
             <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'guest').length > 0">
@@ -235,17 +231,19 @@
                   <p v-if="para.as_written" class="indent">
                     Transcription: {{ para.as_written }}
                   </p>
-                  <p v-if="para.translation && para.translation.length > 0" class="indent">
-                    Translation: {{ para.translation.join('; ') }}
-                  </p>
+                  <template v-if="para.translation && para.translation.length > 0">
+                    <p v-for="translation in para.translation" class="indent">
+                      Translation: {{ translation }}
+                    </p>
+                  </template>
 
-                  <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent">
-                    <strong>Associated Names, Places, Dates</strong>
+                  <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent font-medium italic">
+                    Associated Names, Places, Dates
                   </p>
 
                   <div v-if="para.assoc_name && para.assoc_name.length > 0">
                     <ul class="indent">
-                      <li v-for="name in para.assoc_name">
+                      <li v-for="name in para.assoc_name" class="indent">
                         {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
                         <span v-if="name.note && name.note.length > 0" class="indent">
                           {{ name.note.join('; ') }}
@@ -256,7 +254,7 @@
 
                   <div v-if="para.assoc_place && para.assoc_place.length > 0">
                     <ul class="indent">
-                      <li v-for="place in para.assoc_place">
+                      <li v-for="place in para.assoc_place" class="indent">
                         {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
                         <span v-if="place.note && place.note.length > 0" class="indent">
                           {{ place.note.join('; ') }}
@@ -267,7 +265,7 @@
 
                   <div v-if="para.assoc_date && para.assoc_date.length > 0">
                     <ul class="indent">
-                      <li v-for="date in para.assoc_date">
+                      <li v-for="date in para.assoc_date" class="indent">
                         {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
                         <span v-if="date.note && date.note.length > 0" class="indent">
                           {{ date.note.join('; ') }}
@@ -276,14 +274,15 @@
                     </ul>
                   </div>
 
-                  <template v-if="para.note && para.note.length > 0" class="indent">
-                    <p class="indent">
-                      <strong>Notes</strong>
-                    </p>
-
-                    <p class="indent">
-                      {{ para.note.join('; ') }}
-                    </p>
+                  <template v-if="para.note && para.note.length > 0">
+                    <div class="indent">
+                      <p class="font-medium italic">
+                        Notes
+                      </p>
+                      <p class="indent">
+                        {{ para.note.join('; ') }}
+                      </p>
+                    </div>
                   </template>
                 </div>
               </template>
@@ -307,13 +306,13 @@
                 </p>
               </template>
 
-              <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent">
-                <strong>Associated Names, Places, Dates</strong>
+              <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent font-medium italic">
+                Associated Names, Places, Dates
               </p>
 
               <template v-if="para.assoc_name && para.assoc_name.length > 0">
                 <ul class="indent">
-                  <li v-for="name in para.assoc_name">
+                  <li v-for="name in para.assoc_name" class="indent">
                     {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
                     <span v-if="name.note && name.note.length > 0" class="indent">
                       {{ name.note.join('; ') }}
@@ -324,7 +323,7 @@
 
               <div v-if="para.assoc_place && para.assoc_place.length > 0" class="mt-2">
                 <ul class="indent">
-                  <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex">
+                  <li v-for="(place, placeIndex) in para.assoc_place" :key="placeIndex" class="indent">
                     {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
                     <span v-if="place.note && place.note.length > 0" class="indent">
                       {{ place.note.join('; ') }}
@@ -335,7 +334,7 @@
 
               <div v-if="para.assoc_date && para.assoc_date.length > 0" class="mt-2">
                 <ul class="indent">
-                  <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex">
+                  <li v-for="(date, dateIndex) in para.assoc_date" :key="dateIndex" class="indent">
                     {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
                     <span v-if="date.note && date.note.length > 0" class="indent">
                       {{ date.note.join('; ') }}
@@ -345,14 +344,14 @@
               </div>
 
               <template v-if="para.note && para.note.length > 0">
-                <p class="indent">
-                  <strong>
+                <div class="indent">
+                  <p class="font-medium italic">
                     Notes
-                  </strong>
-                </p>
-                <p class="indent">
-                  {{ para.note.join('; ') }}
-                </p>
+                  </p>
+                  <p class="indent">
+                    {{ para.note.join('; ') }}
+                  </p>
+                </div>
               </template>
             </div>
           </template>
@@ -389,13 +388,20 @@
           </div>
         </template>
 
-        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
+        <template v-if="manuscriptJson.note &&
+          (manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0 ||
+          manuscriptJson.note.filter(note => note.type.id === 'provenance').length > 0 ||
+          manuscriptJson.note.filter(note => note.type.id === 'condition').length > 0 ||
+          manuscriptJson.note.filter(note => note.type.id === 'general').length > 0)">
           <h3>Notes</h3>
+        </template>
+
+        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'binding').length > 0">
           <p>
             <strong>Binding</strong>
           </p>
-          <ul>
-            <li v-for="(bindingNote) in manuscriptJson.note.filter(note => note.type.id === 'binding')">
+          <ul class="bulleted">
+            <li v-for="(bindingNote) in manuscriptJson.note.filter(note => note.type.id === 'binding')" class="list-disc">
               {{ bindingNote.value }}
             </li>
           </ul>
@@ -405,7 +411,7 @@
           <p>
             <strong>Provenance</strong>
           </p>
-          <ul>
+          <ul class="bulleted">
             <li v-for="(provenanceNote) in manuscriptJson.note.filter(note => note.type.id === 'provenance')">
               {{ provenanceNote.value }}
             </li>
@@ -416,7 +422,7 @@
           <p>
             <strong>Condition</strong>
           </p>
-          <ul>
+          <ul class="bulleted">
             <li v-for="(conditionNote) in manuscriptJson.note.filter(note => note.type.id === 'condition')">
               {{ conditionNote.value }}
             </li>
@@ -427,7 +433,7 @@
           <p>
             <strong>Other notes:</strong>
           </p>
-          <ul>
+          <ul class="bulleted">
             <li v-for="(generalNote) in manuscriptJson.note.filter(note => note.type.id === 'general')">
               {{ generalNote .value }}
             </li>
@@ -472,9 +478,12 @@
             <template v-for="reference in manuscript.related_references">
               <p>
                 {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
-              </p>
-              <p v-for="note in reference.note">
-                {{ note }}
+                <template v-if="reference.note && reference.note.length > 0">
+                  <br>
+                  <template v-for="note in reference.note">
+                    {{ note }}<br>
+                  </template>
+                </template>
               </p>
             </template>
           </div>
@@ -572,13 +581,14 @@
           </ul>
         </template>
 
-        <template v-if="partRelatedMss.length > 0">
+        <template v-if="allRelatedMss.length > 0">
           <h3>Related Manuscripts</h3>
           <ul>
-            <template v-for="relatedMss in partRelatedMss" :key="relatedMss.label">
+            <template v-for="relatedMss in allRelatedMss" :key="relatedMss.label">
               <li v-for="ms in relatedMss.mss">
                 <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
                   {{ ms.label }} ({{ relatedMss.type.label }})
+                  <span v-if="getManuscriptLink(ms).isExternal" class="text-xs absolute ml-1">↗</span>
                 </a>
               </li>
             </template>
@@ -751,6 +761,10 @@
 
   ul li {
     @apply my-2 text-base xl:text-lg
+  }
+
+  ul.bulleted {
+    @apply list-disc ml-4
   }
 
   .item-container {

@@ -256,18 +256,22 @@
             <p>
               <strong>Condition</strong>
             </p>
-            <p v-for="(conditionNote, index) in layerJson.note.filter(note => note.type.id === 'condition')" :key="index">
-              {{ conditionNote.value }}
-            </p>
+            <ul class="bulleted">
+              <li v-for="(conditionNote, index) in layerJson.note.filter(note => note.type.id === 'condition')" :key="index">
+                {{ conditionNote.value }}
+              </li>
+            </ul>
           </template>
 
           <template v-if="layerJson.note.filter(note => note.type.id === 'general').length > 0">
             <p>
               <strong>General</strong>
             </p>
-            <p v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
-              {{ generalNote.value }}
-            </p>
+            <ul class="bulleted">
+              <li v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
+                {{ generalNote.value }}
+              </li>
+            </ul>
           </template>
         </template>
 
@@ -514,6 +518,10 @@
 
   ul li {
     @apply my-2 text-base xl:text-lg
+  }
+
+  ul.bulleted {
+    @apply list-disc ml-4
   }
 
   .item-container {
