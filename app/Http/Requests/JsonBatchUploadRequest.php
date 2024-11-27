@@ -31,8 +31,6 @@ class JsonBatchUploadRequest extends FormRequest
 
             'files.*' => [
                 'file',                         // ensure the field is a valid file
-                'mimes:json',                   // ensure the file contents match the mime type from the file extension
-                'mimetypes:application/json',   // ensure the file contents match the explicit mime type
             ],
         ];
     }
