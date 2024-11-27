@@ -26,7 +26,7 @@
           </p>
         </div>
 
-        <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
+        <div v-if="shelfmarkVariants && shelfmarkVariants !== ''" class="item-container">
           <span class="item-label">Shelfmark variants</span>
           <p class="item-value">
             {{ shelfmarkVariants }}
@@ -652,12 +652,10 @@
 
   const shelfmarkVariants = computed(() => {
     return props.manuscript.related_references
-        .map(reference => reference.alt_shelf
-            ? `${reference.short_title} (${reference.alt_shelf})`
-            : reference.short_title)
+        .filter(reference => reference.alt_shelf)
+        .map(reference => `${reference.alt_shelf} (${reference.short_title})`)
         .join(', ');
   });
-
 
   const primaryLanguage = computed(() => {
     return props.manuscript.related_overtext_layers
