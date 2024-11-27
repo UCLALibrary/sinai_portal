@@ -477,9 +477,12 @@
             <template v-for="reference in manuscript.related_references">
               <p>
                 {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
-              </p>
-              <p v-for="note in reference.note">
-                {{ note }}
+                <template v-if="reference.note && reference.note.length > 0">
+                  <br>
+                  <template v-for="note in reference.note">
+                    {{ note }}<br>
+                  </template>
+                </template>
               </p>
             </template>
           </div>
