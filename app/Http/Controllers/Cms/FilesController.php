@@ -23,7 +23,7 @@ class FilesController extends Controller
             $json = $file->get();
 
             // get the model class using the singular version of the resource name
-            $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+            $modelClass = '\\App\\Models\\' . Str::studly(Str::singular($resourceName));
 
             // validate the json data against the json schema
             $result = (new Validator())->validate(json_decode($json), json_decode($modelClass::$schema));
@@ -68,7 +68,7 @@ class FilesController extends Controller
             $json = $file->get();
 
             // get the model class using the singular version of the resource name
-            $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+            $modelClass = '\\App\\Models\\' . Str::studly(Str::singular($resourceName));
 
             // validate the json data against the json schema
             $result = (new Validator())->validate(json_decode($json), json_decode($modelClass::$schema));
@@ -114,7 +114,7 @@ class FilesController extends Controller
                 $json = $file->get();
 
                 // get the model class using the singular version of the resource name
-                $resourceType = ucfirst(Str::singular($resourceName));
+                $resourceType = Str::studly(Str::singular($resourceName));
                 $modelClass = '\\App\\Models\\' . $resourceType;
 
                 // validate the json data against the json schema

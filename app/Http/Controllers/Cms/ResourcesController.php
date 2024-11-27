@@ -16,7 +16,7 @@ class ResourcesController extends Controller
      */
     public function index(Request $request, string $resourceName)
     {
-        $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+        $modelClass = '\\App\\Models\\' . Str::studly(Str::singular($resourceName));
 
         if (!$request->inertia() && $request->expectsJson()) {
             // return json response if request is not an Inertia request
@@ -24,7 +24,7 @@ class ResourcesController extends Controller
         }
 
         return Inertia::render('Resources/Index', [
-            'title' => ucfirst($resourceName),
+            'title' => ucwords(str_replace('-', ' ', $resourceName)),
             'resources' => $modelClass::orderBy('updated_at', 'desc')->paginate(20),
             'config' => $modelClass::$config,
         ]);   
@@ -35,11 +35,11 @@ class ResourcesController extends Controller
      */
     public function create(string $resourceName)
     {
-        $resourceType = ucfirst(Str::singular($resourceName));
+        $resourceType = Str::studly(Str::singular($resourceName));
         $modelClass = '\\App\\Models\\' . $resourceType;
 
         return Inertia::render('Resources/Create', [
-            'title' => 'Create ' . $resourceType,
+            'title' => 'Create ' . ucwords(str_replace('-', ' ', Str::singular($resourceName))),
             'schema' => json_decode($modelClass::$createSchema ?? $modelClass::$schema),
             'uischema' => json_decode($modelClass::$createUiSchema ?? $modelClass::$uiSchema),
             'config' => $modelClass::$config,
@@ -53,7 +53,7 @@ class ResourcesController extends Controller
     {
         return DB::transaction(function () use ($request, $resourceName) {
             // get the model class using the singular version of the resource name
-            $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+            $modelClass = '\\App\\Models\\' . Str::studly(Str::singular($resourceName));
 
             // populate the fillable fields for the resource
             $fields = (new $modelClass)->getFillableFields($request->json, json_encode($request->json));
@@ -70,7 +70,7 @@ class ResourcesController extends Controller
      */
     public function edit(string $resourceName, string $resourceId)
     {
-        $resourceType = ucfirst(Str::singular($resourceName));
+        $resourceType = Str::studly(Str::singular($resourceName));
         $modelClass = '\\App\\Models\\' . $resourceType;
         $resource = $modelClass::findOrFail($resourceId);
 
@@ -86,7 +86,7 @@ class ResourcesController extends Controller
         }
 
         return Inertia::render('Resources/Edit', [
-            'title' => 'Edit ' . $resourceType . ($label ? ': ' . $label : ''),
+            'title' => 'Edit ' . ucwords(str_replace('-', ' ', Str::singular($resourceName))) . ($label ? ': ' . $label : ''),
             'schema' => json_decode($modelClass::$editSchema ?? $modelClass::$schema),
             'uischema' => json_decode($modelClass::$editUiSchema ?? $modelClass::$uiSchema),
             'data' => json_decode($resource->json) ?? $resource,
@@ -103,7 +103,7 @@ class ResourcesController extends Controller
     {
         return DB::transaction(function () use ($request, $resourceName, $resourceId) {
             // get the model class using the singular version of the resource name
-            $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($resourceName));
+            $modelClass = '\\App\\Models\\' . Str::studly(Str::singular($resourceName));
 
             // get the resource with the given id
             $resource = $modelClass::find($resourceId);

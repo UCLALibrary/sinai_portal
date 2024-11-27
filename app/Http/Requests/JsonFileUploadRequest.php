@@ -48,7 +48,7 @@ class JsonFileUploadRequest extends FormRequest
                 }
 
                 // get the model class using the singular version of the resource name
-                $modelClass = '\\App\\Models\\' . ucfirst(Str::singular($this->route('resourceName')));
+                $modelClass = '\\App\\Models\\' . Str::studly(Str::singular($this->route('resourceName')));
 
                 // ensure the resource has a valid json schema
                 if (!class_exists($modelClass)) {

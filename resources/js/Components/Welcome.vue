@@ -64,7 +64,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
             <div>
                 <div class="flex items-center">
                     <h2 class="text-xl font-semibold text-gray-900">
-                        <a href="'/cms/textunits">Text Units</a>
+                        <a href="'/cms/text-units">Text Units</a>
                     </h2>
                 </div>
 
@@ -73,7 +73,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
                 </p>
 
                 <p class="mt-2 text-sm">
-                    <a href="/cms/textunits" class="inline-flex items-center font-semibold text-sinai-red">
+                    <a href="/cms/text-units" class="inline-flex items-center font-semibold text-sinai-red">
                         Manage Text Units
 
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="ms-1 w-5 h-5 fill-sinai-red">
