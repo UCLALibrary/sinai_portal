@@ -106,7 +106,7 @@
           </Link>
         </p>
          <p>
-          <Link :href="`${route('frontend.text-units.index')}?filters=${encodeURIComponent(JSON.stringify(['names:' + agent.pref_name]))}`">
+          <Link :href="`${route('frontend.textunits.index')}?filters=${encodeURIComponent(JSON.stringify(['names:' + agent.pref_name]))}`">
             Related Text Units
           </Link>
         </p>
