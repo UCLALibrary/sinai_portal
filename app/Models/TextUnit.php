@@ -206,6 +206,39 @@ class TextUnit extends Model
         }, $results);
     }
 
+    public function getRelatedWorksAttribute() {
+        $query = "
+            WITH text_unit_works AS (
+                SELECT DISTINCT
+                    jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
+                FROM text_units AS tu
+                WHERE tu.jsonb ->> 'ark' = ?
+            )
+            SELECT
+                w.id,
+                w.jsonb ->> 'pref_title' AS pref_title,
+                w.jsonb ->> 'ark' AS work_ark
+            FROM works AS w
+            JOIN text_unit_works AS tuw ON w.jsonb ->> 'ark' = tuw.work_ark;
+        ";
+
+        $bindings = [
+            $this->ark,
+        ];
+
+        $results = DB::select($query, $bindings);
+
+        $relatedWorks = array_map(function ($row) {
+            return [
+                'id' => $row->id,
+                'pref_title' => $row->pref_title,
+                'work_ark' => $row->work_ark,
+            ];
+        }, $results);
+
+        return $relatedWorks;
+    }
+
     /**
      * Get the parent layers.
      *
@@ -268,6 +301,10 @@ class TextUnit extends Model
         // genres (i.e. genres embedded within works of its work witnesses -AND- genres within its referenced work)
         $genres = array_column($this->getGenres(), 'label');
         $array['genres'] = array_unique($genres);
+
+        // get the related works
+        $array['works'] = collect($this->getRelatedWorksAttribute())->pluck('pref_title')->unique()->values()->all();
+
 
         /*
          * Apply default transformations if desired.
