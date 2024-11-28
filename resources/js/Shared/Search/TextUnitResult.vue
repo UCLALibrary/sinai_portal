@@ -9,13 +9,17 @@
         {{ result.label }}
       </h3>
 
-      <p>
-        {{ result.languages.join(', ') }}
-      </p>
+      <div>
+        <p v-for="language in result.languages" :key="language">
+          {{ language }}
+        </p>
+      </div>
 
-      <p>
-        {{ result.genres.join(', ') }}
-      </p>
+      <div>
+        <p v-for="genre in result.genres" :key="genre">
+          {{ genre }}
+        </p>
+      </div>
 
       <p class="text-sm">
         {{ result.ark }}
