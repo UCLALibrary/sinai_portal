@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
+use App\Traits\RelatedLayers;
 use App\Traits\RelatedTextUnits;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Laravel\Scout\Searchable;
 
 class Layer extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits, RelatedLayers;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -64,7 +65,9 @@ class Layer extends Model
         'works',
         'all_associated_names',
         'all_associated_places',
-        'reconstructed_manuscripts'
+        'reconstructed_manuscripts',
+        'reconstructed_layers',
+        'reconstructed_from_layers'
     ];
     
     public function getTextUnitsAttribute(): array
@@ -148,7 +151,7 @@ class Layer extends Model
             ->get();
         
         return $relatedManuscripts->map(function ($relatedMs) {
-            return json_decode($relatedMs->related_ms, true); // Decode the entire JSON node
+            return json_decode($relatedMs->related_ms, true);
         })->toArray();
     }
     
@@ -201,12 +204,12 @@ class Layer extends Model
         $processedPlaces = array_map(function ($assocPlace) {
             $place = isset($assocPlace['id']) ? Place::where('ark', $assocPlace['id'])->first() : null;
             return [
-                'id' => $place ? $place->id : null, // The database ID of the place
-                'ark' => $place ? $place->ark : null, // The ARK from the Place table
-                'pref_name' => $place ? $place->pref_name : null, // Preferred name from the Place table
-                'as_written' => $assocPlace['as_written'] ?? null, // As-written value
-                'event' => $assocPlace['event'] ?? null, // Event data
-                'note' => $assocPlace['note'] ?? [], // Notes
+                'id' => $place ? $place->id : null,
+                'ark' => $place ? $place->ark : null,
+                'pref_name' => $place ? $place->pref_name : null,
+                'as_written' => $assocPlace['as_written'] ?? null,
+                'event' => $assocPlace['event'] ?? null,
+                'note' => $assocPlace['note'] ?? [],
             ];
         }, $associatedPlaces);
         
@@ -329,6 +332,27 @@ class Layer extends Model
                 'shelfmark' => $manuscriptData['shelfmark'] ?? null,
             ];
         })->toArray();
+    }
+    
+    public function getReconstructedLayersAttribute(): array {
+        $layersQuery = DB::table('layers')
+            ->select('ark')
+            ->whereRaw("jsonb_path_exists(jsonb, '$.reconstructed_from[*] ? (@ == \"$this->ark\")')")
+            ->pluck('ark')
+            ->toArray();
+        
+        return $this->getLayersByArks($layersQuery);
+    }
+    
+    public function getReconstructedFromLayersAttribute(): array {
+        $layersQuery = DB::table('layers')
+            ->selectRaw("jsonb_path_query_array(jsonb, '$.reconstructed_from[*]') AS reconstructed_from")
+            ->whereRaw("jsonb_extract_path_text(jsonb, 'reconstruction') = 'true'")
+            ->where('id', $this->id)
+            ->first();
+        
+        $reconstructedFromArks = $layersQuery ? json_decode($layersQuery->reconstructed_from, true) : [];
+        return $this->getLayersByArks($reconstructedFromArks);
     }
     
     /**

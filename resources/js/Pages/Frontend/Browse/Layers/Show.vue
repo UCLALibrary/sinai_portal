@@ -396,20 +396,49 @@
           </ul>
         </template> -->
 
-        <template v-if="layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0">
+        <template v-if="(layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0) ||
+          (layer.reconstructed_layers && layer.reconstructed_layers.length > 0) ||
+          (layer.reconstructed_from_layers && layer.reconstructed_from_layers.length > 0)">
           <h3>Reconstructions</h3>
-          <template v-if="layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0">
-            <p>
-              <strong>Manuscripts</strong>
-            </p>
-            <ul>
-              <li v-for="manuscript in layer.reconstructed_manuscripts">
-                <Link :href="route('frontend.manuscripts.show', { manuscript: manuscript.id })">
-                  {{ manuscript.shelfmark }}
-                </Link>
-              </li>
-            </ul>
-          </template>
+        </template>
+
+        <template v-if="layer.reconstructed_manuscripts && layer.reconstructed_manuscripts.length > 0">
+          <p>
+            <strong>Manuscripts</strong>
+          </p>
+          <ul>
+            <li v-for="manuscript in layer.reconstructed_manuscripts">
+              <Link :href="route('frontend.manuscripts.show', { manuscript: manuscript.id })">
+                {{ manuscript.shelfmark }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="layer.reconstructed_layers && layer.reconstructed_layers.length > 0">
+          <p>
+            <strong>Layers</strong>
+          </p>
+          <ul>
+            <li v-for="layer in layer.reconstructed_layers">
+              <Link :href="route('frontend.layers.show', { layer: layer.id })">
+                {{ layer.label }}
+              </Link>
+            </li>
+          </ul>
+        </template>
+
+        <template v-if="layer.reconstructed_from_layers && layer.reconstructed_from_layers.length > 0">
+          <p>
+            <strong>Reconstructed From</strong>
+          </p>
+          <ul>
+            <li v-for="layer in layer.reconstructed_from_layers">
+              <Link :href="route('frontend.layers.show', { layer: layer.id })">
+                {{ layer.label }}
+              </Link>
+            </li>
+          </ul>
         </template>
 
         <template v-if="layer.related_manuscripts && layer.related_manuscripts.length > 0">

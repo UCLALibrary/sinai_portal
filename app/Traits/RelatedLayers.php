@@ -9,8 +9,7 @@ trait RelatedLayers
 {
     use RelatedTextUnits;
     
-    public function getRelatedLayersWithTextUnits(string $table, string $id, string $jsonQuery): array
-    {
+    public function getRelatedLayersWithTextUnits(string $table, string $id, string $jsonQuery): array {
         $layersQuery = DB::table($table)
             ->selectRaw("jsonb_path_query(jsonb, '$jsonQuery') AS layer")
             ->where('id', $id)
@@ -24,14 +23,32 @@ trait RelatedLayers
                 return null;
             }
             
-            $layerJson = json_decode($layer->jsonb, true);
-            
-            return [
-                'id' => $layer->id,
-                'ark' => $layer->ark,
-                'label' => $layerJson['label'] ?? null,
-                'text_units' => $this->getRelatedTextUnits('layers', $layer->id, '$.text_unit[*]'),
-            ];
+            return $this->buildLayerData($layer);
         })->filter()->toArray();
+    }
+    
+    public function getLayersByArks(array $arks): array {
+        if (empty($arks)) {
+            return [];
+        }
+        
+        $layers = DB::table('layers')
+            ->whereIn('ark', $arks)
+            ->get();
+        
+        return $layers->map(function ($layer) {
+            return $this->buildLayerData($layer);
+        })->toArray();
+    }
+    
+    private function buildLayerData($layer): array {
+        $layerJson = json_decode($layer->jsonb, true);
+        
+        return [
+            'id' => $layer->id,
+            'ark' => $layer->ark,
+            'label' => $layerJson['label'] ?? null,
+            'text_units' => $this->getRelatedTextUnits('layers', $layer->id, '$.text_unit[*]'),
+        ];
     }
 }
