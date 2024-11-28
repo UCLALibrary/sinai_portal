@@ -14,7 +14,7 @@
       </p>
 
       <p>
-        {{ result.genre}}
+        {{ result.genres.join(', ') }}
       </p>
 
       <p class="text-sm">

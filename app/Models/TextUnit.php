@@ -81,6 +81,65 @@ class TextUnit extends Model
     }
 
     /**
+     * Returns the genres for the text unit that are embedded within works of its work 
+     * witnesses -AND- genres within its referenced work.
+     * 
+     * @return array
+     */
+    public function getGenres(): array
+    {
+        $query = "
+            -- Extracts genres from the embedded work metadata
+            SELECT
+                genre_elem.value->>'id' AS id,
+                genre_elem.value->>'label' AS label
+            FROM
+                text_units tu
+            -- unnest the 'work_wit' array from the text unit
+            JOIN LATERAL jsonb_array_elements(tu.jsonb->'work_wit') AS work_wit_elem(value) ON TRUE
+            -- access the 'work' object within each 'work_wit' element
+            JOIN LATERAL (SELECT work_wit_elem.value->'work' AS work_obj) AS work_lateral ON TRUE
+            -- unnest the 'genre' array within the 'work' object
+            JOIN LATERAL jsonb_array_elements(work_lateral.work_obj->'genre') AS genre_elem(value) ON TRUE
+            WHERE
+                tu.jsonb->>'ark' = :text_unit_ark
+
+            UNION ALL
+
+            -- Extracts genres from the referenced work
+            SELECT
+                genre_elem.value->>'id' AS id,
+                genre_elem.value->>'label' AS label
+            FROM
+                text_units tu
+            -- unnest the 'work_wit' array from the text unit
+            JOIN LATERAL jsonb_array_elements(tu.jsonb->'work_wit') AS work_wit_elem(value) ON TRUE
+            -- access the 'work' object within each 'work_wit' element
+            JOIN LATERAL (SELECT work_wit_elem.value->'work' AS work_obj) AS work_lateral ON TRUE
+            -- extract the 'id' from the 'work' object
+            JOIN LATERAL (SELECT work_lateral.work_obj->>'id' AS work_id_text) AS work_id_lateral ON TRUE
+            -- join with the 'work' table using the extracted 'id'
+            JOIN works w ON w.ark = work_id_lateral.work_id_text
+            -- unnest the 'genre' array from the 'work' data
+            JOIN LATERAL jsonb_array_elements(w.jsonb->'genre') AS genre_elem(value) ON TRUE
+            WHERE
+                tu.jsonb->>'ark' = :text_unit_ark;
+        ";
+
+        $bindings = [
+            'text_unit_ark' => $this->ark,
+        ];
+
+        $rows = DB::select($query, $bindings);
+        $results = array_map(function($item) {
+            return (array) $item;
+        }, $rows);
+
+        return $results;
+    }
+
+
+    /**
      * Accessor to include related agents when the model is serialized.
      *
      * @return array
@@ -206,18 +265,9 @@ class TextUnit extends Model
         // languages
         $array['languages'] = array_column($data['lang'], 'label');
 
-        // genre (i.e. genre of a work within a text unit's work witnesses)
-        $genres = [];
-        foreach ($data['work_wit'] as $item) {
-            if (isset($item['work']['genre']) && is_array($item['work']['genre'])) {
-                foreach ($item['work']['genre'] as $genre) {
-                    if (isset($genre['label'])) {
-                        $genres[] = $genre['label'];
-                    }
-                }
-            }
-        }
-        $array['genre'] = implode(', ', $genres);
+        // genres (i.e. genres embedded within works of its work witnesses -AND- genres within its referenced work)
+        $genres = array_column($this->getGenres(), 'label');
+        $array['genres'] = array_unique($genres);
 
         /*
          * Apply default transformations if desired.
