@@ -6,6 +6,7 @@ use App\Traits\JsonSchemas;
 use App\Traits\HasRelatedEntities;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 class Work extends Model
@@ -54,7 +55,7 @@ class Work extends Model
      *
      * @var array
      */
-    protected $appends = ['authors', 'related_works', 'related_agents', 'editions', 'translations', 'citations'];
+    protected $appends = ['authors', 'related_works', 'related_agents', 'editions', 'translations', 'citations', 'attested_titles'];
 
     /**
      * Accessor to include authors when the model is serialized.
@@ -117,6 +118,29 @@ class Work extends Model
                 'rel' => $item['rel'] ?? null,
             ];
         })->toArray();
+    }
+
+    public function getAttestedTitlesAttribute() 
+    {
+        $query = "
+            SELECT DISTINCT work_wit_elem ->> 'as_written' AS as_written
+            FROM text_units AS tu
+            JOIN LATERAL jsonb_array_elements(tu.jsonb -> 'work_wit') AS work_wit_elem ON TRUE
+            WHERE work_wit_elem -> 'work' ->> 'id' = ?
+                AND work_wit_elem ->> 'as_written' IS NOT NULL;
+        ";
+
+        $bindings = [
+            $this->ark,
+        ];
+
+        $results = DB::select($query, $bindings);
+
+        $attestedTitles = array_map(function ($row) {
+            return $row->as_written;
+        }, $results);
+
+        return $attestedTitles;
     }
 
     /**

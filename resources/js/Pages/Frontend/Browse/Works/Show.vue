@@ -99,6 +99,13 @@
           </ul>
         </template>
 
+        <template v-if="work.attested_titles && work.attested_titles.length > 0">
+          <h3>Attested Titles</h3>
+          <ul v-for="attested_title in work.attested_titles" :key="attested_title">
+            <li>{{ attested_title }}</li>
+          </ul>
+        </template>
+
         <template v-if="workJson.note && workJson.note.value !== ''">
           <h3>Notes</h3>
           <ul v-for="currentNote in workJson.note" :key="currentNote">
