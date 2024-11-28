@@ -142,6 +142,13 @@
       </section>
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+
+        <h3>Related Records</h3>
+        <p>
+          <Link :href="`${route('frontend.textunits.index')}?filters=${encodeURIComponent(JSON.stringify(['works:' + work.pref_title]))}`">
+            Related Text Units
+          </Link>
+        </p>
         
         <template v-if="work.related_works && work.related_works.length > 0">
           <h3>Related Works</h3>
