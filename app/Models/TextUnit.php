@@ -302,6 +302,14 @@ class TextUnit extends Model
         $genres = array_column($this->getGenres(), 'label');
         $array['genres'] = array_unique($genres);
 
+        // features
+        $array['features'] = [];
+        if (isset($data['features'])) {
+            foreach ($data['features'] as $feature) {
+                $array['features'][] = isset($feature['label']) ? $feature['label'] : null;
+            }
+        }
+
         // get the related works
         $array['works'] = collect($this->getRelatedWorksAttribute())->pluck('pref_title')->unique()->values()->all();
 

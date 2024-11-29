@@ -106,6 +106,24 @@
             </template>
           </AccordionCard>
 
+           <AccordionCard title="Features" class="accordion-item">
+            <template v-slot:content>
+              <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
+                <AisRefinementList
+                  :limit="maxFacetValuesToShow"
+                  attribute="features"
+                  @change="onFilter('features', $event.target.value)"
+                  class="max-h-48 overflow-y-scroll my-4">
+                  <template v-slot="{ items }">
+                    <div v-if="!items.length">
+                      No results found
+                    </div>
+                  </template>
+                </AisRefinementList>
+              </AisDynamicWidgets>
+            </template>
+          </AccordionCard>
+
            <AccordionCard title="Works" class="accordion-item">
             <template v-slot:content>
               <AisDynamicWidgets :max-values-per-facet="maxFacetValuesToShow">
