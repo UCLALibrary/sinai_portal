@@ -43,18 +43,23 @@ class TextUnit extends Model
         ],
     ];
 
+     protected $appends = [
+        'source',
+    ];
+
     /**
      * Returns the "source" for the text unit, which consists of the state label of its parent 
      * layer and the shelfmark of its parent layer's manuscript.
      * 
      * @return array
      */
-    public function getSource(): array
+    public function getSourceAttribute(): array
     {
         $query = "
             SELECT
                 l.jsonb->'state'->>'label' AS state_label,
-                m.jsonb->>'shelfmark' AS shelfmark
+                m.jsonb->>'shelfmark' AS shelfmark,
+                tu.jsonb->>'locus' AS locus
             FROM text_units tu
             JOIN LATERAL
                 jsonb_array_elements_text(tu.jsonb->'parent') AS tu_parent(ark)
@@ -289,8 +294,8 @@ class TextUnit extends Model
         // get all creators attached to this layer
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
 
-        // get the source (i.e. state label from the parent layer and shelfmark from the parent parent's manuscript)
-        $source = $this->getSource();
+        // get the source (i.e. state label from the parent layer and shelfmark from the parent's parent manuscript)
+        $source = $this->getSourceAttribute();
         $array['source'] = $source
             ? $source[0]['shelfmark'] . ($source[0]['state_label'] ? ' (' . $source[0]['state_label'] . ')' : '')
             : '';

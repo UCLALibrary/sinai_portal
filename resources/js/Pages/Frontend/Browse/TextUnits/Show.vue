@@ -6,6 +6,10 @@
           {{ textUnit.label }}
         </h2>
 
+        <p v-if="textUnit.source && textUnit.source[0] !== ''">
+          From {{ textUnit.source[0].shelfmark + (textUnit.source[0].state_label ? ` (${textUnit.source[0].state_label})` : '') + (textUnit.source[0].locus ? `, ${textUnit.source[0].locus}` : '') }}
+        </p>
+
         <p class="italic mb-8">
           {{ textUnitJson.summary }}
         </p>
