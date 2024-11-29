@@ -449,9 +449,10 @@ class Layer extends Model
             return null;
         }
         
-        $sourceManuscripts = Manuscript::whereIn('ark', $data['parent'])->get();
+        $sourceManuscripts = Manuscript::whereIn('ark', $data['parent'])
+            ->whereRaw("jsonb_extract_path_text(jsonb, 'reconstruction') = 'false'")
+            ->get();
         $identifiers = $sourceManuscripts->pluck('identifier')->toArray();
-        
         return !empty($identifiers) ? implode(', ', $identifiers) : null;
     }
 }
