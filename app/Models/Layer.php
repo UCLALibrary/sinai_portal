@@ -408,7 +408,7 @@ class Layer extends Model
         }
         
         // writing system
-        $array['script'] = [];
+        $array['writing_system'] = [];
         foreach ($data['writing'] as $writing) {
             foreach ($writing['script'] as $script) {
                 $array['writing_system'][] = isset($script['writing_system']) ? $script['writing_system'] : null;
