@@ -147,9 +147,9 @@
       <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
-        <div class="hidden lg:grid lg:grid-cols-5 gap-x-1 p-2 font-bold border-b">
-          <h3>Source</h3>
-          <h3>Label</h3>
+        <div class="hidden lg:grid lg:grid-cols-7 gap-x-1 p-2 font-bold border-b">
+          <h3 class="col-span-2">Text Unit</h3>
+          <h3 class="col-span-2">Source</h3>
           <h3>Language</h3>
           <h3>Genre</h3>
           <h3>ARK</h3>
