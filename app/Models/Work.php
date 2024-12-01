@@ -67,9 +67,7 @@ class Work extends Model
         return $this->getRelatedEntities(
             'creator',
             Agent::class,
-            function ($item) {
-                return isset($item['role']['id']) && $item['role']['id'] === 'author';
-            },
+            null,
             function ($agent, $item) {
                 return [
                     'id' => $agent->id,
