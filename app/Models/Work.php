@@ -55,14 +55,22 @@ class Work extends Model
      *
      * @var array
      */
-    protected $appends = ['authors', 'related_works', 'related_agents', 'editions', 'translations', 'citations', 'attested_titles'];
+    protected $appends = [
+        'creators',
+        'related_works',
+        'related_agents',
+        'editions',
+        'translations',
+        'citations',
+        'attested_titles',
+    ];
 
     /**
-     * Accessor to include authors when the model is serialized.
+     * Accessor to include creators when the model is serialized.
      *
      * @return array
      */
-    public function getAuthorsAttribute(): array
+    public function getCreatorsAttribute(): array
     {
         return $this->getRelatedEntities(
             'creator',
@@ -72,6 +80,7 @@ class Work extends Model
                 return [
                     'id' => $agent->id,
                     'pref_name' => $agent->pref_name,
+                    'role_label' => $item['role']['label'] ?? null,
                 ];
             }
         )->toArray();
@@ -250,9 +259,9 @@ class Work extends Model
         // ark
         $array['ark'] = $data['ark'] ?? null;
 
-        // authors
-        $authors = collect($this->getAuthorsAttribute())->pluck('pref_name')->all();
-        $array['creator'] = !empty($authors) ? $authors : null;
+        // creators
+        $creators = collect($this->getCreatorsAttribute())->pluck('pref_name')->all();
+        $array['creator'] = !empty($creators) ? $creators : null;
 
         // incipit
         if (!empty($data['incipit'])) {

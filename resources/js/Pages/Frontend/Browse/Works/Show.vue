@@ -39,10 +39,12 @@
           {{ workJson.orig_lang_title }}
         </p>
         
-        <p v-if="work.authors && work.authors.length > 0">
-          <span class="label">Author</span>
-          {{ work.authors.map(author => author.pref_name).join('; ') }}
-        </p>
+        <template v-if="work.creators && work.creators.length > 0">
+          <p v-for="creator in work.creators" :key="creator.id">
+            <span class="label">{{ creator.role_label }}</span>
+            {{ creator.pref_name }}
+          </p>
+        </template>
 
         <p v-if="workJson.creation && workJson.creation.value && workJson.creation.value !== ''">
           <span class="label">Creation Date</span>
