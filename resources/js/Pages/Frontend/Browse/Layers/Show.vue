@@ -2,24 +2,21 @@
   <FrontendLayout :title="title">
     <div class="flex flex-col lg:flex-row gap-y-8 bg-white p-4 xl:p-8">
       <section class="w-full lg:w-3/4 lg:pr-16">
+        <h2>
+          {{ layer.identifier }}
+        </h2>
 
-        <div class="pb-8">
-          <h2>
-            {{ layer.identifier }}
-          </h2>
+        <p>
+          <strong>{{ layerJson.state.label }} from {{ source }}, {{ layerJson.locus }}</strong>
+        </p>
 
-          <p>
-            <strong>{{ layerJson.state.label }} from {{ source }}, {{ layerJson.locus }}</strong>
-          </p>
+        <p class="italic">
+          {{ layerJson.summary }}
+        </p>
 
-          <p class="italic">
-            {{ layerJson.summary }}
-          </p>
-
-          <p v-if="layerJson.assoc_date && layerJson.assoc_date.some(date => date.type?.id === 'origin')">
-            {{ layerJson.assoc_date.filter(date => date.type?.id === 'origin').map(date => date.value).join('; ') }}
-          </p>
-        </div>
+        <p v-if="layerJson.assoc_date && layerJson.assoc_date.some(date => date.type?.id === 'origin')">
+          {{ layerJson.assoc_date.filter(date => date.type?.id === 'origin').map(date => date.value).join('; ') }}
+        </p>
 
         <h3>Layer Overview</h3>
 

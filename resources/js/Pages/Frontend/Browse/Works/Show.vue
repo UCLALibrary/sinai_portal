@@ -5,7 +5,8 @@
         <h2>
           {{ work.pref_title }}
         </h2>
-        <p v-if="workJson.desc && workJson.desc !== ''" class="mb-4">
+
+        <p v-if="workJson.desc && workJson.desc !== ''" class="mb-8 italic">
           {{ workJson.desc }}
         </p>
         
@@ -14,7 +15,8 @@
           {{ workJson.ark }}
         </p>
         
-        <p><span class="label">URI</span>
+        <p>
+          <span class="label">URI</span>
           {{ $page.props.appUrl }}/works/{{ work.id }}
         </p>
 
@@ -234,7 +236,7 @@
 
 <style lang="postcss" scoped>
   h2 {
-    @apply text-2xl xl:text-3xl pb-8
+    @apply text-2xl xl:text-3xl pb-2
   }
 
   h3 {

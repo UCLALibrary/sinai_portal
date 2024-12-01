@@ -6,7 +6,7 @@
           {{ agent.pref_name }}
         </h2>
 
-        <p v-if="agentJson.desc && agentJson.desc !== ''" class="italic">
+        <p v-if="agentJson.desc && agentJson.desc !== ''" class="mb-8 italic">
           {{ agentJson.desc }}
         </p>
 
