@@ -3,8 +3,8 @@
     <div class="relative min-h-screen flex flex-col">
         <header class="border-b">
             <div class="wrap">
-                <div class="flex justify-end">
-                    <nav class="flex gap-4 py-2 font-dosis font-medium uppercase tracking-wide text-sm lg:text-base border-0 hover:text-sinai-red">
+                <div class="auth-nav flex justify-end">
+                    <nav class="flex gap-4 py-2 font-dosis font-medium uppercase tracking-wide text-sm lg:text-base border-0">
                         <Link
                             v-if="$page.props.auth.user && pageProps.roles.permissions.includes('view cms')"
                             :href="route('cms')"
@@ -12,29 +12,27 @@
                             Dashboard
                         </Link>
 
-                      <Link
-                          v-if="$page.props.auth.user"
-                          :href="route('logout')"
-                          method="post"
-                          class="font-dosis font-medium uppercase"
-                          as="button"
-                      >
-                        Log Out
-                      </Link>
-
-                    <template v-if="!$page.props.auth.user">
                         <Link
-                            :href="route('register')">
-                            Register
+                            v-if="$page.props.auth.user"
+                            :href="route('logout')"
+                            method="post"
+                            class="font-dosis font-medium uppercase"
+                            as="button">
+                            Log Out
                         </Link>
 
-                        <Link                         
-                            :href="route('login')"
-                            class="">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg>
-                        </Link>
+                        <template v-if="!$page.props.auth.user">
+                            <Link
+                                :href="route('register')">
+                                Register
+                            </Link>
 
-                    </template>
+                            <Link
+                                :href="route('login')"
+                                class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /></svg>
+                            </Link>
+                        </template>
                     </nav>
                 </div>
                 <div class="main flex flex-col lg:flex-row items-center gap-y-6 pb-6 justify-between">
@@ -229,7 +227,22 @@
       &.active {
           @apply border-sinai-red
       }
+
       @apply font-dosis font-medium text-base md:text-lg tracking-wide underline-offset-4 border-b-2 border-b-transparent hover:border-black
+  }
+
+  .auth-nav nav {
+    a {
+        &:hover {
+            @apply text-sinai-red
+        }
+    }
+
+    button {
+        &:hover {
+            @apply text-sinai-red
+        }
+    }
   }
 
   .dropdown-menu {
