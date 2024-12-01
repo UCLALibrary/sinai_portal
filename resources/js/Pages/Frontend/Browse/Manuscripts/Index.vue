@@ -202,6 +202,7 @@
 
       <div class="main-container">
         <DownloadButton
+          v-if="$page.props.auth.user && $page.props.roles.permissions.includes('download records')"
           :endpoint="route('frontend.files.download.zip', { recordType: 'manuscripts' })"
           class="mb-2"
         />

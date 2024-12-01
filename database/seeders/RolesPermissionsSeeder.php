@@ -29,13 +29,17 @@ class RolesPermissionsSeeder extends Seeder
         $updateRecord = Permission::findOrCreate('update record');
         $deleteRecord = Permission::findOrCreate('delete record');
         $uploadRecord = Permission::findOrCreate('upload record');
-      
+        $downloadRecords = Permission::findOrCreate('download records');
+
         $viewCms = Permission::findOrCreate('view cms');  
+
+        $frontendUser->givePermissionTo($downloadRecords);
 
         $editor->givePermissionTo($createRecord)
             ->givePermissionTo($readRecord)
             ->givePermissionTo($updateRecord)
             ->givePermissionTo($deleteRecord)
+            ->givePermissionTo($downloadRecords)
             ->givePermissionTo($viewCms);
 
         $admin->givePermissionTo($createRecord)
@@ -43,6 +47,7 @@ class RolesPermissionsSeeder extends Seeder
             ->givePermissionTo($updateRecord)
             ->givePermissionTo($deleteRecord)
             ->givePermissionTo($uploadRecord)
+            ->givePermissionTo($downloadRecords)
             ->givePermissionTo($createUser)
             ->givePermissionTo($readUser)
             ->givePermissionTo($updateUser)

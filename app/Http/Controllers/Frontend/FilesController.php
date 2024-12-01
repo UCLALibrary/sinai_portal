@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 
 class FilesController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Return a zip file of JSON files for the given record type.
      *
@@ -15,6 +19,8 @@ class FilesController extends Controller
      */
     public function downloadZipFile($recordType)
     {
+        $this->authorize('download records', User::class);
+
         // fetch all records from the specified table
         $records = DB::table($recordType)->get();
 
