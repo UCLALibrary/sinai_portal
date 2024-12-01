@@ -129,6 +129,11 @@
       <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
+        <DownloadButton
+          :endpoint="route('frontend.files.download.zip', { recordType: 'works' })"
+          class="mb-2"
+        />
+
         <div class="hidden lg:grid lg:grid-cols-5 gap-x-1 p-2 font-bold border-b">
           <h3>Title</h3>
           <h3>Language</h3>
@@ -164,6 +169,7 @@
   import WorkResult from '@/Shared/Search/WorkResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
+  import DownloadButton from '@/Shared/Buttons/DownloadButton.vue'
   import {
     AisInstantSearch,
     AisConfigure,

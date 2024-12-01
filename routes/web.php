@@ -1,16 +1,17 @@
 <?php
-	
-use App\Http\Controllers\Frontend\TextUnitsController;
+
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Cms\FilesController;
 use App\Http\Controllers\Cms\UsersController;
 use App\Http\Controllers\Cms\ResourcesController;
-use App\Http\Controllers\Frontend\WorksController;
 use App\Http\Controllers\Frontend\AgentsController;
+use App\Http\Controllers\Frontend\FilesController as FrontendFilesController;
 use App\Http\Controllers\Frontend\LayersController;
-use App\Http\Controllers\Frontend\PlacesController;
 use App\Http\Controllers\Frontend\ManuscriptsController;
+use App\Http\Controllers\Frontend\PlacesController;
+use App\Http\Controllers\Frontend\TextUnitsController;
+use App\Http\Controllers\Frontend\WorksController;
 
 // frontend
 Route::get('/', function () {
@@ -24,6 +25,9 @@ Route::resource('/manuscripts', ManuscriptsController::class)->only(['index', 's
 Route::resource('/layers', LayersController::class)->only(['index', 'show'])->names('frontend.layers');
 Route::resource('/textunits', TextUnitsController::class)->only(['index', 'show'])->names('frontend.textunits');
 // Route::resource('/about', FrontendAboutController::class)->only(['index', 'show'])->names('frontend.about');
+
+// files
+Route::get('download/{recordType}', [FrontendFilesController::class, 'downloadZipFile'])->name('frontend.files.download.zip');
 
 Route::get('/about', function () {
     return Inertia::render('About');

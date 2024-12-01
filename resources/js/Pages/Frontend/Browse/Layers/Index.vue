@@ -165,6 +165,11 @@
       <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
+        <DownloadButton
+          :endpoint="route('frontend.files.download.zip', { recordType: 'layers' })"
+          class="mb-2"
+        />
+
         <div class="hidden lg:grid lg:grid-cols-8 gap-x-4 p-2 font-bold border-b">
           <h3 class="col-span-2">Layer</h3>
           <h3 class="col-span-2">Source</h3>
@@ -201,6 +206,7 @@
   import LayerResult from '@/Shared/Search/LayerResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
+  import DownloadButton from '@/Shared/Buttons/DownloadButton.vue'
   import {
     AisInstantSearch,
     AisConfigure,
