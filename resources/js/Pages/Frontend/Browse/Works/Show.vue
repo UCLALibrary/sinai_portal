@@ -176,6 +176,12 @@
         <template v-if="work.related_agents && work.related_agents.length > 0">
           <h3>Related Agents</h3>
           <ul>
+            <li v-for="creator in work.creators" :key="creator.id">
+              <Link :href="route('frontend.agents.show', { agent: creator.id })">
+                {{ creator.pref_name }}
+              </Link>
+              <span class="ml-1" v-if="creator.role_label">({{ creator.role_label }})</span>
+            </li>
             <li v-for="relatedAgent in work.related_agents" :key="relatedAgent.id">
               <Link :href="route('frontend.agents.show', { agent: relatedAgent.id })">
                 {{ relatedAgent.pref_name }}
