@@ -48,6 +48,7 @@ class Language extends Model
 
     public static $config = [
         'disable_file_uploads' => true,
+        'enable_json_forms' => true,
         'index' => [
             'columns' => [
                 'id' => 'Id',

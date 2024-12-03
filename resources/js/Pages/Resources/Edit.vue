@@ -28,8 +28,8 @@
           {{ resource.json }}
         </pre>
 
-        <!--
         <ResourceForm
+          v-if="config.enable_json_forms"
           :schema="schema"
           :uischema="uischema"
           :data="data"
@@ -38,19 +38,18 @@
           @on-cancel="onCancel"
           class="px-4 sm:px-6 lg:px-8 my-8"
         />
-        -->
       </div>
     </div>
   </AppLayout>
 </template>
 
 <script setup>
-  // import { defineAsyncComponent } from 'vue'
+  import { defineAsyncComponent } from 'vue'
   import { usePage, router } from '@inertiajs/vue3'
   import useEmitter from '@/composables/useEmitter'
   import AppLayout from '@/Layouts/AppLayout.vue'
   import FileUploadForm from '@/Pages/Resources/FileUploadForm.vue'
-  // const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
+  const ResourceForm = defineAsyncComponent(() => import('@/jsonforms/components/ResourceForm.vue'))
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -86,7 +85,6 @@
     })
   }
 
-  /*
   const onSave = (payload) => {
     axios.put(route(pageProps.routes.update, { resourceName: pageProps.resourceName, resourceId: props.resource.id }), {
       json: payload.data,
@@ -114,7 +112,6 @@
   const onCancel = () => {
     router.visit(route(props.routes.index))
   }
-  */
 </script>
 
 <style lang="postcss" scoped>
