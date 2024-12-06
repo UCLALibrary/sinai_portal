@@ -41,14 +41,17 @@ trait RelatedLayers
         })->toArray();
     }
     
-    private function buildLayerData($layer): array {
+    private function buildLayerData($layer): array
+    {
         $layerJson = json_decode($layer->jsonb, true);
         
-        return [
-            'id' => $layer->id,
-            'ark' => $layer->ark,
-            'label' => $layerJson['label'] ?? null,
-            'text_units' => $this->getRelatedTextUnits('layers', $layer->id, '$.text_unit[*]'),
-        ];
+        return array_merge(
+            $layerJson,
+            [
+                'id' => $layer->id,
+                'ark' => $layer->ark,
+                'text_units' => $this->getRelatedTextUnits('layers', $layer->id, '$.text_unit[*]'),
+            ]
+        );
     }
 }

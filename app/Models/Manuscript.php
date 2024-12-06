@@ -195,25 +195,38 @@ class Manuscript extends Model
             })->toArray();
     }
     
+    /**
+     * Returns all dates ('assoc_date.value' field) of type 'origin' for overtext layers.
+     *
+     * @return array
+     */
     public function getAssocDatesOverviewAttribute(): array
     {
-        $query = "
-        SELECT DISTINCT jsonb_path_query(jsonb, :jsonPath) AS assoc_date_value
-        FROM layers
-        WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
-    ";
+        $overtextLayerArks = DB::table('manuscripts')
+            ->selectRaw("jsonb_path_query_array(jsonb, '$.part[*].layer[*] ? (@.type.id == \"overtext\").id') AS arks")
+            ->where('id', $this->id)
+            ->first();
         
-        $bindings = [
-            'jsonPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
-            'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
-            'vars' => json_encode(['manuscript_ark' => $this->ark]),
-        ];
+        $overtextLayerArks = json_decode($overtextLayerArks->arks, true);
         
-        $dates = DB::select($query, $bindings);
+        if (empty($overtextLayerArks)) {
+            return [];
+        }
         
-        return array_map(function ($row) {
-            return json_decode($row->assoc_date_value);
-        }, $dates);
+        $overtextLayers = $this->getLayersByArks($overtextLayerArks);
+        
+        $dates = [];
+        foreach ($overtextLayers as $layer) {
+            if (isset($layer['assoc_date']) && is_array($layer['assoc_date'])) {
+                foreach ($layer['assoc_date'] as $assocDate) {
+                    if (isset($assocDate['type']['id']) && $assocDate['type']['id'] === 'origin' && isset($assocDate['value'])) {
+                        $dates[] = $assocDate['value'];
+                    }
+                }
+            }
+        }
+        
+        return $dates;
     }
 
     public function getAssocDatesFromLayersAttribute(): array
