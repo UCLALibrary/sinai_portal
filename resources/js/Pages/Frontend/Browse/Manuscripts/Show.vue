@@ -176,7 +176,6 @@
           </template>
         </template>
 
-        
         <template v-if="hasUndertextObjects">
           <h3>Undertext Objects</h3>
 
@@ -355,6 +354,15 @@
               </template>
             </div>
           </template>
+        </template>
+
+        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'para').length > 0">
+          <h3>Miscellaneous Paracontent</h3>
+          <ul>
+            <li v-for="paraNote in manuscriptJson.note.filter(note => note.type.id === 'para')">
+              {{ paraNote.value }}
+            </li>
+          </ul>
         </template>
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
