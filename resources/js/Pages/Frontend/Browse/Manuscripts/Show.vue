@@ -121,9 +121,9 @@
 
               </template>
 
-              <div class="item-container">
+              <div v-if="(part.extent && part.extent !== '') || (part.dim && part.dim !== '') " class="item-container">
                 <span class="item-label">Extent</span>
-                <p class="d-block">{{ part.extent }} | {{ part.dim }}</p>
+                <p class="d-block">{{ [part.extent, part.dim].filter(Boolean).join(' | ') }}</p>
               </div>
 
               <div v-if="part.note && part.note.filter(note => note.type.id === 'foliation').length > 0" class="item-container">
