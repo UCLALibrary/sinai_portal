@@ -7,7 +7,7 @@
         </h2>
 
         <p>
-          <strong>{{ layerJson.state.label }} from {{ source }}, {{ layerJson.locus }}</strong>
+          <strong>{{ layerJson.state.label }} from {{ source }}<template v-if="layerJson.locus && layerJson.locus !== ''">, {{ layerJson.locus }}</template></strong>
         </p>
 
         <p class="italic">
