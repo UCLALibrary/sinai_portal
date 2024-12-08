@@ -14,16 +14,19 @@
           {{ layerJson.summary }}
         </p>
 
-        <p v-if="layerJson.assoc_date && layerJson.assoc_date.some(date => date.type?.id === 'origin')">
-          {{ layerJson.assoc_date.filter(date => date.type?.id === 'origin').map(date => date.value).join('; ') }}
-        </p>
-
         <h3>Layer Overview</h3>
 
         <div v-if="layerJson.ark && layerJson.ark !== ''" class="item-container">
           <span class="item-label">ARK</span>
           <p class="item-value">
             {{ layerJson.ark }}
+          </p>
+        </div>
+
+        <div v-if="layerJson.assoc_date && layerJson.assoc_date.some(date => date.type?.id === 'origin')" class="item-container">
+          <span class="item-label">Origin Date</span>
+          <p class="item-value">
+            {{ layerJson.assoc_date.filter(date => date.type?.id === 'origin').map(date => date.value).join('; ') }}
           </p>
         </div>
 
