@@ -119,38 +119,48 @@
               <p>
                 Translation: {{ para.translation.join('; ') }}
               </p>
-              <p>
-                <strong>Associated Names, Places, Dates</strong>
+              <p class="font-medium italic">
+                Associated Names, Places, Dates
               </p>
-              <template v-for="name in para.assoc_name">
-                <p>
-                  {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
-                </p>
-                <p v-if="name.note && name.note.length > 0" class="indent">
-                  {{ name.note.join('; ') }}
-                </p>
+              <template v-if="para.assoc_name && para.assoc_name.length > 0">
+                <ul>
+                  <template v-for="name in para.assoc_name">
+                    <li class="indent">
+                      {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
+                        <span v-if="name.note && name.note.length > 0" class="indent">
+                          {{ name.note.join('; ') }}
+                        </span>
+                    </li>
+                  </template>
+                </ul>
               </template>
-              <template v-for="place in para.assoc_place">
-                <p>
-                  {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
-                </p>
-                <p v-if="place.note && place.note.length > 0" class="indent">
-                  {{ place.note.join('; ') }}
-                </p>
+              <template v-if="para.assoc_place && para.assoc_place.length > 0">
+                <ul>
+                  <template v-for="place in para.assoc_place">
+                    <li class="indent">
+                      {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
+                        <span v-if="place.note && place.note.length > 0" class="indent">
+                          {{ place.note.join('; ') }}
+                        </span>
+                    </li>
+                  </template>
+                </ul>
               </template>
-              <template v-for="date in para.assoc_date">
-                <p>
-                  {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
-                </p>
-                <p v-if="date.note && date.note.length > 0" class="indent">
-                  {{ date.note.join('; ') }}
-                </p>
+              <template v-if="para.assoc_date && para.assoc_date.length > 0">
+                <ul>
+                  <template v-for="date in para.assoc_date">
+                    <li class="indent">
+                      {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
+                        <span v-if="date.note && date.note.length > 0" class="indent">
+                          {{ date.note.join('; ') }}
+                        </span>
+                    </li>
+                  </template>
+                </ul>
               </template>
               <template v-if="para.note && para.note.length > 0">
-                <p>
-                  <strong>Notes</strong>
-                </p>
-                <p>
+                <p class="font-medium italic">Notes</p>
+                <p class="indent">
                   {{ para.note.join('; ') }}
                 </p>
               </template>
@@ -174,38 +184,48 @@
               <p>
                 Translation: {{ para.translation.join('; ') }}
               </p>
-              <p>
-                <strong>Associated Names, Places, Dates</strong>
+              <p class="font-medium italic">
+                Associated Names, Places, Dates
               </p>
-              <template v-for="name in para.assoc_name">
-                <p>
-                  {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
-                </p>
-                <p v-if="name.note && name.note.length > 0" class="indent">
-                  {{ name.note.join('; ') }}
-                </p>
+              <template v-if="para.assoc_name && para.assoc_name.length > 0">
+                <ul>
+                  <template v-for="name in para.assoc_name">
+                    <li class="indent">
+                      {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
+                      <span v-if="name.note && name.note.length > 0" class="indent">
+                          {{ name.note.join('; ') }}
+                        </span>
+                    </li>
+                  </template>
+                </ul>
               </template>
-              <template v-for="place in para.assoc_place">
-                <p>
-                  {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
-                </p>
-                <p v-if="place.note && place.note.length > 0" class="indent">
-                  {{ place.note.join('; ') }}
-                </p>
+              <template v-if="para.assoc_place && para.assoc_place.length > 0">
+                <ul>
+                  <template v-for="place in para.assoc_place">
+                    <li class="indent">
+                      {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
+                      <span v-if="place.note && place.note.length > 0" class="indent">
+                          {{ place.note.join('; ') }}
+                        </span>
+                    </li>
+                  </template>
+                </ul>
               </template>
-              <template v-for="date in para.assoc_date">
-                <p>
-                  {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
-                </p>
-                <p v-if="date.note && date.note.length > 0" class="indent">
-                  {{ date.note.join('; ') }}
-                </p>
+              <template v-if="para.assoc_date && para.assoc_date.length > 0">
+                <ul>
+                  <template v-for="date in para.assoc_date">
+                    <li class="indent">
+                      {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
+                      <span v-if="date.note && date.note.length > 0" class="indent">
+                          {{ date.note.join('; ') }}
+                        </span>
+                    </li>
+                  </template>
+                </ul>
               </template>
               <template v-if="para.note && para.note.length > 0">
-                <p>
-                  <strong>Notes</strong>
-                </p>
-                <p>
+                <p class="font-medium italic">Notes</p>
+                <p class="indent">
                   {{ para.note.join('; ') }}
                 </p>
               </template>
