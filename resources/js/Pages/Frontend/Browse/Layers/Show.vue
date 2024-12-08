@@ -236,6 +236,15 @@
           </template>
         </template>
 
+        <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'para').length > 0">
+          <h3>Miscellaneous Paracontent</h3>
+          <ul>
+            <li v-for="paraNote in layerJson.note.filter(note => note.type.id === 'para')">
+              {{ paraNote.value }}
+            </li>
+          </ul>
+        </template>
+
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'ornamentation').length > 0">
           <h3>Ornamentation</h3>
           <p v-for="(ornamentNote, index) in layerJson.note.filter(note => note.type.id === 'ornamentation')" :key="index">
