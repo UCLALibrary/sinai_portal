@@ -7,7 +7,7 @@
         </h2>
 
         <p>
-          <strong>{{ layerJson.state.label }} from {{ source }}<template v-if="layerJson.locus && layerJson.locus !== ''">, {{ layerJson.locus }}</template></strong>
+          {{ layerJson.state.label }} from <a :href="'/manuscripts/' + source.id" :target="_self">{{ source.identifier }}</a><template v-if="layerJson.locus && layerJson.locus !== ''">, {{ layerJson.locus }}</template>
         </p>
 
         <p class="italic">
@@ -510,7 +510,7 @@
     title: { type: String, required: true },
     last_modified: { type: String, required: true },
     layer: { type: Object, required: true },
-    source: { type: String, required: true },
+    source: { type: Object, required: true },
   })
 
   const layerJson = computed(() => {

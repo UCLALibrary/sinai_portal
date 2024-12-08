@@ -366,7 +366,7 @@ class Layer extends Model
         $data = $this->getJsonData();
         
         // Source field (only manuscripts, not other layers)
-        $array['source'] = $this->getSourceIdentifiers();
+        $array['source'] = $this->getSourceIdentifiers()['identifier'];
         
         $array['ark'] = $this->ark ?? null;
         $array['identifier'] = $this->identifier ?? null;
@@ -439,9 +439,9 @@ class Layer extends Model
     /**
      * Get the source manuscripts' identifiers.
      *
-     * @return string|null
+     * @return array|null
      */
-    public function getSourceIdentifiers(): ?string
+    public function getSourceIdentifiers(): ?array
     {
         $data = $this->getJsonData();
         
@@ -449,11 +449,16 @@ class Layer extends Model
             return null;
         }
         
-        $sourceManuscripts = Manuscript::whereIn('ark', $data['parent'])
+        $sourceManuscripts = Manuscript::select('id', 'identifier')
+            ->whereIn('ark', $data['parent'])
             ->whereRaw("jsonb_extract_path_text(jsonb, 'reconstruction') = 'false'")
-            ->get();
-        $identifiers = $sourceManuscripts->pluck('identifier')->toArray();
-        return !empty($identifiers) ? implode(', ', $identifiers) : null;
+            ->first();
+        
+        if (!$sourceManuscripts) {
+            return null;
+        }
+        
+        return $sourceManuscripts->only(['id', 'identifier']);
     }
 }
 
