@@ -439,7 +439,7 @@
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'general').length > 0">
           <p>
-            <strong>Other notes:</strong>
+            <strong>Other notes</strong>
           </p>
           <ul class="bulleted">
             <li v-for="(generalNote) in manuscriptJson.note.filter(note => note.type.id === 'general')">

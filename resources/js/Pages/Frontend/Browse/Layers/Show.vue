@@ -262,7 +262,7 @@
 
           <template v-if="layerJson.note.filter(note => note.type.id === 'general').length > 0">
             <p>
-              <strong>General</strong>
+              <strong>Other notes</strong>
             </p>
             <ul class="bulleted">
               <li v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
