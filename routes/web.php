@@ -24,7 +24,6 @@ Route::resource('/works', WorksController::class)->only(['index', 'show'])->name
 Route::resource('/manuscripts', ManuscriptsController::class)->only(['index', 'show'])->names('frontend.manuscripts');
 Route::resource('/layers', LayersController::class)->only(['index', 'show'])->names('frontend.layers');
 Route::resource('/textunits', TextUnitsController::class)->only(['index', 'show'])->names('frontend.textunits');
-// Route::resource('/about', FrontendAboutController::class)->only(['index', 'show'])->names('frontend.about');
 
 // files
 Route::get('download/{recordType}', [FrontendFilesController::class, 'downloadZipFile'])->name('frontend.files.download.zip');
