@@ -42,75 +42,58 @@
                         <img src="/sinai-logo.svg" alt="logo" class="mr-4">Sinai Manuscripts Data Portal
                     </Link>
 
-                    <nav class="flex flex-col lg:flex-row items-center gap-x-10 text-lg">
-                        <div class="flex gap-x-4">
-                            <!-- Manuscripts Dropdown -->
-                            <div class="relative" v-click-outside="() => closeDropdown('manuscripts')">
-                                <button @click="toggleDropdown('manuscripts')" class="flex items-center focus:outline-none uppercase font-dosis font-medium">
-                                    Manuscripts
-                                    <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                              d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414L10 13.414l-4.707-4.707a1 1 0 0 1 0-1.414z"
-                                              clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                                <div v-if="dropdownOpen.manuscripts" class="dropdown-menu right-0">
-                                    <Link
-                                        :href="route('frontend.manuscripts.index')"
-                                        :class="{ 'active': route().current('frontend.manuscripts.*') }"
-                                        class="dropdown-item">
-                                        Manuscript Objects
-                                    </Link>
-                                    <Link
-                                        :href="route('frontend.layers.index')"
-                                        :class="{ 'active': route().current('frontend.layers.*') }"
-                                        class="dropdown-item">
-                                        Inscribed Layers
-                                    </Link>
-                                    <Link
-                                        :href="route('frontend.textunits.index')"
-                                        :class="{ 'active': route().current('frontend.textunits.*') }"
-                                        class="dropdown-item">
-                                        Text Units
-                                    </Link>
-                                </div>
-                            </div>
+                    <nav class="flex flex-col lg:flex-row gap-x-10 text-lg">
+                        <div class="flex max-sm:flex-wrap items-center gap-x-2 md:gap-x-4">
+                            <Link
+                                :href="route('frontend.manuscripts.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.manuscripts.index') || route().current('frontend.manuscripts.show') }">
+                                Manuscripts
+                            </Link>
+                            <Link
+                                :href="route('frontend.layers.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.layers.index') || route().current('frontend.layers.show') }">
+                                Layers
+                            </Link>
+                            <Link
+                                :href="route('frontend.textunits.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.textunits.index') || route().current('frontend.textunits.show') }">
+                              Text Units
+                            </Link>
 
-                            <!-- Entities Dropdown -->
-                            <div class="relative" v-click-outside="() => closeDropdown('entities')">
-                                <button @click="toggleDropdown('entities')" class="flex items-center focus:outline-none uppercase font-dosis font-medium">
-                                    Entities
-                                    <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                              d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414L10 13.414l-4.707-4.707a1 1 0 0 1 0-1.414z"
-                                              clip-rule="evenodd"></path>
-                                    </svg>
-                                </button>
-                                <div v-if="dropdownOpen.entities" class="dropdown-menu right-0">
-                                    <Link
-                                        :href="route('frontend.agents.index')"
-                                        :class="{ 'active': route().current('frontend.agents.*') }"
-                                        class="dropdown-item">
-                                        Agents
-                                    </Link>
-                                    <Link
-                                        :href="route('frontend.works.index')"
-                                        :class="{ 'active': route().current('frontend.works.*') }"
-                                        class="dropdown-item">
-                                        Works
-                                    </Link>
-                                    <Link
-                                        :href="route('frontend.places.index')"
-                                        :class="{ 'active': route().current('frontend.places.*') }"
-                                        class="dropdown-item">
-                                        Places
-                                    </Link>
-                                </div>
-                            </div>
+                            <div class="">|</div>
+
+                            <Link
+                                :href="route('frontend.agents.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.agents.index') || route().current('frontend.agents.show') }">
+                                Agents
+                            </Link>
+                            <Link
+                                :href="route('frontend.places.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.places.index') || route().current('frontend.places.show') }">
+                                Places
+                            </Link>
+                            <Link
+                                :href="route('frontend.works.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.works.index') || route().current('frontend.works.show') }">
+                                Works
+                            </Link>
+
+                            <div class="">|</div>
 
                             <!-- About Dropdown -->
-                            <div class="relative" v-click-outside="() => closeDropdown('about')">
-                                <button @click="toggleDropdown('about')" class="flex items-center focus:outline-none uppercase font-dosis font-medium">
+                            <div 
+                                class="dropdown-wrapper relative" 
+                                :class="{ 'active': route().current('frontend.about') || route().current('frontend.datamodel') }"
+                                v-click-outside="() => closeDropdown('about')">
+                                <button 
+                                    @click="toggleDropdown('about')" 
+                                    class="flex items-center focus:outline-none uppercase font-dosis font-medium text-sm sm:text-base md:text-lg">
                                     About
                                     <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
@@ -212,44 +195,64 @@
 </script>
 
 <style lang="postcss" scoped>
-  .wrap {
-      @apply mx-auto w-full lg:max-w-8xl px-4 lg:px-6
-  }
+    .wrap {
+        @apply mx-auto w-full lg:max-w-8xl px-4 lg:px-6
+    }
 
-  .logo {
-      img {
-          @apply h-12 w-12 xl:h-14 xl:w-14 mr-2 lg:mr-3 xl:mr-4
-      }
-      @apply flex items-center font-dosis font-medium text-xl lg:text-2xl xl:text-3xl text-black uppercase
-  }
+    .logo {
+        img {
+            @apply h-12 w-12 xl:h-14 xl:w-14 mr-2 lg:mr-3 xl:mr-4
+        }
+        @apply flex items-center font-dosis font-medium text-xl lg:text-2xl xl:text-3xl text-black uppercase
+    }
 
-  .main nav a {
-      &.active {
-          @apply border-sinai-red
-      }
+    .main-nav-link {
+        @apply flex items-center focus:outline-none uppercase font-dosis font-medium text-base md:text-lg whitespace-nowrap
+    }
 
-      @apply font-dosis font-medium text-base md:text-lg tracking-wide underline-offset-4 border-b-2 border-b-transparent hover:border-black
-  }
+    .main nav a {
+        &.active {
+            @apply border-sinai-red
+        }
 
-  .auth-nav nav {
-    a {
-        &:hover {
-            @apply text-sinai-red
+        &:not(.active) {
+            @apply hover:border-black
+        }
+
+        @apply font-dosis font-medium text-sm sm:text-base md:text-lg underline-offset-2 border-b-2 border-b-transparent 
+    }
+
+    .auth-nav nav {
+        a {
+            &:hover {
+                @apply text-sinai-red
+            }
+        }
+
+        button {
+            &:hover {
+                @apply text-sinai-red
+            }
         }
     }
 
-    button {
-        &:hover {
-            @apply text-sinai-red
+    .dropdown-wrapper {
+        &.active {
+            @apply border-sinai-red
         }
+
+        &:not(.active) {
+            @apply hover:border-black
+        }
+
+        @apply underline-offset-2 border-b-2 border-b-transparent
     }
-  }
 
-  .dropdown-menu {
-      @apply absolute mt-2 w-48 bg-white border rounded shadow-lg z-50
-  }
+    .dropdown-menu {
+        @apply absolute mt-2 w-48 bg-white border rounded shadow-lg z-50
+    }
 
-  .dropdown-item {
-      @apply block px-4 py-2 text-black hover:bg-gray-100 font-dosis font-medium
-  }
+    .dropdown-item {
+        @apply block px-4 py-2 text-black hover:bg-gray-100 font-dosis font-medium
+    }
 </style>
