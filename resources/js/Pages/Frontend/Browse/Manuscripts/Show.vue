@@ -94,11 +94,11 @@
           </p>
         </div>
 
-        <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
+        <template v-if="manuscript.part && manuscript.part.length > 0">
           <h3>Parts</h3>
 
-          <template v-for="(part) in manuscriptJson.part">
-            <div class="mb-8">
+          <template v-for="(part) in manuscript.part">
+            <div class="mb-14">
               <p class="mb-0">
                 <strong>{{ part.label }}</strong><template v-if="part.locus">, {{ part.locus }}</template>
               </p>
@@ -140,37 +140,20 @@
                 </p>
               </div>
 
-              <div v-if="part.layer && part.layer.length > 0">
-                <div class="item-container">
-                  <span class="item-label">Contents</span>
-                  <p class="item-value">
-                    <template v-for="(layer) in part.layer.filter(layer => layer.type.id === 'overtext')" class="d-block">
-                      <span class="d-block">
-                        {{ layer.label }}<template v-if="layer.locus">; {{ layer.locus }}</template>
-                      </span>
-
-                      <span class="d-block">
-                        <template v-for="(date, index) in manuscript.assoc_dates_from_layers" :key="index">
-                          <template v-if="date.id === layer.id.split('/').pop()" class="d-block">
-                            {{ date.assoc_date_value }}.
-                          </template>
-                        </template>
-                        <template v-for="(place, index) in manuscript.assoc_places_from_layers" :key="index">
-                          <template v-if="place.id === layer.id.split('/').pop()" class="d-block">
-                            {{ place.assoc_place_value }}.
-                          </template>
-                        </template>
-                         <template v-for="(lang, index) in manuscript.lang_from_parts_layers_text_units" :key="index">
-                          <template v-if="lang.layer_id === layer.id.split('/').pop()" class="d-block">
-                            {{ lang.lang_label }}.
-                          </template>
-                        </template>
-                      </span>
-                    </template>
-                  </p>
-                </div>
-
-              </div>
+              <template v-if="part.layer && part.layer.length > 0">
+                <p>
+                  <strong>Contents</strong>
+                </p>
+                <p v-for="layer in part.layer" :key="layer.id" class="mb-8">
+                  {{ layer.label }}<template v-if="layer.locus && layer.locus !== ''">, {{ layer.locus }}</template>
+                  <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
+                    Origin: {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
+                  </span>
+                  <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
+                    Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                  </span>
+                </p>
+              </template>
 
             </div>
           </template>
@@ -179,19 +162,27 @@
         <template v-if="hasUndertextObjects">
           <h3>Undertext Objects</h3>
 
-          <template v-if="manuscriptJson.part && manuscriptJson.part.length > 0">
-            <template v-for="(part) in manuscriptJson.part">
-              <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'undertext').length > 0">
-                <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'undertext')">
-                  {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
-                </p>
-              </template>
-            </template>
+          <template v-if="manuscript.part_layer_undertext && manuscript.part_layer_undertext.length > 0">
+            <p v-for="layer in manuscript.part_layer_undertext" :key="layer.id" class="mb-8">
+              {{ layer.parentLabel }}, {{ layer.label }}, {{ layer.parentLocus }}
+              <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
+                {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
+              </span>
+              <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
+                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+              </span>
+            </p>
           </template>
 
-          <template v-if="manuscriptJson.layer && manuscriptJson.layer.length > 0">
-            <p v-for="(layer) in manuscriptJson.layer.filter(layer => layer.type.id === 'undertext')">
-              {{ layer.label }}, {{ layer.locus }}
+          <template v-if="manuscript.layer_undertext && manuscript.layer_undertext.length > 0">
+            <p v-for="layer in manuscript.layer_undertext" :key="layer.id" class="mb-8">
+              {{ layer.parentLabel }}<template v-if="layer.parentLocus && layer.parentLocus !== ''">, {{ layer.parentLocus }}</template>
+              <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
+                {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
+              </span>
+              <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
+                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+              </span>
             </p>
           </template>
 
@@ -200,25 +191,37 @@
         <template v-if="hasGuestContent">
           <h3>Guest Content</h3>
 
-          <template v-for="part in manuscriptJson.part">
-            <template v-if="part.layer && part.layer.filter(layer => layer.type.id === 'guest').length > 0">
-              <p v-for="(layer) in part.layer.filter(layer => layer.type.id === 'guest')">
-                {{ part.label }}, {{ layer.label }}, {{ layer.locus }}
-              </p>
-            </template>
+          <template v-if="manuscript.part_layer_guest && manuscript.part_layer_guest.length > 0">
+            <p v-for="layer in manuscript.part_layer_guest" :key="layer.id" class="mb-8">
+              {{ layer.parentLabel }}, {{ layer.label }}, {{ layer.parentLocus }}
+              <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
+                {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
+              </span>
+              <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
+                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+              </span>
+            </p>
           </template>
 
-          <p v-for="layer in manuscriptJson.layer.filter(layer => layer.type.id === 'guest')">
-            {{ layer.label }}, {{ layer.locus }}
-          </p>
+          <template v-if="manuscript.layer_guest && manuscript.layer_guest.length > 0">
+            <p v-for="layer in manuscript.layer_guest" :key="layer.id" class="mb-8">
+              {{ layer.parentLabel }}<template v-if="layer.parentLocus && layer.parentLocus !== ''">, {{ layer.parentLocus }}</template>
+              <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
+                {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
+              </span>
+              <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
+                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+              </span>
+            </p>
+          </template>
 
         </template>
 
         <template v-if="hasParaGuestContent">
           <h3>Paracontent</h3>
 
-          <template v-if="manuscript.parts && manuscript.parts.length > 0">
-            <template v-for="part in manuscript.parts">
+          <template v-if="manuscript.part_para && manuscript.part_para.length > 0">
+            <template v-for="part in manuscript.part_para">
               <template v-if="part.para && part.para.length > 0">
                 <div v-for="para in part.para" class="mb-8">
                   <p>

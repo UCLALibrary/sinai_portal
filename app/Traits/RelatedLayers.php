@@ -7,23 +7,36 @@ use Illuminate\Support\Facades\DB;
 
 trait RelatedLayers
 {
-    use RelatedTextUnits;
+    use RelatedTextUnits, RelatedPlaces;
     
-    public function getRelatedLayersWithTextUnits(string $table, string $id, string $jsonQuery): array {
+    public function getRelatedLayersWithTextUnits(string $table, string $id, string $jsonQuery): array
+    {
         $layersQuery = DB::table($table)
-            ->selectRaw("jsonb_path_query(jsonb, '$jsonQuery') AS layer")
+            ->selectRaw("jsonb_path_query(jsonb, ?) AS layer", [$jsonQuery])
             ->where('id', $id)
             ->get();
         
         return $layersQuery->map(function ($layer) {
-            $manuscriptLayerJson = json_decode($layer->layer, true);
-            $layer = Layer::where('ark', $manuscriptLayerJson['id'])->first();
+            $layerJson = json_decode($layer->layer, true);
+            if (!$layerJson || !isset($layerJson['id'])) {
+                return null;
+            }
             
+            $parentLabel = $layerJson['label'] ?? null;
+            $parentLocus = $layerJson['locus'] ?? null;
+            
+            $layer = Layer::where('ark', $layerJson['id'])->first();
             if (!$layer) {
                 return null;
             }
             
-            return $this->buildLayerData($layer);
+            return array_merge(
+                $this->buildLayerData($layer),
+                [
+                    'parentLabel' => $parentLabel,
+                    'parentLocus' => $parentLocus,
+                ]
+            );
         })->filter()->toArray();
     }
     
@@ -45,7 +58,7 @@ trait RelatedLayers
     {
         $layerJson = json_decode($layer->jsonb, true);
         
-        return array_merge(
+        $data = array_merge(
             $layerJson,
             [
                 'id' => $layer->id,
@@ -53,5 +66,11 @@ trait RelatedLayers
                 'text_units' => $this->getRelatedTextUnits('layers', $layer->id, '$.text_unit[*]'),
             ]
         );
+        
+        if (!empty($layerJson['assoc_place'])) {
+            $data['assoc_place'] = $this->getRelatedPlaces('layers', $layer->id, '$.assoc_place[*]');
+        }
+        
+        return $data;
     }
 }

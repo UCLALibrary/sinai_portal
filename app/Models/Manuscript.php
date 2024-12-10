@@ -55,22 +55,25 @@ class Manuscript extends Model
     
     protected $appends = [
         'assoc_names',
-        // 'assoc_names_from_root',
         'assoc_names_from_para',
         'assoc_names_from_parts_para',
-        // 'related_places',
         'related_overtext_layers',
         'assoc_dates_overview',
-        'assoc_dates_from_layers',
-        'assoc_places_from_layers',
         'lang_from_parts_layers_text_units',
         'lang_from_layers_text_units',
-        'parts',
+        'part',
+        'part_para',
+        'part_layer_overtext',
+        'layer_overtext',
+        'part_layer_undertext',
+        'layer_undertext',
+        'part_layer_guest',
+        'layer_guest',
         'para',
         'related_references',
         'related_bibliographies',
         'related_digital_versions',
-        'related_text_units'
+        'related_text_units',
     ];
     
 
@@ -228,62 +231,6 @@ class Manuscript extends Model
         
         return $dates;
     }
-
-    public function getAssocDatesFromLayersAttribute(): array
-    {
-        $query = "
-            SELECT DISTINCT 
-                id,
-                jsonb_path_query(jsonb, :assocDateValuePath) AS assoc_date_value,
-                jsonb_path_query(jsonb, :assocDateNotBeforePath) AS not_before,
-                jsonb_path_query(jsonb, :assocDateNotAfterPath) AS not_after
-            FROM layers
-            WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
-        ";
-
-        $bindings = [
-            'assocDateValuePath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
-            'assocDateNotBeforePath' => '$.**.assoc_date[*] ? (@.type.id == "origin").iso.not_before',
-            'assocDateNotAfterPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").iso.not_after',
-            'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
-            'vars' => json_encode(['manuscript_ark' => $this->ark]),
-        ];
-
-        $dates = DB::select($query, $bindings);
-
-        return array_map(function ($row) {
-            return [
-                'id' => $row->id,
-                'assoc_date_value' => json_decode($row->assoc_date_value),
-                'not_before' => json_decode($row->not_before),
-                'not_after' => json_decode($row->not_after),
-            ];
-        }, $dates);
-    }
-
-    public function getAssocPlacesFromLayersAttribute(): array
-    {
-        $query = "
-        SELECT DISTINCT id, jsonb_path_query(jsonb, :jsonPath) AS assoc_place_as_written
-        FROM layers
-        WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
-    ";
-        
-        $bindings = [
-            'jsonPath' => '$.**.assoc_place[*] ? (@.event.id == "origin").as_written',
-            'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
-            'vars' => json_encode(['manuscript_ark' => $this->ark]),
-        ];
-        
-        $dates = DB::select($query, $bindings);
-        
-        return array_map(function ($row) {
-            return [
-                'id' => $row->id,
-                'assoc_place_value' => json_decode($row->assoc_place_as_written)
-            ];
-        }, $dates);
-    }
     
     public function getLangFromPartsLayersTextUnitsAttribute(): array
     {
@@ -366,7 +313,35 @@ class Manuscript extends Model
     return $languages;
     }
     
-    public function getPartsAttribute(): array
+    public function getPartAttribute(): array
+    {
+        $partsQuery = DB::table('manuscripts')
+            ->selectRaw("jsonb_path_query(jsonb, '$.part[*]') AS part")
+            ->where('id', $this->id)
+            ->get();
+        
+        return $partsQuery->map(function ($part) {
+            $partJson = json_decode($part->part, true);
+            
+            if (!$partJson || !isset($partJson['layer'])) {
+                return $partJson;
+            }
+            
+            $partJson['layer'] = collect($partJson['layer'])->map(function ($layer) {
+                $enrichedLayers = $this->getRelatedLayersWithTextUnits(
+                    'manuscripts',
+                    $this->id,
+                    '$.part[*].layer[*] ? (@.id == "' . addslashes($layer['id']) . '")'
+                );
+                
+                return $enrichedLayers[0] ?? $layer;
+            })->toArray();
+            
+            return $partJson;
+        })->toArray();
+    }
+    
+    public function getPartParaAttribute(): array
     {
         $jsonData = $this->getJsonData();
         $parts = $jsonData['part'] ?? [];
@@ -405,6 +380,36 @@ class Manuscript extends Model
         return $parts;
     }
     
+    public function getPartLayerOvertextAttribute(): array
+    {
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.part[*].layer[*] ? (@.type.id == "overtext")');
+    }
+    
+    public function getLayerOvertextAttribute(): array
+    {
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.layer[*] ? (@.type.id == "overtext")');
+    }
+    
+    public function getPartLayerUndertextAttribute(): array
+    {
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.part[*].layer[*] ? (@.type.id == "undertext")');
+    }
+    
+    public function getLayerUndertextAttribute(): array
+    {
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.layer[*] ? (@.type.id == "undertext")');
+    }
+    
+    public function getPartLayerGuestAttribute(): array
+    {
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.part[*].layer[*] ? (@.type.id == "guest")');
+    }
+    
+    public function getLayerGuestAttribute(): array
+    {
+        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.layer[*] ? (@.type.id == "guest")');
+    }
+    
     public function getParaAttribute(): array
     {
         $jsonData = $this->getJsonData();
@@ -437,23 +442,6 @@ class Manuscript extends Model
         unset($para);
         
         return $paracontent;
-    }
-    
-    public function getRelatedPlacesAttribute(): array
-    {
-        return $this->getRelatedEntities(
-            'assoc_place',
-            Place::class,
-            null,
-            function ($place, $item) {
-                return [
-                    'id' => $place->id,
-                    'as_written' => $item['as_written'] ?? null,
-                    'pref_name' => $place->pref_name,
-                    'event' => $item['note'],
-                    'note' => $item['note'] ?? [],
-                ];
-            })->toArray();
     }
     
     public function getRelatedReferencesAttribute(): array
