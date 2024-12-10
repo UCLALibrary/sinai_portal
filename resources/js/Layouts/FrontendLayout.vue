@@ -39,7 +39,7 @@
                     <Link
                         :href="route('home')"
                         class="logo flex sm:justify-center lg:justify-start">
-                        <img src="/sinai-logo.svg" alt="logo" class="mr-4"><span class="sm:text-lg lg:text-lg xl:text-2xl">Sinai Manuscripts Data Portal</span>
+                        <img src="/sinai-logo.svg" alt="logo" class="mr-4"><span class="sm:text-lg lg:text-lg xl:text-2xl whitespace-nowrap">Sinai Manuscripts Data Portal</span>
                     </Link>
 
                     <nav class="flex flex-col lg:flex-row gap-x-10 text-base xl:text-lg">
