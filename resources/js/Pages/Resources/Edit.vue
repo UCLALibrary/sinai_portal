@@ -88,13 +88,19 @@
   const onSave = (payload) => {
     axios.put(route(pageProps.routes.update, { resourceName: pageProps.resourceName, resourceId: props.resource.id }), {
       json: payload.data,
-    }).then(() => {
+    }).then(response => {
       if (payload.continueEditing) {
-        // display alert that the resource has been saved
-        emitter.emit('show-dismissable-alert', {
-          type: 'success',
-          message: 'Saved successfully. Please continue editing.',
-          timeout: 2000,
+        router.get(route(pageProps.routes.edit, { resourceName: pageProps.resourceName, resourceId: response.data.id }), {}, {
+          preserveState: false,
+          replace: false,
+          onSuccess: () => {
+            // display alert that the resource has been saved
+            emitter.emit('show-dismissable-alert', {
+              type: 'success',
+              message: 'Saved successfully. Please continue editing.',
+              timeout: 2000,
+            })
+          },
         })
       } else {
         router.visit(route(pageProps.routes.index, pageProps.resourceName))
