@@ -45,19 +45,25 @@
         </div>
 
         <template v-if="layerJson.writing && layerJson.writing.length > 0">
-          <h3>Writing and Hands</h3>
+          <p class="mt-8">
+            <strong>Writing and Hands</strong>
+          </p>
           <div v-for="(writing, writingIndex) in layerJson.writing" :key="writingIndex" class="mb-8">
             <p>
               <template v-if="writing.locus && writing.locus !== ''">{{ writing.locus }}: </template>{{ writing.script.map(script => script.label).join(', ') }}
             </p>
-            <p v-if="writing.note && writing.note.length > 0">
-              {{ writing.note.join(', ') }}
-            </p>
+            <template v-if="writing.note && writing.note.length > 0">
+              <p v-for="note in writing.note">
+                {{ note }}
+              </p>
+            </template>
           </div>
         </template>
 
         <template v-if="layerJson.ink && layerJson.ink.length > 0">
-          <h3>Ink</h3>
+          <p class="mt-8">
+            <strong>Ink</strong>
+          </p>
           <div v-for="(ink, index) in layerJson.ink" :key="index" class="mb-8">
             <p>
               {{ ink.locus }}<template v-if="ink.color && ink.color.length > 0">: {{ ink.color.join(', ') }}</template>
@@ -71,7 +77,9 @@
         </template>
 
         <template v-if="layerJson.layout && layerJson.layout.length > 0">
-          <h3>Page layout</h3>
+          <p class="mt-8">
+            <strong>Page layout</strong>
+          </p>
           <div v-for="(layout, index) in layerJson.layout" :key="index" class="mb-8">
             <p>
               {{ layout.locus }}, {{ layout.lines }} lines, {{ layout.columns }} columns
@@ -88,8 +96,10 @@
         </template>
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'foliation').length > 0">
-          <h3>Foliation Note</h3>
-          <p v-for="(note, index) in layerJson.note.filter(note => note.type.id === 'foliation')" :key="index">
+          <p class="mt-8">
+            <strong>Foliation Note</strong>
+          </p>
+          <p v-for="note in layerJson.note.filter(note => note.type.id === 'foliation')">
             {{ note.value }}
           </p>
         </template>
