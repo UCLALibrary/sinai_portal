@@ -393,9 +393,11 @@
                 <span v-if="index < relatedMss.mss.length - 1"> | </span>
               </template>
             </p>
-            <p v-if="relatedMss.note && relatedMss.note.length > 0" class="indent">
-              {{ relatedMss.note.join(", ") }}
-            </p>
+            <template v-if="relatedMss.note && relatedMss.note.length > 0">
+              <p v-for="note in relatedMss.note" class="indent">
+                {{ note }}
+              </p>
+            </template>
           </div>
         </template>
 

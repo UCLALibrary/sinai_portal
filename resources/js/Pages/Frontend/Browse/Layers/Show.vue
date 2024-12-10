@@ -7,7 +7,7 @@
         </h2>
 
         <p>
-          {{ layerJson.state.label }} from <a :href="'/manuscripts/' + source.id" :target="_self">{{ source.identifier }}</a><template v-if="layerJson.locus && layerJson.locus !== ''">, {{ layerJson.locus }}</template>
+          {{ layerJson.state.label }}<template v-if="source"> from <a :href="'/manuscripts/' + source.id">{{ source.identifier }}</a></template><template v-if="layerJson.locus && layerJson.locus !== ''">, {{ layerJson.locus }}</template>
         </p>
 
         <p class="italic">
@@ -119,7 +119,7 @@
               <p>
                 Transcription: {{ para.as_written }}
               </p>
-              <p>
+              <p v-if="para.translation && para.translation.length > 0">
                 Translation: {{ para.translation.join('; ') }}
               </p>
               <p class="font-medium italic">
@@ -260,21 +260,20 @@
                 {{ relatedMs.label }} ({{ relatedMs.type.label }})
               </strong>
             </p>
-            <ul class="indent">
-              <li v-for="ms in relatedMs.mss">
-                <template v-if="getManuscriptLink(ms).hasLink">
-                  <a :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
-                    {{ ms.label }}
-                  </a>
-                </template>
-                <template v-else>
+            <p class="indent">
+              <template v-for="(ms, index) in relatedMs.mss">
+                <template v-if="!ms.id && !ms.url">{{ ms.label}}</template>
+                <a v-else :href="getManuscriptLink(ms).url" :target="getManuscriptLink(ms).isExternal ? '_blank' : '_self'">
                   {{ ms.label }}
-                </template>
-              </li>
-            </ul>
-            <p v-if="relatedMs.note && relatedMs.note.length > 0" class="indent">
-              {{ relatedMs.note.join(", ") }}
+                </a>
+                <span v-if="index < relatedMs.mss.length - 1"> | </span>
+              </template>
             </p>
+            <template v-if="relatedMs.note && relatedMs.note.length > 0">
+              <p v-for="note in relatedMs.note" class="indent">
+                {{ note }}
+              </p>
+            </template>
           </div>
         </template>
 
