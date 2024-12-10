@@ -103,8 +103,8 @@
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
         type: 'error',
-        message: error,
-        timeout: 2000,
+        message: error.response.data.message,
+        timeout: 4000,
       })
     })
   }

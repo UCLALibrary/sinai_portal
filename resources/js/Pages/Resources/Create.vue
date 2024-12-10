@@ -83,14 +83,14 @@
   const onSave = (payload) => {
     axios.post(route(pageProps.routes.store, pageProps.resourceName), {
       json: payload.data,
-    }).then(() => {
+    }).then(response => {
       router.visit(route(pageProps.routes.index, pageProps.resourceName))
     }).catch(error => {
       // display alert that there was an error saving the resource
       emitter.emit('show-dismissable-alert', {
         type: 'error',
-        message: error,
-        timeout: 2000,
+        message: error.response.data.message,
+        timeout: 4000,
       })
     })
   }
