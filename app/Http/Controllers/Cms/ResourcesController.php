@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Cms;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 
 class ResourcesController extends Controller
@@ -57,6 +60,21 @@ class ResourcesController extends Controller
 
             // populate the fillable fields for the resource
             $fields = (new $modelClass)->getFillableFields($request->json, json_encode($request->json));
+
+            // validate that the id field is unique
+            if (array_key_exists('id', $fields)) {
+                $table = (new $modelClass)->getTable();
+
+                $validator = Validator::make($fields, [
+                    'id' => 'unique:' . $table
+                ], [
+                    'id.unique' => 'This identifier is already taken. Please enter a unique identifier.'
+                ]);
+
+                if ($validator->fails()) {
+                    throw new ValidationException($validator);
+                }
+            }
 
             // create the resource
             $resource = $modelClass::create($fields);
@@ -111,9 +129,23 @@ class ResourcesController extends Controller
             // populate the fillable fields for the resource
             $fields = $resource->getFillableFields($request->json, json_encode($request->json));
 
+            // validate that the id field is unique
+            if (array_key_exists('id', $fields) && $fields['id'] !== $resource->id) {
+                $validator = Validator::make($fields, [
+                    'id' => [
+                        'required',
+                        Rule::unique($resource->getTable(), 'id'),
+                    ],
+                ], [
+                    'id.unique' => 'This identifier is already taken. Please enter a unique identifier.'
+                ]);
+
+                $validator->validate();
+            }
+
             // update the resource
             $resource->update($fields);
- 
+
             return $resource;
         });
     }
