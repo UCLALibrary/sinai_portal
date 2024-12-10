@@ -110,7 +110,7 @@
   }
 
   const onCancel = () => {
-    router.visit(route(props.routes.index))
+    router.visit(route(pageProps.routes.index, pageProps.resourceName))
   }
 </script>
 
