@@ -108,7 +108,7 @@
 
         <template v-if="layer.colophons && layer.colophons.length > 0">
           <h3>Colophon<template v-if="layer.colophons.length > 1">s</template></h3>
-          <template v-for="para in layer.colophons">
+          <div v-for="para in layer.colophons" class="mb-8">
             <p>
               <strong>{{ para.locus }}, {{ para.label }}</strong>
             </p>
@@ -122,7 +122,7 @@
               <p v-if="para.translation && para.translation.length > 0">
                 Translation: {{ para.translation.join('; ') }}
               </p>
-              <p class="font-medium italic">
+              <p class="font-medium italic" v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)">
                 Associated Names, Places, Dates
               </p>
               <template v-if="para.assoc_name && para.assoc_name.length > 0">
@@ -163,17 +163,17 @@
               </template>
               <template v-if="para.note && para.note.length > 0">
                 <p class="font-medium italic">Notes</p>
-                <p class="indent">
-                  {{ para.note.join('; ') }}
+                <p class="indent" v-for="note in para.note">
+                  {{ note }}
                 </p>
               </template>
             </div>
-          </template>
+          </div>
         </template>
 
         <template v-if="layer.para_except_colophons && layer.para_except_colophons.length > 0">
           <h3>Paracontent</h3>
-          <template v-for="para in layer.para_except_colophons">
+          <div v-for="para in layer.para_except_colophons" class="mb-8">
             <p>
               <strong>{{ para.locus }}, {{ para.label }} ({{ para.type.label }})</strong>
             </p>
@@ -187,7 +187,7 @@
               <p>
                 Translation: {{ para.translation.join('; ') }}
               </p>
-              <p class="font-medium italic">
+              <p class="font-medium italic" v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)">
                 Associated Names, Places, Dates
               </p>
               <template v-if="para.assoc_name && para.assoc_name.length > 0">
@@ -228,12 +228,12 @@
               </template>
               <template v-if="para.note && para.note.length > 0">
                 <p class="font-medium italic">Notes</p>
-                <p class="indent">
-                  {{ para.note.join('; ') }}
+                <p class="indent" v-for="note in para.note">
+                  {{ note }}
                 </p>
               </template>
             </div>
-          </template>
+          </div>
         </template>
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'para').length > 0">
