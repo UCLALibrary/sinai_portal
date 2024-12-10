@@ -82,7 +82,7 @@
           </p>
           <div v-for="(layout, index) in layerJson.layout" :key="index" class="mb-8">
             <p>
-              {{ layout.locus }}, {{ layout.lines }} lines, {{ layout.columns }} columns
+              {{ layout.locus }}: {{ layout.lines }} | {{ layout.columns }}
             </p>
             <p v-if="layout.dim">
               {{ layout.dim }}
