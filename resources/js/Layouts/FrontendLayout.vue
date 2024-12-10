@@ -48,13 +48,13 @@
                                 :href="route('frontend.manuscripts.index')"
                                 class="main-nav-link"
                                 :class="{ 'active': route().current('frontend.manuscripts.index') || route().current('frontend.manuscripts.show') }">
-                                Manuscripts
+                                Manuscript Objects
                             </Link>
                             <Link
                                 :href="route('frontend.layers.index')"
                                 class="main-nav-link"
                                 :class="{ 'active': route().current('frontend.layers.index') || route().current('frontend.layers.show') }">
-                                Layers
+                                Inscribed Layers
                             </Link>
                             <Link
                                 :href="route('frontend.textunits.index')"
@@ -66,22 +66,16 @@
                             <div class="">|</div>
 
                             <Link
-                                :href="route('frontend.agents.index')"
-                                class="main-nav-link"
-                                :class="{ 'active': route().current('frontend.agents.index') || route().current('frontend.agents.show') }">
-                                Agents
-                            </Link>
-                            <Link
-                                :href="route('frontend.places.index')"
-                                class="main-nav-link"
-                                :class="{ 'active': route().current('frontend.places.index') || route().current('frontend.places.show') }">
-                                Places
-                            </Link>
-                            <Link
                                 :href="route('frontend.works.index')"
                                 class="main-nav-link"
                                 :class="{ 'active': route().current('frontend.works.index') || route().current('frontend.works.show') }">
                                 Works
+                            </Link>
+                            <Link
+                                :href="route('frontend.agents.index')"
+                                class="main-nav-link"
+                                :class="{ 'active': route().current('frontend.agents.index') || route().current('frontend.agents.show') }">
+                                Agents
                             </Link>
 
                             <div class="">|</div>
