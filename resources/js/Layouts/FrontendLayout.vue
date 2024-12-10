@@ -39,10 +39,10 @@
                     <Link
                         :href="route('home')"
                         class="logo flex sm:justify-center lg:justify-start">
-                        <img src="/sinai-logo.svg" alt="logo" class="mr-4">Sinai Manuscripts Data Portal
+                        <img src="/sinai-logo.svg" alt="logo" class="mr-4"><span class="sm:text-lg lg:text-lg xl:text-2xl">Sinai Manuscripts Data Portal</span>
                     </Link>
 
-                    <nav class="flex flex-col lg:flex-row gap-x-10 text-lg">
+                    <nav class="flex flex-col lg:flex-row gap-x-10 text-base xl:text-lg">
                         <div class="flex max-sm:flex-wrap items-center gap-x-2 md:gap-x-4">
                             <Link
                                 :href="route('frontend.manuscripts.index')"
@@ -87,7 +87,7 @@
                                 v-click-outside="() => closeDropdown('about')">
                                 <button 
                                     @click="toggleDropdown('about')" 
-                                    class="flex items-center focus:outline-none uppercase font-dosis font-medium text-sm sm:text-base md:text-lg">
+                                    class="flex items-center focus:outline-none uppercase font-dosis font-medium">
                                     About
                                     <svg class="ml-1 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                         <path fill-rule="evenodd"
@@ -213,7 +213,7 @@
             @apply hover:border-black
         }
 
-        @apply font-dosis font-medium text-sm sm:text-base md:text-lg underline-offset-2 border-b-2 border-b-transparent 
+        @apply font-dosis font-medium text-sm sm:text-base xl:text-lg underline-offset-2 border-b-2 border-b-transparent 
     }
 
     .auth-nav nav {
