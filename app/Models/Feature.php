@@ -45,6 +45,7 @@ class Feature extends Model
         'enable_json_forms' => true,
         'index' => [
             'columns' => [
+                'id' => 'Id',
                 'label' => 'Label',
                 'corresp_note' => 'Note',
                 'summary' => 'Summary',
