@@ -21,6 +21,7 @@ class Feature extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'label',
         'corresp_note',
         'summary',
@@ -33,6 +34,7 @@ class Feature extends Model
     public function getFillableFields($data)
     {
         return array_combine($this->fillable, [
+            $data['id'] ?? Str::slug($data['label'], '-'),
             $data['label'],
             $data['corresp_note'] ?? null,
             $data['summary'] ?? null,
@@ -45,6 +47,7 @@ class Feature extends Model
         'enable_json_forms' => true,
         'index' => [
             'columns' => [
+                'id' => 'Id',
                 'label' => 'Label',
                 'corresp_note' => 'Note',
                 'summary' => 'Summary',
@@ -52,14 +55,6 @@ class Feature extends Model
             ],
         ],
     ];
-
-    public static function booted() {
-        static::creating(function ($model) {
-            if(!isset($model->id)) {
-                $model->id = Str::slug($model->label, '-');
-            }
-        });
-    }
 
     public function formContexts(): BelongsToMany
     {

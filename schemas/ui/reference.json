@@ -6,13 +6,6 @@
       "elements": [
         {
           "type": "Control",
-          "scope": "#/properties/id",
-          "options": {
-            "readonly": true
-          }
-        },
-        {
-          "type": "Control",
           "scope": "#/properties/short_title"
         },
         {

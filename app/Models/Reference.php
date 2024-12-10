@@ -20,6 +20,7 @@ class Reference extends Model
      * @var array
      */
     protected $fillable = [
+        'id',
         'short_title',
         'formatted_citation',
         'zotero_uri',
@@ -34,6 +35,7 @@ class Reference extends Model
     public function getFillableFields($data)
     {
         return array_combine($this->fillable, [
+            $data['id'] ?? Str::uuid(),
             $data['short_title'],
             $data['formatted_citation'],
             $data['zotero_uri'] ?? null,
@@ -58,14 +60,6 @@ class Reference extends Model
             ],
         ],
     ];
-
-    public static function booted() {
-        static::creating(function ($model) {
-            if(!isset($model->id)) {
-                $model->id = Str::uuid();
-            }
-        });
-    }
 }
 
 /*

@@ -53,7 +53,7 @@ class Location extends Model
         'enable_json_forms' => true,
         'index' => [
             'columns' => [
-                'id' => 'ID',
+                'id' => 'Id',
                 'collection' => 'Collection',
                 'repository' => 'Repository',
                 'note' => 'Note',
