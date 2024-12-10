@@ -103,23 +103,19 @@
                 <strong>{{ part.label }}</strong><template v-if="part.locus">, {{ part.locus }}</template>
               </p>
 
-              <p class="italic">
+              <p v-if="part.summary && part.summary !== ''" class="italic">
                 {{ part.summary }}
               </p>
 
-              <template v-if="part.support && part.support.length > 0">
-
-                <div class="item-container">
-                  <span class="item-label">Support</span>
-                  <p class="item-value">
-                    <span class="d-block">{{ part.support.map(support => support.label).join(', ') }}</span>
-                    <span class="d-block" v-if="part.note && part.note.filter(note => note.type.id === 'support').length > 0">
-                      {{ part.note.filter(note => note.type.id === 'support').map(note => note.value).join(', ') }}
-                    </span>
-                  </p>
-                </div>
-
-              </template>
+              <div v-if="part.support && part.support.length > 0"class="item-container">
+                <span class="item-label">Support</span>
+                <p class="item-value">
+                  <span class="d-block">{{ part.support.map(support => support.label).join(', ') }}</span>
+                  <span class="d-block" v-if="part.note && part.note.filter(note => note.type.id === 'support').length > 0">
+                    {{ part.note.filter(note => note.type.id === 'support').map(note => note.value).join(', ') }}
+                  </span>
+                </p>
+              </div>
 
               <div v-if="(part.extent && part.extent !== '') || (part.dim && part.dim !== '') " class="item-container">
                 <span class="item-label">Extent</span>
@@ -490,11 +486,12 @@
           <div class="item-value">
             <template v-for="reference in manuscript.related_references">
               <p>
-                {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
+                <span class="block">
+                  {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
+                </span>
                 <template v-if="reference.note && reference.note.length > 0">
-                  <br>
                   <template v-for="note in reference.note">
-                    {{ note }}<br>
+                    <span class="block">{{ note }}</span>
                   </template>
                 </template>
               </p>

@@ -107,14 +107,14 @@
         <h3>Contents</h3>
         <template v-for="textUnit in layer.text_units">
           <p>
-            <strong>{{ textUnit.label }}<template v-if="textUnit.locus && textUnit.locus !== ''">; {{ textUnit.locus }}</template></strong>
+            <strong><a :href="'/textunits/' + textUnit.id">{{ textUnit.parentLabel }}</a></strong><template v-if="textUnit.locus && textUnit.locus !== ''"> ({{ textUnit.locus }})</template>
           </p>
-          <div class="item-container">
-            <span class="item-label">Languages</span>
-            <p class="item-value">
-              {{ textUnit.lang.map(lang => lang.label).join('; ') }}
-            </p>
-          </div>
+          <p v-if="textUnit.lang && textUnit.lang.length > 0">
+            Languages: {{ textUnit.lang.map(lang => lang.label).join(' | ') }}
+          </p>
+          <p v-if="textUnit.work_wit && textUnit.work_wit.length > 0">
+            Works: {{ textUnit.work_wit.map(work => work.pref_title || work.desc_title || '').filter(title => title).join(' | ') }}
+          </p>
         </template>
 
         <template v-if="layer.colophons && layer.colophons.length > 0">
