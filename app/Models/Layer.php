@@ -54,6 +54,7 @@ class Layer extends Model
     
     protected $appends = [
         'text_units',
+        'primary_languages',
         'colophons',
         'para_except_colophons',
         'related_manuscripts',
@@ -74,6 +75,20 @@ class Layer extends Model
     {
         return $this->getRelatedTextUnits('layers', $this->id, '$.text_unit[*]');
     }
+    
+    public function getPrimaryLanguagesAttribute() {
+        $textUnits = $this->getTextUnitsAttribute();
+        
+        $languages = array_unique(array_merge(
+            ...array_map(
+                fn($textUnit) => array_column($textUnit['lang'] ?? [], 'label'),
+                $textUnits
+            )
+        ));
+        
+        return $languages;
+    }
+    
     
     /**
      * Accessor to include related agents when the model is serialized.

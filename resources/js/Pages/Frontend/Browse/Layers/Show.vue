@@ -40,6 +40,7 @@
         <div class="item-container">
           <span class="item-label">Primary Languages</span>
           <p class="item-value">
+            {{ layer.primary_languages.join(', ') }}
           </p>
         </div>
 
