@@ -315,9 +315,7 @@
         </template>
 
         <template v-if="(layer.associated_names_from_root && layer.associated_names_from_root.length > 0)">
-          <p class="mt-8">
-            <strong>Associated Names, Places, Dates</strong>
-          </p>
+          <h3>Associated Names, Places, Dates</h3>
 
           <div v-for="name in layer.associated_names_from_root" class="mb-8">
             <p>
