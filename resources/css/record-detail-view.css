@@ -13,3 +13,11 @@
 p {
     @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
 }
+
+ul li {
+    @apply my-2 text-base xl:text-lg
+}
+
+ul.bulleted {
+    @apply list-disc ml-4
+}

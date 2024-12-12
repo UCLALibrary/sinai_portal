@@ -302,16 +302,8 @@
             </ul>
           </template>
 
-          <template v-if="layerJson.note.filter(note => note.type.id === 'general').length > 0">
-            <p>
-              <strong>Other notes</strong>
-            </p>
-            <ul class="bulleted">
-              <li v-for="(generalNote, index) in layerJson.note.filter(note => note.type.id === 'general')" :key="index">
-                {{ generalNote.value }}
-              </li>
-            </ul>
-          </template>
+          <NotesGeneral :notes="layerJson.note.filter(note => note.type.id === 'general')" />
+
         </template>
 
         <template v-if="(layer.associated_names_from_root && layer.associated_names_from_root.length > 0)">
@@ -498,6 +490,7 @@
   import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
   import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
   import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
+  import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -556,14 +549,6 @@
 
   p {
     @apply xl:text-lg
-  }
-
-  ul li {
-    @apply my-2 text-base xl:text-lg
-  }
-
-  ul.bulleted {
-    @apply list-disc ml-4
   }
 
   .item-container {

@@ -438,16 +438,7 @@
           </ul>
         </template>
 
-        <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'general').length > 0">
-          <p>
-            <strong>Other notes</strong>
-          </p>
-          <ul class="bulleted">
-            <li v-for="(generalNote) in manuscriptJson.note.filter(note => note.type.id === 'general')">
-              {{ generalNote .value }}
-            </li>
-          </ul>
-        </template>
+        <NotesGeneral :notes="manuscriptJson.note.filter(note => note.type.id === 'general')" />
 
         <template v-if="(manuscript.assoc_names_from_para && manuscript.assoc_names_from_para.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
           <h3>Associated Names, Places, Dates</h3>
@@ -601,6 +592,7 @@
   import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
   import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
   import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
+  import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

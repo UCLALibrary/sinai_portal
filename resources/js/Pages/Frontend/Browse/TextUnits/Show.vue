@@ -28,23 +28,8 @@
           </p>
         </div>
 
-        <template v-if="textUnitJson.note && textUnitJson.note.filter(n => n.type.id === 'contents').length > 0">
-          <p>
-            <strong>Content Notes</strong>
-          </p>
-          <p v-for="note in textUnitJson.note.filter(n => n.type.id === 'contents')" :key="note.type.id">
-            {{ note.value }}
-          </p>
-        </template>
-
-        <template v-if="textUnitJson.note && textUnitJson.note.filter(n => n.type.id === 'general').length > 0">
-          <p>
-            <strong>General Notes</strong>
-          </p>
-          <p v-for="note in textUnitJson.note.filter(n => n.type.id === 'general')" :key="note.type.id">
-            {{ note.value }}
-          </p>
-        </template>
+        <NotesContents :notes="textUnitJson.note.filter(note => note.type.id === 'contents')" />
+        <NotesGeneral :notes="textUnitJson.note.filter(note => note.type.id === 'general')" />
 
         <h3>Resources</h3>
         <ResourcesEditions :editions="textUnit.editions"/>
@@ -80,6 +65,8 @@
   import ResourcesTranslations from '@/Pages/Frontend/Browse/Components/ResourcesTranslations.vue';
   import ResourcesReferences from '@/Pages/Frontend/Browse/Components/ResourcesReferences.vue';
   import ResourcesBibliographies from '@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue';
+  import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
+  import NotesContents from "@/Pages/Frontend/Browse/Components/NotesContents.vue";
 
 
   const props = defineProps({
