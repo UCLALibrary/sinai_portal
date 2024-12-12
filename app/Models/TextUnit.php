@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\JsonSchemas;
+use App\Traits\RelatedBibliographies;
 use Laravel\Scout\Searchable;
 use App\Traits\HasRelatedEntities;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TextUnit extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -23,8 +24,7 @@ class TextUnit extends Model
         'json',
     ];
     
-    public function getFillableFields($data, $json)
-    {
+    public function getFillableFields($data, $json) {
         return array_combine($this->fillable, [
             basename($data['ark']),  // use the trailing ark segment as the id
             $data['ark'],
@@ -42,19 +42,22 @@ class TextUnit extends Model
             ],
         ],
     ];
-
-     protected $appends = [
+    
+    protected $appends = [
         'source',
+        'editions',
+        'translations',
+        'references',
+        'bibliographies'
     ];
-
+    
     /**
-     * Returns the "source" for the text unit, which consists of the state label of its parent 
+     * Returns the "source" for the text unit, which consists of the state label of its parent
      * layer and the shelfmark of its parent layer's manuscript.
-     * 
+     *
      * @return array
      */
-    public function getSourceAttribute(): array
-    {
+    public function getSourceAttribute(): array {
         $query = "
             SELECT
                 l.jsonb->'state'->>'label' AS state_label,
@@ -76,23 +79,38 @@ class TextUnit extends Model
         $bindings = [
             'text_unit_ark' => $this->ark,
         ];
-
+        
         $rows = DB::select($query, $bindings);
-        $results = array_map(function($item) {
-            return (array) $item;
+        $results = array_map(function ($item) {
+            return (array)$item;
         }, $rows);
-
+        
         return $results;
     }
-
+    
+    public function getEditionsAttribute(): array {
+        return $this->getReferencesByType('text_units', $this->id, 'edition');
+    }
+    
+    public function getTranslationsAttribute(): array {
+        return $this->getReferencesByType('text_units', $this->id, 'translation');
+    }
+    
+    public function getReferencesAttribute(): array {
+        return $this->getReferencesByType('text_units', $this->id, 'ref');
+    }
+    
+    public function getBibliographiesAttribute(): array {
+        return $this->getReferencesByType('text_units', $this->id, 'cite');
+    }
+    
     /**
-     * Returns the genres for the text unit that are embedded within works of its work 
+     * Returns the genres for the text unit that are embedded within works of its work
      * witnesses -AND- genres within its referenced work.
-     * 
+     *
      * @return array
      */
-    public function getGenres(): array
-    {
+    public function getGenres(): array {
         $query = "
             -- Extracts genres from the embedded work metadata
             SELECT
@@ -130,27 +148,25 @@ class TextUnit extends Model
             WHERE
                 tu.jsonb->>'ark' = :text_unit_ark;
         ";
-
+        
         $bindings = [
             'text_unit_ark' => $this->ark,
         ];
-
+        
         $rows = DB::select($query, $bindings);
-        $results = array_map(function($item) {
-            return (array) $item;
+        $results = array_map(function ($item) {
+            return (array)$item;
         }, $rows);
-
+        
         return $results;
     }
-
-
+    
     /**
      * Accessor to include related agents when the model is serialized.
      *
      * @return array
      */
-    public function getRelatedAgentsAttribute(): array
-    {
+    public function getRelatedAgentsAttribute(): array {
         $relatedCreators = $this->getConnectedAgentCreatorNames();
         $relatedAgents = $this->getRelatedEntities(
             'assoc_name',
@@ -169,9 +185,8 @@ class TextUnit extends Model
         
         return array_merge($relatedCreators, $relatedAgents);
     }
-
-    public function getConnectedAgentCreatorNames()
-    {
+    
+    public function getConnectedAgentCreatorNames() {
         $query = "
             WITH text_unit_works AS (
                 SELECT DISTINCT jsonb_array_elements(tu.jsonb -> 'work_wit') -> 'work' ->> 'id' AS work_ark
@@ -192,13 +207,13 @@ class TextUnit extends Model
             FROM agents AS agent
             JOIN work_agents ON agent.jsonb ->> 'ark' = work_agents.agent_ark;
         ";
-
+        
         $bindings = [
             $this->ark,
         ];
-
+        
         $results = DB::select($query, $bindings);
-
+        
         return array_map(function ($row) {
             return [
                 'id' => $row->id,
@@ -210,7 +225,7 @@ class TextUnit extends Model
             ];
         }, $results);
     }
-
+    
     public function getRelatedWorksAttribute() {
         $query = "
             WITH text_unit_works AS (
@@ -226,13 +241,13 @@ class TextUnit extends Model
             FROM works AS w
             JOIN text_unit_works AS tuw ON w.jsonb ->> 'ark' = tuw.work_ark;
         ";
-
+        
         $bindings = [
             $this->ark,
         ];
-
+        
         $results = DB::select($query, $bindings);
-
+        
         $relatedWorks = array_map(function ($row) {
             return [
                 'id' => $row->id,
@@ -240,73 +255,71 @@ class TextUnit extends Model
                 'work_ark' => $row->work_ark,
             ];
         }, $results);
-
+        
         return $relatedWorks;
     }
-
+    
     /**
      * Get the parent layers.
      *
      * @return string|null
      */
-    public function getParentLayers()
-    {
+    public function getParentLayers() {
         $data = $this->getJsonData();
-
+        
         return !empty($data['parent'])
             ? Layer::whereIn('ark', $data['parent'])->get()
             : null;
     }
-
-    public function toSearchableArray(): array
-    {
+    
+    public function toSearchableArray(): array {
         $array = $this->toArray();
-
+        
         $array['ark'] = $this->ark ?? null;
         $array['label'] = $this->label ?? null;
-
+        
         // min and max date from the 'assoc_date' field from layers of type 'origin'
-        foreach($this->getParentLayers() as $layer) {
+        foreach ($this->getParentLayers() as $layer) {
             $data = $layer->getJsonData();
-
+            
             if (isset($data['assoc_date'])) {
                 $notBeforeValues = [];
                 $notAfterValues = [];
-                foreach($data['assoc_date'] as $date) {
+                foreach ($data['assoc_date'] as $date) {
                     if (isset($date['type']['id']) && $date['type']['id'] === 'origin') {
                         $notBeforeValues[] = $date['iso']['not_before'] ?? null;
                         $notAfterValues[] = $date['iso']['not_after'] ?? null;
                     }
                 }
-    
+                
                 // minimum date from the 'not_before' field from layers of type 'origin'
                 $values = array_filter($notBeforeValues, fn($value) => $value !== null);
                 $array['date_min'] = $values ? min(array_map('intval', $values)) : null;
-        
+                
                 // maximum date from the 'not_after' field from layers of type 'origin'
                 $values = array_filter($notAfterValues, fn($value) => $value !== null);
                 $array['date_max'] = $values ? max(array_map('intval', $values)) : null;
             }
         }
-
+        
         $data = $this->getJsonData();
-
+        
         // get all creators attached to this layer
         $array['names'] = collect($this->getRelatedAgentsAttribute())->pluck('pref_name');
-
+        
         // get the source (i.e. state label from the parent layer and shelfmark from the parent's parent manuscript)
         $source = $this->getSourceAttribute();
         $array['source'] = $source
             ? $source[0]['shelfmark'] . ($source[0]['state_label'] ? ' (' . $source[0]['state_label'] . ')' : '')
             : '';
-
+        
         // languages
         $array['languages'] = array_column($data['lang'], 'label');
-
+        
         // genres (i.e. genres embedded within works of its work witnesses -AND- genres within its referenced work)
         $genres = array_column($this->getGenres(), 'label');
         $array['genres'] = array_unique($genres);
-
+        
         // features
         $array['features'] = [];
         if (isset($data['features'])) {
@@ -314,18 +327,18 @@ class TextUnit extends Model
                 $array['features'][] = isset($feature['label']) ? $feature['label'] : null;
             }
         }
-
+        
         // get the related works
         $array['works'] = collect($this->getRelatedWorksAttribute())->pluck('pref_title')->unique()->values()->all();
-
-
+        
+        
         /*
          * Apply default transformations if desired.
          *
          * https://www.algolia.com/doc/framework-integration/laravel/indexing/configure-searchable-data/?client=php#transformers
          */
         // $array = $this->transform($array);
-
+        
         return $array;
     }
 }

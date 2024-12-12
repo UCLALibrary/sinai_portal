@@ -1,0 +1,15 @@
+.item-container {
+    @apply flex flex-col md:flex-row
+}
+
+.item-label {
+    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
+}
+
+.item-value {
+    @apply flex-1
+}
+
+p {
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
+}

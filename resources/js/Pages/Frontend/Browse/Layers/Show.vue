@@ -347,36 +347,10 @@
 
         <template v-if="(layer.references && layer.references.length > 0) || (layer.bibliographies && layer.bibliographies.length > 0)">
           <h3>Resources</h3>
-          <div v-if="layer.references && layer.references.length > 0" class="item-container">
-            <span class="item-label">References</span>
-            <div class="item-value">
-              <template v-for="reference in layer.references">
-                <p>
-                  {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
-                </p>
-                <p v-for="note in reference.note">
-                  {{ note }}
-                </p>
-              </template>
-            </div>
-          </div>
 
-          <div v-if="layer.bibliographies && layer.bibliographies.length > 0" class="item-container">
-            <span class="item-label">Bibliography</span>
-            <div class="item-value">
-              <template v-for="bibliography in layer.bibliographies">
-                <p>
-                  <a v-if="bibliography.url" :href="bibliography.url" target="_blank">
-                    {{ bibliography.formatted_citation }}
-                  </a>
-                  <span v-else>
-                {{ bibliography.formatted_citation }}
-              </span>
-                  <span v-if="bibliography.range">. {{ bibliography.range }}</span>
-                </p>
-              </template>
-            </div>
-          </div>
+          <ResourcesReferences :references="layer.references"/>
+          <ResourcesBibliographies :bibliographies="layer.bibliographies"/>
+
         </template>
 
         <h3>Preferred Citation</h3>
@@ -522,6 +496,8 @@
   import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
   import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
+  import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
+  import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

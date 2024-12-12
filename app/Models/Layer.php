@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
+use App\Traits\RelatedBibliographies;
 use App\Traits\RelatedLayers;
 use App\Traits\RelatedTextUnits;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Laravel\Scout\Searchable;
 
 class Layer extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits, RelatedLayers;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits, RelatedLayers, RelatedBibliographies;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -249,43 +250,14 @@ class Layer extends Model
         })->toArray();
     }
     
-    private function getReferencesByType(string $type): array
-    {
-        $query = '$.bib[*] ? (@.type.id == "' . $type . '")';
-        
-        $referencesQuery = DB::table('layers')
-            ->selectRaw("jsonb_path_query(jsonb, ?) AS reference", [$query])
-            ->where('id', $this->id)
-            ->get();
-        
-        return $referencesQuery->map(function ($reference) {
-            $referenceData = json_decode($reference->reference, true);
-            
-            if (isset($referenceData['id'])) {
-                $ref = Reference::where('id', $referenceData['id'])->first();
-                if ($ref) {
-                    $referenceData['short_title'] = $ref->short_title;
-                    $referenceData['formatted_citation'] = $ref->formatted_citation;
-                }
-            }
-            
-            $referenceData['alt_shelf'] = $referenceData['alt_shelf'] ?? null;
-            $referenceData['range'] = $referenceData['range'] ?? null;
-            $referenceData['url'] = $referenceData['url'] ?? null;
-            $referenceData['note'] = $referenceData['note'] ?? [];
-            
-            return $referenceData;
-        })->toArray();
-    }
-    
     public function getReferencesAttribute(): array
     {
-        return $this->getReferencesByType('ref');
+        return $this->getReferencesByType('layers', $this->id, 'ref');
     }
     
     public function getBibliographiesAttribute(): array
     {
-        return $this->getReferencesByType('cite');
+        return $this->getReferencesByType('layers', $this->id, 'cite');
     }
     
     public function getWorksAttribute(): array

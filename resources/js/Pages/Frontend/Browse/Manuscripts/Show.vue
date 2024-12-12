@@ -481,40 +481,8 @@
         </template>
 
         <h3>Resources</h3>
-        <div v-if="manuscript.related_references && manuscript.related_references.length > 0" class="item-container">
-          <span class="item-label">References</span>
-          <div class="item-value">
-            <template v-for="reference in manuscript.related_references">
-              <p>
-                <span class="block">
-                  {{ reference.short_title }}, {{ reference.range }}<span v-if="reference.alt_shelf">. Reference mark: {{ reference.alt_shelf }}</span>
-                </span>
-                <template v-if="reference.note && reference.note.length > 0">
-                  <template v-for="note in reference.note">
-                    <span class="block">{{ note }}</span>
-                  </template>
-                </template>
-              </p>
-            </template>
-          </div>
-        </div>
-
-        <div v-if="manuscript.related_bibliographies && manuscript.related_bibliographies.length > 0" class="item-container">
-          <span class="item-label">Bibliography</span>
-          <div class="item-value">
-            <template v-for="bibliography in manuscript.related_bibliographies">
-              <p>
-                <a v-if="bibliography.url" :href="bibliography.url" target="_blank">
-                  {{ bibliography.formatted_citation }}
-                </a>
-                <span v-else>
-                {{ bibliography.formatted_citation }}
-              </span>
-                <span v-if="bibliography.range">. {{ bibliography.range }}</span>
-              </p>
-            </template>
-          </div>
-        </div>
+        <ResourcesReferences :references="manuscript.references"/>
+        <ResourcesBibliographies :bibliographies="manuscript.bibliographies"/>
 
         <div v-if="manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0" class="item-container">
           <span class="item-label">Other Digital Versions</span>
@@ -631,6 +599,8 @@
   import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
   import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
+  import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
+  import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -661,7 +631,7 @@
   });
 
   const shelfmarkVariants = computed(() => {
-    return props.manuscript.related_references
+    return props.manuscript.references
         .filter(reference => reference.alt_shelf)
         .map(reference => `${reference.alt_shelf} (${reference.short_title})`)
         .join(', ');
@@ -725,8 +695,8 @@
   });
 
   const hasResources = computed(() => {
-    const hasReferences = props.manuscript.related_references && props.manuscript.related_references.length > 0;
-    const hasBibliographies = props.manuscript.related_bibliographies && props.manuscript.related_bibliographies.length > 0;
+    const hasReferences = props.manuscript.references && props.manuscript.references.length > 0;
+    const hasBibliographies = props.manuscript.bibliographies && props.manuscript.bibliographies.length > 0;
     const hasRelatedDigitalVersions = props.manuscript.related_digital_versions && props.manuscript.related_digital_versions.length > 0;
     const hasViscodex = manuscriptJson.viscodex && manuscriptJson.viscodex.length > 0;
     return hasReferences || hasBibliographies || hasRelatedDigitalVersions || hasViscodex;

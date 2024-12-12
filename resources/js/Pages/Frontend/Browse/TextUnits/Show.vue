@@ -46,6 +46,12 @@
           </p>
         </template>
 
+        <h3>Resources</h3>
+        <ResourcesEditions :editions="textUnit.editions"/>
+        <ResourcesTranslations :translations="textUnit.translations"/>
+        <ResourcesReferences :references="textUnit.references"/>
+        <ResourcesBibliographies :bibliographies="textUnit.bibliographies"/>
+
         <h3>Preferred Citation</h3>
         <p>
           "{{ textUnitJson.label }}". Sinai Manuscripts Data Portal. Last modified: {{ last_modified }}.
@@ -70,6 +76,11 @@
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
   import { Link } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
+  import ResourcesEditions from "@/Pages/Frontend/Browse/Components/ResourcesEditions.vue";
+  import ResourcesTranslations from '@/Pages/Frontend/Browse/Components/ResourcesTranslations.vue';
+  import ResourcesReferences from '@/Pages/Frontend/Browse/Components/ResourcesReferences.vue';
+  import ResourcesBibliographies from '@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue';
+
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -113,10 +124,6 @@
     @apply mt-0
   }
 
-  p {
-    @apply mb-2 max-w-2xl xl:max-w-4xl
-  }
-
   .separator {
     @apply border-b border-gray-300 my-8
   }
@@ -129,27 +136,8 @@
     @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-light-blue text-sm
   }
 
-  p {
-    @apply xl:text-lg
-  }
-
-  .label {
-    @apply block md:inline-block text-sm uppercase font-medium w-56
-  }
 
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg
-  }
-
-  .item-container {
-    @apply flex flex-col md:flex-row
-  }
-
-  .item-label {
-    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
-  }
-
-  .item-value {
-    @apply flex-1
   }
 </style>

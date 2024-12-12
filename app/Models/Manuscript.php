@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
+use App\Traits\RelatedBibliographies;
 use App\Traits\RelatedLayers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Laravel\Scout\Searchable;
 
 class Manuscript extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedLayers;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedLayers, RelatedBibliographies;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -70,8 +71,8 @@ class Manuscript extends Model
         'part_layer_guest',
         'layer_guest',
         'para',
-        'related_references',
-        'related_bibliographies',
+        'references',
+        'bibliographies',
         'related_digital_versions',
         'related_text_units',
     ];
@@ -444,46 +445,14 @@ class Manuscript extends Model
         return $paracontent;
     }
     
-    public function getRelatedReferencesAttribute(): array
+    public function getReferencesAttribute(): array
     {
-        return $this->getRelatedEntities(
-            'bib',
-            Reference::class,
-            function ($item) {
-                return isset($item['type']['id']) && $item['type']['id'] === 'ref';
-            },
-            function ($bibItem, $item) {
-                return [
-                    'id' => $bibItem->id,
-                    'short_title' => $bibItem->short_title,
-                    'formatted_citation' => $bibItem->formatted_citation,
-                    'alt_shelf' => $item['alt_shelf'] ?? null,
-                    'range' => $item['range'] ?? null,
-                    'note' => $item['note'] ?? [],
-                ];
-            }
-        )->toArray();
+        return $this->getReferencesByType('manuscripts', $this->id, 'ref');
     }
     
-    public function getRelatedBibliographiesAttribute(): array
+    public function getBibliographiesAttribute(): array
     {
-        return $this->getRelatedEntities(
-            'bib',
-            Reference::class,
-            function ($item) {
-                return isset($item['type']['id']) && $item['type']['id'] === 'cite';
-            },
-            function ($bibItem, $item) {
-                return [
-                    'id' => $bibItem->id,
-                    'short_title' => $bibItem->short_title,
-                    'formatted_citation' => $bibItem->formatted_citation,
-                    'range' => $item['range'] ?? null,
-                    'url' => $item['url'] ?? null,
-                    'note' => $item['note'] ?? [],
-                ];
-            }
-        )->toArray();
+        return $this->getReferencesByType('manuscripts', $this->id, 'cite');
     }
     
     public function getRelatedDigitalVersionsAttribute(): array

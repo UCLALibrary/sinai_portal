@@ -23,6 +23,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import '../css/overrides/element-plus.css'
 
+import '../css/record-detail-view.css'
+
 // element-plus icons
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
