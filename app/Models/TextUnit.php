@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\JsonSchemas;
 use App\Traits\RelatedBibliographies;
+use App\Traits\RelatedPara;
 use Laravel\Scout\Searchable;
 use App\Traits\HasRelatedEntities;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TextUnit extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies, RelatedPara;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -45,6 +46,7 @@ class TextUnit extends Model
     
     protected $appends = [
         'source',
+        'para',
         'editions',
         'translations',
         'references',
@@ -86,6 +88,10 @@ class TextUnit extends Model
         }, $rows);
         
         return $results;
+    }
+    
+    public function getParaAttribute(): array {
+        return $this->getParaByQuery('text_units', $this->id, '$.para[*]');
     }
     
     public function getEditionsAttribute(): array {

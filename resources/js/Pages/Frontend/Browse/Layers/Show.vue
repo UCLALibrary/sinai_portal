@@ -184,67 +184,7 @@
 
         <template v-if="layer.para_except_colophons && layer.para_except_colophons.length > 0">
           <h3>Paracontent</h3>
-          <div v-for="para in layer.para_except_colophons" class="mb-8">
-            <p>
-              <strong>{{ para.locus }}, {{ para.label }} ({{ para.type.label }})</strong>
-            </p>
-            <div class="indent">
-              <p>
-                Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
-              </p>
-              <p>
-                Transcription: {{ para.as_written }}
-              </p>
-              <p>
-                Translation: {{ para.translation.join('; ') }}
-              </p>
-              <p class="font-medium italic" v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)">
-                Associated Names, Places, Dates
-              </p>
-              <template v-if="para.assoc_name && para.assoc_name.length > 0">
-                <ul>
-                  <template v-for="name in para.assoc_name">
-                    <li class="indent">
-                      {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
-                      <span v-if="name.note && name.note.length > 0" class="indent">
-                          {{ name.note.join('; ') }}
-                        </span>
-                    </li>
-                  </template>
-                </ul>
-              </template>
-              <template v-if="para.assoc_place && para.assoc_place.length > 0">
-                <ul>
-                  <template v-for="place in para.assoc_place">
-                    <li class="indent">
-                      {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
-                      <span v-if="place.note && place.note.length > 0" class="indent">
-                          {{ place.note.join('; ') }}
-                        </span>
-                    </li>
-                  </template>
-                </ul>
-              </template>
-              <template v-if="para.assoc_date && para.assoc_date.length > 0">
-                <ul>
-                  <template v-for="date in para.assoc_date">
-                    <li class="indent">
-                      {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
-                      <span v-if="date.note && date.note.length > 0" class="indent">
-                          {{ date.note.join('; ') }}
-                        </span>
-                    </li>
-                  </template>
-                </ul>
-              </template>
-              <template v-if="para.note && para.note.length > 0">
-                <p class="font-medium italic">Notes</p>
-                <p class="indent" v-for="note in para.note">
-                  {{ note }}
-                </p>
-              </template>
-            </div>
-          </div>
+          <ParacontentPara :paracontents="layer.para_except_colophons" />
         </template>
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'para').length > 0">
@@ -491,6 +431,7 @@
   import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
   import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
+  import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -561,9 +502,5 @@
 
   .item-value {
     @apply flex-1
-  }
-
-  .indent {
-    @apply md:ml-4 block
   }
 </style>

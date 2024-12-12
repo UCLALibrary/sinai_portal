@@ -28,6 +28,10 @@
           </p>
         </div>
 
+        <h3>Paracontent</h3>
+        <ParacontentPara :paracontents="textUnit.para" />
+
+        <h3>Notes</h3>
         <NotesContents :notes="textUnitJson.note.filter(note => note.type.id === 'contents')" />
         <NotesGeneral :notes="textUnitJson.note.filter(note => note.type.id === 'general')" />
 
@@ -67,7 +71,7 @@
   import ResourcesBibliographies from '@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue';
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
   import NotesContents from "@/Pages/Frontend/Browse/Components/NotesContents.vue";
-
+  import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -122,7 +126,6 @@
   a.button {
     @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-light-blue text-sm
   }
-
 
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg

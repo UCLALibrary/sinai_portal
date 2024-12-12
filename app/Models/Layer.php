@@ -6,6 +6,7 @@ use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
 use App\Traits\RelatedBibliographies;
 use App\Traits\RelatedLayers;
+use App\Traits\RelatedPara;
 use App\Traits\RelatedTextUnits;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Laravel\Scout\Searchable;
 
 class Layer extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits, RelatedLayers, RelatedBibliographies;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedTextUnits, RelatedLayers, RelatedBibliographies, RelatedPara;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -114,49 +115,14 @@ class Layer extends Model
             })->toArray();
     }
     
-    private function getParaByType(string $type = null): array
-    {
-        $query = '$.para[*]';
-        if ($type !== null) {
-            $query .= " ? (@.type.id == \"$type\")";
-        } else {
-            $query .= " ? (!(@.type.id == \"colophon\"))";
-        }
-        
-        $parasQuery = DB::table('layers')
-            ->selectRaw("jsonb_path_query(jsonb, ?) AS para", [$query])
-            ->where('id', $this->id)
-            ->get();
-        
-        return $parasQuery->map(function ($para) {
-            $paraData = json_decode($para->para, true);
-            
-            if (isset($paraData['assoc_name']) && is_array($paraData['assoc_name'])) {
-                foreach ($paraData['assoc_name'] as &$assocName) {
-                    $agent = Agent::where('ark', $assocName['id'])->first();
-                    $assocName['pref_name'] = $agent ? $agent->pref_name : null;
-                }
-            }
-            
-            if (isset($paraData['assoc_place']) && is_array($paraData['assoc_place'])) {
-                foreach ($paraData['assoc_place'] as &$assocPlace) {
-                    $place = Place::where('ark', $assocPlace['id'])->first();
-                    $assocPlace['pref_name'] = $place ? $place->pref_name : null;
-                }
-            }
-            
-            return $paraData;
-        })->toArray();
-    }
-    
     public function getColophonsAttribute(): array
     {
-        return $this->getParaByType('colophon');
+        return $this->getParaByQuery('layers', $this->id, '$.para[*] ? (@.type.id == "colophon")');
     }
     
     public function getParaExceptColophonsAttribute(): array
     {
-        return $this->getParaByType();
+        return $this->getParaByQuery('layers', $this->id, '$.para[*] ? (@.type.id != "colophon")');
     }
     
     public function getRelatedManuscriptsAttribute(): array

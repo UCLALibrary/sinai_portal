@@ -10,6 +10,10 @@
     @apply flex-1
 }
 
+.indent {
+    @apply md:ml-4 block
+}
+
 p {
     @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
 }
