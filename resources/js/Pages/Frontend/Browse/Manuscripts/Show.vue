@@ -11,9 +11,7 @@
           </template>
         </h2>
 
-        <p class="italic">
-          {{ manuscriptJson.summary }}
-        </p>
+        <OverviewSummary :summary="manuscriptJson.summary" :marginBottom="false"/>
 
         <p class="mb-8">
           {{ manuscript.assoc_dates_overview.join('; ') }}
@@ -525,6 +523,7 @@
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
   import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
+  import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

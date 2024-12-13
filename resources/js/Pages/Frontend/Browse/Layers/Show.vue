@@ -10,10 +10,8 @@
           {{ layerJson.state.label }}<template v-if="source"> from <a :href="'/manuscripts/' + source.id">{{ source.identifier }}</a></template><template v-if="layerJson.locus && layerJson.locus !== ''">, {{ layerJson.locus }}</template>
         </p>
 
-        <p class="italic">
-          {{ layerJson.summary }}
-        </p>
-
+        <OverviewSummary :summary="layerJson.summary" />
+        
         <h3>Layer Overview</h3>
 
         <OverviewArk :ark="layerJson.ark"/>
@@ -428,6 +426,7 @@
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
   import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
+  import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
