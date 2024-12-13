@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 trait RelatedWorks
 {
+    use RelatedAgents;
+    
     public function getRelatedWorks(string $table, string $id, string $jsonQuery): array
     {
         $worksQuery = DB::table($table)
@@ -15,9 +17,9 @@ trait RelatedWorks
             ->get();
         
         return $worksQuery->map(function ($work) {
-            $workData = json_decode($work->work, true);
-            $workId = $workData['work']['id'] ?? null; // Extract work.id
-            $workObject = Work::where('ark', $workId)->first();
+            $workJsonData = json_decode($work->work, true);
+            $workArk = $workJsonData['work']['id'] ?? null;
+            $workObject = Work::where('ark', $workArk)->first();
             
             if ($workObject) {
                 $workJson = json_decode($workObject->jsonb, true);
@@ -25,15 +27,18 @@ trait RelatedWorks
                 return [
                     'id' => $workObject->id,
                     'ark' => $workJson['ark'] ?? '',
-                    'pref_title' => $workJson['pref_title'] ?? ''
+                    'pref_title' => $workJson['pref_title'] ?? '',
+                    'alt_title' => $workJson['alt_title'] ?? '',
+                    'creator' => $this->getRelatedAgents('works', $workObject->id, '$.creator[*]')
                 ];
             }
             
-            if (isset($workData['work']['desc_title'])) {
+            if (isset($workJsonData['work']['desc_title'])) {
                 return [
                     'id' => null,
                     'ark' => null,
-                    'desc_title' => $workData['work']['desc_title'] ?? '',
+                    'desc_title' => $workJsonData['work']['desc_title'],
+                    'creator' => $workJsonData['work']['creator'] ?? []
                 ];
             }
             

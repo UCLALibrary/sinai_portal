@@ -10,12 +10,12 @@
           From {{ textUnit.source[0].shelfmark + (textUnit.source[0].state_label ? ` (${textUnit.source[0].state_label})` : '') + (textUnit.source[0].locus ? `, ${textUnit.source[0].locus}` : '') }}
         </p>
 
-        <p class="italic mb-8">
-          {{ textUnitJson.summary }}
-        </p>
-
+        <OverviewSummary :summary="textUnitJson.summary" />
         <OverviewArk :ark="textUnitJson.ark"/>
         <OverviewLanguages :languages="textUnitJson.lang" />
+
+        <h3>Items</h3>
+        <WorkWitnesses :work-witnesses="textUnit.work_witnesses"/>
 
         <template v-if="textUnit.para && textUnit.para.length > 0">
           <h3>Paracontent</h3>
@@ -69,6 +69,8 @@
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
   import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
   import OverviewLanguages from "@/Pages/Frontend/Browse/Components/OverviewLanguages.vue";
+  import WorkWitnesses from "@/Pages/Frontend/Browse/Components/WorkWitnesses.vue";
+  import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

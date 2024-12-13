@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\JsonSchemas;
 use App\Traits\RelatedBibliographies;
 use App\Traits\RelatedPara;
+use App\Traits\RelatedWorkWitnesses;
 use Laravel\Scout\Searchable;
 use App\Traits\HasRelatedEntities;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TextUnit extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies, RelatedPara;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies, RelatedPara, RelatedWorkWitnesses;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -46,6 +47,7 @@ class TextUnit extends Model
     
     protected $appends = [
         'source',
+        'work_witnesses',
         'para',
         'editions',
         'translations',
@@ -88,6 +90,10 @@ class TextUnit extends Model
         }, $rows);
         
         return $results;
+    }
+    
+    public function getWorkWitnessesAttribute(): array {
+        return $this->getRelatedWorkWitnesses('text_units', $this->id, '$.work_wit[*]');
     }
     
     public function getParaAttribute(): array {
