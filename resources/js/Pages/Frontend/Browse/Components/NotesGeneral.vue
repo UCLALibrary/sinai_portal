@@ -1,12 +1,14 @@
-<template v-if="notes && notes.length > 0">
-  <p>
-    <strong>Other notes</strong>
-  </p>
-  <ul class="bulleted">
-    <li v-for="note in notes">
-      {{ note.value }}
-    </li>
-  </ul>
+<template>
+  <template v-if="notes && notes.length > 0">
+    <p>
+      <strong>Other notes</strong>
+    </p>
+    <ul class="bulleted">
+      <li v-for="note in notes">
+        {{ note.value }}
+      </li>
+    </ul>
+  </template>
 </template>
 <script>
 export default {

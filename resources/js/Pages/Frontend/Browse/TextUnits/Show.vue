@@ -14,32 +14,27 @@
           {{ textUnitJson.summary }}
         </p>
 
-        <div v-if="textUnitJson.ark && textUnitJson.ark !== ''" class="item-container">
-          <span class="item-label">Ark</span>
-          <p class="item-value">
-            {{ textUnitJson.ark }}
-          </p>
-        </div>
+        <OverviewArk :ark="textUnitJson.ark"/>
+        <OverviewLanguages :languages="textUnitJson.lang" />
 
-        <div v-if="textUnitJson.lang && textUnitJson.lang.length > 0" class="item-container">
-          <span class="item-label">Languages</span>
-          <p class="item-value">
-            {{ textUnitJson.lang.map(lang => lang.label).join('; ') }}
-          </p>
-        </div>
+        <template v-if="textUnit.para && textUnit.para.length > 0">
+          <h3>Paracontent</h3>
+          <ParacontentPara :paracontents="textUnit.para" />
+        </template>
 
-        <h3>Paracontent</h3>
-        <ParacontentPara :paracontents="textUnit.para" />
+        <template v-if="textUnitJson.note && textUnitJson.note.length > 0">
+          <h3>Notes</h3>
+          <NotesContents :notes="textUnitJson.note?.filter(note => note.type.id === 'contents') || []" />
+          <NotesGeneral :notes="textUnitJson.note?.filter(note => note.type.id === 'general') || []" />
+        </template>
 
-        <h3>Notes</h3>
-        <NotesContents :notes="textUnitJson.note.filter(note => note.type.id === 'contents')" />
-        <NotesGeneral :notes="textUnitJson.note.filter(note => note.type.id === 'general')" />
-
-        <h3>Resources</h3>
-        <ResourcesEditions :editions="textUnit.editions"/>
-        <ResourcesTranslations :translations="textUnit.translations"/>
-        <ResourcesReferences :references="textUnit.references"/>
-        <ResourcesBibliographies :bibliographies="textUnit.bibliographies"/>
+        <template v-if="hasResources">
+          <h3>Resources</h3>
+          <ResourcesEditions :editions="textUnit.editions"/>
+          <ResourcesTranslations :translations="textUnit.translations"/>
+          <ResourcesReferences :references="textUnit.references"/>
+          <ResourcesBibliographies :bibliographies="textUnit.bibliographies"/>
+        </template>
 
         <h3>Preferred Citation</h3>
         <p>
@@ -72,6 +67,8 @@
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
   import NotesContents from "@/Pages/Frontend/Browse/Components/NotesContents.vue";
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
+  import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
+  import OverviewLanguages from "@/Pages/Frontend/Browse/Components/OverviewLanguages.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -99,6 +96,14 @@
   // Clean up the object URL when the component is destroyed
   onBeforeUnmount(() => {
     URL.revokeObjectURL(downloadUrl.value);
+  });
+
+  const hasResources = computed(() => {
+    const hasEditions = props.textUnit.editions && props.textUnit.editions.length > 0;
+    const hasTranslations = props.textUnit.translations && props.textUnit.translations.length > 0;
+    const hasReferences = props.textUnit.references && props.textUnit.references.length > 0;
+    const hasBibliographies = props.textUnit.bibliographies && props.textUnit.bibliographies.length > 0;
+    return hasEditions || hasTranslations || hasReferences || hasBibliographies;
   });
 </script>
 
