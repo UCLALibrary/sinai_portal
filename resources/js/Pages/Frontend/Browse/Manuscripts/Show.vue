@@ -19,12 +19,7 @@
           {{ manuscript.assoc_dates_overview.join('; ') }}
         </p>
 
-        <div v-if="manuscriptJson.ark && manuscriptJson.ark !== ''" class="item-container">
-          <span class="item-label">Ark</span>
-          <p class="item-value">
-            {{ manuscriptJson.ark }}
-          </p>
-        </div>
+        <OverviewArk :ark="manuscriptJson.ark"/>
 
         <div v-if="shelfmarkVariants && shelfmarkVariants !== ''" class="item-container">
           <span class="item-label">Shelfmark variants</span>
@@ -529,6 +524,7 @@
   import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
+  import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

@@ -16,12 +16,7 @@
 
         <h3>Layer Overview</h3>
 
-        <div v-if="layerJson.ark && layerJson.ark !== ''" class="item-container">
-          <span class="item-label">ARK</span>
-          <p class="item-value">
-            {{ layerJson.ark }}
-          </p>
-        </div>
+        <OverviewArk :ark="layerJson.ark"/>
 
         <div v-if="layerJson.assoc_date && layerJson.assoc_date.some(date => date.type?.id === 'origin')" class="item-container">
           <span class="item-label">Origin Date</span>
@@ -432,6 +427,7 @@
   import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
   import NotesGeneral from "@/Pages/Frontend/Browse/Components/NotesGeneral.vue";
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
+  import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

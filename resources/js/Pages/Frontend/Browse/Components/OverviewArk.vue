@@ -9,7 +9,7 @@
 <script>
 export default {
   props: {
-    ark: {type: Object, required: true},
+    ark: {type: String, required: true},
   },
 };
 </script>
