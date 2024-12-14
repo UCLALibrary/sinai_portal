@@ -7,7 +7,7 @@
 <script>
 export default {
   props: {
-    summary: { type: String, required: true },
+    summary: { type: String, required: false, default: '' },
     marginBottom: { type: Boolean, default: true },
   },
 };
