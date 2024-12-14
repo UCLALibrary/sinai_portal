@@ -84,12 +84,8 @@ class TextUnit extends Model
             'text_unit_ark' => $this->ark,
         ];
         
-        $rows = DB::select($query, $bindings);
-        $results = array_map(function ($item) {
-            return (array)$item;
-        }, $rows);
-        
-        return $results;
+        $result = DB::selectOne($query, $bindings);
+        return (array) $result;
     }
     
     public function getWorkWitnessesAttribute(): array {
@@ -322,7 +318,7 @@ class TextUnit extends Model
         // get the source (i.e. state label from the parent layer and shelfmark from the parent's parent manuscript)
         $source = $this->getSourceAttribute();
         $array['source'] = $source
-            ? $source[0]['shelfmark'] . ($source[0]['state_label'] ? ' (' . $source[0]['state_label'] . ')' : '')
+            ? $source['shelfmark'] . ($source['state_label'] ? ' (' . $source['state_label'] . ')' : '')
             : '';
         
         // languages

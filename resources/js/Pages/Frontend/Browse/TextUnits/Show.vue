@@ -6,8 +6,8 @@
           {{ textUnit.label }}
         </h2>
 
-        <p v-if="textUnit.source && textUnit.source[0] !== ''">
-          From {{ textUnit.source[0].shelfmark + (textUnit.source[0].state_label ? ` (${textUnit.source[0].state_label})` : '') + (textUnit.source[0].locus ? `, ${textUnit.source[0].locus}` : '') }}
+        <p v-if="textUnit.source && textUnit.source.shelfmark">
+          From {{ textUnit.source.shelfmark + (textUnit.source.state_label ? ` (${textUnit.source.state_label})` : '') + (textUnit.source.locus ? `, ${textUnit.source.locus}` : '') }}
         </p>
 
         <OverviewSummary :summary="textUnitJson.summary" />
