@@ -37,65 +37,10 @@
           </p>
         </div>
 
-        <template v-if="layerJson.writing && layerJson.writing.length > 0">
-          <p class="mt-8">
-            <strong>Writing and Hands</strong>
-          </p>
-          <div v-for="(writing, writingIndex) in layerJson.writing" :key="writingIndex" class="mb-8">
-            <p>
-              <template v-if="writing.locus && writing.locus !== ''">{{ writing.locus }}: </template>{{ writing.script.map(script => script.label).join(', ') }}
-            </p>
-            <template v-if="writing.note && writing.note.length > 0">
-              <p v-for="note in writing.note">
-                {{ note }}
-              </p>
-            </template>
-          </div>
-        </template>
-
-        <template v-if="layerJson.ink && layerJson.ink.length > 0">
-          <p class="mt-8">
-            <strong>Ink</strong>
-          </p>
-          <div v-for="(ink, index) in layerJson.ink" :key="index" class="mb-8">
-            <p>
-              {{ ink.locus }}<template v-if="ink.color && ink.color.length > 0">: {{ ink.color.join(', ') }}</template>
-            </p>
-            <template v-if="ink.note && ink.note.length > 0">
-              <p v-for="(note, index) in ink.note" :key="index">
-                {{ note }}
-              </p>
-            </template>
-          </div>
-        </template>
-
-        <template v-if="layerJson.layout && layerJson.layout.length > 0">
-          <p class="mt-8">
-            <strong>Page layout</strong>
-          </p>
-          <div v-for="(layout, index) in layerJson.layout" :key="index" class="mb-8">
-            <p>
-              {{ layout.locus }}: {{ layout.lines }} | {{ layout.columns }}
-            </p>
-            <p v-if="layout.dim">
-              {{ layout.dim }}
-            </p>
-            <template v-if="layout.note && layout.note.length > 0">
-              <p v-for="(note, index) in layout.note" :key="index">
-                {{ note }}
-              </p>
-            </template>
-          </div>
-        </template>
-
-        <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'foliation').length > 0">
-          <p class="mt-8">
-            <strong>Foliation Note</strong>
-          </p>
-          <p v-for="note in layerJson.note.filter(note => note.type.id === 'foliation')">
-            {{ note.value }}
-          </p>
-        </template>
+        <OverviewWritingHands :writings="layerJson.writing" />
+        <OverviewInks :inks="layerJson.ink" />
+        <OverviewPageLayouts :layouts="layerJson.layout" />
+        <OverviewFoliationNotes :notes="layerJson.note?.filter(note => note.type.id === 'foliation') || []" />
 
         <h3>Contents</h3>
         <template v-for="textUnit in layer.text_units">
@@ -410,6 +355,10 @@
   import AssociatedNames from "@/Pages/Frontend/Browse/Components/AssociatedNames.vue";
   import AssociatedPlaces from "@/Pages/Frontend/Browse/Components/AssociatedPlaces.vue";
   import AssociatedDates from "@/Pages/Frontend/Browse/Components/AssociatedDates.vue";
+  import OverviewWritingHands from "@/Pages/Frontend/Browse/Components/OverviewWritingHands.vue";
+  import OverviewInks from "@/Pages/Frontend/Browse/Components/OverviewInks.vue";
+  import OverviewPageLayouts from "@/Pages/Frontend/Browse/Components/OverviewPageLayouts.vue";
+  import OverviewFoliationNotes from "@/Pages/Frontend/Browse/Components/OverviewFoliationNotes.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
