@@ -239,35 +239,15 @@
 
         </template>
 
-        <template v-if="(layer.associated_names_from_root && layer.associated_names_from_root.length > 0)">
+        <template v-if="(layer.associated_names_from_root && layer.associated_names_from_root.length > 0) ||
+          (layer.associated_places_from_root && layer.associated_places_from_root.length > 0) ||
+          (layer.associated_dates_from_root && layer.associated_dates_from_root.length > 0)">
           <h3>Associated Names, Places, Dates</h3>
 
-          <div v-for="name in layer.associated_names_from_root" class="mb-8">
-            <p>
-              <template v-if="name.role.label">{{ name.role.label }}: </template>{{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
-            </p>
-            <p v-if="name.note && name.note.length > 0" class="indent">
-              {{ name.note.join(", ") }}
-            </p>
-          </div>
+          <AssociatedNames :names="layer.associated_names_from_root" />
+          <AssociatedPlaces :places="layer.associated_places_from_root" />
+          <AssociatedDates :dates="layer.associated_dates_from_root" />
 
-          <div v-for="place in layer.associated_places_from_root" class="mb-8">
-            <p>
-              {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
-            </p>
-            <p v-if="place.note && place.note.length > 0" class="indent">
-              {{ place.note.join(", ") }}
-            </p>
-          </div>
-
-          <div v-for="date in layer.associated_dates_from_root" class="mb-8">
-            <p>
-              {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
-            </p>
-            <p v-if="date.note && date.note.length > 0" class="indent">
-              {{ date.note.join(", ") }}
-            </p>
-          </div>
         </template>
 
         <template v-if="(layer.references && layer.references.length > 0) || (layer.bibliographies && layer.bibliographies.length > 0)">
@@ -427,6 +407,9 @@
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
   import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
   import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
+  import AssociatedNames from "@/Pages/Frontend/Browse/Components/AssociatedNames.vue";
+  import AssociatedPlaces from "@/Pages/Frontend/Browse/Components/AssociatedPlaces.vue";
+  import AssociatedDates from "@/Pages/Frontend/Browse/Components/AssociatedDates.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

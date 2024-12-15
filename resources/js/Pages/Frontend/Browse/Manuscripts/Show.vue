@@ -368,7 +368,8 @@
 
         <NotesGeneral :notes="manuscriptJson.note?.filter(note => note.type.id === 'general') || []" />
 
-        <template v-if="(manuscript.assoc_names_from_para && manuscript.assoc_names_from_para.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
+        <template v-if="(manuscript.assoc_names_from_para && manuscript.assoc_names_from_para.length > 0) ||
+          (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
           <h3>Associated Names, Places, Dates</h3>
 
           <div v-for="assocName in manuscript.assoc_names_from_para" class="mb-8">
@@ -380,23 +381,18 @@
             </p>
           </div>
 
-          <div v-for="relatedPlace in manuscript.related_places" class="mb-8">
-            <p>
-              {{ relatedPlace.event.label }}: {{ [relatedPlace.as_written, relatedPlace.pref_name].filter(Boolean).join(' | ') }}
-            </p>
-            <p v-if="relatedPlace.note && relatedPlace.note.length > 0" class="indent">
-              {{ relatedPlace.note.join(", ") }}
-            </p>
-          </div>
+          <!--
+            <div v-for="relatedPlace in manuscript.related_places" class="mb-8">
+              <p>
+                {{ relatedPlace.event.label }}: {{ [relatedPlace.as_written, relatedPlace.pref_name].filter(Boolean).join(' | ') }}
+              </p>
+              <p v-if="relatedPlace.note && relatedPlace.note.length > 0" class="indent">
+                {{ relatedPlace.note.join(", ") }}
+              </p>
+            </div>
+          -->
 
-          <div v-for="relatedDate in manuscriptJson.assoc_date" class="mb-8">
-            <p>
-              {{ relatedDate.type.label }}: {{ [relatedDate.as_written, relatedDate.value].filter(Boolean).join(' | ') }}
-            </p>
-            <p v-if="relatedDate.note && relatedDate.note.length > 0" class="indent">
-              {{ relatedDate.note.join(", ") }}
-            </p>
-          </div>
+          <AssociatedDates :dates="manuscriptJson.assoc_date" />
         </template>
 
         <h3>Resources</h3>
@@ -524,6 +520,7 @@
   import ParacontentPara from "@/Pages/Frontend/Browse/Components/ParacontentPara.vue";
   import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
   import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
+  import AssociatedDates from "@/Pages/Frontend/Browse/Components/AssociatedDates.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
