@@ -12,7 +12,7 @@
               <span v-else>
                 {{ edition.formatted_citation }}
               </span>
-              <span v-if="edition.range">. {{ edition.range }}</span>
+              <span v-if="edition.range">. {{ edition.range }}.</span>
             </span>
             <span v-for="note in edition.note" class="block">
               {{ note }}
@@ -32,7 +32,7 @@
             <span v-else>
               {{ edition.formatted_citation }}
             </span>
-            <span v-if="edition.range">. {{ edition.range }}</span>
+            <span v-if="edition.range">. {{ edition.range }}.</span>
           </span>
           <span v-for="note in edition.note" class="block">
             {{ note }}

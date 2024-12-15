@@ -12,7 +12,7 @@
               <span v-else>
                 {{ translation.formatted_citation }}
               </span>
-              <span v-if="translation.range">. {{ translation.range }}</span>
+              <span v-if="translation.range">. {{ translation.range }}.</span>
             </span>
             <span v-for="note in translation.note" class="block">
               {{ note }}
@@ -32,7 +32,7 @@
             <span v-else>
               {{ translation.formatted_citation }}
             </span>
-            <span v-if="translation.range">. {{ translation.range }}</span>
+            <span v-if="translation.range">. {{ translation.range }}.</span>
           </span>
           <span v-for="note in translation.note" class="block">
             {{ note }}

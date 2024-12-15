@@ -11,7 +11,7 @@
             <span v-else>
               {{ bibliography.formatted_citation }}
             </span>
-            <span v-if="bibliography.range">. {{ bibliography.range }}</span>
+            <span v-if="bibliography.range">. {{ bibliography.range }}.</span>
           </p>
         </template>
       </div>
@@ -26,7 +26,7 @@
           <span v-else>
             {{ bibliography.formatted_citation }}
           </span>
-          <span v-if="bibliography.range">. {{ bibliography.range }}</span>
+          <span v-if="bibliography.range">. {{ bibliography.range }}.</span>
         </p>
       </template>
     </template>
