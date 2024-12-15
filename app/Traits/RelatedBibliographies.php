@@ -16,24 +16,38 @@ trait RelatedBibliographies
             ->where('id', $id)
             ->get();
         
-        return $referencesQuery->map(function ($reference) {
-            $referenceData = json_decode($reference->reference, true);
+        $jsonObjects = $referencesQuery->map(function ($reference) {
+            return json_decode($reference->reference, true);
+        })->toArray();
+        
+        return $this->getReferencesByJsonObjects($jsonObjects);
+    }
+    
+    public function getReferencesByJsonObjects(array $jsonObjects): array
+    {
+        if (empty($jsonObjects)) {
+            return [];
+        }
+        
+        $ids = array_column($jsonObjects, 'id');
+        
+        $references = DB::table('references')
+            ->whereIn('id', $ids)
+            ->get();
+        
+        return $references->map(function ($reference) use ($jsonObjects) {
+            $referenceData = [
+                'id' => $reference->id,
+                'short_title' => $reference->short_title,
+                'formatted_citation' => $reference->formatted_citation,
+            ];
             
-            if (isset($referenceData['id'])) {
-                $ref = Reference::where('id', $referenceData['id'])->first();
-                if ($ref) {
-                    $referenceData['short_title'] = $ref->short_title;
-                    $referenceData['formatted_citation'] = $ref->formatted_citation;
-                }
+            $additionalData = collect($jsonObjects)->firstWhere('id', $reference->id);
+            if ($additionalData) {
+                $referenceData = array_merge($referenceData, $additionalData);
             }
-            
-            $referenceData['alt_shelf'] = $referenceData['alt_shelf'] ?? null;
-            $referenceData['range'] = $referenceData['range'] ?? null;
-            $referenceData['url'] = $referenceData['url'] ?? null;
-            $referenceData['note'] = $referenceData['note'] ?? [];
             
             return $referenceData;
         })->toArray();
     }
-    
 }

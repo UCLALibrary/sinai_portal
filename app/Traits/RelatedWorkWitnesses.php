@@ -18,53 +18,65 @@ trait RelatedWorkWitnesses
         
         return $workWitnessesQuery->map(function ($witness) use ($id) {
             $witnessJsonData = json_decode($witness->work_witness, true);
-            $witnessData = [];
             
-            if (isset($witnessJsonData['work']['id'])) {
-                
-                $work = Work::where('ark', $witnessJsonData['work']['id'])->first();
+            $witnessData = [
+                'work' => $this->processWork($witnessJsonData, $id),
+                'locus' => $witnessJsonData['locus'] ?? null,
+                'as_written' => $witnessJsonData['as_written'] ?? null,
+                'excerpt' => $this->processExcerpts($witnessJsonData['excerpt'] ?? []),
+                'note' => $witnessJsonData['note'] ?? null,
+                'bib_cites' => $this->processBibliographies($witnessJsonData['bib'] ?? [], 'cite'),
+                'bib_editions' => $this->processBibliographies($witnessJsonData['bib'] ?? [], 'edition'),
+                'bib_translations' => $this->processBibliographies($witnessJsonData['bib'] ?? [], 'translation'),
+            ];
+            
+            return array_filter($witnessData);
+        })->filter()->values()->toArray();
+    }
+    
+    private function processWork(array $witnessJsonData, string $id): ?array
+    {
+        if (isset($witnessJsonData['work']['id'])) {
+            $work = Work::where('ark', $witnessJsonData['work']['id'])->first();
+            if ($work) {
                 $workJsonData = json_decode($work->jsonb, true);
                 
-                $witnessData['title'] = $workJsonData['pref_title'] ?? null;
-                $witnessData['work'] = $this->getRelatedWorks('text_units', $id, '$.work_wit[*] ? (@.work.id == "' . $workJsonData['ark'] .'")')[0];
-                
-            } elseif (isset($witnessJsonData['work']['desc_title'])) {
-                $witnessData['title'] = $witnessJsonData['work']['desc_title'];
-            }
-            
-            if (isset($witnessJsonData['locus'])) {
-                $witnessData['locus'] = $witnessJsonData['locus'];
-            }
-            
-            if (isset($witnessJsonData['as_written'])) {
-                $witnessData['as_written'] = $witnessJsonData['as_written'];
-            }
-            
-            if (isset($witnessJsonData['excerpt'])) {
-                $excerptOrder = [
-                    'inc-mut',
-                    'prologue',
-                    'incipit',
-                    'quote',
-                    'explicit',
-                    'des-mut'
+                return [
+                    'title' => $workJsonData['pref_title'],
+                    'work' => $this->getRelatedWorks('text_units', $id, '$.work_wit[*] ? (@.work.id == "' . $workJsonData['ark'] . '")')[0] ?? null,
                 ];
-                
-                usort($witnessJsonData['excerpt'], function ($a, $b) use ($excerptOrder) {
-                    $aIndex = array_search($a['type']['id'], $excerptOrder);
-                    $bIndex = array_search($b['type']['id'], $excerptOrder);
-                    
-                    return $aIndex <=> $bIndex;
-                });
-                
-                $witnessData['excerpt'] = $witnessJsonData['excerpt'];
             }
-            
-            if (isset($witnessJsonData['note'])) {
-                $witnessData['note'] = $witnessJsonData['note'];
-            }
-            
-            return $witnessData;
-        })->filter()->values()->toArray();
+        } elseif (isset($witnessJsonData['work']['desc_title'])) {
+            return [
+                'title' => $witnessJsonData['work']['desc_title'],
+                'genre' => $witnessJsonData['work']['genre'] ?? null,
+            ];
+        }
+        
+        return null;
+    }
+    
+    private function processExcerpts(array $excerpts): ?array
+    {
+        if (empty($excerpts)) {
+            return null;
+        }
+        
+        $excerptOrder = ['inc-mut', 'prologue', 'incipit', 'quote', 'explicit', 'des-mut'];
+        
+        usort($excerpts, function ($a, $b) use ($excerptOrder) {
+            return array_search($a['type']['id'], $excerptOrder) <=> array_search($b['type']['id'], $excerptOrder);
+        });
+        
+        return $excerpts;
+    }
+    
+    private function processBibliographies(array $bibliographies, string $type): ?array
+    {
+        $filtered = array_filter($bibliographies, function ($item) use ($type) {
+            return isset($item['type']['id']) && $item['type']['id'] === $type;
+        });
+        
+        return empty($filtered) ? null : $this->getReferencesByJsonObjects($filtered);
     }
 }

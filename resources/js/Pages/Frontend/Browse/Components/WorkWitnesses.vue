@@ -2,9 +2,8 @@
   <template v-if="workWitnesses && workWitnesses.length > 0">
     <div v-for="workWit in workWitnesses" class="mb-8">
       <p>
-        <strong>{{ workWit.title }}; {{ workWit.locus }}</strong>
+        <strong>{{ workWit.work.title }}<template v-if="workWit.locus && workWit.locus !== ''">; {{ workWit.locus }}</template></strong>
       </p>
-
       <div class="indent">
 
         <p v-for="creator in workWit.work.creator">
@@ -32,9 +31,11 @@
                 <p v-if="excerpt.as_written && excerpt.as_written !== ''">
                   Transcription: {{ excerpt.as_written }}
                 </p>
-                <p v-if="excerpt.translation && excerpt.translation !== ''">
-                  Translation: {{ excerpt.translation }}
-                </p>
+                <template v-if="excerpt.translation && excerpt.translation.length > 0">
+                  <p v-for="translation in excerpt.translation">
+                    Translation: {{ translation }}
+                  </p>
+                </template>
                 <p v-if="excerpt.note && excerpt.note.length > 0">
                   Note: {{ excerpt.note.join('; ') }}
                 </p>
@@ -52,13 +53,38 @@
           </p>
         </template>
 
-      </div>
+        <template v-if="workWit.bib_editions && workWit.bib_editions.length > 0">
+          <p>Editions</p>
+          <div class="indent">
+            <ResourcesEditions :editions="workWit.bib_editions" :display-label="false"/>
+          </div>
+        </template>
 
+        <template v-if="workWit.bib_translations && workWit.bib_translations.length > 0">
+          <p>Translations</p>
+          <div class="indent">
+            <ResourcesTranslations :translations="workWit.bib_translations" :display-label="false"/>
+          </div>
+        </template>
+
+        <template v-if="workWit.bib_cites && workWit.bib_cites.length > 0">
+          <p>Bibliography</p>
+          <div class="indent">
+            <ResourcesBibliographies :bibliographies="workWit.bib_cites" :display-label="false"/>
+          </div>
+        </template>
+
+      </div>
     </div>
   </template>
 </template>
 <script>
+import ResourcesEditions from "@/Pages/Frontend/Browse/Components/ResourcesEditions.vue";
+import ResourcesBibliographies from "@/Pages/Frontend/Browse/Components/ResourcesBibliographies.vue";
+import ResourcesTranslations from "@/Pages/Frontend/Browse/Components/ResourcesTranslations.vue";
+
 export default {
+  components: {ResourcesTranslations, ResourcesBibliographies, ResourcesEditions},
   props: {
     workWitnesses: {type: Array, required: true},
   },
