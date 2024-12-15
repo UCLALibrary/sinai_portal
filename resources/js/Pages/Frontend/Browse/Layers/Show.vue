@@ -235,7 +235,7 @@
             </ul>
           </template>
 
-          <NotesGeneral :notes="layerJson.note.filter(note => note.type.id === 'general')" />
+          <NotesGeneral :notes="layerJson.note?.filter(note => note.type.id === 'general') || []" />
 
         </template>
 

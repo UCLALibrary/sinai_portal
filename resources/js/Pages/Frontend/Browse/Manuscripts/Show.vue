@@ -366,7 +366,7 @@
           </ul>
         </template>
 
-        <NotesGeneral :notes="manuscriptJson.note.filter(note => note.type.id === 'general')" />
+        <NotesGeneral :notes="manuscriptJson.note?.filter(note => note.type.id === 'general') || []" />
 
         <template v-if="(manuscript.assoc_names_from_para && manuscript.assoc_names_from_para.length > 0) || (manuscript.related_places && manuscript.related_places.length > 0) || (manuscriptJson.assoc_date && manuscriptJson.assoc_date.length > 0)">
           <h3>Associated Names, Places, Dates</h3>
