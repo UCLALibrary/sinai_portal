@@ -323,8 +323,7 @@
                 }
               },
               "required": [
-                "type",
-                "locus"
+                "type"
               ]
             },
             "unevaluatedItems": false
@@ -638,6 +637,13 @@
                   "type": "string",
                   "pattern": "^ark:/21198/([a-z]|[0-9])+"
                 },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
+                },
                 "as_written": {
                   "type": [
                     "string",
@@ -696,6 +702,13 @@
                   "description": "A unique Archival Resource Key (ARK)",
                   "type": "string",
                   "pattern": "^ark:/21198/([a-z]|[0-9])+"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1
                 },
                 "as_written": {
                   "type": [
@@ -780,8 +793,7 @@
                     }
                   },
                   "required": [
-                    "value",
-                    "iso"
+                    "value"
                   ]
                 }
               ],
@@ -1094,7 +1106,6 @@
     "ark",
     "reconstruction",
     "label",
-    "locus",
     "lang",
     "work_wit",
     "parent"
