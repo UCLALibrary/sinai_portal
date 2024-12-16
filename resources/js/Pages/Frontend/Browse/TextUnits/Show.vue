@@ -46,6 +46,9 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
+        <SidebarNames :names="textUnit.names" />
+        <SidebarKeywordsFeatures :features="textUnitJson.features" route-name="frontend.textunits.index" />
+
         <h3>Downloads</h3>
         <p>
           <a :href="downloadUrl" class="button" :download="fileName">&darr; JSON</a>
@@ -71,6 +74,8 @@
   import OverviewLanguages from "@/Pages/Frontend/Browse/Components/OverviewLanguages.vue";
   import WorkWitnesses from "@/Pages/Frontend/Browse/Components/WorkWitnesses.vue";
   import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
+  import SidebarKeywordsFeatures from "@/Pages/Frontend/Browse/Components/SidebarKeywordsFeatures.vue";
+  import SidebarNames from "@/Pages/Frontend/Browse/Components/SidebarNames.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

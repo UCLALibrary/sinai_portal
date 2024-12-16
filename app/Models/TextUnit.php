@@ -52,7 +52,8 @@ class TextUnit extends Model
         'editions',
         'translations',
         'references',
-        'bibliographies'
+        'bibliographies',
+        'names'
     ];
     
     /**
@@ -110,6 +111,10 @@ class TextUnit extends Model
     
     public function getBibliographiesAttribute(): array {
         return $this->getReferencesByType('text_units', $this->id, 'cite');
+    }
+    
+    public function getNamesAttribute(): array {
+        return $this->getRelatedAgents('text_units', $this->id, 'strict $.**.assoc_name[*]');
     }
     
     /**
