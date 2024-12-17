@@ -40,6 +40,11 @@
                         :href="route('home')"
                         class="logo flex sm:justify-center lg:justify-start">
                         <img src="/sinai-logo.svg" alt="logo" class="mr-4"><span class="sm:text-lg lg:text-lg xl:text-2xl whitespace-nowrap">Sinai Manuscripts Data Portal</span>
+                        <sup class="ml-2">
+                            <span class="inline-block text-xs font-semibold tracking-wider uppercase bg-orange-600 text-white rounded-md px-2 py-0.5 shadow">
+                                Beta
+                            </span>
+                        </sup>
                     </Link>
 
                     <nav class="flex flex-col lg:flex-row gap-x-10 text-base xl:text-lg">
