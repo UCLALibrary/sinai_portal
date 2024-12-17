@@ -10,8 +10,8 @@
           {{ creator.role.label }}: {{ creator.pref_name }}
         </p>
 
-        <p v-if="workWit.work.alt_title && workWit.work.alt_title.length > 0">
-          Alternate title: {{ workWit.work.alt_title.join(', ') }}
+        <p v-if="workWit.alt_title && workWit.alt_title !== ''">
+          Alternate title: {{ workWit.alt_title }}
         </p>
 
         <p v-if="workWit.as_written && workWit.as_written !== ''">

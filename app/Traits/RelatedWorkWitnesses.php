@@ -21,6 +21,7 @@ trait RelatedWorkWitnesses
             
             $witnessData = [
                 'work' => $this->processWork($witnessJsonData, $id),
+                'alt_title' => $witnessJsonData['alt_title'] ?? null,
                 'locus' => $witnessJsonData['locus'] ?? null,
                 'as_written' => $witnessJsonData['as_written'] ?? null,
                 'excerpt' => $this->processExcerpts($witnessJsonData['excerpt'] ?? []),
