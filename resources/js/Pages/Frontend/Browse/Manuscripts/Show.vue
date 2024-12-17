@@ -134,7 +134,7 @@
                   <strong>Contents</strong>
                 </p>
                 <p v-for="layer in part.layer" :key="layer.id" class="mb-8">
-                  {{ layer.label }}<template v-if="layer.locus && layer.locus !== ''">, {{ layer.locus }}</template>
+                  {{ layer.parentLabel }}<template v-if="layer.parentLocus && layer.parentLocus !== ''">, {{ layer.parentLocus }}</template>
                   <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
                     Origin: {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
                   </span>
@@ -153,7 +153,7 @@
 
           <template v-if="manuscript.part_layer_undertext && manuscript.part_layer_undertext.length > 0">
             <p v-for="layer in manuscript.part_layer_undertext" :key="layer.id" class="mb-8">
-              {{ layer.parentLabel }}, {{ layer.label }}, {{ layer.parentLocus }}
+              {{ layer.parentLabel }}<template v-if="layer.label && layer.label !== ''">, {{ layer.label }}</template>, {{ layer.parentLocus }}
               <span v-if="layer.assoc_date && layer.assoc_date.length > 0" class="block">
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>

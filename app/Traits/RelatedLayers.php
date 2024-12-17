@@ -26,12 +26,13 @@ trait RelatedLayers
             $parentLocus = $layerJson['locus'] ?? null;
             
             $layer = Layer::where('ark', $layerJson['id'])->first();
-            if (!$layer) {
-                return null;
+            $layerData = array();
+            if ($layer) {
+                $layerData = $this->buildLayerData($layer);
             }
             
             return array_merge(
-                $this->buildLayerData($layer),
+                $layerData,
                 [
                     'parentLabel' => $parentLabel,
                     'parentLocus' => $parentLocus,

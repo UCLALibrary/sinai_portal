@@ -336,7 +336,7 @@ class Manuscript extends Model
                 $enrichedLayers = $this->getRelatedLayersWithTextUnits(
                     'manuscripts',
                     $this->id,
-                    '$.part[*].layer[*] ? (@.id == "' . addslashes($layer['id']) . '")'
+                    '$.part[*].layer[*] ? (@.type.id == "overtext" && @.id == "' . addslashes($layer['id']) . '")'
                 );
                 
                 return $enrichedLayers[0] ?? $layer;
