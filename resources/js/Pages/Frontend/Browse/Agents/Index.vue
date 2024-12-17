@@ -129,10 +129,8 @@
       <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
-        <DownloadButton
-          v-if="$page.props.auth.user && $page.props.roles.permissions.includes('download records')"
-          :endpoint="route('frontend.files.download.zip', { recordType: 'agents' })"
-          class="mb-2"
+        <SearchResultsHeader
+          record-type="agents"
         />
 
         <div class="hidden lg:grid lg:grid-cols-6 p-2 gap-x-1 font-bold border-b">
@@ -169,7 +167,7 @@
   import AgentResult from '@/Shared/Search/AgentResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
-  import DownloadButton from '@/Shared/Buttons/DownloadButton.vue'
+  import SearchResultsHeader from '@/Shared/Search/SearchResultsHeader.vue'
   import {
     AisInstantSearch,
     AisConfigure,

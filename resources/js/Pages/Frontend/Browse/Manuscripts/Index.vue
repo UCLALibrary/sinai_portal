@@ -201,10 +201,8 @@
       <AisConfigure v-if="dateRangeFilterQuery" :filters="dateRangeFilterQuery" />
 
       <div class="main-container">
-        <DownloadButton
-          v-if="$page.props.auth.user && $page.props.roles.permissions.includes('download records')"
-          :endpoint="route('frontend.files.download.zip', { recordType: 'manuscripts' })"
-          class="mb-2"
+        <SearchResultsHeader
+          record-type="manuscripts"
         />
 
         <div class="hidden lg:grid lg:grid-cols-5 gap-x-1 p-2 font-bold border-b">
@@ -242,7 +240,7 @@
   import ManuscriptResult from '@/Shared/Search/ManuscriptResult.vue'
   import AccordionCard from '@/Shared/Accordion/AccordionCard.vue'
   import LoadingIndicator from '@/Shared/LoadingIndicator/LoadingIndicator.vue'
-  import DownloadButton from '@/Shared/Buttons/DownloadButton.vue'
+  import SearchResultsHeader from '@/Shared/Search/SearchResultsHeader.vue'
   import {
     AisInstantSearch,
     AisConfigure,
