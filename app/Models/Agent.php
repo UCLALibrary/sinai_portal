@@ -52,6 +52,10 @@ class Agent extends Model
 
     public static $config = [
         'index' => [
+            'sort' => [
+                'field' => 'pref_name',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'pref_name' => 'Preferred Name',
                 'type' => 'Type',

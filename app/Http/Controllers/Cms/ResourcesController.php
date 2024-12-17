@@ -26,10 +26,12 @@ class ResourcesController extends Controller
             return $modelClass::all();
         }
 
+        $config = $modelClass::$config;
+
         return Inertia::render('Resources/Index', [
             'title' => ucwords(str_replace('-', ' ', $resourceName)),
-            'resources' => $modelClass::orderBy('updated_at', 'desc')->paginate(20),
-            'config' => $modelClass::$config,
+            'resources' => $modelClass::orderBy($config['index']['sort']['field'] ?? 'updated_at', $config['index']['sort']['direction'] ?? 'desc')->paginate(20),
+            'config' => $config,
         ]);   
     }
 

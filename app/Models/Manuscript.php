@@ -47,6 +47,10 @@ class Manuscript extends Model
     
     public static $config = [
         'index' => [
+            'sort' => [
+                'field' => 'identifier',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'identifier' => 'Identifier',
                 'ark' => 'ARK',

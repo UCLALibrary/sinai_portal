@@ -37,6 +37,10 @@ class TextUnit extends Model
     
     public static $config = [
         'index' => [
+            'sort' => [
+                'field' => 'label',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'label' => 'Label',
                 'ark' => 'ARK',

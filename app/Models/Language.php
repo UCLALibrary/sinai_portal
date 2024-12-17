@@ -50,6 +50,10 @@ class Language extends Model
         'disable_file_uploads' => true,
         'enable_json_forms' => true,
         'index' => [
+            'sort' => [
+                'field' => 'label',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'id' => 'Id',
                 'label' => 'Label',

@@ -38,6 +38,10 @@ class Bibliography extends Model
     public static $config = [
         'disable_file_uploads' => true,
         'index' => [
+            'sort' => [
+                'field' => 'type',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'type' => 'Type',
                 'alt_shelf' => 'Alternative Shelfmark',

@@ -43,6 +43,10 @@ class Work extends Model
 
     public static $config = [
         'index' => [
+            'sort' => [
+                'field' => 'pref_title',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'pref_title' => 'Preferred Title',
                 'ark' => 'ARK',

@@ -49,6 +49,10 @@ class Reference extends Model
         'disable_file_uploads' => true,
         'enable_json_forms' => true,
         'index' => [
+            'sort' => [
+                'field' => 'short_title',
+                'direction' => 'asc',
+            ],
             'columns' => [
                 'id' => 'Id',
                 'short_title' => 'Short Title',
