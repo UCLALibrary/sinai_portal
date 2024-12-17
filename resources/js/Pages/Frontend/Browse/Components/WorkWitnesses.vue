@@ -2,7 +2,7 @@
   <template v-if="workWitnesses && workWitnesses.length > 0">
     <div v-for="workWit in workWitnesses" class="mb-8">
       <p>
-        <strong>{{ workWit.work.title }}<template v-if="workWit.locus && workWit.locus !== ''">; {{ workWit.locus }}</template></strong>
+        <strong>{{ workWit.work.title }}</strong><template v-if="workWit.locus && workWit.locus !== ''">; {{ workWit.locus }}</template>
       </p>
       <div class="indent">
 
