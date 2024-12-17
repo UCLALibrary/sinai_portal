@@ -17,6 +17,7 @@
           {{ manuscript.assoc_dates_overview.join('; ') }}
         </p>
 
+        <h3>Manuscript Overview</h3>
         <OverviewArk :ark="manuscriptJson.ark"/>
 
         <div v-if="shelfmarkVariants && shelfmarkVariants !== ''" class="item-container">

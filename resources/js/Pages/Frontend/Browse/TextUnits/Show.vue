@@ -11,6 +11,8 @@
         </p>
 
         <OverviewSummary :summary="textUnitJson.summary" />
+
+        <h3>Text Unit Overview</h3>
         <OverviewArk :ark="textUnitJson.ark"/>
         <OverviewLanguages :languages="textUnitJson.lang" />
 
