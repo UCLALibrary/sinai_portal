@@ -38,9 +38,8 @@ class TextUnit extends Model
     public static $config = [
         'index' => [
             'columns' => [
-                'id' => 'Id',
-                'ark' => 'Ark',
                 'label' => 'Label',
+                'ark' => 'ARK',
             ],
         ],
     ];

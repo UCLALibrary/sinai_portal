@@ -48,8 +48,8 @@ class Manuscript extends Model
     public static $config = [
         'index' => [
             'columns' => [
-                'ark' => 'ARK',
                 'identifier' => 'Identifier',
+                'ark' => 'ARK',
             ],
         ],
     ];

@@ -44,8 +44,8 @@ class Work extends Model
     public static $config = [
         'index' => [
             'columns' => [
-                'ark' => 'ARK',
                 'pref_title' => 'Preferred Title',
+                'ark' => 'ARK',
             ],
         ],
     ];

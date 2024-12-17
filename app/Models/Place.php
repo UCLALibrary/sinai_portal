@@ -41,8 +41,9 @@ class Place extends Model
     public static $config = [
         'index' => [
             'columns' => [
-                'type' => 'Type',
                 'pref_name' => 'Preferred Name',
+                'type' => 'Type',
+                'ark' => 'ARK',
             ],
         ],
     ];

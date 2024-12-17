@@ -53,9 +53,9 @@ class Agent extends Model
     public static $config = [
         'index' => [
             'columns' => [
-                'id' => 'Id',
-                'type' => 'Type',
                 'pref_name' => 'Preferred Name',
+                'type' => 'Type',
+                'ark' => 'ARK',
             ],
         ],
     ];
