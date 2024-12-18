@@ -418,8 +418,4 @@
   ul li {
     @apply my-2 text-base xl:text-lg
   }
-
-  .item-container {
-    @apply flex flex-col md:flex-row
-  }
 </style>
