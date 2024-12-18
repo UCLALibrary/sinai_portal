@@ -20,7 +20,7 @@
                                 transform transition-transform duration-300 hover:scale-105 cursor-pointer">
                         <h2 class="font-dosis text-2xl">Manuscript Objects</h2>
                         <p class="mt-4 text-base">
-                            Browse descriptions of the structural features of manuscripts (collation, parts, supports, etc.) and its history and provenance.
+                            Browse descriptions of the structural features of manuscripts (collation, parts, supports, etc.) and their history and provenance.
                         </p>
                     </div>
                 </a>
