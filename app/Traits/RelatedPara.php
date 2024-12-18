@@ -20,15 +20,23 @@ trait RelatedPara
             
             if (isset($paraData['assoc_name']) && is_array($paraData['assoc_name'])) {
                 foreach ($paraData['assoc_name'] as &$assocName) {
-                    $agent = Agent::where('ark', $assocName['id'])->first();
-                    $assocName['pref_name'] = $agent ? $agent->pref_name : null;
+                    if (isset($assocName['id'])) {
+                        $agent = Agent::where('ark', $assocName['id'])->first();
+                        $assocName['pref_name'] = $agent ? $agent->pref_name : null;
+                    } else {
+                        $assocName['pref_name'] = $assocName['value'] ?? null;
+                    }
                 }
             }
             
             if (isset($paraData['assoc_place']) && is_array($paraData['assoc_place'])) {
                 foreach ($paraData['assoc_place'] as &$assocPlace) {
-                    $place = Place::where('ark', $assocPlace['id'])->first();
-                    $assocPlace['pref_name'] = $place ? $place->pref_name : null;
+                    if (isset($assocPlace['id'])) {
+                        $place = Place::where('ark', $assocPlace['id'])->first();
+                        $assocPlace['pref_name'] = $place ? $place->pref_name : null;
+                    } else {
+                        $assocPlace['pref_name'] = $assocPlace['value'] ?? null;
+                    }
                 }
             }
             
