@@ -62,7 +62,7 @@
               <strong>{{ para.locus }}, {{ para.label }}</strong>
             </p>
             <div class="indent">
-              <p>
+              <p v-if="para.lang && para.lang.length > 0 && para.script && para.script.length > 0">
                 Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
               </p>
               <p>
