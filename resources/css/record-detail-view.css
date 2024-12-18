@@ -35,5 +35,5 @@ ul li {
 }
 
 ul.bulleted {
-    @apply list-disc ml-4
+    @apply list-disc ml-4 max-w-2xl xl:max-w-3xl xl:text-lg
 }
