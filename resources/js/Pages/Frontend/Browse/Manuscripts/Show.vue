@@ -643,10 +643,6 @@
     @apply mt-0
   }
 
-  p {
-    @apply mb-2 max-w-2xl xl:max-w-4xl
-  }
-
   .separator {
     @apply border-b border-gray-300 my-8
   }
@@ -660,7 +656,7 @@
   }
 
   p {
-    @apply xl:text-lg
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
   }
 
   ul li {
@@ -668,22 +664,6 @@
   }
 
   ul.bulleted {
-    @apply list-disc ml-4
-  }
-
-  .item-container {
-    @apply flex flex-col md:flex-row
-  }
-
-  .item-label {
-    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
-  }
-
-  .item-value {
-    @apply flex-1
-  }
-
-  .indent {
-    @apply md:ml-4 block
+    @apply list-disc ml-4 max-w-2xl xl:max-w-3xl xl:text-lg
   }
 </style>

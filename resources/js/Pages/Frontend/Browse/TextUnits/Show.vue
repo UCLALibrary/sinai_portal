@@ -141,6 +141,10 @@
     @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-light-blue text-sm
   }
 
+  p {
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
+  }
+
   ul li {
     @apply my-2 list-disc ml-4 text-base xl:text-lg
   }

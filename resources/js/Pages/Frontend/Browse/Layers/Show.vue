@@ -403,10 +403,6 @@
     @apply mt-0
   }
 
-  p {
-    @apply mb-2 max-w-2xl xl:max-w-4xl
-  }
-
   a {
     @apply text-sinai-dark-blue
   }
@@ -416,18 +412,14 @@
   }
 
   p {
-    @apply xl:text-lg
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
+  }
+
+  ul li {
+    @apply my-2 text-base xl:text-lg
   }
 
   .item-container {
     @apply flex flex-col md:flex-row
-  }
-
-  .item-label {
-    @apply block md:inline-block text-sm md:leading-8 uppercase font-medium w-56
-  }
-
-  .item-value {
-    @apply flex-1
   }
 </style>

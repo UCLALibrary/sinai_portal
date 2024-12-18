@@ -29,6 +29,6 @@ main {
   @apply mt-8
 }
 
-main a {
-  @apply text-sinai-dark-blue
+.indent {
+    @apply md:ml-4 block
 }

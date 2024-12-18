@@ -255,10 +255,6 @@
     @apply mt-0
   }
 
-  p {
-    @apply mb-2 max-w-2xl xl:max-w-4xl
-  }
-
   .separator {
     @apply border-b border-gray-300 my-8
   }
@@ -272,7 +268,7 @@
   }
 
   p {
-    @apply xl:text-lg
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
   }
 
   .label {

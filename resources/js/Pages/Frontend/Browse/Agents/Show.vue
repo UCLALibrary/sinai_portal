@@ -201,10 +201,6 @@
     @apply mt-0
   }
 
-  p {
-    @apply mb-2 max-w-2xl xl:max-w-4xl
-  }
-
   a {
     @apply text-sinai-dark-blue
   }
@@ -214,7 +210,7 @@
   }
 
   p {
-    @apply xl:text-lg
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
   }
 
   .label {
