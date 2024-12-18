@@ -39,7 +39,7 @@
                         </p>
                     </div>
                 </a>
-                    <a :href="route('frontend.layers.index')" class="block">
+                <a :href='route("frontend.layers.index", { filters: "[\"state:Undertext\"]" })' class="block">
                     <div class="bg-white dark:bg-black dark:text-white rounded-lg shadow-lg p-6 flex flex-col h-full 
                                 transform transition-transform duration-300 hover:scale-105 cursor-pointer">
                         <h2 class="font-dosis text-2xl">Undertext Layers</h2>
