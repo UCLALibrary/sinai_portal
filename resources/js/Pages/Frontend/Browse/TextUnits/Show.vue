@@ -24,10 +24,11 @@
           <ParacontentPara :paracontents="textUnit.para" />
         </template>
 
-        <template v-if="textUnitJson.note && textUnitJson.note.some(note => note.type.id === 'contents' || note.type.id === 'general')">
+        <template v-if="textUnitJson.note && textUnitJson.note.some(note => note.type.id === 'contents' || note.type.id === 'general' || note.type.id === 'para')">
           <h3>Notes</h3>
           <NotesContents :notes="textUnitJson.note?.filter(note => note.type.id === 'contents') || []" />
           <NotesGeneral :notes="textUnitJson.note?.filter(note => note.type.id === 'general') || []" />
+          <NotesPara :notes="textUnitJson.note?.filter(note => note.type.id === 'para') || []" />
         </template>
 
         <template v-if="hasResources">
@@ -78,6 +79,7 @@
   import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
   import SidebarKeywordsFeatures from "@/Pages/Frontend/Browse/Components/SidebarKeywordsFeatures.vue";
   import SidebarNames from "@/Pages/Frontend/Browse/Components/SidebarNames.vue";
+  import NotesPara from "@/Pages/Frontend/Browse/Components/NotesPara.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
