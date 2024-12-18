@@ -16,7 +16,7 @@
                 <h2 class="font-dosis
                 text-2xl">Browse</h2>
                 <p class="mt-4 text-lg">
-                    The portal provides access to detailed metadata of the Sinai Manuscripts Digital Library. Users can search, browse, and download the the metadata, and contribute to the project.
+                    The portal provides access to detailed metadata of the Sinai Manuscripts Digital Library. Users can search, browse, and download the the metadata.
                 </p>
             </div>
         </div>
