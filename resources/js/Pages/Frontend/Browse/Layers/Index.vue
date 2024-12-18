@@ -169,11 +169,9 @@
           record-type="layers"
         />
 
-        <div class="hidden lg:grid lg:grid-cols-8 gap-x-4 p-2 font-bold border-b">
+        <div class="hidden lg:grid lg:grid-cols-5 gap-x-4 p-2 font-bold border-b">
           <h3 class="col-span-2">Layer</h3>
-          <h3 class="col-span-2">Source</h3>
           <h3>Dates</h3>
-          <h3>Extent</h3>
           <h3>State</h3>
           <h3>ARK</h3>
         </div>
