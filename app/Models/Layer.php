@@ -323,7 +323,10 @@ class Layer extends Model
         $data = $this->getJsonData();
         
         // Source field (only manuscripts, not other layers)
-        $array['source'] = $this->getSourceIdentifiers()['identifier'];
+        $sourceIds = $this->getSourceIdentifiers();
+        if ($sourceIds) {
+            $array['source'] = $this->getSourceIdentifiers()['identifier'];
+        }
         
         $array['ark'] = $this->ark ?? null;
         $array['identifier'] = $this->identifier ?? null;
