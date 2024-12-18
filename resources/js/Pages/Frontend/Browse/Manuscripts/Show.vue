@@ -396,38 +396,43 @@
           <AssociatedDates :dates="manuscriptJson.assoc_date" />
         </template>
 
-        <h3>Resources</h3>
-        <ResourcesReferences :references="manuscript.references"/>
-        <ResourcesBibliographies :bibliographies="manuscript.bibliographies"/>
-
-        <div v-if="manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0" class="item-container">
-          <span class="item-label">Other Digital Versions</span>
-          <div class="item-value">
-            <template v-for="digVersion in manuscript.related_digital_versions">
-              <p>
-                <a v-if="digVersion.url" :href="digVersion.url" target="_blank">
+        <template v-if="(manuscript.references && manuscript.references.length > 0) ||
+          (manuscript.bibliographies && manuscript.bibliographies.length > 0) ||
+          (manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0) ||
+          (manuscript.viscodex && manuscript.viscodex.length > 0)">
+          <h3>Resources</h3>
+          <ResourcesReferences :references="manuscript.references"/>
+          <ResourcesBibliographies :bibliographies="manuscript.bibliographies"/>
+  
+          <div v-if="manuscript.related_digital_versions && manuscript.related_digital_versions.length > 0" class="item-container">
+            <span class="item-label">Other Digital Versions</span>
+            <div class="item-value">
+              <template v-for="digVersion in manuscript.related_digital_versions">
+                <p>
+                  <a v-if="digVersion.url" :href="digVersion.url" target="_blank">
+                    {{ digVersion.short_title }}
+                  </a>
+                  <span v-else>
                   {{ digVersion.short_title }}
-                </a>
-                <span v-else>
-                {{ digVersion.short_title }}
-              </span>
-                <span v-if="digVersion.alt_shelf">. {{ digVersion.alt_shelf }}</span>
+                </span>
+                  <span v-if="digVersion.alt_shelf">. {{ digVersion.alt_shelf }}</span>
+                </p>
+              </template>
+            </div>
+          </div>
+  
+          <div v-if="manuscriptJson.viscodex && manuscriptJson.viscodex.length > 0" class="item-container">
+            <span class="item-label">Viscodex</span>
+            <div class="item-value">
+              <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
+                <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
               </p>
-            </template>
+              <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
+                <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
+              </p>
+            </div>
           </div>
-        </div>
-
-        <div v-if="manuscriptJson.viscodex && manuscriptJson.viscodex.length > 0" class="item-container">
-          <span class="item-label">Viscodex</span>
-          <div class="item-value">
-            <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id === 'manuscript')">
-              <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
-            </p>
-            <p v-for="viscodex in manuscriptJson.viscodex.filter(viscodex => viscodex.type.id !== 'manuscript')">
-              <a :href="viscodex.url" target="_blank">{{ viscodex.label }} ({{ viscodex.type.label }})</a>
-            </p>
-          </div>
-        </div>
+        </template>
 
         <h3>Preferred Citation</h3>
         <p>
