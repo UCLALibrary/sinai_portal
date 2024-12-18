@@ -24,7 +24,7 @@
           <ParacontentPara :paracontents="textUnit.para" />
         </template>
 
-        <template v-if="textUnitJson.note && textUnitJson.note.length > 0">
+        <template v-if="textUnitJson.note && textUnitJson.note.some(note => note.type.id === 'contents' || note.type.id === 'general')">
           <h3>Notes</h3>
           <NotesContents :notes="textUnitJson.note?.filter(note => note.type.id === 'contents') || []" />
           <NotesGeneral :notes="textUnitJson.note?.filter(note => note.type.id === 'general') || []" />
