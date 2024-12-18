@@ -129,9 +129,14 @@
 
         <footer class="bg-black mt-auto py-16 text-sm text-white">
             <div class="wrap">
-                <div class="pb-12 flex flex-col sm:flex-row items-center gap-8">
+                <div class="pb-12 flex flex-col md:flex-row items-end gap-8">
                     <img src="/img/logo-sinai-wht.png" alt="St Catherine Monastery logo" class="h-16">
                     <img src="/img/logo-uclalib-wht.svg" alt="UCLA Library logo" class="h-10">
+                    <div class="flex flex-col gap-y-2">
+                        <div>Funded by:</div>
+                        <a href="https://www.neh.gov/"><img src="/img/neh-logo.png" alt="NEH logo" class="h-10"></a>
+                    </div>
+   
                 </div>
                 <div class="w-full block text-center sm:w-96">© 2024 Sinai Manuscripts Data Portal. All rights reserved.</div>
             </div>
