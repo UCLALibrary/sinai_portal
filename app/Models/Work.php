@@ -258,6 +258,10 @@ class Work extends Model
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
+
+        unset($array['json']);
+        unset($array['jsonb']);
+
         $data = $this->getJsonData();
 
         // ark

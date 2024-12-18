@@ -290,7 +290,10 @@ class TextUnit extends Model
     
     public function toSearchableArray(): array {
         $array = $this->toArray();
-        
+
+        unset($array['json']);
+        unset($array['jsonb']);
+
         $array['ark'] = $this->ark ?? null;
         $array['label'] = $this->label ?? null;
         

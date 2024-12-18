@@ -320,6 +320,10 @@ class Layer extends Model
     public function toSearchableArray(): array
     {
         $array = $this->toArray();
+
+        unset($array['json']);
+        unset($array['jsonb']);
+
         $data = $this->getJsonData();
         
         // Source field (only manuscripts, not other layers)

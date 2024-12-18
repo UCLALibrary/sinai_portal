@@ -306,6 +306,10 @@ class Agent extends Model
     public function toSearchableArray()
     {
         $array = $this->toArray();
+
+        unset($array['json']);
+        unset($array['jsonb']);
+
         $data = $this->getJsonData();
 
         // ark

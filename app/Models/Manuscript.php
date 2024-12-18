@@ -523,7 +523,9 @@ class Manuscript extends Model
     {
         $array = [];
         $data = $this->getJsonData();
-        
+
+        $array['id'] = $this->id;
+
         $array['ark'] = $this->ark ?? null;
         $array['identifier'] = $this->identifier ?? null;
         $array['type'] = $this->type ?? null;
