@@ -521,7 +521,7 @@ class Manuscript extends Model
      */
     public function toSearchableArray(): array
     {
-        $array = $this->toArray();
+        $array = [];
         $data = $this->getJsonData();
         
         $array['ark'] = $this->ark ?? null;
