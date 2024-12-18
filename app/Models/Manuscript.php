@@ -415,6 +415,35 @@ class Manuscript extends Model
         return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, '$.layer[*] ? (@.type.id == "guest")');
     }
     
+    public function getAssocDatesFromLayersAttribute(): array
+    {
+        $query = "
+            SELECT DISTINCT 
+                id,
+                jsonb_path_query(jsonb, :assocDateValuePath) AS assoc_date_value,
+                jsonb_path_query(jsonb, :assocDateNotBeforePath) AS not_before,
+                jsonb_path_query(jsonb, :assocDateNotAfterPath) AS not_after
+            FROM layers
+            WHERE jsonb_path_exists(jsonb, :existsJsonPath, :vars);
+        ";
+        $bindings = [
+            'assocDateValuePath' => '$.**.assoc_date[*] ? (@.type.id == "origin").value',
+            'assocDateNotBeforePath' => '$.**.assoc_date[*] ? (@.type.id == "origin").iso.not_before',
+            'assocDateNotAfterPath' => '$.**.assoc_date[*] ? (@.type.id == "origin").iso.not_after',
+            'existsJsonPath' => '$.**.parent ? (@ == $manuscript_ark)',
+            'vars' => json_encode(['manuscript_ark' => $this->ark]),
+        ];
+        $dates = DB::select($query, $bindings);
+        return array_map(function ($row) {
+            return [
+                'id' => $row->id,
+                'assoc_date_value' => json_decode($row->assoc_date_value),
+                'not_before' => json_decode($row->not_before),
+                'not_after' => json_decode($row->not_after),
+            ];
+        }, $dates);
+    }
+
     public function getParaAttribute(): array
     {
         $jsonData = $this->getJsonData();
