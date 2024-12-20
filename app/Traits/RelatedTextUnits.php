@@ -12,34 +12,41 @@ trait RelatedTextUnits
     public function getRelatedTextUnits(string $table, string $id, string $jsonQuery): array
     {
         $textUnitsQuery = DB::table($table)
-            ->selectRaw("jsonb_path_query(jsonb, '$jsonQuery') AS text_unit")
+            ->selectRaw("jsonb_path_query(jsonb, ?) AS text_unit", [$jsonQuery])
             ->where('id', $id)
             ->get();
         
         return $textUnitsQuery->map(function ($textUnit) {
             $textUnitData = json_decode($textUnit->text_unit, true);
-            $textUnitObject = TextUnit::where('ark', $textUnitData['id'])->first();
             
-            if ($textUnitObject) {
-                $textUnitJson = json_decode($textUnitObject->jsonb, true);
+            $resultData = [
+                'id' => null,
+                'ark' => null,
+                'label' => $textUnitData['label'] ?? null,
+                'locus' => $textUnitData['locus'] ?? '',
+            ];
+            
+            
+            if(isset($textUnitData['id'])) {
+                $textUnitObject = TextUnit::where('ark', $textUnitData['id'])->first();
                 
-                $data = [
-                    'id' => $textUnitObject->id,
-                    'ark' => $textUnitObject->ark,
-                    'label' => $textUnitJson['label'] ?? '',
-                    'parentLabel' => $textUnitData['label'] ?? '',
-                    'locus' => $textUnitJson['locus'] ?? '',
-                    'lang' => $textUnitJson['lang'] ?? [],
-                ];
-                
-                if (!empty($textUnitJson['work_wit'])) {
-                    $data['work_wit'] = $this->getRelatedWorks('text_units', $textUnitObject->id,'$.work_wit[*]');
+                if ($textUnitObject) {
+                    $textUnitObjectJson = json_decode($textUnitObject->jsonb, true);
+                    
+                    $resultData['id'] = $textUnitObject->id;
+                    $resultData['ark'] = $textUnitObject->ark;
+                    $resultData['text_unit'] = [];
+                    $resultData['text_unit']['label'] = $textUnitObjectJson['label'] ?? null;
+                    $resultData['text_unit']['locus'] = $textUnitObjectJson['locus'] ?? null;
+                    $resultData['text_unit']['lang'] = $textUnitObjectJson['lang'] ?? null;
+                    
+                    if (!empty($textUnitObjectJson['work_wit'])) {
+                        $resultData['text_unit']['work_wit'] = $this->getRelatedWorks('text_units', $textUnitObject->id,'$.work_wit[*]');
+                    }
                 }
-                
-                return $data;
             }
             
-            return null;
+            return $resultData;
         })->filter()->values()->toArray();
     }
 }

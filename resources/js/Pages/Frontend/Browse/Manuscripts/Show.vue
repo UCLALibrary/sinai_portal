@@ -140,7 +140,7 @@
                     Origin: {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
                   </span>
                   <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                    Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                    Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
                   </span>
                 </p>
               </template>
@@ -159,7 +159,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -171,7 +171,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -188,7 +188,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -200,7 +200,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{ layer.text_units.map(unit => unit.lang.map(lang => lang.label).join(', ')).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -456,16 +456,7 @@
         </template>
 
         <template v-if="manuscript.related_text_units && manuscript.related_text_units.length > 0">
-          <h3>Text Units</h3>
-          <ul>
-            <template v-for="layer in manuscript.related_text_units">
-              <li v-for="textUnit in layer.text_units">
-                <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
-                  {{ textUnit.label }}
-                </Link>
-              </li>
-            </template>
-          </ul>
+          <SidebarTextUnits :text-units="manuscript.related_text_units" />
         </template>
 
         <template v-if="manuscript.assoc_names && manuscript.assoc_names.length > 0">
@@ -527,6 +518,7 @@
   import OverviewArk from "@/Pages/Frontend/Browse/Components/OverviewArk.vue";
   import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
   import AssociatedDates from "@/Pages/Frontend/Browse/Components/AssociatedDates.vue";
+  import SidebarTextUnits from "@/Pages/Frontend/Browse/Components/SidebarTextUnits.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

@@ -30,29 +30,16 @@
           </p>
         </div>
 
-        <div class="item-container">
-          <span class="item-label">Primary Languages</span>
-          <p class="item-value">
-            {{ layer.primary_languages.join(', ') }}
-          </p>
-        </div>
+        <OverviewLanguages :languages="layer.primary_languages || []" />
 
         <OverviewWritingHands :writings="layerJson.writing" />
         <OverviewInks :inks="layerJson.ink" />
         <OverviewPageLayouts :layouts="layerJson.layout" />
         <OverviewFoliationNotes :notes="layerJson.note?.filter(note => note.type.id === 'foliation') || []" />
 
-        <h3>Contents</h3>
-        <template v-for="textUnit in layer.text_units">
-          <p>
-            <strong><a :href="'/textunits/' + textUnit.id">{{ textUnit.parentLabel }}</a></strong><template v-if="textUnit.locus && textUnit.locus !== ''"> ({{ textUnit.locus }})</template>
-          </p>
-          <p v-if="textUnit.lang && textUnit.lang.length > 0">
-            Languages: {{ textUnit.lang.map(lang => lang.label).join(' | ') }}
-          </p>
-          <p v-if="textUnit.work_wit && textUnit.work_wit.length > 0">
-            Works: {{ textUnit.work_wit.map(work => work.pref_title || work.desc_title || '').filter(title => title).join(' | ') }}
-          </p>
+        <template v-if="layer.text_units && layer.text_units.length > 0">
+          <h3>Contents</h3>
+          <ContentsTextUnits :text-units="layer.text_units" />
         </template>
 
         <template v-if="layer.colophons && layer.colophons.length > 0">
@@ -214,25 +201,11 @@
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
         <template v-if="layer.text_units && layer.text_units.length > 0">
-          <h3>Text units</h3>
-          <ul>
-            <li v-for="textUnit in layer.text_units">
-              <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
-                {{ textUnit.label }}
-              </Link>
-            </li>
-          </ul>
+          <SidebarTextUnits :textUnits="layer.text_units" />
         </template>
 
         <template v-if="layer.works && layer.works.length > 0">
-          <h3>Works</h3>
-          <ul>
-            <li v-for="work in layer.works">
-              <Link :href="route('frontend.works.show', { work: work.id })">
-                {{ work.pref_title }}
-              </Link>
-            </li>
-          </ul>
+          <SidebarWorks :works="layer.works" />
         </template>
 
         <template v-if="layer.all_associated_names && layer.all_associated_names.length > 0">
@@ -353,6 +326,10 @@
   import OverviewPageLayouts from "@/Pages/Frontend/Browse/Components/OverviewPageLayouts.vue";
   import OverviewFoliationNotes from "@/Pages/Frontend/Browse/Components/OverviewFoliationNotes.vue";
   import SidebarNames from "@/Pages/Frontend/Browse/Components/SidebarNames.vue";
+  import ContentsTextUnits from "@/Pages/Frontend/Browse/Components/ContentsTextUnits.vue";
+  import SidebarTextUnits from "@/Pages/Frontend/Browse/Components/SidebarTextUnits.vue";
+  import OverviewLanguages from "@/Pages/Frontend/Browse/Components/OverviewLanguages.vue";
+  import SidebarWorks from "@/Pages/Frontend/Browse/Components/SidebarWorks.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

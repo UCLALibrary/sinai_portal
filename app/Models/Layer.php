@@ -85,16 +85,14 @@ class Layer extends Model
     public function getPrimaryLanguagesAttribute() {
         $textUnits = $this->getTextUnitsAttribute();
         
-        $languages = array_unique(array_merge(
-            ...array_map(
-                fn($textUnit) => array_column($textUnit['lang'] ?? [], 'label'),
-                $textUnits
-            )
-        ));
+        $languages = collect($textUnits)
+            ->flatMap(fn($textUnit) => $textUnit['text_unit']['lang'] ?? [])
+            ->unique('id')
+            ->values()
+            ->toArray();
         
         return $languages;
     }
-    
     
     /**
      * Accessor to include related agents when the model is serialized.
@@ -233,33 +231,13 @@ class Layer extends Model
     public function getWorksAttribute(): array
     {
         $textUnits = $this->getTextUnitsAttribute();
-        $works = [];
         
-        foreach ($textUnits as $textUnit) {
-            if (isset($textUnit['work_wit']) && is_array($textUnit['work_wit'])) {
-                
-                foreach ($textUnit['work_wit'] as $workWit) {
-                    if (isset($workWit['work']['id'])) {
-                        
-                        $workArk = $workWit['work']['id'];
-                        $work = Work::where('ark', $workArk)->first();
-                        
-                        if ($work) {
-                            $workJson = json_decode($work->json, true);
-                            $works[] = [
-                                'id' => $work->id,
-                                'ark' => $work->ark,
-                                'pref_title' => $workJson['pref_title'] ?? null,
-                            ];
-                        }
-                        
-                    }
-                }
-                
-            }
-        }
-        
-        return $works;
+        return array_values(array_filter(array_merge(
+            ...array_map(
+                fn($textUnit) => $textUnit['text_unit']['work_wit'] ?? [],
+                $textUnits
+            )
+        )));
     }
     
     public function getAllAssociatedNamesAttribute(): array

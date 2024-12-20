@@ -83,7 +83,7 @@ class Manuscript extends Model
     
 
     /**
-     * Returns top-level "assoc_name" objects, "assoc_name" objects from the top-level "para" 
+     * Returns top-level "assoc_name" objects, "assoc_name" objects from the top-level "para"
      * objects, and "assoc_name" objects from the "para" objects nested within "part" objects.
      *
      * @return array
@@ -509,9 +509,26 @@ class Manuscript extends Model
         )->toArray();
     }
     
+    /**
+     * Retrieves all text units embedded within layers.
+     *
+     * This method extracts and flattens the 'text_units' nodes from all related layers
+     * into a single array.
+     *
+     * @return array An array of all extracted text units.
+     */
     public function getRelatedTextUnitsAttribute(): array
     {
-        return $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, 'strict $.**.layer[*]');
+        $layers = $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, 'strict $.**.layer[*]');
+        
+        $textUnits = array_merge(
+            ...array_map(
+                fn($layer) => $layer['text_units'] ?? [],
+                $layers
+            )
+        );
+        
+        return $textUnits;
     }
     
     /**
