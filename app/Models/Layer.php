@@ -264,7 +264,7 @@ class Layer extends Model
     
     public function getAllAssociatedNamesAttribute(): array
     {
-        return $this->getAssociatedNamesByQuery('$.**.assoc_name[*]');
+        return $this->getRelatedAgents('layers', $this->id, 'strict $.**.assoc_name[*]');
     }
     
     public function getAllAssociatedPlacesAttribute(): array

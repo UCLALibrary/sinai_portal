@@ -236,14 +236,7 @@
         </template>
 
         <template v-if="layer.all_associated_names && layer.all_associated_names.length > 0">
-          <h3>Names</h3>
-          <ul>
-            <li v-for="name in layer.all_associated_names">
-              <Link :href="route('frontend.agents.show', { agent: name.id })">
-                {{ name.pref_name }}
-              </Link>
-            </li>
-          </ul>
+          <SidebarNames :names="layer.all_associated_names" />
         </template>
 
         <!-- <template v-if="layer.all_associated_places && layer.all_associated_places.length > 0">
@@ -359,6 +352,7 @@
   import OverviewInks from "@/Pages/Frontend/Browse/Components/OverviewInks.vue";
   import OverviewPageLayouts from "@/Pages/Frontend/Browse/Components/OverviewPageLayouts.vue";
   import OverviewFoliationNotes from "@/Pages/Frontend/Browse/Components/OverviewFoliationNotes.vue";
+  import SidebarNames from "@/Pages/Frontend/Browse/Components/SidebarNames.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

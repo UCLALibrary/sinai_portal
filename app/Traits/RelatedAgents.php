@@ -14,26 +14,35 @@ trait RelatedAgents
             ->where('id', $id)
             ->get();
         
-        return $agentsQuery->map(function ($agent) {
+        $agents = $agentsQuery->map(function ($agent) {
             $agentData = json_decode($agent->agent, true);
+            
+            $resultData = [
+                'id' => null,
+                'ark' => null,
+                'pref_name' => null,
+                'value' => $agentData['value'] ?? null,
+                'role' => $agentData['role'] ?? [],
+                'as_written' => $agentData['as_written'] ?? null,
+                'note' => $agentData['note'] ?? null,
+            ];
             
             if (isset($agentData['id'])) {
                 $agentObject = Agent::where('ark', $agentData['id'])->first();
-                
                 if ($agentObject) {
-                    $agentJson = json_decode($agentObject->jsonb, true);
+                    $agentObjectJson = json_decode($agentObject->jsonb, true);
                     
-                    return [
-                        'id' => $agentObject->id ?? null,
-                        'ark' => $agentJson['ark'] ?? null,
-                        'pref_name' => $agentJson['pref_name'] ?? null,
-                        'role' => $agentData['role'] ?? [],
-                        'agent_json' => $agentJson
-                    ];
+                    $resultData['id'] = $agentObject->id ?? null;
+                    $resultData['ark'] = $agentObjectJson['ark'] ?? null;
+                    $resultData['pref_name'] = $agentObjectJson['pref_name'] ?? null;
+                    $resultData['agent_json'] = $agentObjectJson;
                 }
             }
             
-            return null;
+            return $resultData;
         })->filter()->values()->toArray();
+        
+        // Since there can be the same agent multiple times in the same JSON, we will filter unique by 'ark'.
+        return collect($agents)->unique('ark')->values()->toArray();
     }
 }
