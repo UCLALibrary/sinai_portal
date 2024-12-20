@@ -16,32 +16,29 @@ trait RelatedPlaces
         
         return $placesQuery->map(function ($place) {
             $placeData = json_decode($place->place, true);
+            
+            $resultData = [
+                'id' => null,
+                'ark' => null,
+                'event' => $placeData['event'] ?? null,
+                'value' => $placeData['value'] ?? null,
+                'note' => $placeData['note'] ?? null,
+                'as_written' => $placeData['as_written'] ?? null,
+            ];
+            
             if (isset($placeData['id'])) {
                 $placeObject = Place::where('ark', $placeData['id'])->first();
-                if ($placeObject) {
-                    $placeJson = json_decode($placeObject->jsonb, true);
                 
-                    return [
-                        'id' => $placeObject->id,
-                        'ark' => $placeJson['ark'] ?? '',
-                        'event' => [
-                            'id' => $placeData['event']['id'] ?? ''
-                        ],
-                        'pref_name' => $placeJson['pref_name'] ?? ''
-                    ];
+                if ($placeObject) {
+                    $placeObjectJson = json_decode($placeObject->jsonb, true);
+                    
+                    $resultData['id'] = $placeObject->id;
+                    $resultData['ark'] = $placeObject->id;
+                    $resultData['pref_name'] = $placeObjectJson['pref_name'] ?? null;
                 }
-            } else {
-                return [
-                    'id' => null,
-                    'ark' => '',
-                    'event' => [
-                        'id' => $placeData['event']['id'] ?? ''
-                    ],
-                    'pref_name' => $placeData['value'] ?? ''
-                ];
-            }   
+            }
             
-            return null;
+            return $resultData;
         })->filter()->values()->toArray();
     }
 }

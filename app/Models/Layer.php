@@ -202,7 +202,7 @@ class Layer extends Model
     
     public function getAssociatedPlacesFromRootAttribute(): array
     {
-        return $this->getAssociatedPlacesByQuery('$.assoc_place[*]');
+        return $this->getRelatedPlaces('layers', $this->id, '$.assoc_place[*]');
     }
     
     public function getAssociatedDatesFromRootAttribute(): array
