@@ -1,8 +1,8 @@
 <template>
   <div v-if="languages && languages.length > 0" class="item-container">
-    <span class="item-label">Languages</span>
+    <span class="item-label">Primary languages</span>
     <p class="item-value">
-      {{ languages.map(lang => lang.label).join('; ') }}
+      {{ languages.map(lang => lang.label).join(', ') }}
     </p>
   </div>
 </template>
