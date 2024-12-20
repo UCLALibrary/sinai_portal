@@ -455,8 +455,8 @@
           </ul>
         </template>
 
-        <template v-if="manuscript.related_text_units && manuscript.related_text_units.length > 0">
-          <SidebarTextUnits :text-units="manuscript.related_text_units" />
+        <template v-if="manuscript.sidebar_text_units && manuscript.sidebar_text_units.length > 0">
+          <SidebarTextUnits :text-units="manuscript.sidebar_text_units" />
         </template>
 
         <template v-if="manuscript.assoc_names && manuscript.assoc_names.length > 0">

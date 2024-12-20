@@ -78,7 +78,7 @@ class Manuscript extends Model
         'references',
         'bibliographies',
         'related_digital_versions',
-        'related_text_units',
+        'sidebar_text_units',
     ];
     
 
@@ -513,11 +513,11 @@ class Manuscript extends Model
      * Retrieves all text units embedded within layers.
      *
      * This method extracts and flattens the 'text_units' nodes from all related layers
-     * into a single array.
+     * into a single array and removes the text units without an ID.
      *
      * @return array An array of all extracted text units.
      */
-    public function getRelatedTextUnitsAttribute(): array
+    public function getSidebarTextUnitsAttribute(): array
     {
         $layers = $this->getRelatedLayersWithTextUnits('manuscripts', $this->id, 'strict $.**.layer[*]');
         
@@ -528,7 +528,7 @@ class Manuscript extends Model
             )
         );
         
-        return $textUnits;
+        return array_filter($textUnits, fn($textUnit) => $textUnit['id'] !== null);
     }
     
     /**

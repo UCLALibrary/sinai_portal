@@ -200,16 +200,16 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
-        <template v-if="layer.text_units && layer.text_units.length > 0">
-          <SidebarTextUnits :textUnits="layer.text_units" />
+        <template v-if="layer.sidebar_text_units && layer.sidebar_text_units.length > 0">
+          <SidebarTextUnits :textUnits="layer.sidebar_text_units" />
         </template>
 
-        <template v-if="layer.works && layer.works.length > 0">
-          <SidebarWorks :works="layer.works" />
+        <template v-if="layer.sidebar_works && layer.sidebar_works.length > 0">
+          <SidebarWorks :works="layer.sidebar_works" />
         </template>
 
-        <template v-if="layer.all_associated_names && layer.all_associated_names.length > 0">
-          <SidebarNames :names="layer.all_associated_names" />
+        <template v-if="layer.sidebar_names && layer.sidebar_names.length > 0">
+          <SidebarNames :names="layer.sidebar_names" />
         </template>
 
         <!-- <template v-if="layer.all_associated_places && layer.all_associated_places.length > 0">

@@ -70,8 +70,9 @@ class Layer extends Model
         'associated_dates_from_root',
         'references',
         'bibliographies',
-        'works',
-        'all_associated_names',
+        'sidebar_works',
+        'sidebar_names',
+        'sidebar_text_units',
         'all_associated_places',
         'reconstructed_manuscripts',
         'reconstructed_layers',
@@ -81,6 +82,12 @@ class Layer extends Model
     public function getTextUnitsAttribute(): array
     {
         return $this->getRelatedTextUnits('layers', $this->id, '$.text_unit[*]');
+    }
+    
+    public function getSidebarTextUnitsAttribute(): array
+    {
+        $textUnits = $this->getTextUnitsAttribute();
+        return array_filter($textUnits, fn($textUnit) => $textUnit['id'] !== null);
     }
     
     public function getPrimaryLanguagesAttribute() {
@@ -229,22 +236,25 @@ class Layer extends Model
         return $this->getReferencesByType('layers', $this->id, 'cite');
     }
     
-    public function getWorksAttribute(): array
+    public function getSidebarWorksAttribute(): array
     {
         $textUnits = $this->getTextUnitsAttribute();
-        
-        return array_values(array_filter(array_merge(
+        $works = array_values(array_filter(array_merge(
             ...array_map(
                 fn($textUnit) => $textUnit['text_unit']['work_wit'] ?? [],
                 $textUnits
             )
         )));
+        
+        return array_filter($works, fn($work) => $work['id'] !== null);
     }
     
-    public function getAllAssociatedNamesAttribute(): array
+    public function getSidebarNamesAttribute(): array
     {
-        return $this->getRelatedAgents('layers', $this->id, 'strict $.**.assoc_name[*]');
+        $names = $this->getRelatedAgents('layers', $this->id, 'strict $.**.assoc_name[*]');
+        return array_filter($names, fn($name) => $name['id'] !== null);
     }
+
     
     public function getAllAssociatedPlacesAttribute(): array
     {
