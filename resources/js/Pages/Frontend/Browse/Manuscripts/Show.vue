@@ -140,7 +140,7 @@
                     Origin: {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
                   </span>
                   <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                    Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                    Languages: {{ layer.text_units.map(unit => {return unit?.text_unit?.lang ? unit.text_unit.lang.map(lang => lang.label).join(', ') : '' }).filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
                   </span>
                 </p>
               </template>
@@ -159,7 +159,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{ layer.text_units.map(unit => {return unit?.text_unit?.lang ? unit.text_unit.lang.map(lang => lang.label).join(', ') : '' }).filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -171,7 +171,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{ layer.text_units.map(unit => {return unit?.text_unit?.lang ? unit.text_unit.lang.map(lang => lang.label).join(', ') : '' }).filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -188,7 +188,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{ layer.text_units.map(unit => {return unit?.text_unit?.lang ? unit.text_unit.lang.map(lang => lang.label).join(', ') : '' }).filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
@@ -200,7 +200,7 @@
                 {{ layer.assoc_date.find(date => date.type.id === 'origin')?.value || '' }}<span v-if="layer.assoc_place && layer.assoc_place.length > 0">. {{ layer.assoc_place.find(place => place.event.id === 'origin')?.pref_name || ''  }}</span>
               </span>
               <span v-if="layer.text_units && layer.text_units.length > 0 || layer.writing && layer.writing.length > 0" class="block">
-                Languages: {{layer.text_units.map(unit => unit.text_unit?.lang.map(lang => lang.label).join(', ') || '').filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
+                Languages: {{ layer.text_units.map(unit => {return unit?.text_unit?.lang ? unit.text_unit.lang.map(lang => lang.label).join(', ') : '' }).filter(Boolean).join('; ') }} | Scripts: {{layer.writing.map(writing => writing.script.map(script => script.label).join(', ')).join('; ') }}
               </span>
             </p>
           </template>
