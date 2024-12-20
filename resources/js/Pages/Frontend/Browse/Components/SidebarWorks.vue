@@ -9,7 +9,7 @@
           </Link>
         </template>
         <template v-else>
-          {{ work.value || '' }}
+          {{ work.desc_title || '' }}
         </template>
       </li>
     </ul>
