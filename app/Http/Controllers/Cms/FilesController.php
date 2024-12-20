@@ -44,6 +44,11 @@ class FilesController extends Controller
             // create the resource
             $resource = $modelClass::create($fields);
 
+            // reindex parent resources
+            if (method_exists($resource, 'reindexParentResources')) {
+                $resource->reindexParentResources();
+            }
+
             return response()->json([
                 'status' => $resource ? 'success' : 'error',
                 'message' => $resource ? 'The JSON file has been successfully uploaded.' : 'Error uploading the JSON file.',
@@ -90,6 +95,11 @@ class FilesController extends Controller
 
             // update the resource
             $status = $resource->update($fields);
+
+            // reindex parent resources
+            if (method_exists($resource, 'reindexParentResources')) {
+                $resource->reindexParentResources();
+            }
 
             return response()->json([
                 'status' => $status ? 'success' : 'error',
@@ -145,10 +155,15 @@ class FilesController extends Controller
                 }
                 else {
                     // create the resource
-                    if ($modelClass::create($fields)) {
+                    if ($resource = $modelClass::create($fields)) {
                         $messages[] = $resourceType . " with '" . $data['ark'] . "' has been created.";
                         $createdResources[$resourceId] = $data['ark'];
                     }
+                }
+
+                // reindex parent resources
+                if (method_exists($resource, 'reindexParentResources')) {
+                    $resource->reindexParentResources();
                 }
             }
 

@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
+use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
+use App\Models\Layer;
 use App\Traits\RelatedBibliographies;
 use App\Traits\RelatedPara;
 use App\Traits\RelatedWorkWitnesses;
-use Laravel\Scout\Searchable;
-use App\Traits\HasRelatedEntities;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Scout\Searchable;
 
 class TextUnit extends Model
 {
@@ -287,7 +288,30 @@ class TextUnit extends Model
             ? Layer::whereIn('ark', $data['parent'])->get()
             : null;
     }
-    
+
+    /**
+     * Reindex parent resource records.
+     *
+     * @return void
+     */
+    public function reindexParentResources()
+    {
+        if ($parentArks = $this->getJsonData()['parent']) {
+            foreach ($parentArks as $parentArk) {
+                $layer = Layer::where('ark', $parentArk)->first();
+                if ($layer) {
+                    $layer->searchable();
+                }
+            }
+        }
+        return;
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
     public function toSearchableArray(): array {
         $array = $this->toArray();
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Manuscript;
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
 use App\Traits\RelatedBibliographies;
@@ -289,7 +290,25 @@ class Layer extends Model
         $reconstructedFromArks = $layersQuery ? json_decode($layersQuery->reconstructed_from, true) : [];
         return $this->getLayersByArks($reconstructedFromArks);
     }
-    
+
+    /**
+     * Reindex parent resource records.
+     *
+     * @return void
+     */
+    public function reindexParentResources()
+    {
+        if ($parentArks = $this->getJsonData()['parent']) {
+            foreach ($parentArks as $parentArk) {
+                $manuscript = Manuscript::where('ark', $parentArk)->first();
+                if ($manuscript) {
+                    $manuscript->searchable();
+                }
+            }
+        }
+        return;
+    }
+
     /**
      * Get the indexable data array for the model.
      *
