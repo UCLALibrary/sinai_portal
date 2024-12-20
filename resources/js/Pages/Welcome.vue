@@ -29,7 +29,7 @@
                                 transform transition-transform duration-300 hover:scale-105 cursor-pointer">
                         <h2 class="font-dosis text-2xl">Inscribed Layers</h2>
                         <p class="mt-4 text-base">
-                            Browse descriptions of the codicological features of core overtext and guest content layers.
+                            Browse descriptions of the codicological features of core overtext, undertext, and guest content layers.
                         </p>
                     </div>
                 </a>
