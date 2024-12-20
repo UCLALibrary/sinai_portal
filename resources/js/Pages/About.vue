@@ -5,7 +5,7 @@
 <template>
     <FrontendLayout title="Sinai Manuscripts Data Portal">
         
-        <div class="m-16">
+        <div class="mx-16 flex justify-center">
             <div class="dark:text-white p-6">
                 <h2 class="font-dosis text-2xl uppercase">About</h2>
                 <p class="mt-4 text-lg">
@@ -36,9 +36,9 @@
                     <h3>Contributors</h3>
                     
                     <p>
-                        <b>Project Team:</b>
-                        Dawn Childress, Director, Sinai Manuscripts Digital Library and Portal, UCLA Library
-                        William Potter, Project and Data Manager, UCLA Library
+                        <b>Project Team:</b><br>
+                        Dawn Childress, Director, Sinai Manuscripts Digital Library and Portal, UCLA Library<br>
+                        William Potter, Project and Data Manager, UCLA Library<br>
                     </p>
 
                     <p>
