@@ -36,7 +36,7 @@
                     
                     <h2 class="mt-8 font-dosis text-2xl font-medium">Contributors</h2>
                     
-                    <h3 class="mt-6 mb-1">Project Team:</h3>
+                    <h3 class="mt-4 mb-1">Project Team:</h3>
                     <p>
                         Dawn Childress, Director, Sinai Manuscripts Digital Library and Portal, UCLA Library<br>
                         William Potter, Project and Data Manager, UCLA Library<br>
@@ -69,7 +69,7 @@
                     </p>
                     
                     <h3 class="mt-6 mb-1">Web and Database Development</h3>
-                    text & bytes, <a class="text-sinai-dark-blue" href="https://www.textandbytes.com">https://www.textandbytes.com</a>
+                    text & bytes, <a class="text-sinai-dark-blue" href="https://textandbytes.com/en">textandbytes.com</a>
 
                 </p>
             </div>
