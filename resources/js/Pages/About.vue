@@ -24,7 +24,8 @@
 
                     <p>All data are downloadable as JSON documents, either for a single record from the record’s item page, or if logged in, as a bulk download from one of the search index pages. The data are also available for download via our <a class="text-sinai-dark-blue" href="https://github.com/UCLALibrary/sinaiportal_data">GitHub repository</a>.</p>
                     
-                    <h3>Manuscript Descriptions</h3>
+                    <h2 class="mt-8 mb-4 font-dosis text-2xl font-medium">Manuscript Descriptions</h2>
+
                     <p>For the majority of manuscripts, descriptions are derived from various print catalogues, relying heavily on Murad Kamil’s Catalogue of all Manuscripts in the Monastery of St. Catharine (1970), Philothée du Sinaï's Nouveaux manuscrits syriaques du Sinaï (2008), and Yiannis Meimaris' Katalogos ton neon aravikon cheirographon tes Hieras Mones Hagias Aikaterines tou Orous Sinai (1985). The descriptions were compiled as part of the Sinai Library Digitization Project (SLDP) (2018-2022), during which they were enhanced to facilitate search and discovery.</p>
 
                     <p>Most records are relatively sparse, but the Sinai work is ongoing and descriptions will evolve over time. Concurrent with the Portal project, we are working on another NEH-funded project, Identification and Description of the Syriac and Arabic Manuscripts at St. Catherine’s Monastery of the Sinai. Phase 1: Syriac Parchment Manuscripts. Contributing scholars include Grigory Kessel and Natalia Smelova, who are describing the Syriac parchment manuscripts, and Vevian Zaki, who identified and described the Arabic core and paratextual contents in Syriac manuscripts. The resulting description will be incorporated into the Portal during the course of the project.</p>
@@ -33,10 +34,10 @@
 
                     Have questions or want to contribute? Email us at <a class="text-sinai-dark-blue" href="mailto:sinai@library.ucla.edu">sinai@library.ucla.edu</a>.
                     
-                    <h3>Contributors</h3>
+                    <h2 class="mt-8 font-dosis text-2xl font-medium">Contributors</h2>
                     
+                    <h3 class="mt-6 mb-1">Project Team:</h3>
                     <p>
-                        <b>Project Team:</b><br>
                         Dawn Childress, Director, Sinai Manuscripts Digital Library and Portal, UCLA Library<br>
                         William Potter, Project and Data Manager, UCLA Library<br>
                     </p>
@@ -57,8 +58,8 @@
                         Alexis Roberto (2023-2024) <br>
                     </p>
                     
+                    <h3 class="mt-6 mb-1">Advisory Council</h3>
                     <p>
-                        <b>Advisory Council</b> <br>
                         Sebastian Brock, University of Oxford, emeritus <br>
                         Grigory Kessel, Austrian Academy of Arts and Sciences <br>
                         Jeanne-Nicole Mellon Saint-Laurent, Marquette University <br>
@@ -67,11 +68,8 @@
                         Jack Tannous, Princeton University <br>
                     </p>
                     
-                    <p>
-                        <b>Web and Database Development</b> <br>
-                        text & bytes, <a class="text-sinai-dark-blue" href="https://www.textandbytes.com">https://www.textandbytes.com</a>
-                    </p>
-
+                    <h3 class="mt-6 mb-1">Web and Database Development</h3>
+                    text & bytes, <a class="text-sinai-dark-blue" href="https://www.textandbytes.com">https://www.textandbytes.com</a>
 
                 </p>
             </div>
