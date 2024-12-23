@@ -44,6 +44,29 @@
           </div>
         </template>
 
+        <template v-if="workWit.contents && workWit.contents.length > 0">
+          <p>
+            Contents:
+          </p>
+          <div class="indent">
+            <ol class="list-decimal indent ml-4 md:ml-0">
+              <li v-for="content in workWit.contents">
+                <template v-if="content.title && content.title !== ''">{{ content.title }}</template><template v-if="content.locus && content.locus !== ''">, ({{ content.locus }})</template>
+                <template v-if="content.work && content.work.creator && content.work.creator.length > 0">
+                  <p v-for="creator in content.work.creator">
+                    {{ creator.role.label }}: {{ creator.pref_name }}
+                  </p>
+                </template>
+                <template v-if="content.note && content.note.length > 0">
+                  <p v-for="note in content.note">
+                    {{ note }}
+                  </p>
+                </template>
+              </li>
+            </ol>
+          </div>
+        </template>
+
         <template v-if="workWit.note && workWit.note.length > 0">
           <p>
             Witness Notes:

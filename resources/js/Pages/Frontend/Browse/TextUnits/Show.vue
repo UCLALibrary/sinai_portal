@@ -16,8 +16,10 @@
         <OverviewArk :ark="textUnitJson.ark"/>
         <OverviewLanguages :languages="textUnitJson.lang" />
 
-        <h3>Items</h3>
-        <WorkWitnesses :work-witnesses="textUnit.work_witnesses"/>
+        <template v-if="textUnit.work_witnesses && textUnit.work_witnesses.length > 0">
+          <h3>Items</h3>
+          <WorkWitnesses :work-witnesses="textUnit.work_witnesses"/>
+        </template>
 
         <template v-if="textUnit.para && textUnit.para.length > 0">
           <h3>Paracontent</h3>

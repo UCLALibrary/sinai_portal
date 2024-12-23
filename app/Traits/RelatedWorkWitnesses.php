@@ -25,6 +25,7 @@ trait RelatedWorkWitnesses
                 'locus' => $witnessJsonData['locus'] ?? null,
                 'as_written' => $witnessJsonData['as_written'] ?? null,
                 'excerpt' => $this->processExcerpts($witnessJsonData['excerpt'] ?? []),
+                'contents' => $this->processContents($witnessJsonData['contents'] ?? [], $id),
                 'note' => $witnessJsonData['note'] ?? null,
                 'bib_cites' => $this->processBibliographies($witnessJsonData['bib'] ?? [], 'cite'),
                 'bib_editions' => $this->processBibliographies($witnessJsonData['bib'] ?? [], 'edition'),
@@ -44,7 +45,7 @@ trait RelatedWorkWitnesses
                 
                 return [
                     'title' => $workJsonData['pref_title'],
-                    'work' => $this->getRelatedWorks('text_units', $id, '$.work_wit[*] ? (@.work.id == "' . $workJsonData['ark'] . '")')[0] ?? null,
+                    'work' => $this->getWorkByArk($workJsonData['ark']),
                 ];
             }
         } elseif (isset($witnessJsonData['work']['desc_title'])) {
@@ -70,6 +71,32 @@ trait RelatedWorkWitnesses
         });
         
         return $excerpts;
+    }
+    
+    private function processContents(array $contents, $textUnitId): ?array
+    {
+        if (empty($contents)) {
+            return null;
+        }
+        
+        $processedContents = array_map(function ($content) use ($textUnitId) {
+            
+            if(isset($content['label'])) {
+                $content['title'] = $content['label'];
+            }
+            
+            if (isset($content['work_id'])) {
+                $work = $this->getWorkByArk($content['work_id']);
+                if($work) {
+                    $content['work'] = $work;
+                    $content['title'] = $work['pref_title'];
+                }
+            }
+            
+            return $content;
+        }, $contents);
+        
+        return $processedContents;
     }
     
     private function processBibliographies(array $bibliographies, string $type): ?array

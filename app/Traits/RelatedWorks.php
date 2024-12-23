@@ -21,29 +21,39 @@ trait RelatedWorks
             $workArk = $workJsonData['work']['id'] ?? null;
             $workObject = Work::where('ark', $workArk)->first();
             
-            if ($workObject) {
-                $workJson = json_decode($workObject->jsonb, true);
-                
-                return [
-                    'id' => $workObject->id,
-                    'ark' => $workJson['ark'] ?? '',
-                    'pref_title' => $workJson['pref_title'] ?? '',
-                    'alt_title' => $workJson['alt_title'] ?? '',
-                    'creator' => $this->getRelatedAgents('works', $workObject->id, '$.creator[*]')
-                ];
-            }
-            
-            if (isset($workJsonData['work']['desc_title'])) {
-                return [
-                    'id' => null,
-                    'ark' => null,
-                    'desc_title' => $workJsonData['work']['desc_title'],
-                    'creator' => $workJsonData['work']['creator'] ?? []
-                ];
-            }
-            
-            return null;
+            return $this->buildWorkData($workObject, $workJsonData);
         })->filter()->values()->toArray();
     }
     
+    public function getWorkByArk(string $ark): ?array
+    {
+        $workObject = Work::where('ark', $ark)->first();
+        return $this->buildWorkData($workObject);
+    }
+    
+    private function buildWorkData(?Work $workObject, array $workJsonData = null): ?array
+    {
+        if ($workObject) {
+            $workJson = json_decode($workObject->jsonb, true);
+            
+            return [
+                'id' => $workObject->id,
+                'ark' => $workJson['ark'] ?? '',
+                'pref_title' => $workJson['pref_title'] ?? '',
+                'alt_title' => $workJson['alt_title'] ?? '',
+                'creator' => $this->getRelatedAgents('works', $workObject->id, '$.creator[*]')
+            ];
+        }
+        
+        if ($workJsonData && isset($workJsonData['work']['desc_title'])) {
+            return [
+                'id' => null,
+                'ark' => null,
+                'desc_title' => $workJsonData['work']['desc_title'],
+                'creator' => $workJsonData['work']['creator'] ?? []
+            ];
+        }
+        
+        return null;
+    }
 }
