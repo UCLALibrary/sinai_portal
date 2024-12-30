@@ -57,7 +57,8 @@ class TextUnit extends Model
         'translations',
         'references',
         'bibliographies',
-        'names'
+        'sidebar_names',
+        'sidebar_works'
     ];
     
     /**
@@ -117,8 +118,34 @@ class TextUnit extends Model
         return $this->getReferencesByType('text_units', $this->id, 'cite');
     }
     
-    public function getNamesAttribute(): array {
+    public function getSidebarNamesAttribute(): array {
         return $this->getRelatedAgents('text_units', $this->id, 'strict $.**.assoc_name[*]');
+    }
+    
+    public function getSidebarWorksAttribute(): array {
+        
+        $allWorkArksQuery = DB::table($this->table)
+            ->selectRaw('jsonb_agg(work_arks) AS all_work_arks')
+            ->fromSub(function ($query) {
+                $query->selectRaw("jsonb_path_query(jsonb, '$.work_wit[*].work.id') AS work_arks")
+                    ->from($this->table)
+                    ->where('id', $this->id)
+                    ->unionAll(
+                        DB::table($this->table)
+                            ->selectRaw("jsonb_path_query(jsonb, '$.work_wit[*].contents[*].work_id') AS work_arks")
+                            ->where('id', $this->id)
+                    );
+            }, 'combined')
+            ->first();
+        
+        $allWorkArks = json_decode($allWorkArksQuery->all_work_arks);
+        $works = [];
+        
+        if ($allWorkArks) {
+            $works = $this->getWorksByArks($allWorkArks);
+        }
+        
+        return $works;
     }
     
     /**

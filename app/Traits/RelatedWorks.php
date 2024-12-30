@@ -31,6 +31,14 @@ trait RelatedWorks
         return $this->buildWorkData($workObject);
     }
     
+    public function getWorksByArks(array $arks): array {
+        $workObjects = Work::whereIn('ark', $arks)->get();
+        
+        return $workObjects->map(function ($workObject) {
+            return $this->buildWorkData($workObject);
+        })->filter()->values()->toArray();
+    }
+    
     private function buildWorkData(?Work $workObject, array $workJsonData = null): ?array
     {
         if ($workObject) {

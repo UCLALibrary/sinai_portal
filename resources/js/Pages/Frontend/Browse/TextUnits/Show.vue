@@ -55,7 +55,8 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
-        <SidebarNames :names="textUnit.names" />
+        <SidebarWorks :works="textUnit.sidebar_works" />
+        <SidebarNames :names="textUnit.sidebar_names" />
         <SidebarKeywordsFeatures :features="textUnitJson.features" route-name="frontend.textunits.index" />
 
         <h3>Downloads</h3>
@@ -86,6 +87,7 @@
   import SidebarKeywordsFeatures from "@/Pages/Frontend/Browse/Components/SidebarKeywordsFeatures.vue";
   import SidebarNames from "@/Pages/Frontend/Browse/Components/SidebarNames.vue";
   import NotesMisc from "@/Pages/Frontend/Browse/Components/NotesMisc.vue";
+  import SidebarWorks from "@/Pages/Frontend/Browse/Components/SidebarWorks.vue";
 
   const props = defineProps({
     title: { type: String, required: true },
