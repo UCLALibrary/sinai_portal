@@ -1,11 +1,21 @@
 <template v-if="paracontents && paracontents.length > 0">
   <div v-for="para in paracontents" class="mb-8">
     <p>
-      <strong>{{ para.locus }}, {{ para.label }}, {{ para.type.label }}</strong>
+      <strong>
+        {{ para.locus }}, {{ para.label }}<template v-if="!isColophon">, {{ para.type.label }}</template>
+      </strong>
     </p>
 
-    <p v-if="para.lang && para.lang.length > 0" class="indent">
-      Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
+    <p v-if="(para.lang && para.lang.length > 0) || (para.script && para.script.length > 0)" class="indent">
+      <template v-if="para.lang && para.lang.length > 0">
+        Languages: {{ para.lang.map(lang => lang.label).join(', ') }}
+      </template>
+      <template v-if="para.lang && para.lang.length > 0 && para.script && para.script.length > 0">
+        |
+      </template>
+      <template v-if="para.script && para.script.length > 0">
+        Scripts: {{ para.script.map(script => script.label).join(', ') }}
+      </template>
     </p>
 
     <p v-if="para.as_written" class="indent">
@@ -70,7 +80,8 @@
 <script>
 export default {
   props: {
-    paracontents: {type: Array, required: true},
+    paracontents: { type: Array, required: true },
+    isColophon: { type: Boolean, default: false },
   },
 };
 </script>
