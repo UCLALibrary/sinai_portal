@@ -57,6 +57,8 @@
 
         <SidebarWorks :works="textUnit.sidebar_works" />
         <SidebarNames :names="textUnit.sidebar_names" />
+        <SidebarTextUnits title="Reconstructions" :text-units="textUnit.sidebar_reconstructions" />
+        <SidebarTextUnits title="Reconstructed From" :text-units="textUnit.sidebar_reconstructed_from" />
         <SidebarKeywordsFeatures :features="textUnitJson.features" route-name="frontend.textunits.index" />
 
         <h3>Downloads</h3>
@@ -88,6 +90,7 @@
   import SidebarNames from "@/Pages/Frontend/Browse/Components/SidebarNames.vue";
   import NotesMisc from "@/Pages/Frontend/Browse/Components/NotesMisc.vue";
   import SidebarWorks from "@/Pages/Frontend/Browse/Components/SidebarWorks.vue";
+  import SidebarTextUnits from "@/Pages/Frontend/Browse/Components/SidebarTextUnits.vue";
 
   const props = defineProps({
     title: { type: String, required: true },

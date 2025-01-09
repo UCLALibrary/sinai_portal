@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Traits\HasRelatedEntities;
 use App\Traits\JsonSchemas;
-use App\Models\Layer;
 use App\Traits\RelatedBibliographies;
 use App\Traits\RelatedPara;
+use App\Traits\RelatedTextUnits;
 use App\Traits\RelatedWorkWitnesses;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +15,7 @@ use Laravel\Scout\Searchable;
 
 class TextUnit extends Model
 {
-    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies, RelatedPara, RelatedWorkWitnesses;
+    use HasFactory, JsonSchemas, Searchable, HasRelatedEntities, RelatedBibliographies, RelatedPara, RelatedWorkWitnesses, RelatedTextUnits;
     
     protected $keyType = 'string';
     public $incrementing = false;
@@ -58,7 +58,9 @@ class TextUnit extends Model
         'references',
         'bibliographies',
         'sidebar_names',
-        'sidebar_works'
+        'sidebar_works',
+        'sidebar_reconstructions',
+        'sidebar_reconstructed_from'
     ];
     
     /**
@@ -146,6 +148,27 @@ class TextUnit extends Model
         }
         
         return $works;
+    }
+    
+    public function getSidebarReconstructionsAttribute(): array {
+        $textUnitsQuery = DB::table('text_units')
+            ->select('ark')
+            ->whereRaw("jsonb_path_exists(jsonb, '$.reconstructed_from[*] ? (@ == \"$this->ark\")')")
+            ->pluck('ark')
+            ->toArray();
+        
+        return $this->getTextUnitsByArks($textUnitsQuery);
+    }
+    
+    public function getSidebarReconstructedFromAttribute(): array {
+        $textUnitsQuery = DB::table('text_units')
+            ->selectRaw("jsonb_path_query_array(jsonb, '$.reconstructed_from[*]') AS reconstructed_from")
+            ->whereRaw("jsonb_extract_path_text(jsonb, 'reconstruction') = 'true'")
+            ->where('id', $this->id)
+            ->first();
+        
+        $reconstructedFromArks = $textUnitsQuery ? json_decode($textUnitsQuery->reconstructed_from, true) : [];
+        return $this->getTextUnitsByArks($reconstructedFromArks);
     }
     
     /**
