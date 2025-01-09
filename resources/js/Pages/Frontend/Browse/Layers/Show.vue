@@ -44,12 +44,12 @@
 
         <template v-if="layer.colophons && layer.colophons.length > 0">
           <h3>Colophon<template v-if="layer.colophons.length > 1">s</template></h3>
-          <ParacontentPara :paracontents="layer.colophons" is-colophon="true" />
+          <ParacontentPara :paracontents="layer.colophons"/>
         </template>
 
         <template v-if="layer.para_except_colophons && layer.para_except_colophons.length > 0">
           <h3>Paracontent</h3>
-          <ParacontentPara :paracontents="layer.para_except_colophons" />
+          <ParacontentPara :paracontents="layer.para_except_colophons" :show-para-type-label="true"/>
         </template>
 
         <template v-if="layerJson.note && layerJson.note.filter(note => note.type.id === 'para').length > 0">

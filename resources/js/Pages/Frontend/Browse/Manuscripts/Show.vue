@@ -212,76 +212,11 @@
 
           <template v-if="manuscript.part_para && manuscript.part_para.length > 0">
             <template v-for="part in manuscript.part_para">
-              <template v-if="part.para && part.para.length > 0">
-                <div v-for="para in part.para" class="mb-8">
-                  <p>
-                    <strong>{{ part.label }}, {{ para.locus }}, {{ para.label }} ({{ para.type.label }})</strong>
-                  </p>
-                  <p v-if="para.lang && para.lang.length > 0" class="indent">
-                    Languages: {{ para.lang.map(lang => lang.label).join(', ') }} | Scripts: {{ para.script.map(script => script.label).join(', ') }}
-                  </p>
-                  <p v-if="para.as_written" class="indent">
-                    Transcription: {{ para.as_written }}
-                  </p>
-                  <template v-if="para.translation && para.translation.length > 0">
-                    <p v-for="translation in para.translation" class="indent">
-                      Translation: {{ translation }}
-                    </p>
-                  </template>
-
-                  <p v-if="(para.assoc_name && para.assoc_name.length > 0) || (para.assoc_place && para.assoc_place.length > 0) || (para.assoc_date && para.assoc_date.length > 0)" class="indent font-medium italic">
-                    Associated Names, Places, Dates
-                  </p>
-
-                  <div v-if="para.assoc_name && para.assoc_name.length > 0">
-                    <ul class="indent">
-                      <li v-for="name in para.assoc_name" class="indent">
-                        {{ name.role.label }}: {{ [name.as_written, name.pref_name].filter(Boolean).join(' | ') }}
-                        <span v-if="name.note && name.note.length > 0" class="indent">
-                          {{ name.note.join('; ') }}
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div v-if="para.assoc_place && para.assoc_place.length > 0">
-                    <ul class="indent">
-                      <li v-for="place in para.assoc_place" class="indent">
-                        {{ place.event.label }}: {{ [place.as_written, place.pref_name].filter(Boolean).join(' | ') }}
-                        <span v-if="place.note && place.note.length > 0" class="indent">
-                          {{ place.note.join('; ') }}
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <div v-if="para.assoc_date && para.assoc_date.length > 0">
-                    <ul class="indent">
-                      <li v-for="date in para.assoc_date" class="indent">
-                        {{ date.type.label }}: {{ [date.as_written, date.value].filter(Boolean).join(' | ') }}
-                        <span v-if="date.note && date.note.length > 0" class="indent">
-                          {{ date.note.join('; ') }}
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <template v-if="para.note && para.note.length > 0">
-                    <div class="indent">
-                      <p class="font-medium italic">
-                        Notes
-                      </p>
-                      <p class="indent">
-                        {{ para.note.join('; ') }}
-                      </p>
-                    </div>
-                  </template>
-                </div>
-              </template>
+              <ParacontentPara :paracontents="part.para" :showParaTypeLabel="true" :partLabel="part.label" />
             </template>
           </template>
 
-          <ParacontentPara :paracontents="manuscript.para" />
+          <ParacontentPara :paracontents="manuscript.para" :showParaTypeLabel="true" />
         </template>
 
         <template v-if="manuscriptJson.note && manuscriptJson.note.filter(note => note.type.id === 'para').length > 0">

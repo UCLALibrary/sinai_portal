@@ -2,7 +2,7 @@
   <div v-for="para in paracontents" class="mb-8">
     <p>
       <strong>
-        {{ para.locus }}, {{ para.label }}<template v-if="!isColophon">, {{ para.type.label }}</template>
+        <template v-if="partLabel">{{ partLabel }}, </template>{{ para.locus }}, {{ para.label }}<template v-if="showParaTypeLabel"> ({{ para.type.label }})</template>
       </strong>
     </p>
 
@@ -81,7 +81,8 @@
 export default {
   props: {
     paracontents: { type: Array, required: true },
-    isColophon: { type: Boolean, default: false },
+    showParaTypeLabel: { type: Boolean, default: false },
+    partLabel: { type: String, default: null },
   },
 };
 </script>
