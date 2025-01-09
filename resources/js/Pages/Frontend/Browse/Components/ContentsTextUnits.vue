@@ -1,6 +1,6 @@
 <template>
   <template v-for="textUnit in textUnits">
-    <p>
+    <p class="mb-8">
       <strong>
         <template v-if="textUnit.id">
           <Link :href="route('frontend.textunits.show', { textunit: textUnit.id })">
@@ -14,15 +14,17 @@
       <template v-if="textUnit.locus && textUnit.locus !== ''">
         ({{ textUnit.locus }})
       </template>
-    </p>
-    <p v-if="textUnit.text_unit?.lang && textUnit.text_unit.lang.length > 0">
-      Languages: {{ textUnit.text_unit.lang.map(lang => lang.label).join(' | ') }}
-    </p>
-    <p v-if="textUnit.text_unit?.work_wit && textUnit.text_unit.work_wit.length > 0">
-      Works: {{ textUnit.text_unit.work_wit
-        .map(work => work.pref_title || work.desc_title || '')
-        .filter(title => title)
-        .join(' | ') }}
+      <span class="block" v-if="textUnit.text_unit?.lang && textUnit.text_unit.lang.length > 0">
+        Languages: {{ textUnit.text_unit.lang.map(lang => lang.label).join(' | ') }}
+      </span>
+      <span class="block" v-if="textUnit.text_unit?.work_wit && textUnit.text_unit.work_wit.length > 0">
+        Works: {{
+            textUnit.text_unit.work_wit
+                .map(work => work.pref_title || work.desc_title || '')
+                .filter(title => title)
+                .join(' | ')
+          }}
+      </span>
     </p>
   </template>
 </template>
