@@ -93,7 +93,7 @@
 
           <template v-for="(part) in manuscript.part">
             <div class="mb-14">
-              <p class="mb-0">
+              <p>
                 <strong>{{ part.label }}</strong><template v-if="part.locus">, {{ part.locus }}</template>
               </p>
 
