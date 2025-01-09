@@ -1,15 +1,3 @@
-section.sidebar h3:first-of-type {
-    @apply mt-0
-}
-
-section.sidebar h3 {
-    @apply uppercase tracking-wider font-medium text-base border-b border-gray-300 py-2 mt-8 mb-2
-}
-
-section.sidebar a {
-    @apply text-sinai-dark-blue
-}
-
 .item-container {
     @apply flex flex-col md:flex-row
 }
@@ -22,6 +10,44 @@ section.sidebar a {
     @apply flex-1 xl:text-lg
 }
 
-ul.bulleted {
+/* Main Section */
+.record-detail-view h2 {
+    @apply text-2xl xl:text-3xl pb-2
+}
+
+.record-detail-view section h3 {
+    @apply uppercase tracking-wider font-medium text-base border-b border-gray-300 py-2 mt-8 mb-2
+}
+
+.record-detail-view a {
+    @apply text-sinai-dark-blue
+}
+
+.record-detail-view a.button {
+    @apply px-2 py-1 mt-1 rounded-full bg-white shadow border-0 hover:bg-sinai-light-blue text-sm
+}
+
+.record-detail-view ul li {
+    @apply my-2 text-base xl:text-lg
+}
+
+.record-detail-view ul.bulleted {
     @apply list-disc ml-4 max-w-2xl xl:max-w-3xl xl:text-lg
+}
+
+.record-detail-view p {
+    @apply mb-2 max-w-2xl xl:max-w-4xl xl:text-lg
+}
+
+.record-detail-view .indent {
+    @apply md:ml-4 block
+}
+
+/* Sidebar */
+.record-detail-view section.sidebar h3:first-of-type {
+    @apply mt-0
+}
+
+.record-detail-view section.sidebar a {
+    @apply text-sinai-dark-blue
 }
