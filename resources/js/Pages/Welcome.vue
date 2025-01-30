@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <FrontendLayout title="Sinai Manuscripts Data Portal">
+    <FrontendLayout title="Home">
         
         <div class="flex justify-center text-center my-4 mx-16">
             <p class="home-intro-text">

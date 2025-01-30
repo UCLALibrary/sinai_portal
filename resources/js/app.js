@@ -28,7 +28,7 @@ import '../css/record-detail-view.css'
 // element-plus icons
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+const appName = import.meta.env.VITE_APP_NAME || 'Sinai Manuscripts Data Portal'
 
 createInertiaApp({
     title: (title) => `${title} | ${appName}`,
