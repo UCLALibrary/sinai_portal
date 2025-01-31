@@ -154,6 +154,13 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
+        <Link 
+          v-if="$page.props.auth.user && pageProps.roles.permissions.includes('view cms')"
+          class="flex items-center mb-4" :href="route('resources.edit', { resourceName: 'works', resourceId: work.id })">
+          <PencilSquareIcon class="inline-block w-5 h-5 mr-1" />
+          Edit Work
+        </Link>
+
         <h3>Related Records</h3>
         <p>
           <Link :href="`${route('frontend.textunits.index')}?filters=${encodeURIComponent(JSON.stringify(['works:' + work.pref_title]))}`">
@@ -210,8 +217,11 @@
 
 <script setup>
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-  import { Link } from '@inertiajs/vue3';
+  import { Link, usePage } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
+  import { PencilSquareIcon } from '@heroicons/vue/20/solid'
+
+  const { props: pageProps } = usePage()
 
   const props = defineProps({
     title: { type: String, required: true },

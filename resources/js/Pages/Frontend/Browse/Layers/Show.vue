@@ -140,6 +140,13 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
+        <Link 
+          v-if="$page.props.auth.user && pageProps.roles.permissions.includes('view cms')"
+          class="flex items-center mb-4" :href="route('resources.edit', { resourceName: 'layers', resourceId: layer.id })">
+          <PencilSquareIcon class="inline-block w-5 h-5 mr-1" />
+          Edit Layer
+        </Link>
+
         <template v-if="layer.sidebar_text_units && layer.sidebar_text_units.length > 0">
           <SidebarTextUnits :textUnits="layer.sidebar_text_units" />
         </template>
@@ -249,7 +256,7 @@
 
 <script setup>
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-  import { Link } from '@inertiajs/vue3';
+  import { Link, usePage } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
   import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
   import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
@@ -270,6 +277,7 @@
   import SidebarTextUnits from "@/Pages/Frontend/Browse/Components/SidebarTextUnits.vue";
   import OverviewLanguages from "@/Pages/Frontend/Browse/Components/OverviewLanguages.vue";
   import SidebarWorks from "@/Pages/Frontend/Browse/Components/SidebarWorks.vue";
+  import { PencilSquareIcon } from '@heroicons/vue/20/solid'
 
   const props = defineProps({
     title: { type: String, required: true },
@@ -277,6 +285,8 @@
     layer: { type: Object, required: true },
     source: { type: Object, required: true },
   })
+
+  const { props: pageProps } = usePage()
 
   const layerJson = computed(() => {
     if (typeof props.layer.json === 'string') {

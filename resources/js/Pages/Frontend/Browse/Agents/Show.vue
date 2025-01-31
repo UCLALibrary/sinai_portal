@@ -93,6 +93,13 @@
       </section>
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
+
+        <Link 
+          v-if="$page.props.auth.user && pageProps.roles.permissions.includes('view cms')"
+          class="flex items-center mb-4" :href="route('resources.edit', { resourceName: 'agents', resourceId: agent.id })">
+          <PencilSquareIcon class="inline-block w-5 h-5 mr-1" />
+          Edit Agent
+        </Link>
         
         <!--
           <h3>Related Records</h3>
@@ -156,8 +163,11 @@
 
 <script setup>
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-  import { Link } from '@inertiajs/vue3';
+  import { Link, usePage } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
+  import { PencilSquareIcon } from '@heroicons/vue/20/solid'
+
+  const { props: pageProps } = usePage()
 
   const props = defineProps({
     title: { type: String, required: true },

@@ -379,6 +379,13 @@
 
       <section class="sidebar w-full h-auto lg:w-1/4 border-sinai-light-blue border-t-4 lg:border-t-0 lg:border-l-4 max-lg:pt-8 lg:pl-8">
 
+        <Link 
+          v-if="$page.props.auth.user && pageProps.roles.permissions.includes('view cms')"
+          class="flex items-center mb-4" :href="route('resources.edit', { resourceName: 'manuscripts', resourceId: manuscript.id })">
+          <PencilSquareIcon class="inline-block w-5 h-5 mr-1" />
+          Edit Manuscript
+        </Link>
+
         <template v-if="allInscribedLayers.length > 0">
           <h3>Inscribed Layers</h3>
           <ul>
@@ -443,7 +450,7 @@
 
 <script setup>
   import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-  import { Link } from '@inertiajs/vue3';
+  import { Link, usePage } from '@inertiajs/vue3';
   import FrontendLayout from '@/Layouts/FrontendLayout.vue'
   import { getManuscriptLink } from '@/Shared/detailPageHelpers.js';
   import ResourcesReferences from "@/Pages/Frontend/Browse/Components/ResourcesReferences.vue";
@@ -454,7 +461,10 @@
   import OverviewSummary from "@/Pages/Frontend/Browse/Components/OverviewSummary.vue";
   import AssociatedDates from "@/Pages/Frontend/Browse/Components/AssociatedDates.vue";
   import SidebarTextUnits from "@/Pages/Frontend/Browse/Components/SidebarTextUnits.vue";
+  import { PencilSquareIcon } from '@heroicons/vue/20/solid'
 
+  const { props: pageProps } = usePage()
+  
   const props = defineProps({
     title: { type: String, required: true },
     last_modified: { type: String, required: true },
